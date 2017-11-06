@@ -184,7 +184,7 @@
 	<build>
 		<finalName>HaeBang</finalName>
 		
-		 <sourceDirectory>src</sourceDirectory>
+    <sourceDirectory>src</sourceDirectory>
       <testSourceDirectory>test</testSourceDirectory>
       <outputDirectory>webapp/WEB-INF/classes</outputDirectory>
       <testOutputDirectory>target/test-classes</testOutputDirectory>
