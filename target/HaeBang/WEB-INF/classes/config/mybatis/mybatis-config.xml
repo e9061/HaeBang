@@ -4,6 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
-		<typeAlias type="com.bit.board.vo.BoardVO" alias="boardVO"/>		
+		<typeAlias type="net.haebang.vo.EmployeeVo" alias="employeeVo"/>
+		<typeAlias type="net.haebang.vo.LoginVo" alias="loginVo"/>
 	</typeAliases>
 </configuration>

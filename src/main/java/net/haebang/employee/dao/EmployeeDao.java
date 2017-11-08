@@ -1,4 +1,9 @@
 package net.haebang.employee.dao;
 
-public interface EmployeeDao{
+import net.haebang.vo.EmployeeVo;
+import net.haebang.vo.LoginVo;
+
+public interface EmployeeDao {
+
+	EmployeeVo selectById(LoginVo loginVo);
 }
