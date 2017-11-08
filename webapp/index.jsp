@@ -47,6 +47,7 @@
                      <li class="active"><a href="index.jsp">Home</a></li>
                      <li><a href="portfolio.jsp">신청</a></li>
                      <li><a href="pricingbox.jsp">서비스목록</a></li>
+                     <li><a href="${ pageContext.request.contextPath }/admin/main.do">임시관리자페이지</a></li>
                      <!--  -->
                   <c:choose>
                      <c:when test="${ empty MemberVO }">
