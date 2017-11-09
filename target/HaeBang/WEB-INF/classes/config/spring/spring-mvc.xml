@@ -69,10 +69,15 @@
 				</property>
 			</bean>
 
-		</mvc:message-converters>
-		
-		
+		</mvc:message-converters>		
 	</mvc:annotation-driven>
+	
+	
+	
+	
+	
+	
+	
 	
 	
 
@@ -87,8 +92,8 @@
 	<mvc:view-resolvers>
 		<mvc:jsp prefix="/WEB-INF/view/" suffix=".jsp" />
 	</mvc:view-resolvers>
+
 	
-	<mvc:view-controller path="/ceo" view-name="company_main/companymain"/>	
 	
 </beans>
 

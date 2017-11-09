@@ -6,5 +6,6 @@
 	<typeAliases>
 		<typeAlias type="net.haebang.vo.EmployeeVo" alias="employeeVo"/>
 		<typeAlias type="net.haebang.vo.LoginVo" alias="loginVo"/>
+		<typeAlias type="net.haebang.vo.MemberVo" alias="memberVo"/>
 	</typeAliases>
 </configuration>

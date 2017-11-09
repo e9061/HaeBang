@@ -96,6 +96,13 @@ public class EmployeeVo {
 		this.e_saveName = e_saveName;
 	}
 
+	@Override
+	public String toString() {
+		return "EmployeeVo [e_no=" + e_no + ", e_id=" + e_id + ", e_name=" + e_name + ", e_password=" + e_password
+				+ ", e_phone=" + e_phone + ", e_type=" + e_type + ", e_oriName=" + e_oriName + ", e_saveName="
+				+ e_saveName + ", e_registerDate=" + e_registerDate + "]";
+	}
+
 	
 	
 	

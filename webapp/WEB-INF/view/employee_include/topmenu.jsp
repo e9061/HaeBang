@@ -19,7 +19,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-						<a class="navbar-brand" href="index.jsp"><span>ㅎ</span>ㅐ방 사업자 사이트</a>
+						<a class="navbar-brand" href="index.jsp"><span>H</span>AEBANG CEO SITE</a>
 					</div>
 					<div class="navbar-collapse collapse ">
 						<ul class="nav navbar-nav">
