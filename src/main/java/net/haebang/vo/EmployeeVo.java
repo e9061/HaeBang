@@ -24,6 +24,7 @@ public class EmployeeVo {
 	private String e_oriName;
 	private String e_saveName;
 	private Date e_registerDate;  //테이블 추가!,  default now()
+	private int c_no;
 
 	
 	
@@ -96,11 +97,19 @@ public class EmployeeVo {
 		this.e_saveName = e_saveName;
 	}
 
+	public int getC_no() {
+		return c_no;
+	}
+
+	public void setC_no(int c_no) {
+		this.c_no = c_no;
+	}
+
 	@Override
 	public String toString() {
 		return "EmployeeVo [e_no=" + e_no + ", e_id=" + e_id + ", e_name=" + e_name + ", e_password=" + e_password
 				+ ", e_phone=" + e_phone + ", e_type=" + e_type + ", e_oriName=" + e_oriName + ", e_saveName="
-				+ e_saveName + ", e_registerDate=" + e_registerDate + "]";
+				+ e_saveName + ", e_registerDate=" + e_registerDate + ", c_no=" + c_no + "]";
 	}
 
 	

@@ -347,7 +347,7 @@
                         <li><a href="#">Terms and conditions</a></li>
                         <li><a href="#">Privacy policy</a></li>
                         <li><a href="#">Career center</a></li>
-                        <li><a href="haebang/ceo">사장님 사이트</a></li>
+                        <li><a href="/haebang/ceo">사장님 사이트</a></li>
                      </ul>
                   </div>
                </div>

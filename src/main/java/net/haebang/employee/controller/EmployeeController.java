@@ -1,20 +1,27 @@
 package net.haebang.employee.controller;
 
+
+
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import net.haebang.employee.service.AuthService;
+
+
+import net.haebang.employee.service.EmployeeService;
 import net.haebang.exception.IdPasswordNotMatchingException;
-import net.haebang.vo.AuthInfo;
-import net.haebang.vo.LoginVo;
+import net.haebang.vo.EmployeeVo;
+import net.haebang.vo.MapVo;
+
 
 
 
@@ -22,57 +29,72 @@ import net.haebang.vo.LoginVo;
 public class EmployeeController {
 	
 	@Autowired
-	private AuthService authService;
+	private EmployeeService employeeService;
 	
-	public void setAuthService(AuthService authService) {
-		this.authService = authService;
+	public void setEmployeeService(EmployeeService employeeService) {
+		this.employeeService = employeeService;
 	}
 	
-	@RequestMapping("/ceo")
+	@RequestMapping(value="/ceo", method=RequestMethod.GET)
 	public ModelAndView main() {
 		
 		ModelAndView mav = new ModelAndView();
 		
-		mav.addObject("loginVo",new LoginVo());
+		mav.addObject("employeeVo", new EmployeeVo());
 		mav.setViewName("company_main/companymain");
 		
 		return mav;
 	}
 	
-	@RequestMapping(value="/ceo/login", method=RequestMethod.GET)
-	public String loginmain() {
-		return "company_main/companymain";
+	@RequestMapping("/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/ceo";
 	}
 	
-	@RequestMapping(value="/ceo/login", method=RequestMethod.POST)
-	public String loginform(@Valid LoginVo loginVo, Errors errors, HttpSession session, Model model) {		
-		System.out.println(loginVo);
-		new LoginCommandValidator().validate(loginVo, errors);
+
+	
+	@RequestMapping(value="/ceo", method=RequestMethod.POST)
+	public ModelAndView loginform(@Valid EmployeeVo employeeVo, Errors errors, HttpSession session, ModelAndView mav) {		
+		System.out.println(employeeVo);
+		new LoginCommandValidator().validate(employeeVo, errors);
 		
-		if (errors.hasErrors()) {			
-			return "company_main/companymain";
+		if (errors.hasErrors()) {
+			mav.setViewName("company_main/companymain");
+			
+			return mav;
 		}
 		
 		try {
 			
-			AuthInfo authInfo = authService.authenticate(loginVo);
+			EmployeeVo userVo = employeeService.authenticate(employeeVo);
 			
-			if(authInfo.getType().equals("E")) {
-				authInfo.setType("직원");
+			System.out.println(userVo);
+			
+			if(userVo.getE_type().equals("E")) {
+				userVo.setE_type("직원");
 			}
 			
-			if(authInfo.getType().equals("O")) {
-				authInfo.setType("사장");
+			if(userVo.getE_type().equals("O")) {
+				userVo.setE_type("사장");
 			}
 			
-			session.setAttribute("authInfo", authInfo);
-			model.addAttribute("authInfo", authInfo);
-			return "company_main/companymain_login";
+			session.setAttribute("userVo", userVo);
+			mav.addObject("userVo", userVo);
+			mav.setViewName("company_main/companymain");
+			
+		
+			List<MapVo> maplist = employeeService.selectAllmap(userVo);				
+			mav.addObject("maplist", maplist);
+							
+			return mav;
 			
 		} catch (IdPasswordNotMatchingException e) {
 			
 			errors.reject("idPasswordNotMatching");
-			return "company_main/companymain";
+			mav.setViewName("company_main/companymain");
+			
+			return mav;
 		}
 	}
 	

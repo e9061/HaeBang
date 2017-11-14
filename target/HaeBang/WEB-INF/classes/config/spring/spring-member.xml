@@ -20,7 +20,7 @@
 	<bean id="employeeDao" class="net.haebang.employee.dao.EmployeeDaoImpl">
 	</bean>
 	
-	<bean id="authService" class="net.haebang.employee.service.AuthService">
+	<bean id="employeeService" class="net.haebang.employee.service.EmployeeServiceImpl">
 		<property name="employeeDao" ref="employeeDao" />	
 	</bean>
 
