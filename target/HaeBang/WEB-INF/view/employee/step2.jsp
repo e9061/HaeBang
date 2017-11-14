@@ -37,30 +37,7 @@
 	======================================================= -->
 
 
-<script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
-<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
-
-<script>
-  // Initialize Firebase
-  
-  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
-
-  var firebase = require("firebase/app");
-				require("firebase/auth");
-				require("firebase/messaging");
-  
-  var config = {
-    apiKey: "AIzaSyD2yYWBnrFFgNo3boGudxusBspSqtNadh4",
-    authDomain: "haebang-3a26c.firebaseapp.com",
-    projectId: "haebang-3a26c",
-    messagingSenderId: "987506698782"
-  };
-  firebase.initializeApp(config);
-</script>
 
 <script>
 		// var idReg = /^[a-z]+[a-z0-9]{5,19}$/g;
@@ -215,7 +192,7 @@
 		$(document).on("click", "#duplicate1", function(){
 			
 				$.ajax({		
-					url: "/HaeBang1/ceo/register/duplicate1",
+					url: "/ceo/register/duplicate1",
 					type: "POST",
 					data: {	
 						e_id : $(this).prev().val(),
@@ -233,7 +210,7 @@
 		$(document).on("click", "#duplicate2", function(){
 			
 				$.ajax({		
-					url: "/HaeBang1/ceo/register/duplicate2",
+					url: "/ceo/register/duplicate2",
 					type: "POST",
 					data: {	
 						c_bizNo : $(this).prev().val(),
