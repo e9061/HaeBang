@@ -328,7 +328,8 @@ s0.parentNode.insertBefore(s1,s0);
 				<br />
 				Password&nbsp;<input class="form-control" placeholder="비밀번호" type="password" size="20" name="e_password" id="e_password" path="e_password" />
 				<br />
-				<input class="btn btn-theme" type="submit" id="login_btn" value="로그인">&nbsp;	<input class="btn btn-theme" type="button" id="register_btn" value="회원가입">
+				<input class="btn btn-theme" type="submit" id="login_btn" value="로그인">&nbsp;	
+				<a href="<c:url value="ceo/register/step1"/>"><input class="btn btn-theme" type="button" id="register_btn" value="회원가입"></a>
 			</form:form>		
 		</c:if>
 			<c:if test="${ not empty userVo }">

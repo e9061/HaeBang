@@ -10,7 +10,6 @@ import net.haebang.exception.IdPasswordNotMatchingException;
  * @author Jinhwa
  *
  */
-
 public class EmployeeVo {
 
 	
@@ -26,8 +25,18 @@ public class EmployeeVo {
 	private Date e_registerDate;  //테이블 추가!,  default now()
 	private int c_no;
 
+	private int c_no;
 	
 	
+	
+	public int getC_no() {
+		return c_no;
+	}
+
+	public void setC_no(int c_no) {
+		this.c_no = c_no;
+	}
+
 	public void changePassword(String oldPassword, String newPassword) {
 		
 		if(!e_password.equals(oldPassword))
@@ -113,10 +122,12 @@ public class EmployeeVo {
 	}
 
 	
-	
+
 	
 	
 	
 	
 }
+
+
 
