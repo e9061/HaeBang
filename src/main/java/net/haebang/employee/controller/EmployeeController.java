@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
-
+import org.springframework.ui.Model;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -38,10 +38,7 @@ public class EmployeeController {
 	
 	@Autowired
 	private EmployeeService employeeService;
-	
-	public void setEmployeeService(EmployeeService employeeService) {
-		this.employeeService = employeeService;
-	
+		
 	@Autowired
 	private EmployeeDao employeeDao;
 

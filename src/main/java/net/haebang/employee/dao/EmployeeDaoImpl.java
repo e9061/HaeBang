@@ -7,17 +7,11 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-<<<<<<< HEAD
-
-import net.haebang.vo.EmployeeVo;
-import net.haebang.vo.MapVo;
-
-=======
 import net.haebang.vo.CompanyVo;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
-import net.haebang.vo.LoginVo;
->>>>>>> 37a0fd44336ef7f0d9fa90cc45c1bb9a48984247
+import net.haebang.vo.MapVo;
+
 
 @Repository
 public class EmployeeDaoImpl implements EmployeeDao{

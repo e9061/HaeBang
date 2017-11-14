@@ -15,8 +15,6 @@
 		from t_member m, t_e_order eo, t_employee e, t_m_order mo 
 		where e.c_no= #{c_no} and e.e_no = eo.e_no and eo.mo_no = mo.mo_no and mo.m_no = m.m_no;
 	</select>
-<<<<<<< HEAD
-=======
 
 
 	<!-- 회원가입 -->
@@ -39,6 +37,4 @@
 	</insert>
 
 
-
->>>>>>> 37a0fd44336ef7f0d9fa90cc45c1bb9a48984247
 </mapper>

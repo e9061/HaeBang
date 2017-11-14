@@ -1,19 +1,9 @@
 package net.haebang.employee.service;
 
-<<<<<<< HEAD
-
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-
-import net.haebang.employee.dao.EmployeeDao;
-import net.haebang.exception.IdPasswordNotMatchingException;
-import net.haebang.vo.EmployeeVo;
-import net.haebang.vo.MapVo;
-=======
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
@@ -29,20 +19,13 @@ import net.haebang.employee.dao.EmployeeDao;
 import net.haebang.exception.AlreadyExistingMemberException;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
->>>>>>> 37a0fd44336ef7f0d9fa90cc45c1bb9a48984247
+import net.haebang.exception.IdPasswordNotMatchingException;
+import net.haebang.vo.MapVo;
+
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-<<<<<<< HEAD
-	
-	@Autowired
-	private EmployeeDao employeeDao;
-	
-	public void setEmployeeDao(EmployeeDao employeeDao) {
-		this.employeeDao = employeeDao;
-	}	
-=======
 	private static final String filePath = "/Users/apple/Documents/workspace/HaeBangPicture/";
 
 	@Autowired
@@ -104,7 +87,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 			}
 		}
->>>>>>> 37a0fd44336ef7f0d9fa90cc45c1bb9a48984247
+
 
 		employeeDao.insertCompany(joinEmployeeVo);
 		employeeDao.insertEmployee(joinEmployeeVo);

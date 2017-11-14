@@ -347,11 +347,7 @@
                         <li><a href="#">Terms and conditions</a></li>
                         <li><a href="#">Privacy policy</a></li>
                         <li><a href="#">Career center</a></li>
-<<<<<<< HEAD
-                        <li><a href="/haebang/ceo">사장님 사이트</a></li>
-=======
                         <li><a href="ceo">사장님 사이트</a></li>
->>>>>>> 37a0fd44336ef7f0d9fa90cc45c1bb9a48984247
                      </ul>
                   </div>
                </div>

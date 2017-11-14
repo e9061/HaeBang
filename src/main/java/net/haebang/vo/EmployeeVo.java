@@ -24,9 +24,6 @@ public class EmployeeVo {
 	private String e_saveName;
 	private Date e_registerDate;  //테이블 추가!,  default now()
 	private int c_no;
-
-	private int c_no;
-	
 	
 	
 	public int getC_no() {
@@ -106,13 +103,7 @@ public class EmployeeVo {
 		this.e_saveName = e_saveName;
 	}
 
-	public int getC_no() {
-		return c_no;
-	}
 
-	public void setC_no(int c_no) {
-		this.c_no = c_no;
-	}
 
 	@Override
 	public String toString() {
