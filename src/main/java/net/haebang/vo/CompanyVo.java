@@ -10,17 +10,24 @@ public class CompanyVo {
 	private String c_address;
 	private int c_phone;
 	private Date c_signDate;  // default now()
-	private Date c_regDate;   // 처음엔 null이지만, 관리자 승인시 날짜가 들어가면 정회원 
+	private Date c_regDate;   // 처음엔 null이지만, 관리자 승인시 짜가 들어가면 정회원 
 	private int c_bizNo;
 	private int c_accNo;
 	private String c_bank;
 	private String c_oriName;
 	private String c_saveName;
-	private String c_code;	// 부여된 난수code를 통해서 직원들 인증! 
+	private String c_code;	// 부여된 난수code를 통해서 직원들 인증!
+	private int c_empCnt;  //직원 한명 늘어날 때마다 카운트 1씩 증가.
 
 	
 	
 	
+	public int getC_empCnt() {
+		return c_empCnt;
+	}
+	public void setC_empCnt(int c_empCnt) {
+		this.c_empCnt = c_empCnt;
+	}
 	public int getC_no() {
 		return c_no;
 	}
@@ -107,4 +114,6 @@ public class CompanyVo {
 	
 	
 }
+
+
 

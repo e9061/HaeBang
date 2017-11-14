@@ -3,10 +3,13 @@ net/haebang/admin/service/AdminService.class
 net/haebang/vo/AuthInfo.class
 net/haebang/vo/LoginVo.class
 net/haebang/admin/service/AdminServiceImpl.class
+net/haebang/exception/AlreadyExistingMemberException.class
+net/haebang/employee/controller/RegisterEmployeeValidator.class
 net/haebang/member/service/MemberService.class
 net/haebang/member/dao/MemberDao.class
 net/haebang/admin/dao/AdminDaoImpl.class
 net/haebang/admin/controller/BalController.class
+net/haebang/vo/JoinEmployeeVo.class
 net/haebang/employee/service/EmployeeServiceImpl.class
 net/haebang/member/controller/MemberController.class
 net/haebang/employee/controller/LoginCommandValidator.class
@@ -20,6 +23,7 @@ net/haebang/admin/dao/AdminDao.class
 net/haebang/admin/controller/ScheduleController.class
 net/haebang/employee/service/EmployeeService.class
 net/haebang/admin/controller/QnAController.class
+net/haebang/employee/controller/CommonUtils.class
 net/haebang/admin/controller/AdminMainController.class
 net/haebang/vo/CompanyVo.class
 net/haebang/employee/dao/EmployeeDao.class
