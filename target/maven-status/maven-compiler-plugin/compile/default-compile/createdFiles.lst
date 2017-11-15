@@ -15,6 +15,7 @@ net/haebang/employee/controller/EmployeeController.class
 net/haebang/employee/service/AuthService.class
 net/haebang/admin/controller/MBManageController.class
 net/haebang/vo/EmployeeVo.class
+net/haebang/admin/controller/CompanyManageController.class
 net/haebang/exception/IdPasswordNotMatchingException.class
 net/haebang/admin/dao/AdminDao.class
 net/haebang/admin/controller/ScheduleController.class

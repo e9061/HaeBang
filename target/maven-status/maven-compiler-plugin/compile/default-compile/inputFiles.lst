@@ -22,4 +22,5 @@
 /home/ubuntu/HaeBang/src/main/java/net/haebang/member/service/MemberService.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/admin/controller/BalController.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/admin/service/AdminServiceImpl.java
+/home/ubuntu/HaeBang/src/main/java/net/haebang/admin/controller/CompanyManageController.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/vo/CompanyVo.java

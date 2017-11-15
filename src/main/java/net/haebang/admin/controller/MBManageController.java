@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import net.haebang.admin.service.AdminService;
@@ -28,46 +29,58 @@ public class MBManageController {
 	private AdminService service;
 	
 	@RequestMapping(value="/admin/mbManage")
-	public ModelAndView mbManage(){
-		
+	public String mbManage(){
 		System.out.println("MBManageController");
-		List<MemberVo> mList = service.memberList();
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("admin/mbManage");
-		mav.addObject("mList",mList);
-		
-		return mav;
-	}
-	
-/*
-	@Autowired
-	private AdminService service;
-	
-	
-	
-	@RequestMapping("/mbManage")
-	public String mbManage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
 		return "admin/mbManage";
 	}
-	
-	@RequestMapping("/mbManage2")	
-	public String handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-	  
-		System.out.println("맴버관리2컨트롤러");
-	
-	    request.setCharacterEncoding("utf-8");
-	    response.setContentType("text/html;charset=utf-8");
-		      
-	  // db 저장을 위한 dao에 데이터 전달
-	    AdminService admin = new AdminServiceImpl();
-	
-	    List<MemberVo> list = admin.memberList();
-	  
-	    request.setAttribute("list", list);
-	  
-	    return "/admin/memberList.jsp";
-	   }
-*/
 
+	// 해방회원 조회
+	@RequestMapping(value="/admin/mbList")
+	public @ResponseBody List<MemberVo> mbList(){
+		
+		List<MemberVo> mList = service.memberList();
+		
+		return mList;
+	}
+	
+	// 비회원 조회
+	@RequestMapping(value="/admin/nMbList")
+	public @ResponseBody List<MemberVo> nMbList(){
+		
+		List<MemberVo> nMbList = service.nMemberList();
+		return nMbList;
+	}
+
+	
+	// 회원 조건 검색
+	@RequestMapping(value="/admin/mbSearched")
+	public @ResponseBody List<MemberVo> mbSearched(HttpServletRequest request) throws Exception{
+		request.setCharacterEncoding("utf-8");
+		MemberVo mvo = new MemberVo();
+		
+		String type = request.getParameter("type");
+		String option = request.getParameter("option");
+		String content = request.getParameter("content");
+		
+		System.out.println(type);
+		mvo.setM_type(type);
+		
+		if(option.equals("m_id")) {
+			mvo.setM_id(content);
+		}else if(option.equals("m_name")) {
+			mvo.setM_name(content);
+		}else if(option.equals("m_phone")) {
+			mvo.setM_phone(content);
+		}else if(option.equals("m_no")) {
+			int m_no = Integer.parseInt(content);
+			mvo.setM_no(m_no);
+		}
+		
+		List<MemberVo> mList = service.memberSelected(mvo);
+		
+		return mList;
+	}
+	
+	
+	
 }
