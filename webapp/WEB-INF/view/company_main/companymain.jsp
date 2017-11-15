@@ -10,9 +10,6 @@
 <meta charset="utf-8">
 <title>해방 사장님 사이트</title>
 
-
-
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="description" content="" />
 <!-- css -->
@@ -36,6 +33,7 @@
 <link
 	href="${ pageContext.request.contextPath }/resources/skins/default.css"
 	rel="stylesheet" />
+	
 
 <!-- =======================================================
     Theme Name: Moderna
@@ -44,12 +42,15 @@
     Author URL: https://bootstrapmade.com
 	======================================================= -->
 
+
+
 <style>
 
 #map {
 	height:500px;
 	width:700px;
 }
+
 </style>
 
 <script>
@@ -87,26 +88,35 @@
        }
           
     }); */
-  
+
+    var map;
     
     function initMap() {
-      var uluru = {lat: -25.363, lng: 131.044};
-      var center = {lat: 37.548460113062, lng: 126.98654938037113};
-      var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 11,
-        center: center
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 37.548460113062, lng: 126.98654938037113},
+        zoom: 11
       });
-/*       var marker = new google.maps.Marker({
-        position: uluru,
-        map: map
-      }); */
     }
   </script>
-  
-  <script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA55tXe_wDtqEVlLtwacYJsOXG2zBQC7lk&callback=initMap">
-  </script>
+    
+    <!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/5a0aa9aa198bd56b8c03afe2/default';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+    
 
+  
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA55tXe_wDtqEVlLtwacYJsOXG2zBQC7lk&callback=initMap"
+    async defer></script>
 
 
 
@@ -123,6 +133,7 @@
 		<header> <jsp:include page="../employee_include/topmenu.jsp" />
 		</header>
 		<!-- end header -->
+		<jsp:include page="../employee_include/loginModal.jsp" />
 		
 		<section id="inner-headline">
 			<div class="container">
@@ -139,44 +150,88 @@
 		<section id="content">
 			<div class="container">
 				<div class="row">
-					<div class="col-lg-8">
+					<div class="col-lg-8"> 
+					
 					<article>
-						<div id="map"></div>							
-					</article>
-						<article>
-							<img src="${ pageContext.request.contextPath }/resources/img/pestcontrol.jpg" alt="" width="700px" />
-						</article>
+						<c:if test="${ not empty userVo }">
+						<h4>Today's Schedule</h4>
+						<div id="map"></div>	
+						</c:if>
+					</article>							
 						
 						
 						<article>
-
-					<table border="1" bordercolor="lightgray" style="width: 700px; height: 150px;">
-						<tr style="width:350px;">							
-							<td style="background-color:SteelBlue; color:white; text-align:center;">정산관리</td>							
-							<td style="background-color:white; text-align:center;">스케쥴관리</td>
+						<h4>Quick Menu</h4>
+							<table border="1" bordercolor="lightgray" style="width: 700px; height: 150px;">
+						<tr>							
+							<td style="background-color:SteelBlue; color:white; text-align:center;">
+							<c:if test="${ empty userVo }">
+							<a href="#myModal" class="trigger-btn" data-toggle="modal">					
+							정산관리
+							</a>
+							</c:if>
+							<c:if test="${ not empty userVo }">
+							<a href="#">
+							정산관리
+							</a>
+							</c:if>
+					
+							</td>							
+							<td style="background-color:white; text-align:center;">
+							<c:if test="${ empty userVo }">
+							<a href="#myModal" class="trigger-btn" data-toggle="modal">					
+							스케쥴관리
+							</a>
+							</c:if>
+							<c:if test="${ not empty userVo }">
+							<a href="#">
+							스케쥴관리
+							</a>
+							</c:if>
+							</td>
 						</tr>
 						<tr style="width:350px;">
-							<td style="background-color:white; text-align:center;">종합통계</td>
-							<td style="background-color:SteelBlue; color:white; text-align:center;">예약내역</td>
+							<td style="background-color:white; text-align:center;">
+							<c:if test="${ empty userVo }">
+							<a href="#myModal" class="trigger-btn" data-toggle="modal">					
+							종합통계
+							</a>
+							</c:if>
+							<c:if test="${ not empty userVo }">
+							<a href="#">
+							종합통계
+							</a>
+							</c:if>
+							</td>
+							<td style="background-color:SteelBlue; color:white; text-align:center;">
+							<c:if test="${ empty userVo }">
+							<a href="#myModal" class="trigger-btn" data-toggle="modal">					
+							예약내역
+							</a>
+							</c:if>
+							<c:if test="${ not empty userVo }">
+							<a href="#">
+							예약내역
+							</a>
+							</c:if>
+							</td>
 						</tr>
 					</table>
-
-
-					</article>
-						
+						</article>
 						
 						
 						
 						<article>
 							<div class="post-slider">
 								<div class="post-heading">
-									<h3><a href="#">This is an example of slider post format</a></h3>
+									<h4>Tips</h4>		
+									<h3><a href="#">우리 업체 필증 발급, 정확하게 하고있나요?</a></h3>
 								</div>
 								<!-- start flexslider -->
-								<div id="post-slider" class="flexslider">
-									<ul class="slides">
+								<img src="${ pageContext.request.contextPath }/resources/img/pestcontrol.jpg" alt="" width="700px" height="300px" />
+									<%-- <ul class="slides">
 										<li>
-											<img src="${ pageContext.request.contextPath }/resources/img/dummies/blog/img1.jpg" alt="" />
+											<img src="${ pageContext.request.contextPath }/resources/img/pestcontrol.jpg" alt="" width="700px" height="300px" />
 										</li>
 										<li>
 											<img src="${ pageContext.request.contextPath }/resources/img/dummies/blog/img2.jpg" alt="" />
@@ -185,12 +240,11 @@
 											<img src="${ pageContext.request.contextPath }/resources/img/dummies/blog/img3.jpg" alt="" />
 										</li>
 									</ul>
-								</div>
+								</div> --%>
 								<!-- end flexslider -->
 							</div>
 							<p>
-								Qui ut ceteros comprehensam. Cu eos sale sanctus eligendi, id ius elitr saperet, ocurreret pertinacia pri an. No mei nibh consectetuer, semper laoreet perfecto ad qui, est rebum nulla argumentum ei. Fierent adipisci iracundia est ei, usu timeam persius
-								ea. Usu ea justo malis, pri quando everti electram ei, ex homero omittam salutatus sed.
+								소독필증은 대상시설물 교부용1부,보건소신고용1부,회사보관용1부 총3부를 작성하여 소독실시후 소독회사는 반드시 소독실시 대상시설물에 1부를 교부하고, 시설물 소재지 관할 보건소에 소독신고서와 같이 1부를 제출하고 나머지 1부는 소독회사에서 보관합니다.
 							</p>
 							<div class="bottom-article">
 								<ul class="meta-post">
@@ -202,6 +256,18 @@
 								<a href="#" class="pull-right">Continue reading <i class="icon-angle-right"></i></a>
 							</div>
 						</article>
+						
+						
+						<article>
+
+				
+
+
+					</article>
+						
+						
+						
+						
 						<article>
 							<div class="post-quote">
 								<div class="post-heading">
@@ -256,17 +322,22 @@
 						<aside class="right-sidebar">
 							<div class="widget">			
 				<h4>Login</h4>		
-		<c:if test="${ authInfo.username == null }">
-			<form:form action="${pageContext.request.contextPath}/ceo/login" commandName="loginVo" method="post"> 
-				Username&nbsp;<input class="form-control" placeholder="아이디" type="text" size="20" name="username" id="username" path="username" />
+		<c:if test="${ empty userVo }">
+			<form:form action="${ pageContext.request.contextPath }/ceo" commandName="employeeVo" method="post"> 
+				Username&nbsp;<input class="form-control" placeholder="아이디" type="text" size="20" name="e_id" id="e_id" path="e_id" />
 				<br />
-				Password&nbsp;<input class="form-control" placeholder="비밀번호" type="password" size="20" name="password" id="password" path="password" />
+				Password&nbsp;<input class="form-control" placeholder="비밀번호" type="password" size="20" name="e_password" id="e_password" path="e_password" />
 				<br />
-				<input class="btn btn-theme" type="submit" id="login_btn" value="로그인">&nbsp;	<input class="btn btn-theme" type="button" id="register_btn" value="회원가입">
+				<input class="btn btn-theme" type="submit" id="login_btn" value="로그인">&nbsp;	
+				<a href="<c:url value="ceo/register/step1"/>"><input class="btn btn-theme" type="button" id="register_btn" value="회원가입"></a>
 			</form:form>		
 		</c:if>
-			<c:if test="${ authInfo.username != null }">
-		${ authInfo.username }&nbsp; ${ authInfo.type }님 환영합니다. <br />
+			<c:if test="${ not empty userVo }">
+		${ userVo.e_name }&nbsp; ${ userVo.e_type }님 환영합니다. <br />
+		
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="${ pageContext.request.contextPath }/logout">로그아웃</a>
+		
 		</c:if>
 							</div>							
 							<div class="widget">
@@ -337,6 +408,8 @@
 		src="${ pageContext.request.contextPath }/resources/js/animate.js"></script>
 	<script
 		src="${ pageContext.request.contextPath }/resources/js/custom.js"></script>
+		
+
 
 </body>
 

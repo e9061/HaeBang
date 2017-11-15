@@ -17,12 +17,20 @@
     http://www.springframework.org/schema/mvc/spring-mvc.xsd
     ">
 
+	<!-- 진화 -->
 	<bean id="employeeDao" class="net.haebang.employee.dao.EmployeeDaoImpl">
 	</bean>
 	
-	<bean id="authService" class="net.haebang.employee.service.AuthService">
+	<bean id="employeeService" class="net.haebang.employee.service.EmployeeServiceImpl">
 		<property name="employeeDao" ref="employeeDao" />	
 	</bean>
+	<!-- 창대 -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" /> 
+	</bean>
+	
 
 		
 </beans>

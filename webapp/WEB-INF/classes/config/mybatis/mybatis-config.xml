@@ -5,8 +5,9 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type="net.haebang.vo.EmployeeVo" alias="employeeVo"/>
-		<typeAlias type="net.haebang.vo.LoginVo" alias="loginVo"/>
 		<typeAlias type="net.haebang.vo.MemberVo" alias="memberVo"/>
+		<typeAlias type="net.haebang.vo.MapVo" alias="mapVo"/>
 		<typeAlias type="net.haebang.vo.CompanyVo" alias="companyVo"/>
+		<typeAlias type="net.haebang.vo.JoinEmployeeVo" alias="joinEmployeeVo"/>
 	</typeAliases>
 </configuration>

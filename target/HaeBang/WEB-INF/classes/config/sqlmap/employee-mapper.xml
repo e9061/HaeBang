@@ -5,8 +5,36 @@
 <mapper namespace="net.haebang.employee.dao.EmployeeDao">
 
 	<!-- 로그인 -->
-	<select id="login" parameterType="loginVo" resultType="employeeVo"> 
-		select e_id, e_type from t_employee where e_id = #{username} and e_password = #{password}		
+	<select id="login" parameterType="employeeVo" resultType="employeeVo"> 
+		select e_name, e_type, c_no from t_employee where e_id = #{e_id} and e_password = #{e_password}		
 	</select>
+	
+	<!-- 지도 -->
+	<select id="selectAllmap" parameterType="employeeVo" resultType="mapVo">
+		select m.m_name as m_name, m.m_address as m_address, e.e_name as e_name, eo.eo_status as eo_status 
+		from t_member m, t_e_order eo, t_employee e, t_m_order mo 
+		where e.c_no= #{c_no} and e.e_no = eo.e_no and eo.mo_no = mo.mo_no and mo.m_no = m.m_no;
+	</select>
+
+
+	<!-- 회원가입 -->
+
+	<select id="selectById" parameterType="String" resultType = "employeeVo">
+		select e_id, e_type from t_employee where e_id = #{e_id}
+	</select>
+	
+	<select id="selectBybizNo" parameterType="String" resultType = "companyVo">
+		select c_bizNo from t_company where c_bizNo = #{c_bizNo}
+	</select>
+	
+	<insert id="insertCompany" parameterType="joinEmployeeVo" >
+		insert into t_company(c_name, c_address, c_phone, c_bizNo, c_oriName, c_saveName) values(#{c_name}, #{c_address}, #{c_phone}, #{c_bizNo}, #{c_oriName}, #{c_saveName})
+	
+	</insert>
+
+	<insert id="insertEmployee" parameterType="joinEmployeeVo" >
+		insert into t_employee(e_id, e_name, e_password, e_phone, c_no) values(#{e_id}, #{e_name}, #{e_password},#{e_phone}, (select c_no from t_company where c_name=#{c_name} and c_bizNo =#{c_bizNo}))
+	</insert>
+
 
 </mapper>

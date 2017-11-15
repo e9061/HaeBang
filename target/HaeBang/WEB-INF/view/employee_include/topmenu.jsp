@@ -2,14 +2,14 @@
     pageEncoding="UTF-8"%>
   <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
 
-	<link href="resources/css/bootstrap.min.css" rel="stylesheet" />
-	<link href="resources/css/fancybox/jquery.fancybox.css" rel="stylesheet">
-	<link href="resources/css/jcarousel.css" rel="stylesheet" />
-	<link href="resources/css/flexslider.css" rel="stylesheet" />
-	<link href="resources/css/style.css" rel="stylesheet" />
+	<link href="${ pageContext.request.contextPath }/resources/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="${ pageContext.request.contextPath }/resources/css/fancybox/jquery.fancybox.css" rel="stylesheet">
+	<link href="${ pageContext.request.contextPath }/resources/css/jcarousel.css" rel="stylesheet" />
+	<link href="${ pageContext.request.contextPath }/resources/css/flexslider.css" rel="stylesheet" />
+	<link href="${ pageContext.request.contextPath }/resources/css/style.css" rel="stylesheet" />
 
-	<!-- Theme skin -->
-	<link href="resources/skins/default.css" rel="stylesheet" />
+		<!-- Theme skin -->
+	<link href="${ pageContext.request.contextPath }/resources/skins/default.css" rel="stylesheet" />
 	
 	<div class="navbar navbar-default navbar-static-top">
 				<div class="container">
@@ -62,5 +62,6 @@
 						</ul>
 					</div>
 				</div>
+
 			</div>
 
