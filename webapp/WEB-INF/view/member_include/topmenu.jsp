@@ -3,66 +3,67 @@
   <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
 
 
-   <!-- css -->
-   <link href="<%= request.getContextPath() %>/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-   <link href="<%= request.getContextPath() %>/bootstrap/css/fancybox/jquery.fancybox.css" rel="stylesheet">
-   <link href="<%= request.getContextPath() %>/bootstrap/css/jcarousel.css" rel="stylesheet" />
-   <link href="<%= request.getContextPath() %>/bootstrap/css/flexslider.css" rel="stylesheet" />
-   <link href="<%= request.getContextPath() %>/bootstrap/css/style.css" rel="stylesheet" />
+	<!-- css -->
+	<link href="${ pageContext.request.contextPath }/resources/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="${ pageContext.request.contextPath }/resources/css/fancybox/jquery.fancybox.css" rel="stylesheet">
+	<link href="${ pageContext.request.contextPath }/resources/css/jcarousel.css" rel="stylesheet" />
+	<link href="${ pageContext.request.contextPath }/resources/css/flexslider.css" rel="stylesheet" />
+	<link href="${ pageContext.request.contextPath }/resources/css/style.css" rel="stylesheet" />
 
-   <!-- Theme skin -->
-   <link href="<%= request.getContextPath() %>/bootstrap/skins/default.css" rel="stylesheet" />
-   
-   
-         <!--  -->
-         <div class="navbar navbar-default navbar-static-top">
-            <div class="container">
-               <div class="navbar-header">
-                  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<!-- Theme skin -->
+	<link href="${ pageContext.request.contextPath }/resources/skins/default.css" rel="stylesheet" />
+	
+	<!-- Theme skin -->
+	<link href="resources/skins/default.css" rel="stylesheet" />
+
+</head>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js">
+		
+	</script>
+	<!-- Bootstrap JavaScript -->
+	<script
+		src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+	<!-- Custom JavaScript -->
+	<script src="resources/js/custom.js"></script>
+	<script src="<%=request.getContextPath()%>/resources/js/checkForm.js"></script>
+		
+			<body>
+	<div id="wrapper">
+		<!-- start header -->
+			<div class="navbar navbar-default navbar-static-top">
+				<div class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                  <a class="navbar-brand" href="<%= request.getContextPath() %>/index.jsp"><span>H</span>aeBang</a>
-               </div>
-               <div class="navbar-collapse collapse ">
-                  <ul class="nav navbar-nav">
-                     <li class="active"><a href="<%= request.getContextPath() %>/index.jsp">Home</a></li>
-                     <li><a href="<%= request.getContextPath() %>/portfolio.jsp">신청</a></li>
-                     <li><a href="<%= request.getContextPath() %>/pricingbox.jsp">서비스목록</a></li>
-                     <!--  -->
-                  <c:choose>
-                     <c:when test="${ empty MemberVO }">
-                        <li><a href="<%= request.getContextPath() %>/WEB-INF/view/member/JoinMemberForm.jsp">회원가입</a></li> 
-                           <li><a href="<%= request.getContextPath() %>/WEB-INF/view/member/LoginMember.jsp">로그인</a></li>
-                           </c:when>
-                     <c:otherwise>
-                        <!-- <li><a href="/HaeBang/WEB-INF/view/member/Mypage.jsp">마이페이지</a></li> -->
-                        <li class="dropdown">
-                        <a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">Mypage<b class=" icon-angle-down"></b></a>
-                        <ul class="dropdown-menu">
-                           <li><a href="<%= request.getContextPath() %>/typography.jsp">내 정보 확인</a></li>
-                           <li><a href="<%= request.getContextPath() %>/components.jsp">예약 내역</a></li>
-                           <li><a href="<%= request.getContextPath() %>/blog.jsp">blog</a></li>
-                        </ul>
-                     </li>
-                            <li><a href="<%= request.getContextPath() %>/WEB-INF/view/member/LogoutMember.jsp">로그아웃</a></li>
-                     </c:otherwise>
-                  </c:choose>
-                  <!--  -->
-                     <!-- <li class="dropdown">
-                        <a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">Mypage<b class=" icon-angle-down"></b></a>
-                        <ul class="dropdown-menu">
-                           <li><a href="typography.jsp">내 정보 확인</a></li>
-                           <li><a href="components.jsp">예약 내역</a></li>
-                           <li><a href="blog.jsp">blog</a></li>
-                        </ul>
-                     </li> -->
-                  </ul>
-               </div>
-            </div>
-         </div>
-         
-         
-         
-         
+						<a class="navbar-brand" href="/HaeBang"><span>H</span>aeBang</a>
+					</div>
+					<div class="navbar-collapse collapse ">
+						<ul class="nav navbar-nav">
+							<li class="active"><a href="/HaeBang">Home</a></li>
+							<li><a href="${ pageContext.request.contextPath }/qna/list">신청</a></li>
+							<li><a href="${ pageContext.request.contextPath }/member/myPage">서비스목록</a></li>
+
+						<c:choose> 
+							<c:when test="${ empty userVO }">
+								<li><a href="${ pageContext.request.contextPath }/member/join">회원가입</a></li> 
+	        					<li><a href="${ pageContext.request.contextPath }/member/loginForm">로그인</a></li>
+      						   </c:when>
+							<c:otherwise>
+								<li><a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">${ userVO.m_id }<b class=" icon-angle-down"></b></a></li>
+									<li><a href="${ pageContext.request.contextPath }/member/myPage">내 정보 확인</a></li>
+          						<li><a href="${ pageContext.request.contextPath }/member/logout">로그아웃</a></li>
+							</c:otherwise>
+						</c:choose>
+						</ul>
+					</div>
+				</div>
+			</div>
+			
+		
+			
+			
+			

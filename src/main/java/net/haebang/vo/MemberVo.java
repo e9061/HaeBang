@@ -6,24 +6,28 @@ package net.haebang.vo;
  */
 public class MemberVo {
 
-	public int m_no;
-	public String m_id;
-	public String m_password;
-	public String m_name;
-	public String m_address;
-	public int m_phone;
-	public int m_cardNo;
-	public int m_cardCVC;
-	public String m_cardExp;
-	public String m_owner;
-	public String m_type;
+	private int m_no;
+	private String m_id;
+	private String m_password;
+	private String m_name;
+	private String m_address;
+	private String m_phone;
+	private String m_cardNo;
+	private String m_cardCVC;
+	private String m_cardExp;
+	private String m_owner;
+	private String m_type;
+	private String m_joinDate;
 	
-	public MemberVo() {
+	
+
+	
+	public MemberVo(){
 		
 	}
-
-	public MemberVo(int m_no, String m_id, String m_password, String m_name, String m_address, int m_phone,
-			int m_cardNo, int m_cardCVC, String m_cardExp, String m_owner, String m_type) {
+	
+	public MemberVo(int m_no, String m_id, String m_password, String m_name, String m_address, String m_phone,
+			String m_cardNo, String m_cardCVC, String m_cardExp, String m_owner, String m_type, String m_joinDate) {
 		super();
 		this.m_no = m_no;
 		this.m_id = m_id;
@@ -36,16 +40,15 @@ public class MemberVo {
 		this.m_cardExp = m_cardExp;
 		this.m_owner = m_owner;
 		this.m_type = m_type;
+		this.m_joinDate = m_joinDate;
 	}
 	
-	@Override
-	public String toString() {
-		return "MemberVo [m_no=" + m_no + ", m_id=" + m_id + ", m_password=" + m_password + ", m_name=" + m_name
-				+ ", m_address=" + m_address + ", m_phone=" + m_phone + ", m_cardNo=" + m_cardNo + ", m_cardCVC="
-				+ m_cardCVC + ", m_cardExp=" + m_cardExp + ", m_owner=" + m_owner + ", m_type=" + m_type + "]";
+	public String getM_joinDate() {
+		return m_joinDate;
 	}
-	
-	
+	public void setM_joinDate(String m_joinDate) {
+		this.m_joinDate = m_joinDate;
+	}
 	public int getM_no() {
 		return m_no;
 	}
@@ -76,22 +79,22 @@ public class MemberVo {
 	public void setM_address(String m_address) {
 		this.m_address = m_address;
 	}
-	public int getM_phone() {
+	public String getM_phone() {
 		return m_phone;
 	}
-	public void setM_phone(int m_phone) {
+	public void setM_phone(String m_phone) {
 		this.m_phone = m_phone;
 	}
-	public int getM_cardNo() {
+	public String getM_cardNo() {
 		return m_cardNo;
 	}
-	public void setM_cardNo(int m_cardNo) {
+	public void setM_cardNo(String m_cardNo) {
 		this.m_cardNo = m_cardNo;
 	}
-	public int getM_cardCVC() {
+	public String getM_cardCVC() {
 		return m_cardCVC;
 	}
-	public void setM_cardCVC(int m_cardCVC) {
+	public void setM_cardCVC(String m_cardCVC) {
 		this.m_cardCVC = m_cardCVC;
 	}
 	public String getM_cardExp() {

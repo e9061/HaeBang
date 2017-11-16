@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.haebang.member.dao.MemberDAO">
+
+	<resultMap type="MemberVO" id="MapMemberVO">
+		<!-- <result column="q_viewCnt" property = "q_viewCnt"/>
+		<result column="q_regDate" property = "q_regDate"/> -->		
+	</resultMap>
+	
+	<sql id="selectAll">
+		select  m_name, m_no, m_id, m_password, m_phone, m_address, m_owner, m_cardNo, m_cardCVC, m_joinDate
+		from t_member		
+	</sql>
+	
+	<select id="selectAllMember" resultMap="MapMemberVO">
+		<include refid="selectAll"/>
+		order by m_no desc
+	</select>
+	
+	<select id="selectOneMember" resultMap="MapMemberVO" parameterType="memberVO">
+		<include refid="selectAll"/>
+		where m_id = #{m_id}
+	</select>
+	
+	<select id="selectInfo" resultMap="MapMemberVO" parameterType="memberVO">
+		select  m_name, m_no, m_id, m_password, m_phone, m_address, m_owner, m_cardNo, m_cardCVC, m_joinDate
+		from t_member where m_id = #{m_id};
+	</select>
+		
+<!-- 	<select id="loginCheck" resultType="String" > -->
+<!--         SELECT m_name FROM t_member -->
+<!--         WHERE m_id = #{m_id} AND m_password = #{m_password} -->
+<!--     </select> -->
+
+ 	<!-- <select id="loginCheck" resultType="String" parameterType="MemberVO">
+	<select id="loginCheck" resultMap="MapMemberVO" parameterType="String">
+		SELECT m_name FROM t_member WHERE (m_id = #{m_id} AND m_password = #{m_password})
+	</select> -->
+
+	<!-- <select id="viewMember" resultType="net.haebang.member.vo.MemberVO">
+        SELECT 
+            m_name,
+            m_id,
+            m_email,
+            m_regdate
+        FROM t_member
+        WHERE m_id = #{m_id} AND m_password = #{m_password}
+    </select> -->
+	
+	<!-- <select id="viewMember" resultType="MemberVO" parameterType="MemberVO">
+	 	SELECT m_name, m_id 
+	FROM t_member 
+	WHERE (m_id = #{m_id} 
+	AND m_password = #{m_password})
+	</select> -->
+	
+	<!-- 로그인 -->
+  	<select id="login" parameterType="memberVO" resultType="memberVO">
+  		select m_id, m_password, m_type
+  			from t_member
+  			where m_id = #{m_id} and m_password = #{m_password}
+  	</select>
+	
+	<insert id="insertMember" parameterType="MemberVO">
+		insert into t_member(m_no, m_name, m_id, m_password, m_phone, m_type)
+		values(m_no, #{m_name}, #{m_id},#{m_password},#{m_phone},m_type)
+	</insert>
+	
+	
+</mapper>

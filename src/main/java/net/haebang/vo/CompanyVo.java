@@ -127,6 +127,8 @@ public class CompanyVo {
 				+ ", c_code=" + c_code + ", c_empCnt=" + c_empCnt + "]";
 	}
 	
+}
+
 	
 
 	
@@ -135,6 +137,5 @@ public class CompanyVo {
 	
 	
 	
-}
 
 

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
 
 
 	<!-- css -->
@@ -38,14 +38,8 @@
 									<li><a href="components.html">리뷰통계</a></li>
 								</ul>
 							</li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">업체관리<b class=" icon-angle-down"></b></a>
-								<ul class="dropdown-menu">
-									<li><a href="components.html">해방업체</a></li>
-									<li><a href="typography.html">일반업체</a></li>
-								</ul>
-							</li>
-							<li><a href="${ pageContext.request.contextPath }/admin/mbManage">회원관리</a></li>
+							<li><a href="${ pageContext.request.contextPath }/admin/companyManage">업체 관리</a></li>
+							<li><a href="${ pageContext.request.contextPath }/admin/mbManage">회원 관리</a></li>
 						</ul>
 					</div>
 				</div>
