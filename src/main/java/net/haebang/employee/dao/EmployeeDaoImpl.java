@@ -22,6 +22,12 @@ public class EmployeeDaoImpl implements EmployeeDao{
 
 	// 창대
 	@Override
+	public CompanyVo selectByCode(String c_code) {
+		CompanyVo companyVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectByCode", c_code);
+		return companyVo;
+	}
+	
+	@Override
 	public CompanyVo selectBybizNo(String c_bizNo) {
 		CompanyVo companyVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectBybizNo", c_bizNo);
 		return companyVo;
@@ -36,10 +42,13 @@ public class EmployeeDaoImpl implements EmployeeDao{
 		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertCompany", joinEmployeeVo);
 	}
 	@Override
+	public void insertEmployeeAnd(JoinEmployeeVo joinEmployeeVo) {
+		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertEmployeeAnd", joinEmployeeVo);
+	}
+	@Override
 	public void insertEmployee(JoinEmployeeVo joinEmployeeVo) {
 		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertEmployee", joinEmployeeVo);
 	}
-
 
 	// 진화
 	@Override

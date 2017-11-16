@@ -17,7 +17,16 @@ public class JoinEmployeeVo {
 	private String c_oriName;
 	private String c_saveName;
 	
+	private String c_code;
 	
+	
+	
+	public String getC_code() {
+		return c_code;
+	}
+	public void setC_code(String c_code) {
+		this.c_code = c_code;
+	}	
 	
 	
 	

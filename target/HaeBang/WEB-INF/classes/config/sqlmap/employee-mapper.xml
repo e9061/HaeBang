@@ -26,10 +26,18 @@
 	<select id="selectBybizNo" parameterType="String" resultType = "companyVo">
 		select c_bizNo from t_company where c_bizNo = #{c_bizNo}
 	</select>
+
+	<select id="selectByCode" parameterType="String" resultType = "companyVo">
+		select c_no, c_name, c_phone, c_address, c_bizNo from t_company where c_code = #{c_code}
+	</select>
+	
 	
 	<insert id="insertCompany" parameterType="joinEmployeeVo" >
 		insert into t_company(c_name, c_address, c_phone, c_bizNo, c_oriName, c_saveName) values(#{c_name}, #{c_address}, #{c_phone}, #{c_bizNo}, #{c_oriName}, #{c_saveName})
-	
+	</insert>
+
+	<insert id="insertEmployeeAnd" parameterType="joinEmployeeVo" >
+		insert into t_employee(e_id, e_name, e_password, e_phone, e_type, c_no) values(#{e_id}, #{e_name}, #{e_password},#{e_phone}, 'O', (select c_no from t_company where c_name=#{c_name} and c_bizNo =#{c_bizNo}))
 	</insert>
 
 	<insert id="insertEmployee" parameterType="joinEmployeeVo" >

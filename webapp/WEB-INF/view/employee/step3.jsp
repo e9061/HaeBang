@@ -42,7 +42,7 @@
 					<div class="col-lg-12">
 						<ul class="breadcrumb">
 							<li><a href="#"><i class="fa fa-home"></i></a><i class="icon-angle-right"></i></li>
-							<li class="active">Contact</li>
+							<li class="active">띠로리</li>
 						</ul>
 					</div>
 				</div>
@@ -58,11 +58,11 @@
 		<div class="container">
 				<div class="row">
 					<div class="col-md-8 col-md-offset-2">
-						<h4><strong>계정 정보</strong></h4>
+						<h4><strong>환영합니다!</strong></h4>
 
 						<div id="sendmessage">Your message has been sent. Thank you!</div>
 						<div id="errormessage"></div>
-							축하해						
+							반가워요 ^^						
 							<div class="form-group">
 					<p><strong>${joinEmployeeVo.e_id}님</strong> &nbsp;회원가입을 완료했습니다.</p>
 					<div class="text-center">

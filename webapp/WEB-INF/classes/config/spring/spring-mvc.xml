@@ -101,8 +101,7 @@
 		<mvc:jsp prefix="/WEB-INF/view/" suffix=".jsp" />
 	</mvc:view-resolvers>
 
-	<mvc:view-controller path="/ceo/register/step1" view-name="employee/step1" />
-
+	<mvc:view-controller path="/ceo/register/join" view-name="employee/join" />
 	
 </beans>
 

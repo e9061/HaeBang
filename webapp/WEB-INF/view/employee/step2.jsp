@@ -36,6 +36,85 @@
     Author URL: https://bootstrapmade.com
 	======================================================= -->
 
+<!-- iOS에서는 position:fixed 버그가 있음, 적용하는 사이트에 맞게 position:absolute 등을 이용하여 top,left값 조정 필요 -->
+<div id="layer" style="display:none; position:fixed; overflow:hidden; z-index:1; -webkit-overflow-scrolling:touch;">
+<img src="//t1.daumcdn.net/localimg/localimages/07/postcode/320/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" onclick="closeDaumPostcode()" alt="닫기 버튼">
+</div>
+
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script>
+    // 우편번호 찾기 화면을 넣을 element
+    var element_layer = document.getElementById('layer');
+
+    function closeDaumPostcode() {
+        // iframe을 넣은 element를 안보이게 한다.
+        element_layer.style.display = 'none';
+    }
+
+    function c_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var fullAddr = data.address; // 최종 주소 변수
+                var extraAddr = ''; // 조합형 주소 변수
+
+                // 기본 주소가 도로명 타입일때 조합한다.
+                if(data.addressType === 'R'){
+                    //법정동명이 있을 경우 추가한다.
+                    if(data.bname !== ''){
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있을 경우 추가한다.
+                    if(data.buildingName !== ''){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다.
+                    fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('c_postcode').value = data.zonecode; //5자리 새우편번호 사용
+                document.getElementById('c_address').value = fullAddr;
+
+                // iframe을 넣은 element를 안보이게 한다.
+                // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
+                element_layer.style.display = 'none';
+            },
+            width : '100%',
+            height : '100%',
+            maxSuggestItems : 5
+        }).embed(element_layer);
+
+        // iframe을 넣은 element를 보이게 한다.
+        element_layer.style.display = 'block';
+
+        // iframe을 넣은 element의 위치를 화면의 가운데로 이동시킨다.
+        initLayerPosition();
+    }
+
+    // 브라우저의 크기 변경에 따라 레이어를 가운데로 이동시키고자 하실때에는
+    // resize이벤트나, orientationchange이벤트를 이용하여 값이 변경될때마다 아래 함수를 실행 시켜 주시거나,
+    // 직접 element_layer의 top,left값을 수정해 주시면 됩니다.
+    function initLayerPosition(){
+        var width = 300; //우편번호서비스가 들어갈 element의 width
+        var height = 400; //우편번호서비스가 들어갈 element의 height
+        var borderWidth = 5; //샘플에서 사용하는 border의 두께
+
+        // 위에서 선언한 값들을 실제 element에 넣는다.
+        element_layer.style.width = width + 'px';
+        element_layer.style.height = height + 'px';
+        element_layer.style.border = borderWidth + 'px solid';
+        // 실행되는 순간의 화면 너비와 높이 값을 가져와서 중앙에 뜰 수 있도록 위치를 계산한다.
+        element_layer.style.left = (((window.innerWidth || document.documentElement.clientWidth) - width)/2 - borderWidth) + 'px';
+        element_layer.style.top = (((window.innerHeight || document.documentElement.clientHeight) - height)/2 - borderWidth) + 'px';
+    }
+</script>
+
+
+
 
 
 
@@ -116,6 +195,12 @@
 			var i;
 			for (i = 0; i < form.length - 1; i++) {
 				if (form[i].value == "" || form[i].value == null) {
+					
+					if(form[i].name=='file'){
+						alert("사진을 첨부해주세요.");
+						form[i].focus();
+						return false;
+					}
 					alert($(document.form[i]).prev().html() + '를 입력해주세요.');
 					form[i].focus();
 					return false;
@@ -125,21 +210,24 @@
 								document.form[0].focus();
 								return false;
 						}
-				else if(document.getElementById('checkPasswordPattern').innerText != "사용가능")
-						{
+				else if(i==2){
+					if(document.getElementById('checkPasswordPattern').innerText != "사용가능")	
+					{
 								alert("비밀번호를 올바르게 입력해주세요.");
-								document.form[1].focus();
+								document.form[i].focus();
 								return false;
 						}
-					else if(i ==2){
-						if(form[1].value != form[2].value)
+					}
+					else if(i ==3){
+						if(form[2].value != form[3].value)
 							{
 							alert('비밀번호와 비밀번호 확인이 일치하지 않습니다.')
 							document.form[i].focus();
 							return false;
 							}
 					
-					}else if(i==5 || i==6 ){
+					}else if($(document.form[i]).prev().html()=="휴대전화 번호" || $(document.form[i]).prev().html()=="업체 대표 번호")
+					{
 						var pattern1 = /^[0-9]+$/g; // 숫자
 						
 						if(!pattern1.test(form[i].value)){
@@ -150,12 +238,15 @@
 				
 						}
 
-					}
-					else if($(document.form[7]).next().next().html() !='사용가능한 사업자 번호입니다.'){
+					}if($(document.form[i]).prev().html()=="사업자 등록번호")
+					{	
+						if($(document.form[i]).next().next().html() !='사용가능한 사업자 번호입니다.'){
+					
 						alert("사업자 번호 중복확인을 해주세요.");
-						document.form[7].focus();
+						document.form[i].focus();
 						return false;
-			
+					
+						}
 					}
 					
 					
@@ -164,73 +255,92 @@
 			return true;
 		}
 				
-		
-		
-
-		
-/* 		$(document).ready(function(){
-			$('#replybutton').click(function(){
-				$.ajax({
-					
-					url : "/MiniProject2/likeReply.do",
-					type : "GET",
-					data : {
-						id : $("#like_id").val(),
-						like_no : $("#like_no").val(),
-						content: $('#replyWord').val(), 
-					},
-					success : getIt,
-					error : function(){
-						alert('실패');
-					}
-				});
-			});
-			
-		});
- */
-
 		$(document).on("click", "#duplicate1", function(){
 			
 				$.ajax({		
-					url: "/ceo/register/duplicate1",
+					url: "${pageContext.request.contextPath}/ceo/register/duplicate1",
 					type: "POST",
 					data: {	
 						e_id : $(this).prev().val(),
 					},
-					success: getIt1
+					success: function(data){
+						$("#duplicate1").next().text(data);
+					}
 				}); 
 			});
 				
-		
-	function getIt1(data){
-				$('#duplicate1').next().text(data);
-	}		
-	
 	
 		$(document).on("click", "#duplicate2", function(){
 			
 				$.ajax({		
-					url: "/ceo/register/duplicate2",
+					url: "${pageContext.request.contextPath}/ceo/register/duplicate2",
 					type: "POST",
 					data: {	
 						c_bizNo : $(this).prev().val(),
 					},
-					success: getIt2
+					success: function(data){
+						$("#duplicate2").next().text(data);
+					}
 				}); 
 			});
 				
 		
-	function getIt2(data){
-				$('#duplicate2').next().text(data);
-	}		
 		
 	
+	$(document).on("click", "#confirmCode", function(){
+		
+		$.ajax({		
+			url: "${pageContext.request.contextPath}/ceo/register/ccode",
+			type: "GET",
+			/* dataType: 'json' */
+			data: {	
+				c_code : $(this).prev().val(),
+			},
+			success: function(result){ 
+				var msg ="";
+				var msg1 ="";
+				var msg2 ="";
+				if(result ==null || result == ""){
+					$("#ajax").next().html("");
+					$("#ajax").next().next().html("");
+					$("#ajax").next().next().next().html("");
+					$("#confirmCode").next().text("일치하는 회사가 없습니다.");
+				}
+				else{
+					
+					$("#confirmCode").next().text("");
+					msg += " <label for='c_name' class='pop_label_03'>회사명</label> ";
+					msg += "<input type='text' style='width:50%;' name='c_name' class='form-control' readonly='readonly' value='"+result.c_name+"' />";
+					msg1 += " <label for='c_address' class='pop_label_03'>회사 주소</label> ";
+					msg1 += "<input type='text' style='width:50%;' name='c_address' class='form-control' readonly='readonly' value='"+result.c_address+"' />";
+					msg2 += " <label for='c_bizNo' class='pop_label_03'>사업자 등록 번호</label> ";
+					msg2 += "<input type='text' style='width:50%;' name='c_bizNo' class='form-control' readonly='readonly' value='"+result.c_bizNo+"' />";
+					msg2 += "<input type='hidden' style='width:50%;' name='c_phone'  value='"+result.c_phone+"' />";
+			
+					
+				
+				}
+				$("#ajax").next().html(msg);
+				$("#ajax").next().next().html(msg1);
+				$("#ajax").next().next().next().html(msg2);
+		} 
+	});
+	});
 	
 	
- 	$(function(){
+ 	/* $(function(){
 		$("#fileUpload").on("change", function(){
 			readURL(this);	
 		});	
+	}); */
+	
+
+	$(document).on("click", "#fileUpload", function(){   
+
+		$("#fileUpload").on("change", function(){
+			readURL(this);	
+		});	
+	
 	});
 	
 	 function readURL(fileUpload) {
@@ -247,6 +357,26 @@
      } 
 
 
+
+	 
+	 	$(function(){
+			$("#fileUpload1").on("change", function(){
+				readURL1(this);	
+			});	
+		});
+		
+		 function readURL1(fileUpload) {
+	         if (fileUpload.files && fileUpload.files[0]) {
+	         var reader = new FileReader();
+
+	         reader.onload = function (e) {
+	                 $('#blah1').attr('src', e.target.result);
+	                 
+	             }
+
+	           reader.readAsDataURL(fileUpload.files[0]);
+	         }
+	     } 
      
 
     	 
@@ -286,12 +416,15 @@
 
 
 
-
-		<section id="content"> <form:form action="step3" name="form"
-			commandName="joinEmployeeVo" method="post"
-			onsubmit="return nextStep()" enctype="multipart/form-data"> 
+		
+		<section id="content"> 
+		
+		<form:form action="step3" name="form" commandName="joinEmployeeVo" method="post" 
+		onsubmit="return nextStep()" enctype="multipart/form-data"> 
 			<div class="container">
+			
 				<div class="row">
+				
 					<div class="col-md-8 col-md-offset-2">
 						<h4>
 							<strong>계정 정보</strong>
@@ -304,17 +437,22 @@
 						<div class="form-group">
 							<label for="e_id" class="pop_label_03">아이디</label>
 							<form:input style="width:50%;" path="e_id" class="form-control"
-								placeholder="아이디를 입력해주세요." data-rule="minlen:4"
-								data-msg="Please enter at least 4 chars" />
-							<%-- <form:errors path="e_id" /> --%>
+								placeholder="아이디를 입력해주세요." />
+							<form:errors path="e_id" />
 							<!-- 아이디 t_employee 테이블 e_id -->
 							
 							<!-- onclick="javascript:chkeck_id($(this).prev().val())" -->
-							<a class="btn_def_r" id="duplicate1" style="width: 100px">중복 확인</a>
+							<a class="btn btn-info" id="duplicate1" style="width: 100px">중복 확인</a>
 							<span></span>
-							<div class="validation"></div>
-						</div>
+						<input id= "fileUpload1" type="file" style="width:50%;" name="fileFace"/>
+							<label for="fileUpload1" class="pop_label_03">회원사진 첨부</label>
+							<img id="blah1" src="#" alt="" style="height: 10%; width: 10%" />
 
+							<div id="holder1"></div>
+						</div>	
+						
+						
+						
 						<div class="form-group">
 							<span class="txt_right" style="text-align: right;">* 영문, 숫자 포함 6~14자리로 입력해주세요.</span>
 						</div>
@@ -362,6 +500,10 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-8 col-md-offset-2">
+						<c:choose>
+						<c:when test="${ownerOrMember ne 'M' }">
+						
+						
 						<h4>
 							<strong>사장님 정보</strong>
 						</h4>
@@ -405,7 +547,7 @@
 
 
 							<a href="#" onclick="javascript:chkeck_id($(this).prev().val())"
-								class="btn_def_r" style="width: 100px">번호 인증</a>
+								class="btn btn-info" style="width: 100px">번호 인증</a>
 							<div class="validation"></div>
 						</div>
 						<div class="form-group">
@@ -426,7 +568,7 @@
 								data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
 							<form:errors path="c_bizNo" />
 							<!-- 사업자 등록번호 t_company 테이블 변수 c_bizNo -->
-							<a class="btn_def_r" id="duplicate2" style="width: 100px">중복 확인</a>
+							<a class="btn btn-info" id="duplicate2" style="width: 100px">중복 확인</a>
 							<span></span>
 							<input id= "fileUpload" type="file" style="width:50%;" name="file"/>
 							<label for="fileUpload" class="pop_label_03">사업자 등록증 첨부</label>
@@ -447,29 +589,81 @@
 								data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
 							<form:errors path="c_address" />
 							<!-- 업체주소 t_company 테이블 변수 c_address -->
+						<input type="text" id="c_postcode" placeholder="우편번호" class="form-control" style="width:20%;"/>
+						<input type="button" class="btn btn-info" onclick="c_execDaumPostcode()" value="우편번호 찾기"><br>
 
-							<a href="#" onclick="javascript:chkeck_id($(this).prev().val())"
-								class="btn_def_r" style="width: 100px">주소 확인</a>
+							<div class="validation"></div>
+						</div>
+						
+						
+												<div class="text-center">
+							<a href="<%=request.getContextPath()%>/ceo"><input
+								type="button" value="취소" class="btn btn-theme"></a> <input
+								type="submit" value="다음" class="btn btn-theme">
+						</div>
+						
+						</c:when>
+						<c:otherwise>
+						
+						<h4>
+							<strong>직원님 정보</strong>
+						</h4>
+						<div class="form-group">
+							<label for="e_name" class="pop_label_03">직원님 성함</label>
+							<form:input path="e_name" class="form-control"
+								 style="width:50%;" placeholder="실명을 입력해주세요" />
+							<form:errors path="e_name" />
+							<!-- 사장님 성함 t_employee 테이블 변수 e_name -->
+
+
 							<div class="validation"></div>
 						</div>
 
 
-						<!-- <div class="form-group">
-								이메일 주소 <input style="width:50%;" type="text" name="name" class="form-control" id="name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
-							이메일 주소 t_company 테이블 변수 c_address
-								<select title="직접 입력">
-								<option value="뭥미"/>
-								
-								</select>								
-								
-								<div class="validation"></div>
-							</div> -->
+						<div class="form-group">
+							<label for="e_phone" class="pop_label_03">휴대전화 번호</label>
+							<form:input style="width:50%;" path="e_phone"
+								class="form-control" data-rule="minlen:4"
+								data-msg="Please enter at least 4 chars" />
+							<form:errors path="e_phone" />
+							<!-- 휴대전화 번호 t_employee 테이블 변수 e_phone -->
+							<a href="#" onclick="javascript:chkeck_id($(this).prev().val())"
+								class="btn btn-info" style="width: 100px">번호 인증</a>
+							<div class="validation"></div>
+						</div>
+						
+				<div class="form-group" id="ajax">
+							<label for="c_code" class="pop_label_03">회사 코드</label>
+							<form:input style="width:50%;" path="c_code" class="form-control"
+								placeholder="회사 코드 번호 입력" data-rule="minlen:4"
+								data-msg="Please enter at least 4 chars" />
+							<a class="btn btn-info" id="confirmCode" style="width: 100px">코드 확인</a>
+							<span></span>
+							<div class="validation"></div>
+						</div>
+						
+						
+						<div class="form-group">
+							
+						</div>
 
+						<div class="form-group">
+						</div>
+						
+						<div class="form-group">
+						</div>
+						
 						<div class="text-center">
 							<a href="<%=request.getContextPath()%>/ceo"><input
 								type="button" value="취소" class="btn btn-theme"></a> <input
 								type="submit" value="다음" class="btn btn-theme">
 						</div>
+						</c:otherwise>
+						
+						
+						</c:choose>
+						
+					<input name = "ownerOrMember" type="hidden" value='<c:out value="${ownerOrMember }"></c:out>' />
 					</div>
 				</div>
 			</div>

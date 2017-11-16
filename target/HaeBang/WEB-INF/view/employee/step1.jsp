@@ -51,7 +51,7 @@
 					<ul class="breadcrumb">
 						<li><a href="#"><i class="fa fa-home"></i></a><i
 							class="icon-angle-right"></i></li>
-						<li class="active">Contract</li>
+						<li class="active">${type}</li>
 					</ul>
 				</div>
 			</div>
@@ -161,10 +161,10 @@
 									class="pop_label_03">이용 약관 동의</label>
 							</div>
 
-
+							
 							<div class="validation"></div>
 						</div>
-
+						<input name = "ownerOrMember" type="hidden" value='<c:out value="${type }"></c:out>' />
 						<div class="text-center">
 							<a href="<%=request.getContextPath()%>/ceo"><input
 								type="button" value="취소" class="btn btn-theme"></a> <input
