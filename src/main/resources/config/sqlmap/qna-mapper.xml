@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.haebang.qna.dao.QnADAO">
+
+	<resultMap type="QnAVo" id="MapQnAVO">
+		<!-- <result column="q_viewCnt" property = "q_viewCnt"/>
+		<result column="q_regDate" property = "q_regDate"/> -->		
+	</resultMap>
+	
+	<sql id="selectAll">
+		select q_no,q_title,q_content,q_viewCnt,q_regDate
+		from t_qna		
+	</sql>
+	
+	<select id="selectAllBoard" resultMap="MapQnAVO">
+		<include refid="selectAll"/>
+		order by q_no desc
+	</select>
+	
+	<select id="selectOneBoard" resultMap="MapQnAVO" parameterType="int">
+		<include refid="selectAll"/>
+		where no = #{q_no}
+	</select>
+	
+	
+	<insert id="insertBoard" parameterType="QnAVo">
+		insert into t_qna(q_title,m_no,q_content)
+		values (#{q_title},m_no,#{q_content})
+	</insert>
+	
+	<update id="updateBoard" parameterType="QnAVo">
+		update t_qna
+		set title=#{q_title},writer=#{q_writer},content=#{q_content}
+		where no = #{no}
+	</update>
+	
+	<delete id="deleteBoard" parameterType="int">
+		delete from t_qna where q_no = #{q_no}
+	</delete>
+	
+</mapper>
