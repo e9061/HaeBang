@@ -19,10 +19,10 @@ public interface EmployeeDao {
         noticeBoardVo getnoticeBoardByNo(int no);
         
 	 // 창대
-	 EmployeeVo selectById(String e_id);
-	 CompanyVo selectBybizNo(String c_bizNo);
-	 
-	 void insertEmployee(JoinEmployeeVo joinEmployeeVo);
-	 void insertCompany(JoinEmployeeVo joinEmployeeVo);
-
+	EmployeeVo selectById(String e_id);
+	CompanyVo selectBybizNo(String c_bizNo);
+	CompanyVo selectByCode(String c_code);
+	void insertEmployeeAnd(JoinEmployeeVo joinEmployeeVo);
+	void insertEmployee(JoinEmployeeVo joinEmployeeVo);
+	void insertCompany(JoinEmployeeVo joinEmployeeVo);
 }

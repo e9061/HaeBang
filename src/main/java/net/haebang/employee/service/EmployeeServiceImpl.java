@@ -37,7 +37,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Transactional
-	public void registerEmployee(JoinEmployeeVo joinEmployeeVo, MultipartHttpServletRequest request) {
+	public void registerEmployeeAnd(JoinEmployeeVo joinEmployeeVo, MultipartHttpServletRequest request) {
 
 		EmployeeVo employeeVo = employeeDao.selectById(joinEmployeeVo.getE_id());
 		if (employeeVo != null) {
@@ -94,6 +94,24 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employeeDao.insertEmployee(joinEmployeeVo);
 
 	}
+
+	
+	@Transactional
+	public void registerEmployee(JoinEmployeeVo joinEmployeeVo, MultipartHttpServletRequest request) {
+		EmployeeVo employeeVo = employeeDao.selectById(joinEmployeeVo.getE_id());
+		if (employeeVo != null) {
+			throw new AlreadyExistingMemberException("중복" + joinEmployeeVo.getE_id());
+		}
+		
+		employeeDao.insertEmployee(joinEmployeeVo);
+		
+	}	
+
+
+
+	
+
+///////////////////////////////////진화////////////////////////////////////////////////
 
 	public void modifyEmployee(EmployeeVo employee) {
 
