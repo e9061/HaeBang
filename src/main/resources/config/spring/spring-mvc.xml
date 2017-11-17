@@ -73,16 +73,16 @@
 	</mvc:annotation-driven>
 	
 	
-	
 	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basenames">
 			<list>
-				<value>message.label</value>
+				<value>label.properties</value>
 			</list>
 		</property>
 		<property name="defaultEncoding" value="UTF-8" />
-	</bean>	
+	</bean>
+	
 	
 	
 	
@@ -101,8 +101,7 @@
 		<mvc:jsp prefix="/WEB-INF/view/" suffix=".jsp" />
 	</mvc:view-resolvers>
 
-	<mvc:view-controller path="/ceo/register/step1" view-name="employee/step1" />
-
+	
 	
 </beans>
 

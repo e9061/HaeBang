@@ -1,12 +1,14 @@
 package net.haebang.employee.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
 import net.haebang.vo.MapVo;
+import net.haebang.vo.noticeBoardVo;
 
 public interface EmployeeService {
 
@@ -15,7 +17,9 @@ public interface EmployeeService {
 	void modifyEmployee(EmployeeVo employee);
 	EmployeeVo authenticate(EmployeeVo employeeVo);
 	List<MapVo> selectAllmap(EmployeeVo employeeVo);
-
+	List<noticeBoardVo> getnoticelist(int page, String word, String searchCondition);
+	int getlastpage(String word, String searchCondition);
+	noticeBoardVo getnoticeBoardByNo(int no);
 
 }
 

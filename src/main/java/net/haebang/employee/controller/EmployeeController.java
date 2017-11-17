@@ -15,15 +15,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
-
 
 import net.haebang.employee.service.EmployeeService;
 import net.haebang.exception.IdPasswordNotMatchingException;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.MapVo;
-
+import net.haebang.vo.noticeBoardVo;
 import net.haebang.employee.dao.EmployeeDao;
 import net.haebang.employee.service.EmployeeService;
 import net.haebang.exception.AlreadyExistingMemberException;
@@ -172,14 +172,14 @@ public class EmployeeController {
 	
 	@RequestMapping(value="/ceo", method=RequestMethod.POST)
 	public ModelAndView loginform(@Valid EmployeeVo employeeVo, Errors errors, HttpSession session, ModelAndView mav) {		
-		System.out.println(employeeVo);
-		new LoginCommandValidator().validate(employeeVo, errors);
+		
+/*		new LoginCommandValidator().validate(employeeVo, errors);
 		
 		if (errors.hasErrors()) {
 			mav.setViewName("company_main/companymain");
 			
 			return mav;
-		}
+		}*/
 		
 		try {
 			
@@ -205,15 +205,54 @@ public class EmployeeController {
 							
 			return mav;
 			
-		} catch (IdPasswordNotMatchingException e) {
+						
+		} catch (IdPasswordNotMatchingException e) {			
 			
-			errors.reject("idPasswordNotMatching");
+			System.out.println("아이디패스워드낫매치드!");
+			mav.addObject("errorMessage", "입력하신 회원 정보가 존재하지 않습니다");
 			mav.setViewName("company_main/companymain");
 			
 			return mav;
+
 		}
+	
+		
+		
 	}
 	
+	@RequestMapping("/ceo/notice")
+	public ModelAndView notice(@RequestParam(value="nowpage", defaultValue="0") int page,
+            @RequestParam(value="word", required=false) String word, 
+            @RequestParam(value="searchCondition", defaultValue="null", required=false) String searchCondition) {
+		ModelAndView mav = new ModelAndView();
+		
+		// 페이징	
+		List<noticeBoardVo> noticelist = employeeService.getnoticelist(page, word, searchCondition);
+		System.out.println("컨트롤러");
+		System.out.println(word);
+		System.out.println(searchCondition);
+		
+		mav.addObject("page", page);
+		mav.addObject("totalpage", employeeService.getlastpage(word, searchCondition));				
+		mav.addObject("noticelist", noticelist);
+				
+		mav.setViewName("company_contact/notice");		
+		                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+		return mav;
+	}
 	
+	@RequestMapping("/ceo/noticeDetail")
+	public ModelAndView detail(@RequestParam("no") int no) {
+		
+		ModelAndView mav = new ModelAndView();
+		
+		noticeBoardVo noticedetail = employeeService.getnoticeBoardByNo(no);
+		System.out.println(noticedetail);
+		
+		mav.addObject("noticedetail", noticedetail);
+		mav.setViewName("company_contact/noticeDetail");		
+		
+		return mav;
+	}
 }
 

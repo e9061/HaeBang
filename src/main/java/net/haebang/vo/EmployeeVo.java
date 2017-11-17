@@ -2,6 +2,8 @@ package net.haebang.vo;
 
 import java.util.Date;
 
+
+
 import net.haebang.exception.IdPasswordNotMatchingException;
 
 /**

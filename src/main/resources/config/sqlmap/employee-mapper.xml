@@ -6,7 +6,7 @@
 
 	<!-- 로그인 -->
 	<select id="login" parameterType="employeeVo" resultType="employeeVo"> 
-		select e_name, e_type, c_no from t_employee where e_id = #{e_id} and e_password = #{e_password}		
+		select * from t_employee where e_id = #{e_id} and e_password = #{e_password}		
 	</select>
 	
 	<!-- 지도 -->
@@ -36,5 +36,31 @@
 		insert into t_employee(e_id, e_name, e_password, e_phone, c_no) values(#{e_id}, #{e_name}, #{e_password},#{e_phone}, (select c_no from t_company where c_name=#{c_name} and c_bizNo =#{c_bizNo}))
 	</insert>
 
+	<!-- 공지사항 게시판 -->	
+	<select id="selectnoticeList" parameterType="java.util.Map" resultType="noticeBoardVo">
+        SELECT * FROM t_notice
+        <where>
+            <if test="titlecontent != null">
+                n_content like CONCAT('%',#{titlecontent},'%') or n_title like CONCAT('%',#{titlecontent},'%')
+            </if>
+        </where>
 
+        ORDER BY n_no DESC
+        limit #{startpoint}, #{row} 
+    </select>
+
+	
+	<select id="selectTotalCount" parameterType="java.util.Map" resultType="Integer">
+        SELECT COUNT(*) FROM t_notice        
+        <where>
+            <if test="titlecontent != null">
+                n_content like CONCAT('%',#{titlecontent},'%') or n_title like CONCAT('%',#{titlecontent},'%')
+            </if>
+        </where>        
+
+    </select>
+
+	<select id="selectnoticeDetail" parameterType="int" resultType="noticeBoardVo">
+		select * from t_notice where n_no = #{no}
+	</select>
 </mapper>

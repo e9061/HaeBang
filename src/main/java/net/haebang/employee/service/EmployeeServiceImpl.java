@@ -1,12 +1,11 @@
 package net.haebang.employee.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,10 +16,12 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import net.haebang.employee.controller.CommonUtils;
 import net.haebang.employee.dao.EmployeeDao;
 import net.haebang.exception.AlreadyExistingMemberException;
+
+import net.haebang.exception.IdPasswordNotMatchingException;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
-import net.haebang.exception.IdPasswordNotMatchingException;
 import net.haebang.vo.MapVo;
+import net.haebang.vo.noticeBoardVo;
 
 
 @Service
@@ -102,8 +103,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public EmployeeVo authenticate(EmployeeVo employeeVo) {
 		System.out.println("authenticate");
 		EmployeeVo employeevo = employeeDao.selectById(employeeVo);
-		System.out.println(employeeVo);
-		if (employeeVo == null) {
+		System.out.println(employeevo);
+		
+		
+		if (employeevo == null ) {
 			throw new IdPasswordNotMatchingException();
 		}
 		
@@ -114,6 +117,51 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public List<MapVo> selectAllmap(EmployeeVo employeeVo) {
 		List<MapVo> maplist = employeeDao.selectAllmap(employeeVo);
 		return maplist;
+	}
+
+	private final int LINE_PER_PAGE = 10;
+	
+	@Override
+	public List<noticeBoardVo> getnoticelist(int page, String word, String searchCondition) {
+
+		int startpoint = page * LINE_PER_PAGE;		
+				
+		/*PageHelper pageHelper = new PageHelper(startpoint, LINE_PER_PAGE);*/
+        Map<String, Object> map = new HashMap<String, Object>();
+        /*map.put("pageHelper", pageHelper);*/
+        
+        System.out.println("에헤헤헤헤헤");
+        System.out.println(startpoint);  
+                
+        map.put("startpoint", startpoint);
+        map.put("row", LINE_PER_PAGE);
+        map.put(searchCondition, word);
+        
+        List<noticeBoardVo> noticelist = employeeDao.getnoticelist(map);
+        System.out.println("서비스");
+        System.out.println(noticelist);
+        return noticelist;
+
+	}
+	
+	
+
+	@Override
+	public int getlastpage(String word, String searchCondition) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put(searchCondition, word);
+		
+		int lastpage = (int)((double)employeeDao.selectTotalCount(map)/LINE_PER_PAGE);		
+		System.out.println(lastpage);
+		return lastpage;
+	
+	}
+
+	@Override
+	public noticeBoardVo getnoticeBoardByNo(int no) {
+		noticeBoardVo getnoticeBoardByNo = employeeDao.getnoticeBoardByNo(no);
+		return getnoticeBoardByNo;
 	}
 
 }

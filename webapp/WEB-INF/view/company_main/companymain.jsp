@@ -55,40 +55,6 @@
 
 <script>
 
-/* $(document).ready(function(){
-    $("#login_btn").click(function(){
-       alert("떠라 쫌");
-       
-       if($("#username").val().trim()==""){
-          alert("아이디를 입력하세요.");
-          $("#username").val("").focus();
-       }
-       
-       if($("#password").val().trim()==""){
-           alert("비밀번호를 입력하세요.");
-           $("#password").val("").focus();
-           
-        }else{
-          $.ajax({         
-             url: "/ceo/login",
-             type: "POST",
-             data: {
-                username: $("#username").val(),
-                password: $("#password").val()
-                               
-             },
-             success: function() {
-                alert("로그인 되었습니다");
-                $("#username").val("");
-                $("#password").val("");
-                 
-                
-             },         
-          })
-       }
-          
-    }); */
-
     var map;
     
     function initMap() {
@@ -96,9 +62,11 @@
         center: {lat: 37.548460113062, lng: 126.98654938037113},
         zoom: 11
       });
-    }
+    }   
+    
   </script>
     
+
     <!--Start of Tawk.to Script-->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
@@ -323,13 +291,15 @@ s0.parentNode.insertBefore(s1,s0);
 							<div class="widget">			
 				<h4>Login</h4>		
 		<c:if test="${ empty userVo }">
-			<form:form action="${ pageContext.request.contextPath }/ceo" commandName="employeeVo" method="post"> 
-				Username&nbsp;<input class="form-control" placeholder="아이디" type="text" size="20" name="e_id" id="e_id" path="e_id" />
+			<form:form name="lform" action="${ pageContext.request.contextPath }/ceo" commandName="employeeVo" onsubmit="return checkForm()" method="post"> 
+				Username&nbsp;<form:input class="form-control" placeholder="아이디" type="text" size="20" name="e_id" id="e_id" path="e_id" />
 				<br />
-				Password&nbsp;<input class="form-control" placeholder="비밀번호" type="password" size="20" name="e_password" id="e_password" path="e_password" />
-				<br />
-				<input class="btn btn-theme" type="submit" id="login_btn" value="로그인">&nbsp;	
-				<a href="<c:url value="ceo/register/step1"/>"><input class="btn btn-theme" type="button" id="register_btn" value="회원가입"></a>
+				
+				Password&nbsp;<form:input class="form-control" placeholder="비밀번호" type="password" size="20" name="e_password" id="e_password" path="e_password" />
+				<span style="color:red;">${errorMessage }</span><br/>
+				
+				<br />	
+				<input type="submit" class="btn btn-theme" id="login_btn" value="로그인">&nbsp;	<input class="btn btn-theme" type="button" id="register_btn" value="회원가입">
 			</form:form>		
 		</c:if>
 			<c:if test="${ not empty userVo }">
@@ -409,8 +379,34 @@ s0.parentNode.insertBefore(s1,s0);
 	<script
 		src="${ pageContext.request.contextPath }/resources/js/custom.js"></script>
 		
-
+	
 
 </body>
+ <script>
+    function isNull(obj, msg) {
+    	if (obj.value == "") {
+    		alert(msg);
+    		obj.focus();
+    		return true;
+    	}
+    	return false;
+    }
 
+    
+    function checkForm(){
+    	    		
+    	var f = document.lform;
+    	
+    	if(isNull(f.e_id, '아이디를 입력해 주세요')){
+    		return false;
+    	}
+    	
+    	if(isNull(f.e_password, '패스워드를 입력해 주세요')){
+    		return false;
+    	}
+    }
+
+    
+    
+  </script> 
 </html>

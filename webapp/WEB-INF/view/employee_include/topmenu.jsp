@@ -1,17 +1,30 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-	<link href="${ pageContext.request.contextPath }/resources/css/bootstrap.min.css" rel="stylesheet" />
-	<link href="${ pageContext.request.contextPath }/resources/css/fancybox/jquery.fancybox.css" rel="stylesheet">
-	<link href="${ pageContext.request.contextPath }/resources/css/jcarousel.css" rel="stylesheet" />
-	<link href="${ pageContext.request.contextPath }/resources/css/flexslider.css" rel="stylesheet" />
-	<link href="${ pageContext.request.contextPath }/resources/css/style.css" rel="stylesheet" />
+<link
+	href="${ pageContext.request.contextPath }/resources/css/bootstrap.min.css"
+	rel="stylesheet" />
+<link
+	href="${ pageContext.request.contextPath }/resources/css/fancybox/jquery.fancybox.css"
+	rel="stylesheet">
+<link
+	href="${ pageContext.request.contextPath }/resources/css/jcarousel.css"
+	rel="stylesheet" />
+<link
+	href="${ pageContext.request.contextPath }/resources/css/flexslider.css"
+	rel="stylesheet" />
+<link
+	href="${ pageContext.request.contextPath }/resources/css/style.css"
+	rel="stylesheet" />
 
-		<!-- Theme skin -->
-	<link href="${ pageContext.request.contextPath }/resources/skins/default.css" rel="stylesheet" />
-	
-	<div class="navbar navbar-default navbar-static-top">
+<!-- Theme skin -->
+<link
+	href="${ pageContext.request.contextPath }/resources/skins/default.css"
+	rel="stylesheet" />
+
+
+			< <div class="navbar navbar-default navbar-static-top">
 				<div class="container">
 					<div class="navbar-header">
 						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -52,7 +65,7 @@
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">고객센터<b class=" icon-angle-down"></b></a>
 								<ul class="dropdown-menu">
-									<li><a href="typography.html">공지사항</a></li>
+									<li><a href="${ pageContext.request.contextPath }/ceo/notice">공지사항</a></li>
 									<li><a href="components.html">자주묻는질문</a></li>
 									<li><a href="pricingbox.html">서비스약관</a></li>
 								</ul>
@@ -64,4 +77,4 @@
 				</div>
 
 			</div>
-
+ 
