@@ -1,5 +1,6 @@
 package net.haebang.admin.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,26 +41,26 @@ public class AdminServiceImpl implements AdminService{
 	// 업체
 	
 	@Override
-	public List<CompanyVo> hbComList() {
-		List<CompanyVo> hbComList = dao.hbComList();
+	public List<HashMap<String, Object>> hbComList() {
+		List<HashMap<String, Object>> hbComList = dao.hbComList();
 		return hbComList;
 	}
 
 	@Override
-	public List<CompanyVo> nComList() {
-		List<CompanyVo> nComList = dao.nComList();
+	public List<HashMap<String, Object>> nComList() {
+		List<HashMap<String, Object>> nComList = dao.nComList();
 		return nComList;
 	}
 	
 	
 	@Override
-	public List<CompanyVo> searchHbComList(CompanyVo companyVo) {
-		List<CompanyVo> searchComList = dao.searchHbComList(companyVo);
+	public List<HashMap<String, Object>> searchHbComList(CompanyVo companyVo) {
+		List<HashMap<String, Object>> searchComList = dao.searchHbComList(companyVo);
 		return searchComList;
 	}
 	@Override
-	public List<CompanyVo> searchNComList(CompanyVo companyVo) {
-		List<CompanyVo> searchNComList = dao.searchNComList(companyVo);
+	public List<HashMap<String, Object>> searchNComList(CompanyVo companyVo) {
+		List<HashMap<String, Object>> searchNComList = dao.searchNComList(companyVo);
 		return searchNComList;
 	}
 

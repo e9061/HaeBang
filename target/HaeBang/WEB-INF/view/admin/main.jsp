@@ -21,7 +21,7 @@
 </style>
 <body>
 	<header>
-		<jsp:include page="/WEB-INF/view/admin_include/topmenu.jsp"/>
+		<jsp:include page="../admin_include/topmenu.jsp"/>
 	</header>
 	
 	<div id="map" style="width:650px;height:400px"></div>
@@ -68,7 +68,7 @@
 	</script>
 	
 	<footer>
-		<jsp:include page="/WEB-INF/view/admin_include/bottom.jsp"/>
+		<jsp:include page="../admin_include/bottom.jsp"/>
 	</footer> 
 </body>
 </html>

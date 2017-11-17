@@ -14,10 +14,10 @@
       $("#nMember_btn").click(function(){
          
           $.ajax({         
-               url: "/admin/nMbList",
+               url: "${ pageContext.request.contextPath }/admin/nMbList",
                type: "GET",
                success: function(data) {
-                  getNonMbList(data); 
+            	   getMbList(data); 
                }         
             });
       });
@@ -26,7 +26,7 @@
       $("#member_btn").click(function(){
          
           $.ajax({         
-               url: "/admin/mbList",
+               url: "${ pageContext.request.contextPath }/admin/mbList",
                type: "GET",
                success: function(data) {
                   getMbList(data); 
@@ -44,7 +44,7 @@
 		} else {
 			
 		  $.ajax({
-				url: "/admin/mbSearched",
+				url: "${ pageContext.request.contextPath }/admin/mbSearched",
 				type: "POST",
 				data: {
 					type : $("#selectType").val(),
@@ -57,134 +57,74 @@
 		  });
 		}
 	  });
-      
-       function getNonMbList(data){
-             var list = JSON.parse(data);         
-             var output = "";
-             
- 			output += " <table style='border:1px soild red; width:80%'>";
- 	            output +=	"<tr>";
- 	           		output +=	"<td width='10%'><h4><strong> 번호  </strong></h4></td>";
- 	           		output +=	"<td width='10%'><h4><strong> 이름   </strong></h4></td>";
- 	           		output +=	"<td width='10%'><h4><strong> 업체명  </strong></h4> </td>";
- 	           		output +=	"<td width='35%'><h4><strong> 주소   </strong></h4></td>";
- 	           		output +=	"<td width='20%'><h4><strong> 전화번호  </strong></h4></td>";
-				output +=	"</tr>";
-				
-             for (var i = 0; i < list.length; i++) {                            
-                    output += "<tr>";
-                   for (var key in list[i]) {                      
-                       if(key == 'm_no'){
-                    	   output += "<td width='10%'>" + list[i].m_no + "</td>" ;          
-                       }else if(key == 'm_name'){
-                          	output += "<td width='10%'>" + list[i].m_name + "</td>" ;
-                   	   }else if(key == 'm_owner'){
-	                   		if(list[i].m_owner == 'null'){
-		                          output += "<td width='10%'>" + "-" + "</td>" ;
-	                  	   	 }else {
-	                          output += "<td width='10%'>" + list[i].m_owner + "</td>" ;
-                   	  		 }
-                       }else if(key == 'm_address'){                          
-                         output += "<td width='35%'>" + list[i].m_address+"</td>";                                    
-                       }else if(key == 'm_phone'){                          
-                         output += "<td width='20%'>" + list[i].m_phone+"</td>";                                    
-                       }
-                   }
-                    output += "</td></tr>";
-                    output += "</table>";
-             }
-                 $("#mList").html(output); 
-       }
-       
-       
-       
- 	/////////////////////////////////////////////
-       
-       
        
        function getMbList(data){
              var list = JSON.parse(data); 
              var output = "";
              
              
-			output += " <table style='width:80%; border:1px soild red' text-align='center'>";
+			output += " <table style='width:80%;'>";
             output +=	"<tr>";
-           		output +=	"<td width='5%'><h4> <strong> 회원 번호  </strong></h4> </td>";
+           		output +=	"<td width='5%'><h4> <strong> 번호  </strong></h4> </td>";
          		output +=	"<td width='10%'><h4>  <strong> 아이디  </strong></h4></td>";
            		output +=	"<td width='10%'><h4>  <strong> 이름  </strong></h4></td>";
            		output +=	"<td width='20%'><h4>  <strong> 주소  </strong></h4></td>";
            		output +=	"<td width='15%'><h4>  <strong> 전화번호  </strong></h4></td>";
+           		output +=	"<td width='10%'><h4> <strong> 업체정보  </strong></h4> </td>"
            		output +=	"<td width='15%'><h4>  <strong> 가입 날짜  </strong></h4></td>";
 			output +=	"</tr>";
 				
              for (var i = 0; i < list.length; i++) {                            
-                    output += "<tr>";
-                   for (var key in list[i]) {                      
-                       if(key == 'm_no'){
-                    	   output += "<td width='5%'>" + list[i].m_no + "</td>" ;          
-                   	   }else if(key == 'm_id'){
-                   		   if(list[i].m_id == 'null'){ 
-                   			output += "<td width='10%'> 비회원</td>" ;
-                   		   } else {
-	                          output += "<td width='10%'>" + list[i].m_id + "</td>" ;
-                   		   }
-                       }else if(key == 'm_name'){
-                          output += "<td width='10%'>" + list[i].m_name + "</td>";
-                       }else if(key == 'm_phone'){                          
-                         output += "<td width='15%'>" + list[i].m_phone+"</td>";                                   
-                       }else if(key == 'm_address'){                          
-                         output += "<td width='20%'>" + list[i].m_address+"</td>";                                    
-                       }else if(key == 'm_joinDate'){                          
-                         output += "<td width='15%'>" + list[i].m_joinDate+"</td>";                                    
-                       }
-                   }
-                    output += "</tr>";
-             }
-                    output += "<br/>";
-                    output += "<br/>";
+				
+            	output += "<tr>";
+            	output += "	<td>" +  list[i].m_no + "</td>" ;
+				 
+				if(list[i].m_id == null){
+						output += "	<td> - </td>";  				 
+				}else{
+						output += "	<td>" +  list[i].m_id+"</td>";  				 
+				}
+				 output += "	<td>" +  list[i].m_name+"</td>";  				 
+				 output += "	<td>" +  list[i].m_address+"</td>";  				 
+				 output += "	<td>" +  list[i].m_phone+"</td>";  
+				 
+				if(list[i].m_owner == null){
+						output += "	<td> - </td>";  				 
+				}else{
+						output += "	<td>" +  list[i].m_owner+"</td>";  				 
+				}
+				output += "<td width='15%'>" + list[i].m_joinDate+"</td>";
+				
+				output += "</tr>";
+                    
+             }   
                output += "</table>";
                     
                  $("#mList").html(output); 
        }
   
-	  
-	  
-	  
 });
    
    
-   
-/*    
-   // 회원 조건 검색
-   $("#search_btn").click(function(){
-	  alert("넘어감");
-           if($("#search_content").val().trim()==""){
-    	  alert("검색어를 입력해주세요.");
-    	  $("#search_content").val("").focus();
-      }else{ 
-	          $.ajax({         
-	               url: "/HaeBang/admin/mbSearched",
-	               type: "GET",
-	               data: {
-	            	   m_id : $("#search_content").val();			
-	               },
-	               success: function(data) {
-	            	   getMbList(data); 
-	               }         
-	            });
-      }
-  }); 
-	 */  
 
 </script>
 
 <style type="text/css">
 
 table {
-	board:1px solid red;
+	border:1px solid black;
 	height:50px;
-	magin:auto;
 	text-align: center;
+}
+tr {
+	border : 1px solid black;
+	height:30px;
+}
+td{
+	border : 1px solid black;
+}
+strong{
+	vertical-align: middle;
 }
 
 </style>
@@ -192,34 +132,36 @@ table {
 </head>
 <body>
 	<header>
-		<jsp:include page="/WEB-INF/view/admin_include/topmenu.jsp"/>
+		<jsp:include page="../admin_include/topmenu.jsp"/>
 	</header>
 
 	<section>
-		<h1> <span>회원 관리 페이지</span> </h1>
-		<div>
-			
-	      	<input type="button" id="member_btn" value="해방회원 조회"/>
-	      	<input type="button" id="nMember_btn" value="비회원 조회"/>
+		<div align="center" style="padding-right: 4px;">
+		<h1> <span>회원 관리</span> </h1>
+			<br/>
+			<br/>
 	      	
-	      	<select id='selectType'>
+	      	<select id='selectType'class="btn btn-theme">
 				<option value='m' selected> 정회원  </option>
 				<option value='b'> 비회원 </option>
 				<option value='x'> 탈퇴회원 </option>
 			</select>
-			
-			<if>
-				<select id='selectBox'>
-					<option value='m_id' selected> 아이디  </option>
-					<option value='m_no'> 회원번호  </option>
-					<option value='m_name'> 이름 </option>
-					<option value='m_phone'> 전화번호 </option>
-				</select>
-			</if>
-			
-            <input type='text' id='search_content' />
-            <input type='button' id='search_btn' value='조건 검색' />
+			<span style="margin-right: 5px"></span>
+			<select id='selectBox'class="btn btn-theme" >
+				<option value='m_no' selected> 회원번호  </option>
+				<option value='m_id' > 아이디  </option>
+				<option value='m_name'> 이름 </option>
+				<option value='m_phone'> 전화번호 </option>
+			</select>
+			<span style="margin-right: 10px"></span>
+            <input type='text' id='search_content' placeholder="검색어를 입력해주세요." style="width:15%;"/>
+            <input type='button' id='search_btn' value='조건 검색' class="btn btn-theme"/>
+	      	
             
+            <span style="margin-right: 40px;"></span>
+      		<input type="button" id="member_btn" value="해방회원 조회" class="btn btn-theme"/>
+      		<span style="margin-right: 5px"></span>
+      		<input type="button" id="nMember_btn" value="비회원 조회" class="btn btn-theme"/>
 			<br/>
 			<br/>
 			<br/>
@@ -234,10 +176,12 @@ table {
 		
 		
 		
+		
+		
 	</section>	
 	
 	<footer>
-		<jsp:include page="/WEB-INF/view/admin_include/bottom.jsp"/>
+		<jsp:include page="../admin_include/bottom.jsp"/>
 	</footer>
 	
 </body>

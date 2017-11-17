@@ -13,7 +13,7 @@
 </head>
 <body>
 	<header>
-		<jsp:include page="/WEB-INF/view/admin_include/topmenu.jsp"/>
+		<jsp:include page="../admin_include/topmenu.jsp"/>
 	</header>
 	
 	<section>
@@ -23,7 +23,7 @@
 	</section>
 	<!-- ${ pageContext.request.contextPath }/admin_include/bottom.jsp == localhost:8000/HaeBang/admin_include/bottom.jsp-->
 	<footer>
-		<jsp:include page="/WEB-INF/view/admin_include/bottom.jsp"/>
+		<jsp:include page="../admin_include/bottom.jsp"/>
 	</footer> 
 
 </body>

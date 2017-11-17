@@ -11,16 +11,16 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="description" content="" />
 	<!-- css -->
-	<link href="resources/css/bootstrap.min.css" rel="stylesheet" />
-	<link href="resources/css/fancybox/jquery.fancybox.css" rel="stylesheet">
-	<link href="resources/css/jcarousel.css" rel="stylesheet" />
-	<link href="resources/css/flexslider.css" rel="stylesheet" />
-	<link href="resources/css/style.css" rel="stylesheet" />
+	<link href="${ pageContext.request.contextPath }/resources/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="${ pageContext.request.contextPath }/resources/css/fancybox/jquery.fancybox.css" rel="stylesheet">
+	<link href="${ pageContext.request.contextPath }/resources/css/jcarousel.css" rel="stylesheet" />
+	<link href="${ pageContext.request.contextPath }/resources/css/flexslider.css" rel="stylesheet" />
+	<link href="${ pageContext.request.contextPath }/resources/css/style.css" rel="stylesheet" />
 
 
 
 	<!-- Theme skin -->
-	<link href="resources/skins/default.css" rel="stylesheet" />
+	<link href="${ pageContext.request.contextPath }/resources/skins/default.css" rel="stylesheet" />
 
 </head>
 <script src="https://code.jquery.com/jquery-1.11.1.min.js">
@@ -31,8 +31,8 @@
 		src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
 	<!-- Custom JavaScript -->
-	<script src="resources/js/custom.js"></script>
-	<script src="<%=request.getContextPath()%>/resources/js/checkForm.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/custom.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/checkForm.js"></script>
 		
 <body>
 	<div id="wrapper">
@@ -82,7 +82,7 @@
 							<ul class="slides">
 								<!-- 1st 슬라이더 -->
 								<li>
-									<img src="resources/img/slides/1.jpg" alt="" />
+									<img src="${ pageContext.request.contextPath }/resources/img/slides/1.jpg" alt="" />
 									<div class="flex-caption">
 										<!-- 슬라이더위에 메모창 -->
 										<h3>Modern Design</h3>
@@ -93,7 +93,7 @@
 								</li>
 								<!-- 2nd 슬라이더 -->
 								<li>
-									<img src="resources/img/slides/2.jpg" alt="" />
+									<img src="${ pageContext.request.contextPath }/resources/img/slides/2.jpg" alt="" />
 									<div class="flex-caption">
 										<!-- 슬라이더위에 메모창 -->
 										<h3>Fully Responsive</h3>
@@ -247,7 +247,7 @@
 						<span class="overlay-img-thumb font-icon-plus"></span>
 						</a>
 											<!-- Thumb Image and Description -->
-											<img src="resources/img/works/1.jpg" alt="사전 조사를 통해, 대략적인 범위를 조사하여 진단하는 단계입니다.">
+											<img src="${ pageContext.request.contextPath }/resources/img/works/1.jpg" alt="사전 조사를 통해, 대략적인 범위를 조사하여 진단하는 단계입니다.">
 										</div>
 									</li>
 									<!-- End Item Project -->
@@ -264,7 +264,7 @@
 						<span class="overlay-img-thumb font-icon-plus"></span>
 						</a>
 										<!-- Thumb Image and Description -->
-										<img src="resources/img/works/2.jpg" alt="사전에 진단된 판단을 토대로, 어떤 방식을 취할건지 결정하는 단계입니다.">
+										<img src="${ pageContext.request.contextPath }/resources/img/works/2.jpg" alt="사전에 진단된 판단을 토대로, 어떤 방식을 취할건지 결정하는 단계입니다.">
 									</li>
 									<!-- End Item Project -->
 									<!-- Item Project and Filter Name -->
@@ -280,7 +280,7 @@
 						<span class="overlay-img-thumb font-icon-plus"></span>
 						</a>
 										<!-- Thumb Image and Description -->
-										<img src="resources/img/works/3.jpg" alt="2단계에서 결정한 방식으로 '해방'서비스를 시행하는 단계입니다.">
+										<img src="${ pageContext.request.contextPath }/resources/img/works/3.jpg" alt="2단계에서 결정한 방식으로 '해방'서비스를 시행하는 단계입니다.">
 									</li>
 									<!-- End Item Project -->
 									<!-- Item Project and Filter Name -->
@@ -296,7 +296,7 @@
 						<span class="overlay-img-thumb font-icon-plus"></span>
 						</a>
 										<!-- Thumb Image and Description -->
-										<img src="resources/img/works/4.jpg" alt="서비스 기간동안, 해충이 사라지고 있는지 모니터링을 통해 관리합니다.">
+										<img src="${ pageContext.request.contextPath }/resources/img/works/4.jpg" alt="서비스 기간동안, 해충이 사라지고 있는지 모니터링을 통해 관리합니다.">
 									</li>
 									<!-- End Item Project -->
 								</ul>
@@ -393,17 +393,17 @@
 	<!-- javascript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="resources/js/jquery.js"></script>
-	<script src="resources/js/jquery.easing.1.3.js"></script>
-	<script src="resources/js/bootstrap.min.js"></script>
-	<script src="resources/js/jquery.fancybox.pack.js"></script>
-	<script src="resources/js/jquery.fancybox-media.js"></script>
-	<script src="resources/js/google-code-prettify/prettify.js"></script>
-	<script src="resources/js/portfolio/jquery.quicksand.js"></script>
-	<script src="resources/js/portfolio/setting.js"></script>
-	<script src="resources/js/jquery.flexslider.js"></script>
-	<script src="resources/js/animate.js"></script>
-	<script src="resources/js/custom.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.easing.1.3.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/bootstrap.min.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.fancybox.pack.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.fancybox-media.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/google-code-prettify/prettify.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/portfolio/jquery.quicksand.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/portfolio/setting.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.flexslider.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/animate.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/custom.js"></script>
 
 </body>
 </html>

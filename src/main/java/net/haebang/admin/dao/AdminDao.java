@@ -1,5 +1,6 @@
 package net.haebang.admin.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import net.haebang.vo.CompanyVo;
@@ -14,10 +15,10 @@ public interface AdminDao {
 	List<MemberVo> memberSelected(MemberVo memberVo);
 	
 	// 업체 조회 dao
-	List<CompanyVo> hbComList();
-	List<CompanyVo> nComList();
+	List<HashMap<String, Object>> hbComList();
+	List<HashMap<String, Object>> nComList();
 	
-	List<CompanyVo> searchHbComList(CompanyVo companyVo);
-	List<CompanyVo> searchNComList(CompanyVo companyVo);
+	List<HashMap<String, Object>> searchHbComList(CompanyVo companyVo);
+	List<HashMap<String, Object>> searchNComList(CompanyVo companyVo);
 	
 }

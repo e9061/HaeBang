@@ -13,8 +13,6 @@
 	<!-- Theme skin -->
 	<link href="${ pageContext.request.contextPath }/resources/skins/default.css" rel="stylesheet" />
 	
-	
-	
 	<div class="navbar navbar-default navbar-static-top">
 				<div class="container">
 					<div class="navbar-header">
@@ -23,14 +21,23 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-						<a class="navbar-brand" href="${ pageContext.request.contextPath }/index.jsp"><span>ㅎ</span>방 사업자 사이트</a>
+						<a class="navbar-brand" href="${ pageContext.request.contextPath }/admin/main"><span>ㅎ</span>방 관리자 사이트</a>
 					</div>
 					<div class="navbar-collapse collapse ">
 						<ul class="nav navbar-nav">
-							<li class="active" data-close-others="false"><a href="${ pageContext.request.contextPath }/admin/main.do">진행현황</a></li>
+							<li class="active" data-close-others="false"><a href="${ pageContext.request.contextPath }/admin/main">진행현황</a></li>
 							<li><a href="${ pageContext.request.contextPath }/admin/schedule">스케쥴관리</a></li>
 							<li><a href="${ pageContext.request.contextPath }/admin/bal">정산관리</a></li>
-							<li><a href="${ pageContext.request.contextPath }/admin/schedule">Q&A게시판</a></li>
+							<li><a href="${ pageContext.request.contextPath }/admin/qna">소비자 Q&A</a></li>
+							<li><a href="${ pageContext.request.contextPath }/admin/faq">사업자 FAQ</a></li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">공지사항<b class=" icon-angle-down"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="${ pageContext.request.contextPath }/admin/memberNotice">소비자 공지사항</a></li>
+									<li><a href="${ pageContext.request.contextPath }/admin/ownerNotice">사업자 공지사항</a></li>
+								</ul>
+							</li>
+								
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">통계<b class=" icon-angle-down"></b></a>
 								<ul class="dropdown-menu">
