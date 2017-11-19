@@ -124,6 +124,16 @@
 							<div class="form-group">
 								<input type="text" name="m_id" class="form-control" id="m_id" placeholder="Write Your Id" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
 								<div class="validation"></div>
+							<!-- 	<div>
+								<input type="text" name="m_email" class="form-control" id="m_email">
+								<select name="email">
+									<option value="gmail.com" />
+									<option value="naver.com" />
+									<option value="hanmail.net" />
+									<option value="nate.com" />
+									<option value="yahoo.com" />
+								</select>
+								</div> -->
 							</div>
 							<div class="form-group">
 								<input type="password" class="form-control" name="m_password" id="m_password" placeholder="Write Your Password" data-rule="email" data-msg="Please enter a valid email" />

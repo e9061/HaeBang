@@ -26,6 +26,22 @@
     Author: BootstrapMade
     Author URL: https://bootstrapmade.com
 	======================================================= -->
+<style>
+	#content{
+	
+		text-align:center;
+	
+	}
+	table{
+		text-align:center;
+	}
+	tr{
+		text-align:center;
+	}
+	td{
+		text-align:center;
+	}
+</style>
 <script type="text/javascript">
 	function doAction() {
 		location.href = "${ pageContext.request.contextPath }/qna/write";
@@ -59,22 +75,24 @@
 							<article>
 					<div>
 					<h2><span>QnA 게시판</span></h2>
-					<table border="1" width="80%">
-						<tr>
-							<th width="7%">번호</th>
-							<th width="30">제목</th>
-							<th width="15">글쓴이</th>
-							<th width="15">내용</th>
-							<th width="15">날짜</th>
+					<table border="1" width="100%" text-align="center">
+						<tr >
+							<th width="5%" text-align="center">번호</th>
+							<th width="35%" text-align="center">제목</th>
+							<th width="25%" text-align="center">글쓴이</th>
+							<!-- <th width="5%">내용</th> -->
+							<th width="20%" text-align="center">날짜</th>
+							<th width="10%" text-align="center">조회수</th>
 						</tr>
-						<c:forEach var="qnalist" items="${ qnalist }">
+						<c:forEach var="QnAList" items="${ QnAList }">
 							<tr>
-								<td>${ qnalist.q_no }</td>
+								<td>${ QnAList.q_no }</td>
 								<td><a
-									href="${ pageContext.request.contextPath }/qna/detail/${ qnalist.q_no }">${ qnalist.q_title }</a></td>
-								<td>${ qnalist.q_writer }</td>
-								<td>${ qnalist.q_content }</td>
-								<td>${ qnalist.q_regDate }</td>
+									href="${ pageContext.request.contextPath }/qna/detail/${ QnAList.q_no }">${ QnAList.q_title }</a></td>
+								<td>${ QnAList.q_writer }</td>
+								<%-- <td>${ QnAList.q_content }</td> --%>
+								<td>${ QnAList.q_regDate }</td>
+								<td>${ QnAList.q_viewCnt }</td>
 							</tr>
 						</c:forEach>
 					</table>

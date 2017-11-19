@@ -11,16 +11,38 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="description" content="" />
 	<!-- css -->
-	<link href="resources/css/bootstrap.min.css" rel="stylesheet" />
-	<link href="resources/css/fancybox/jquery.fancybox.css" rel="stylesheet">
-	<link href="resources/css/jcarousel.css" rel="stylesheet" />
-	<link href="resources/css/flexslider.css" rel="stylesheet" />
-	<link href="resources/css/style.css" rel="stylesheet" />
+	<link href="${ pageContext.request.contextPath }/resources/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="${ pageContext.request.contextPath }/resources/css/fancybox/jquery.fancybox.css" rel="stylesheet">
+	<link href="${ pageContext.request.contextPath }/resources/css/jcarousel.css" rel="stylesheet" />
+	<link href="${ pageContext.request.contextPath }/resources/css/flexslider.css" rel="stylesheet" />
+	<link href="${ pageContext.request.contextPath }/resources/css/style.css" rel="stylesheet" />
 
 
 
 	<!-- Theme skin -->
-	<link href="resources/skins/default.css" rel="stylesheet" />
+	<link href="${ pageContext.request.contextPath }/resources/skins/default.css" rel="stylesheet" />
+
+</head>
+<style>
+	#hi {
+	
+		background-color : skyblue;
+		family-font : bold;
+		width : 500px;
+		height : 50px;
+	
+	}
+</style>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js">
+		
+	</script>
+	<!-- Bootstrap JavaScript -->
+	<script
+		src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+	<!-- Custom JavaScript -->
+	<script src="${ pageContext.request.contextPath }/resources/js/custom.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/checkForm.js"></script>
 	
 	<div class="container">
 				<div class="row">
@@ -44,8 +66,8 @@
 								<li><a href="#">Press release</a></li>
 								<li><a href="#">Terms and conditions</a></li>
 								<li><a href="#">Privacy policy</a></li>
-								<li><a href="#">Career center</a></li>
-								<li><a href="haebang/ceo">사장님 사이트</a></li>
+								<li><a href="${ pageContext.request.contextPath }/admin/main">임시관리자페이지</a></li>
+								<li><a href="${ pageContext.request.contextPath }/ceo">사장님 사이트</a></li>
 							</ul>
 						</div>
 					</div>
@@ -101,23 +123,23 @@
 					</div>
 				</div>
 			</div>
-			
-			</div>
+		</footer>
+	</div>
 	<a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
 	<!-- javascript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="resources/js/jquery.js"></script>
-	<script src="resources/js/jquery.easing.1.3.js"></script>
-	<script src="resources/js/bootstrap.min.js"></script>
-	<script src="resources/js/jquery.fancybox.pack.js"></script>
-	<script src="resources/js/jquery.fancybox-media.js"></script>
-	<script src="resources/js/google-code-prettify/prettify.js"></script>
-	<script src="resources/js/portfolio/jquery.quicksand.js"></script>
-	<script src="resources/js/portfolio/setting.js"></script>
-	<script src="resources/js/jquery.flexslider.js"></script>
-	<script src="resources/js/animate.js"></script>
-	<script src="resources/js/custom.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.easing.1.3.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/bootstrap.min.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.fancybox.pack.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.fancybox-media.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/google-code-prettify/prettify.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/portfolio/jquery.quicksand.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/portfolio/setting.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.flexslider.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/animate.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/custom.js"></script>
 
 </body>
 

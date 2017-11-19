@@ -2,6 +2,8 @@ package net.haebang.qna.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +35,15 @@ public class QnAController {
 	}
 	
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
-	public String write(@Valid QnAVo QnA) {
+	public String write(@Valid QnAVo QnA, HttpServletRequest request) {
+		
+		
+		
+		/*HttpSession session = request.getSession();
+	
+		QnAVo qnaVo = (QnAVo)session.getAttribute("userVO");
+		qnaVo.getQ_writer()==(String)session.getAttribute("m_id");
+		qnaVo = service.insertBoard(qnaVo.getQ_writer());*/
 		
 		service.insertBoard(QnA);
 		
@@ -43,20 +53,18 @@ public class QnAController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView selectAll() {
 		
-		System.out.println(toString());
-		
-		List<QnAVo> qnalist = service.selectAllBoard();
+		List<QnAVo> QnAList = service.selectAllBoard();
 		
 		ModelAndView mav = new ModelAndView();
 		
 		mav.setViewName("qna/list");
-		mav.addObject("QnAList", qnalist);
+		mav.addObject("QnAList", QnAList);
 		
 		
 		return mav;
 	}
 	
-	@RequestMapping(value = "/mypage/{q_no}", method = RequestMethod.GET)
+	@RequestMapping(value = "/detail/{q_no}", method = RequestMethod.GET)
 	public String selectOne(@PathVariable int q_no, Model model) {
 		QnAVo QnA = service.selectOneBoard(q_no);
 		

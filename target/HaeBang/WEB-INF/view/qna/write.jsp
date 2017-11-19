@@ -65,11 +65,11 @@
 							<table border="1" width="80%">
 								<tr>
 									<th width="25%">제목</th>
-									<td><form:input type="text" path="q_title" /></td>
+									<td><form:input path="q_title" /></td>
 								</tr>
 								<tr>
 									<th width="25%">글쓴이</th>
-									<td><form:input type="text" path="${ m_name }" /></td>
+									<td><form:input id="q_writer" placeholder="${ userVO.m_name }" name ="q_writer" value="${ userVO.m_name }" path="q_writer" readonly="true" /></td>
 								</tr>
 								<tr>
 									<th width="25%">내용</th>

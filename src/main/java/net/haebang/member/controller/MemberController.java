@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.support.SessionStatus;
@@ -172,10 +173,12 @@ public class MemberController {
 		
 		String m_id = request.getParameter("m_id");
 		String m_password = request.getParameter("m_password");
+		String m_name = request.getParameter("m_name");
 		
 		MemberVo userVO = new MemberVo();
 		userVO.setM_id(m_id);
 		userVO.setM_password(m_password);
+		userVO.setM_name(m_name);
 		
 		userVO = service.login(member);
 		
@@ -197,6 +200,14 @@ public class MemberController {
 		
 		
 		return "redirect:/";
+	}
+	
+	@RequestMapping(value="/service")
+	public String service() {
+		
+		
+		
+		return "member/service";
 	}
 	
 }

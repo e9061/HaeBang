@@ -23,6 +23,17 @@
 	<link href="${ pageContext.request.contextPath }/resources/skins/default.css" rel="stylesheet" />
 
 </head>
+<style>
+	#hi {
+	
+		background-color : skyblue;
+		family-font : bold;
+		width : 500px;
+		height : 50px;
+	
+	}
+	
+</style>
 <script src="https://code.jquery.com/jquery-1.11.1.min.js">
 		
 	</script>
@@ -31,44 +42,14 @@
 		src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
 	<!-- Custom JavaScript -->
-	<script src="${ pageContext.request.contextPath }/resources/js/custom.js"></script>
-	<script src="${ pageContext.request.contextPath }/resources/js/checkForm.js"></script>
+	<script src="resources/js/custom.js"></script>
+	<script src="<%=request.getContextPath()%>/resources/js/checkForm.js"></script>
 		
 <body>
 	<div id="wrapper">
 		<!-- start header -->
 		<header>
-			<div class="navbar navbar-default navbar-static-top">
-				<div class="container">
-					<div class="navbar-header">
-						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-						<a class="navbar-brand" href="/HaeBang"><span>H</span>aeBang</a>
-					</div>
-					<div class="navbar-collapse collapse ">
-						<ul class="nav navbar-nav">
-							<li class="active"><a href="/HaeBang">Home</a></li>
-							<li><a href="${ pageContext.request.contextPath }/qna/list">신청</a></li>
-							<li><a href="${ pageContext.request.contextPath }/member/myPage">서비스목록</a></li>
-
-						<c:choose> 
-							<c:when test="${ empty userVO }">
-								<li><a href="${ pageContext.request.contextPath }/member/join">회원가입</a></li> 
-	        					<li><a href="${ pageContext.request.contextPath }/member/loginForm">로그인</a></li>
-      						   </c:when>
-							<c:otherwise>
-								<li><a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">${ userVO.m_id }<b class=" icon-angle-down"></b></a></li>
-									<li><a href="${ pageContext.request.contextPath }/member/myPage">내 정보 확인</a></li>
-          						<li><a href="${ pageContext.request.contextPath }/member/logout">로그아웃</a></li>
-							</c:otherwise>
-						</c:choose>
-						</ul>
-					</div>
-				</div>
-			</div>
+			<jsp:include page="WEB-INF/view/member_include/topmenu.jsp" />
 		</header>
 		
 		<!-- end header -->
@@ -82,7 +63,7 @@
 							<ul class="slides">
 								<!-- 1st 슬라이더 -->
 								<li>
-									<img src="${ pageContext.request.contextPath }/resources/img/slides/1.jpg" alt="" />
+									<img src="resources/img/slides/1.jpg" alt="" />
 									<div class="flex-caption">
 										<!-- 슬라이더위에 메모창 -->
 										<h3>Modern Design</h3>
@@ -93,7 +74,7 @@
 								</li>
 								<!-- 2nd 슬라이더 -->
 								<li>
-									<img src="${ pageContext.request.contextPath }/resources/img/slides/2.jpg" alt="" />
+									<img src="resources/img/slides/2.jpg" alt="" />
 									<div class="flex-caption">
 										<!-- 슬라이더위에 메모창 -->
 										<h3>Fully Responsive</h3>
@@ -119,7 +100,18 @@
 					</div>
 				</div>
 			</div>
-
+			
+			<!-- 로그인 화면  -->
+			<div id="hi">
+				<c:choose> 
+							<c:when test="${ empty userVO }">
+      						   </c:when>	
+							<c:otherwise>
+								<li><Strong>${ userVO.m_name }님 방문을 환영합니다!</Strong></li>
+          						<li><a href="${ pageContext.request.contextPath }/member/service">서비스현황</a></li>
+							</c:otherwise>
+						</c:choose>
+			</div>
 
 		</section>
 		<section class="callaction">
@@ -247,7 +239,7 @@
 						<span class="overlay-img-thumb font-icon-plus"></span>
 						</a>
 											<!-- Thumb Image and Description -->
-											<img src="${ pageContext.request.contextPath }/resources/img/works/1.jpg" alt="사전 조사를 통해, 대략적인 범위를 조사하여 진단하는 단계입니다.">
+											<img src="resources/img/works/1.jpg" alt="사전 조사를 통해, 대략적인 범위를 조사하여 진단하는 단계입니다.">
 										</div>
 									</li>
 									<!-- End Item Project -->
@@ -259,12 +251,12 @@
 							</ul>
 							</div>
 										<!-- Fancybox - Gallery Enabled - Title - Full Image -->
-										<a class="hover-wrap fancybox" data-fancybox-group="gallery" title="2단계 : 해방서비스 결정 및 처방" href="resources/img/works/2.jpg">
+										<a class="hover-wrap fancybox" data-fancybox-group="gallery" title="2단계 : 해방서비스 결정 및 처방" href="resources/image/ready.png">
 						<span class="overlay-img">2단계 : 서비스 처방</span>
 						<span class="overlay-img-thumb font-icon-plus"></span>
 						</a>
 										<!-- Thumb Image and Description -->
-										<img src="${ pageContext.request.contextPath }/resources/img/works/2.jpg" alt="사전에 진단된 판단을 토대로, 어떤 방식을 취할건지 결정하는 단계입니다.">
+										<img src="resources/image/ready.png" alt="사전에 진단된 판단을 토대로, 어떤 방식을 취할건지 결정하는 단계입니다.">
 									</li>
 									<!-- End Item Project -->
 									<!-- Item Project and Filter Name -->
@@ -275,12 +267,12 @@
 							</ul>
 							</div>
 										<!-- Fancybox - Gallery Enabled - Title - Full Image -->
-										<a class="hover-wrap fancybox" data-fancybox-group="gallery" title="3단계 : 해방 서비스 시행" href="resources/img/works/3.jpg">
+										<a class="hover-wrap fancybox" data-fancybox-group="gallery" title="3단계 : 해방 서비스 시행" href="resources/image/go.png">
 						<span class="overlay-img">3단계 : 해방 서비스 시행</span>
 						<span class="overlay-img-thumb font-icon-plus"></span>
 						</a>
 										<!-- Thumb Image and Description -->
-										<img src="${ pageContext.request.contextPath }/resources/img/works/3.jpg" alt="2단계에서 결정한 방식으로 '해방'서비스를 시행하는 단계입니다.">
+										<img src="resources/image/go.png" alt="2단계에서 결정한 방식으로 '해방'서비스를 시행하는 단계입니다.">
 									</li>
 									<!-- End Item Project -->
 									<!-- Item Project and Filter Name -->
@@ -296,7 +288,7 @@
 						<span class="overlay-img-thumb font-icon-plus"></span>
 						</a>
 										<!-- Thumb Image and Description -->
-										<img src="${ pageContext.request.contextPath }/resources/img/works/4.jpg" alt="서비스 기간동안, 해충이 사라지고 있는지 모니터링을 통해 관리합니다.">
+										<img src="resources/img/works/4.jpg" alt="서비스 기간동안, 해충이 사라지고 있는지 모니터링을 통해 관리합니다.">
 									</li>
 									<!-- End Item Project -->
 								</ul>
@@ -308,85 +300,7 @@
 			</div>
 		</section>
 		<footer>
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-3">
-						<div class="widget">
-							<h5 class="widgetheading">Get in touch with us</h5>
-							<address>
-					<strong>HaeBang company Inc</strong><br>
-					 서울특별시 서초구 서초대로74길33 <br>
-					 비트빌 4층 </address>
-							<p>
-								<i class="icon-phone"></i>  02-3486-3456 - 02-3486-7890 <br>
-								<i class="icon-envelope-alt"></i> juhojuho@haebang.com
-							</p>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="widget">
-							<h5 class="widgetheading">Pages</h5>
-							<ul class="link-list">
-								<li><a href="#">Press release</a></li>
-								<li><a href="#">Terms and conditions</a></li>
-								<li><a href="#">Privacy policy</a></li>
-								<li><a href="${ pageContext.request.contextPath }/admin/main">임시관리자페이지</a></li>
-								<li><a href="${ pageContext.request.contextPath }/ceo">사장님 사이트</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="widget">
-							<h5 class="widgetheading">FAQ</h5>
-							<ul class="link-list">
-								<li><a href="#">바퀴가 너무 많이 보여요...도와주세요</a></li>
-								<li><a href="#">서비스 최소범위가 어떻게되는지요?</a></li>
-								<li><a href="#">우리집엔 개미가 산다!</a></li>
-								<li><a href="#">더 보기</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="widget">
-							<h5 class="widgetheading">Flickr photostream</h5>
-							<div class="flickr_badge">
-								<script type="text/javascript" src="https://www.flickr.com/badge_code_v2.gne?count=8&amp;display=random&amp;size=s&amp;layout=x&amp;source=user&amp;user=34178660@N03"></script>
-							</div>
-							<div class="clear">
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div id="sub-footer">
-				<div class="container">
-					<div class="row">
-						<div class="col-lg-6">
-							<div class="copyright">
-								<p>&copy; Moderna Theme. All right reserved.</p>
-								<div class="credits">
-									<!--
-                    All the links in the footer should remain intact.
-                    You can delete the links only if you purchased the pro version.
-                    Licensing information: https://bootstrapmade.com/license/
-                    Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Moderna
-                  -->
-									<a href="https://bootstrapmade.com/">Free Bootstrap Themes</a> by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<ul class="social-network">
-								<li><a href="#" data-placement="top" title="Facebook"><i class="fa fa-facebook"></i></a></li>
-								<li><a href="#" data-placement="top" title="Twitter"><i class="fa fa-twitter"></i></a></li>
-								<li><a href="#" data-placement="top" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
-								<li><a href="#" data-placement="top" title="Pinterest"><i class="fa fa-pinterest"></i></a></li>
-								<li><a href="#" data-placement="top" title="Google plus"><i class="fa fa-google-plus"></i></a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
+			<jsp:include page="WEB-INF/view/member_include/bottom.jsp" />
 		</footer>
 	</div>
 	<a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
@@ -406,4 +320,5 @@
 	<script src="${ pageContext.request.contextPath }/resources/js/custom.js"></script>
 
 </body>
+
 </html>
