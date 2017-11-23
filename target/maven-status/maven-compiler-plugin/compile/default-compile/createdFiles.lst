@@ -29,7 +29,6 @@ net/haebang/member/dao/MemberDaoImpl.class
 net/haebang/exception/IdPasswordNotMatchingException.class
 net/haebang/admin/dao/AdminDao.class
 net/haebang/employee/service/EmployeeService.class
-net/haebang/vo/noticeBoardVo.class
 net/haebang/employee/controller/CommonUtils.class
 net/haebang/admin/controller/AdminMainController.class
 net/haebang/vo/CompanyVo.class

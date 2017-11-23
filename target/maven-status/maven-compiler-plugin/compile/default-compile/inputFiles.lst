@@ -1,7 +1,6 @@
 /home/ubuntu/HaeBang/src/main/java/net/haebang/vo/QnAVo.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/member/controller/MemberController.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/employee/controller/RegisterEmployeeValidator.java
-/home/ubuntu/HaeBang/src/main/java/net/haebang/vo/noticeBoardVo.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/admin/controller/MBManageController.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/qna/controller/QnAController.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/vo/EmployeeVo.java
