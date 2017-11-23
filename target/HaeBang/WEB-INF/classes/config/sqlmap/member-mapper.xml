@@ -69,4 +69,41 @@
 	</insert>
 	
 	
+	
+	<!--*********************************공지사항 **************************************-->
+	<select id="getNoticeList" parameterType="java.util.Map" resultType="noticeBoardVo">
+ 			select n_no, n_writer, n_title, n_content, n_viewCnt, date_format( n_regDate, '%Y-%m-%d' ) as n_regDate, n_type
+ 			from t_notice
+ 			where
+ 				n_type = #{ n_type }
+ 				<if test="titlecontent != null">
+	 				AND
+ 					(n_content like CONCAT('%',#{titlecontent},'%') or n_title like CONCAT('%',#{titlecontent},'%'))
+ 				</if>
+ 			order by n_no DESC
+ 			limit #{startPoint}, #{row}
+ 		</select> 
+ 	<!-- 공지사항 총 갯수  -->
+ 		<select id="selectTotalCount" parameterType="java.util.Map" resultType="Integer">
+ 			select count(*) 
+ 			from t_notice
+ 			where
+ 				n_type = #{ n_type }
+ 				<if test="titlecontent != null"> 
+ 					AND
+ 					(n_content like CONCAT('%',#{titlecontent},'%') or n_title like CONCAT('%',#{titlecontent},'%'))
+ 				</if>
+ 		</select>
+ 	<!-- 선택 공지사항 디테일  -->
+		<select id="selectOneNDetailByNo" parameterType="noticeBoardVo" resultType="noticeBoardVo">
+			 select n_no, n_writer, n_title, n_content, n_viewCnt, date_format( n_regDate, '%Y-%m-%d' ) as n_regDate, n_type
+			 from t_notice 
+			 where n_no = #{ n_no } 
+		</select> 		
+ 	<!-- updateViewCnt ++   -->
+ 		<select id="updateViewCnt" parameterType="noticeBoardVo">
+			update t_notice set n_viewCnt = #{n_viewCnt} where 	n_no = #{n_no}	
+ 		</select>
+
+	<!--******************************************************************************-->
 </mapper>

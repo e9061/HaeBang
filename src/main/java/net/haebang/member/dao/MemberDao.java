@@ -1,10 +1,12 @@
 package net.haebang.member.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import net.haebang.vo.MemberVo;
+import net.haebang.vo.NoticeBoardVo;
 
 public interface MemberDao {
 
@@ -16,4 +18,10 @@ public interface MemberDao {
 	void logout(HttpSession session);
 	MemberVo login(MemberVo member);
 	
+	
+	/******************************** 공지사항 *************************************************/
+    List<NoticeBoardVo> getNoticeList(Map<String, Object> map);
+    double selectTotalCount(Map<String, Object> map);
+    NoticeBoardVo getNoticeBoardByNo(NoticeBoardVo noticeBoardVo);
+	/*************************************************************************************************/
 }
