@@ -10,15 +10,15 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="description" content="" />
 	<!-- css -->
-	<link href="<%=request.getContextPath() %>/resources/css/bootstrap.min.css" rel="stylesheet" />
-	<link href="<%=request.getContextPath() %>/resources/css/fancybox/jquery.fancybox.css" rel="stylesheet">
-	<link href="<%=request.getContextPath() %>/resources/css/jcarousel.css" rel="stylesheet" />
-	<link href="<%=request.getContextPath() %>/resources/css/flexslider.css" rel="stylesheet" />
-	<link href="<%=request.getContextPath() %>/resources/css/style.css" rel="stylesheet" />
+	<link href="${ pageContext.request.contextPath }/resources/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="${ pageContext.request.contextPath }/resources/css/fancybox/jquery.fancybox.css" rel="stylesheet">
+	<link href="${ pageContext.request.contextPath }/resources/css/jcarousel.css" rel="stylesheet" />
+	<link href="${ pageContext.request.contextPath }/resources/css/flexslider.css" rel="stylesheet" />
+	<link href="${ pageContext.request.contextPath }/resources/css/style.css" rel="stylesheet" />
 
 
 	<!-- Theme skin -->
-	<link href="<%=request.getContextPath() %>/resources/skins/default.css" rel="stylesheet" />
+	<link href="${ pageContext.request.contextPath }/resources/skins/default.css" rel="stylesheet" />
 
 	<!-- =======================================================
     Theme Name: Moderna
@@ -89,20 +89,20 @@
 	<!-- javascript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
-<script src="<%=request.getContextPath() %>/resources/js/jquery.js"></script>
-	<script src="<%=request.getContextPath() %>/resources/js/jquery.easing.1.3.js"></script>
-	<script src="<%=request.getContextPath() %>/resources/js/bootstrap.min.js"></script>
-	<script src="<%=request.getContextPath() %>/resources/js/jquery.fancybox.pack.js"></script>
-	<script src="<%=request.getContextPath() %>/resources/js/jquery.fancybox-media.js"></script>
-	<script src="<%=request.getContextPath() %>/resources/js/google-code-prettify/prettify.js"></script>
-	<script src="<%=request.getContextPath() %>/resources/js/portfolio/jquery.quicksand.js"></script>
-	<script src="<%=request.getContextPath() %>/resources/js/portfolio/setting.js"></script>
-	<script src="<%=request.getContextPath() %>/resources/js/jquery.flexslider.js"></script>
-	<script src="<%=request.getContextPath() %>/resources/js/animate.js"></script>
-	<script src="<%=request.getContextPath() %>/resources/js/custom.js"></script>
+<script src="${ pageContext.request.contextPath }/resources/js/jquery.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.easing.1.3.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/bootstrap.min.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.fancybox.pack.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.fancybox-media.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/google-code-prettify/prettify.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/portfolio/jquery.quicksand.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/portfolio/setting.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.flexslider.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/animate.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/custom.js"></script>
 	<script>
 	</script>
-	<script src="<%=request.getContextPath() %>/resources/contactform/contactform.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/contactform/contactform.js"></script>
 
 </body>
 

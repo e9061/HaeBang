@@ -17,33 +17,6 @@
 	</select>
 
 
-	<!-- 회원가입 -->
-
-	<select id="selectById" parameterType="String" resultType = "employeeVo">
-		select e_id, e_type from t_employee where e_id = #{e_id}
-	</select>
-	
-	<select id="selectBybizNo" parameterType="String" resultType = "companyVo">
-		select c_bizNo from t_company where c_bizNo = #{c_bizNo}
-	</select>
-
-	<select id="selectByCode" parameterType="String" resultType = "companyVo">
-		select c_no, c_name, c_phone, c_address, c_bizNo from t_company where c_code = #{c_code}
-	</select>
-	
-	
-	<insert id="insertCompany" parameterType="joinEmployeeVo" >
-		insert into t_company(c_name, c_address, c_phone, c_bizNo, c_oriName, c_saveName) values(#{c_name}, #{c_address}, #{c_phone}, #{c_bizNo}, #{c_oriName}, #{c_saveName})
-	</insert>
-
-	<insert id="insertEmployeeAnd" parameterType="joinEmployeeVo" >
-		insert into t_employee(e_id, e_name, e_password, e_phone, e_type, c_no) values(#{e_id}, #{e_name}, #{e_password},#{e_phone}, 'O', (select c_no from t_company where c_name=#{c_name} and c_bizNo =#{c_bizNo}))
-	</insert>
-
-	<insert id="insertEmployee" parameterType="joinEmployeeVo" >
-		insert into t_employee(e_id, e_name, e_password, e_phone, c_no) values(#{e_id}, #{e_name}, #{e_password},#{e_phone}, (select c_no from t_company where c_name=#{c_name} and c_bizNo =#{c_bizNo}))
-	</insert>
-
 <!--*************************************** 공지사항 ******************************************-->
 	<select id="getNoticeList" parameterType="java.util.Map" resultType="noticeBoardVo">
  			select n_no, n_writer, n_title, n_content, n_viewCnt, date_format( n_regDate, '%Y-%m-%d' ) as n_regDate, n_type
@@ -104,5 +77,79 @@
 	<select id="changepassword" parameterType="employeeVo">
 		update t_employee set e_password=#{e_password} where e_id=#{e_id}
 	</select>
+<!--*************************************** 창대 파트 회원가입  ******************************************-->
+
+	<select id="selectById" parameterType="String" resultType = "employeeVo">
+		select e_id, e_type from t_employee where e_id = #{e_id}
+	</select>
+	
+	<select id="selectByBizNo1" parameterType="String" resultType = "companyVo">
+		select c_bizNo from t_company where c_bizNo = #{c_bizNo}
+	</select>
+
+	<select id="selectByBizNo2" parameterType="companyVo" resultType = "companyVo">
+		select * from (select * from t_company where c_no != #{c_no}) as view where c_bizNo = #{c_bizNo}
+	</select>
+
+	<select id="selectByCode" parameterType="String" resultType = "companyVo">
+		select c_no, c_name, c_phone, c_address, c_bizNo from t_company where c_code = #{c_code}
+	</select>
+	
+	
+	<insert id="insertCompany" parameterType="joinEmployeeVo" >
+		insert into t_company(c_name, c_address, c_phone, c_bizNo, c_oriName, c_saveName) values(#{c_name}, #{c_address}, #{c_phone}, #{c_bizNo}, #{c_oriName}, #{c_saveName})
+	</insert>
+
+	<insert id="insertEmployeeAnd" parameterType="joinEmployeeVo" >
+		insert into t_employee(e_id, e_name, e_password, e_phone, e_oriName, e_saveName, e_type, c_no) 
+		values(#{e_id}, #{e_name}, #{e_password}, #{e_phone}, #{e_oriName}, #{e_saveName}, 'O', (select c_no from t_company where c_name=#{c_name} and c_bizNo =#{c_bizNo}))
+	</insert>
+
+	<insert id="insertEmployee" parameterType="joinEmployeeVo" >
+		insert into t_employee(e_id, e_name, e_password, e_phone, e_oriName, e_saveName, c_no) 
+		values(#{e_id}, #{e_name}, #{e_password},#{e_phone}, #{e_oriName}, #{e_saveName}, (select c_no from t_company where c_name=#{c_name} and c_bizNo =#{c_bizNo}))
+	</insert>
+	
+	<update id="updateEmployeeCntP" parameterType="joinEmployeeVo">
+		update t_company set c_empCnt = c_empCnt+1 where c_bizNo = #{c_bizNo}
+	</update>
+
+	<update id="updateEmployeeCntM" parameterType="EmployeeVo">
+		update t_company set c_empCnt = c_empCnt-1 where c_no = #{c_no}
+	</update>
+	
+<!--*************************************** 창대 파트 회원 정보  ******************************************-->
+
+
+	<select id="selectByNo" parameterType="int" resultType = "companyVo">
+		select c_no, c_name, c_address, c_phone, c_bizNo, c_accNo, date_format(c_signDate,'%Y-%m-%d') as c_signDate, 
+		date_format(c_regDate,'%Y-%m-%d') as c_regDate, c_bank, c_oriName, c_saveName, c_code, c_empCnt from t_company where c_no = #{c_no}
+	</select>
+
+	<select id="selectByCNo" parameterType="int" resultType = "employeeVo">
+		select e_no, e_id, e_name, e_password, e_phone, e_type, e_oriName, e_saveName, date_format(e_joinDate,'%Y-%m-%d') as e_joinDate, c_no 
+		from t_employee where c_no = #{c_no}
+	</select>
+	
+	
+	<update id="updateEmployeeOr" parameterType="hashMap">
+		update ${table} set ${key} = #{value} where ${no} = #{noVal}
+	</update>
+
+
+	<delete id="deleteEmployeeByNo" parameterType="int">
+		delete from t_employee where e_no = #{e_no}
+	</delete>
+
+	<update id="updateCompanyBizNo" parameterType="companyVo">
+		update t_company set c_bizNo = #{c_bizNo}, c_oriName = #{c_oriName}, c_saveName = #{c_saveName} where c_no = #{c_no}
+	</update>
+
+
+	<update id="updateEmpPicture" parameterType="employeeVo">
+		update t_employee set e_oriName = #{e_oriName}, e_saveName = #{e_saveName} where e_no = #{e_no}
+	</update>
+
+
 	
 </mapper>

@@ -1,39 +1,39 @@
 package net.haebang.employee.controller;
 
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.ui.Model;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import net.haebang.employee.service.EmployeeService;
-import net.haebang.exception.IdPasswordNotMatchingException;
-import net.haebang.exception.NoSuchIdException;
-import net.haebang.exception.NoSuchMemberException;
-import net.haebang.vo.EmployeeVo;
-import net.haebang.vo.MapVo;
-import net.haebang.vo.NoticeBoardVo;
 import net.haebang.employee.dao.EmployeeDao;
 import net.haebang.employee.service.EmployeeService;
 import net.haebang.exception.AlreadyExistingMemberException;
 import net.haebang.exception.IdPasswordNotMatchingException;
+import net.haebang.exception.NoSuchIdException;
+import net.haebang.exception.NoSuchMemberException;
 import net.haebang.vo.CompanyVo;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
+import net.haebang.vo.MapVo;
+import net.haebang.vo.NoticeBoardVo;
 
 
 @Controller
@@ -46,113 +46,381 @@ public class EmployeeController {
 	private EmployeeDao employeeDao;
 
 
-	@RequestMapping(value = "/ceo/register/step2", method = RequestMethod.GET)
-	public String joinForm1(Model model) {
-		System.out.println("joinForm1");
-		model.addAttribute("joinEmployeeVo", new JoinEmployeeVo());
-		return "employee/step2";
-	}
+	// ---------------------------------- 창대 회원가입 --------------------------------------------------------------------
 
-	@RequestMapping(value = "/ceo/register/step2", method = RequestMethod.POST)
-	public String joinForm2(Model model) {
-		
-		System.out.println("joinForm2");
-		model.addAttribute("joinEmployeeVo", new JoinEmployeeVo());
-		return "employee/step2";
-	}
-	// 곧장 /register/step2로 들어오면 get방식으로 들어오므로 그걸 리다이렉트 해줘야함.
+		@RequestMapping(value = "/ceo/register/step1", method = RequestMethod.GET)
+		public ModelAndView joinForm(String type) {
+			ModelAndView mav = new ModelAndView();
+			mav.addObject("type", type);
+			mav.setViewName("employee/step1");
 
-	@RequestMapping(value = "/ceo/register/step3", method = RequestMethod.POST)
-	public String joinForm3(JoinEmployeeVo joinEmployeeVo, Errors errors, MultipartHttpServletRequest request) {
-		new RegisterEmployeeValidator().validate(joinEmployeeVo, errors);
-		
-		if(errors.hasErrors())
-		{
+			return mav;
+		}
+
+		@RequestMapping(value = "/ceo/register/step2", method = RequestMethod.GET)
+		public String joinForm1(Model model) {
+			System.out.println("뭐지 왜 두번 들어오지");
+			model.addAttribute("joinEmployeeVo", new JoinEmployeeVo());
 			return "employee/step2";
 		}
-		try {
-			
-			employeeService.registerEmployee(joinEmployeeVo, request);
-			return "employee/step3";
 
-		} catch (AlreadyExistingMemberException ex) {
-			errors.rejectValue("e_id", "duplicate");
+		@RequestMapping(value = "/ceo/register/step2", method = RequestMethod.POST)
+		public String joinForm2(Model model, @RequestParam(value = "ownerOrMember") String ownerOrMember) {
+			System.out.println(ownerOrMember);
+			model.addAttribute("ownerOrMember", ownerOrMember);
+			model.addAttribute("joinEmployeeVo", new JoinEmployeeVo());
 			return "employee/step2";
 		}
-		
-	}
 
-	@RequestMapping(value = "/ceo/register/step3", method = RequestMethod.GET)
-	public String joinForm4() {
-		System.out.println("joinForm4");
-				return "redirect:/ceo/register/step2";
-	}
-	
-	
-	@RequestMapping(value="/ceo/register/duplicate1", method=RequestMethod.POST)
-	public String duplicate1(HttpServletRequest req, Model model) {
-		System.out.println(req.getParameter("e_id"));
-		EmployeeVo employeeVo = employeeDao.selectById(req.getParameter("e_id"));
-		String msg=null;
-		
-//		Pattern pattern = Pattern.compile("[0-9].[a-zA-Z].{6,14}$");
-		Pattern pattern1 = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[a-zA-Z]).{6,14}$");
-		
-		Matcher matcher = pattern1.matcher(req.getParameter("e_id"));
-		if(matcher.find())
-		{
-			if(employeeVo!=null)
-			{
-				msg="존재하는 아이디입니다.";
+		@RequestMapping(value = "/ceo/register/step3", method = RequestMethod.POST)
+		public String joinForm3(JoinEmployeeVo joinEmployeeVo, Errors errors, MultipartHttpServletRequest request,
+				Model model) {
+			System.out.println(errors.hasErrors());
+			new RegisterEmployeeValidator().validate(joinEmployeeVo, errors);
+
+			if (joinEmployeeVo.getC_code() == null) {
+				if (errors.hasErrors()) {
+					return "employee/step2";
+				}
+				try {
+
+					employeeService.registerEmployeeAnd(joinEmployeeVo, request);
+					return "employee/step3";
+
+				} catch (AlreadyExistingMemberException ex) {
+					errors.rejectValue("e_id", "duplicate");
+					return "employee/step2";
+				}
+			}
+
+			if (errors.hasErrors()) {
+				model.addAttribute("ownerOrMember", request.getParameter("ownerOrMember"));
+				return "employee/step2";
+			}
+
+			try {
+				employeeService.registerEmployee(joinEmployeeVo, request);
+				return "employee/step3";
+
+			} catch (AlreadyExistingMemberException ex) {
+				model.addAttribute("ownerOrMember", request.getParameter("ownerOrMember"));
+				errors.rejectValue("e_id", "duplicate");
+				return "employee/step2";
+			}
+
+		}
+
+		@RequestMapping(value = "/ceo/register/step3", method = RequestMethod.GET)
+		public String joinForm4() {
+			return "redirect:/ceo/register/step2";
+		}
+
+		@RequestMapping(value = "/ceo/register/duplicate1", method = RequestMethod.POST)
+		public String duplicate1(HttpServletRequest req, Model model) {
+			System.out.println(req.getParameter("e_id"));
+			EmployeeVo employeeVo = employeeDao.selectById(req.getParameter("e_id"));
+			String msg = null;
+
+			// Pattern pattern = Pattern.compile("[0-9].[a-zA-Z].{6,14}$");
+			Pattern pattern1 = Pattern.compile(
+					"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+
+			Matcher matcher = pattern1.matcher(req.getParameter("e_id"));
+			if (matcher.find()) {
+				if (employeeVo != null) {
+					msg = "존재하는 아이디입니다.";
+					model.addAttribute("msg", msg);
+				} else {
+					msg = "사용가능한 아이디입니다.";
+					model.addAttribute("msg", msg);
+				}
+
+			} else {
+
+				msg = "이메일 형식을 지켜주세요.";
 				model.addAttribute("msg", msg);
 			}
-			else
-			{
-				msg="사용가능한 아이디입니다.";
+
+			return "employee/duplicate";
+
+		}
+
+		@RequestMapping(value = "/ceo/register/duplicate2", method = RequestMethod.POST)
+		public String duplicate2(HttpServletRequest req, Model model) {
+			System.out.println(req.getParameter("c_bizNo"));
+			Enumeration<String> enumeration = req.getParameterNames();
+			String value = null;
+
+			if (enumeration.hasMoreElements()) {
+				value = enumeration.nextElement();
+			}
+
+			System.out.println(value);
+
+			System.out.println();
+			CompanyVo companyVo = employeeDao.selectByBizNo1(req.getParameter("c_bizNo"));
+			String msg = null;
+			Pattern pattern = Pattern.compile("^[0-9]{10}$");
+
+			Matcher matcher = pattern.matcher(req.getParameter("c_bizNo"));
+			if (matcher.find()) {
+				if (companyVo != null) {
+					msg = "존재하는 사업자번호입니다.";
+					model.addAttribute("msg", msg);
+				} else {
+					msg = "사용가능한 사업자 번호입니다.";
+					model.addAttribute("msg", msg);
+				}
+			} else {
+				msg = "10자리 숫자로만 입력해주세요.";
 				model.addAttribute("msg", msg);
 			}
+			return "employee/duplicate";
+		}
+
+		@RequestMapping(value = "/ceo/register/ccode", method = RequestMethod.GET, produces = "application/json")
+		public @ResponseBody CompanyVo confirmCode(HttpServletRequest req) {
+
+			CompanyVo companyVo = employeeDao.selectByCode(req.getParameter("c_code"));
+
+			return companyVo;
+		}
+
+		////////////////////// 창대 info///////////////////////////////
+		@RequestMapping(value = "/ceo/info")
+		public String info(HttpSession session, Model model) {
+
+			if (session.getAttribute("userVo") == null) {
+				return "redirect:/ceo";
+			}
+			EmployeeVo employeeVo = (EmployeeVo) session.getAttribute("userVo");
+			System.out.println(employeeVo.getC_no());
+			CompanyVo companyVo = employeeDao.selectByNo(employeeVo.getC_no());
+
+			model.addAttribute("employeeVo", employeeVo);
+			model.addAttribute("companyVo", companyVo);
+			return "employee/info";
+		}
+
+		@RequestMapping(value = "/ceo/info/update", method = RequestMethod.POST, produces = "application/json")
+		public @ResponseBody HashMap<String, Object> updateEoC(HttpServletRequest request, HttpSession session,
+				Model model) {
+
+			EmployeeVo userVo = (EmployeeVo) session.getAttribute("userVo");
+			employeeService.updateEoC(request, userVo);
+
+			userVo = employeeDao.selectById(userVo);
+			CompanyVo companyVo = employeeDao.selectByNo(userVo.getC_no());
+
+			if (userVo.getE_type().equals("E")) {
+				userVo.setE_type("직원");
+			}
+
+			if (userVo.getE_type().equals("O")) {
+				userVo.setE_type("사장");
+			}
+
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("employeeVo", userVo);
+			map.put("companyVo", companyVo);
+
+			session.setAttribute("userVo", userVo);
+
+			return map;
+
+		}
+
+		@RequestMapping(value = "/ceo/empInfo")
+		public String empInfo(HttpSession session, Model model) {
+
+			if (session.getAttribute("userVo") == null) {
+				return "redirect:/ceo";
+			}
+
+			EmployeeVo employeeVo = (EmployeeVo) session.getAttribute("userVo");
+			List<EmployeeVo> employeeVoList = employeeDao.selectByCNo(employeeVo.getC_no());
+
+			model.addAttribute("employeeVo", employeeVo);
+			model.addAttribute("employeeVoList", employeeVoList);
+
+			return "employee/empInfo";
+		}
+
+		@Transactional
+		@RequestMapping(value = "/ceo/empInfo/delete", method = RequestMethod.POST)
+		public @ResponseBody List<EmployeeVo> empDelete(HttpSession session, Model model,
+				@RequestParam(value = "e_no") int e_no) {
+			System.out.println(e_no);
+			// 딜리트 만들기
+
+			employeeDao.deleteEmployeeByNo(e_no);
+			EmployeeVo employeeVo = (EmployeeVo) session.getAttribute("userVo");
+			employeeDao.updateEmployeeCntM(employeeVo);
+
+			List<EmployeeVo> employeeVoList = employeeDao.selectByCNo(employeeVo.getC_no());
+
+			model.addAttribute("employeeVoList", employeeVoList);
+
+			return employeeVoList;
+		}
+
+		
+		@RequestMapping(value = "/ceo/info/changePassword", method = RequestMethod.GET)
+		public String changePassword(HttpSession session) {
+			if (session.getAttribute("userVo") == null) {
+				return "redirect:/ceo";
+			}
+			return "redirect:/ceo/info";
+		}
+		
+		@RequestMapping(value = "/ceo/info/changePassword", method = RequestMethod.POST)
+		public String changePassword(HttpSession session, Model model) {
 			
-		}else{
+			EmployeeVo userVo = (EmployeeVo) session.getAttribute("userVo");
+			model.addAttribute("newEmployeeVo", new EmployeeVo());
+			model.addAttribute("employeeVo", userVo);
 			
-			msg="영문, 숫자 포함 6~14자리로 입력해주세요.";
-			model.addAttribute("msg", msg);
+			return "employee/changePasswordForm";
+		}
+
+		@RequestMapping(value = "/ceo/info/changingPassword", method = RequestMethod.GET)
+		public String changingPassword(HttpSession session) {
+			if (session.getAttribute("userVo") == null) {
+				return "redirect:/ceo";
+			}
+			return "redirect:/ceo/info";
+		}
+		@RequestMapping(value = "/ceo/info/changingPassword", method = RequestMethod.POST)
+		public String changingPassword( HttpSession session, EmployeeVo newEmployeeVo) {
+
+			
+			employeeService.changePassword(newEmployeeVo);
+			
+			EmployeeVo userVo = (EmployeeVo) session.getAttribute("userVo");
+			
+			userVo.setE_password(newEmployeeVo.getE_password());
+			
+			userVo = employeeDao.selectById(userVo);
+			
+			if (userVo.getE_type().equals("E")) {
+				userVo.setE_type("직원");
+			}
+
+			if (userVo.getE_type().equals("O")) {
+				userVo.setE_type("사장");
+			}
+			
+			session.setAttribute("userVo", userVo);
+			
+			
+			return "redirect:/ceo/info";
+		}
+		
+		@RequestMapping(value="/ceo/info/changeBizNo", method = RequestMethod.GET)
+		public String changeBizNo(HttpSession session, Model model) {
+			if(session.getAttribute("userVo") == null)
+			{
+				return "redirect:/ceo";
+			}
+			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+			model.addAttribute("companyVo", new CompanyVo());
+			model.addAttribute("employeeVo", userVo);
+			return "employee/changeBizNo";
+		}
+		
+		@RequestMapping(value="/ceo/info/changeBizNo", method = RequestMethod.POST)
+		public String changeBizNo(CompanyVo companyVo, Errors errors, HttpSession session, MultipartHttpServletRequest request) {
+			new UpdateCompanyBizNoValidator().validate(companyVo, errors);
+			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+			companyVo.setC_no(userVo.getC_no());
+
+			
+				if (errors.hasErrors()) {
+					return "employee/changeBizNo";
+				}
+				try {
+
+					employeeService.updateBizNo(companyVo, request);
+					return "redirect:/ceo/info";
+
+				} catch (AlreadyExistingMemberException ex) {
+					errors.rejectValue("c_bizNo", "duplicate");
+					return "employee/changeBizNo";
+				}
+			
 		}
 		
 		
-		return "employee/duplicate";
-		
-	}
-	
-	@RequestMapping(value="/ceo/register/duplicate2", method=RequestMethod.POST)
-	public String duplicate2(HttpServletRequest req, Model model) {
-		System.out.println(req.getParameter("c_bizNo"));
-		CompanyVo companyVo = employeeDao.selectBybizNo(req.getParameter("c_bizNo"));
-		String msg=null;
-		Pattern pattern = Pattern.compile("^[0-9]{10}$");
-		
-		Matcher matcher = pattern.matcher(req.getParameter("c_bizNo"));
-		if(matcher.find())
-		{	if(companyVo!=null)
-			{
-				msg="존재하는 사업자번호입니다.";
-				model.addAttribute("msg", msg);
-			}
-			else
-			{
-				msg="사용가능한 사업자 번호입니다.";
-				model.addAttribute("msg", msg);
-			}
+		@RequestMapping(value = "/ceo/register/duplicate3", method = RequestMethod.POST)
+		public String duplicate3(CompanyVo companyVo, Model model, HttpSession session) {
 			
-		}else
-		{
-			msg="10자리 숫자로만 입력해주세요.";
-			model.addAttribute("msg", msg);
+			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+			companyVo.setC_no(userVo.getC_no());
+			
+			CompanyVo confirmVo = employeeDao.selectByBizNo2(companyVo);
+			String msg = null;
+			Pattern pattern = Pattern.compile("^[0-9]{10}$");
+
+			Matcher matcher = pattern.matcher(companyVo.getC_bizNo());
+			if (matcher.find()) {
+				if (confirmVo != null) {
+					msg = "존재하는 사업자번호입니다.";
+					model.addAttribute("msg", msg);
+				} else 
+				{
+					msg = "사용가능한 사업자 번호입니다.";
+					model.addAttribute("msg", msg);
+				}
+			} else {
+				msg = "10자리 숫자로만 입력해주세요.";
+				model.addAttribute("msg", msg);
+			}
+			return "employee/duplicate";
 		}
 		
-		return "employee/duplicate";
 		
-	}
+		@RequestMapping(value="/ceo/info/updateEmpPicture", method = RequestMethod.GET)
+		public String updateEmpEmpPicture(HttpSession session, Model model) {
+			if(session.getAttribute("userVo") == null)
+			{
+				return "redirect:/ceo";
+			}
+			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+			model.addAttribute("employeeVo", userVo);
+			return "employee/changeEmpPicture";
+		}
+		
+		
+		@RequestMapping(value="/ceo/info/updateEmpPicture", method = RequestMethod.POST)
+		public String updateEmpPicture(HttpSession session, MultipartHttpServletRequest request) {
+			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
 
+					employeeService.updateEmpPicture(userVo, request);
+					
+					
+					
+					userVo = employeeDao.selectById(userVo);
+					
+					if (userVo.getE_type().equals("E")) {
+						userVo.setE_type("직원");
+					}
+
+					if (userVo.getE_type().equals("O")) {
+						userVo.setE_type("사장");
+					}
+					
+					session.setAttribute("userVo", userVo);
+					
+					
+					return "redirect:/ceo/info";
+
+			
+		}
+		
+		
+
+	
+	//  -------------------------------------- 진화 -------------------------------------------------
 	
 	@RequestMapping(value="/ceo", method=RequestMethod.GET)
 	public ModelAndView main() {

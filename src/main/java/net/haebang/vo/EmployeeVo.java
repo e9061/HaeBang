@@ -1,11 +1,5 @@
 package net.haebang.vo;
 
-import java.util.Date;
-
-
-
-import net.haebang.exception.IdPasswordNotMatchingException;
-
 /**
  * 	직원VO (사장 포함)
  * 
@@ -21,7 +15,7 @@ public class EmployeeVo {
 	private String e_name;
 	private String e_password;
 	private String e_phone;
-	private String e_type; //default 'E'(직원일경우), 사장 'C'
+	private String e_type; //default 'E'(직원일경우), 사장 'O'
 	private String e_oriName;
 	private String e_saveName;
 	private String e_joinDate;  //테이블 추가!,  default now()

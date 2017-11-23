@@ -8,6 +8,7 @@ net/haebang/employee/controller/RegisterEmployeeValidator.class
 net/haebang/member/service/MemberService.class
 net/haebang/member/dao/MemberDao.class
 net/haebang/exception/NoSuchIdException.class
+net/haebang/employee/controller/UpdateCompanyBizNoValidator.class
 net/haebang/admin/dao/AdminDaoImpl.class
 net/haebang/qna/service/QnAService.class
 net/haebang/vo/JoinEmployeeVo.class

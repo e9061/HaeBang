@@ -1,6 +1,7 @@
 package net.haebang.employee.dao;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,12 +23,46 @@ public class EmployeeDaoImpl implements EmployeeDao{
 	private SqlSessionTemplate sqlSession;	
 	
 
-	// 창대
+	// ------------------------------------------- 창대 -------------------------------------
 	@Override
-	public CompanyVo selectBybizNo(String c_bizNo) {
-		CompanyVo companyVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectBybizNo", c_bizNo);
+	public CompanyVo selectByNo(int c_no) {
+		CompanyVo companyVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectByNo", c_no);
 		return companyVo;
 	}
+	
+	@Override
+	public List<EmployeeVo> selectByCNo(int c_no) {
+		
+		List<EmployeeVo> employeeVoList = sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectByCNo", c_no);
+		return employeeVoList;
+		
+	}
+	
+	
+	
+	
+	
+	
+	@Override
+	public CompanyVo selectByCode(String c_code) {
+		CompanyVo companyVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectByCode", c_code);
+		return companyVo;
+	}
+	
+	@Override
+	public CompanyVo selectByBizNo1(String c_bizNo) {
+		CompanyVo companyVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectByBizNo1", c_bizNo);
+		return companyVo;
+	}
+	
+	@Override
+	public CompanyVo selectByBizNo2(CompanyVo companyVo) {
+		CompanyVo confirmVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectByBizNo2", companyVo);
+		return confirmVo;
+	}
+	
+	
+	
 	@Override
 	public EmployeeVo selectById(String e_id) {
 		EmployeeVo employeeVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectById", e_id);
@@ -38,12 +73,56 @@ public class EmployeeDaoImpl implements EmployeeDao{
 		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertCompany", joinEmployeeVo);
 	}
 	@Override
+	public void insertEmployeeAnd(JoinEmployeeVo joinEmployeeVo) {
+		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertEmployeeAnd", joinEmployeeVo);
+	}
+	@Override
 	public void insertEmployee(JoinEmployeeVo joinEmployeeVo) {
 		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertEmployee", joinEmployeeVo);
 	}
 
+	
+	@Override
+	public void updateEoC(HashMap<String, String> updateMap) {
+		sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateEmployeeOr", updateMap);
+		
+	}
+	
+	@Override
+	public void updateEmployeeCntP(JoinEmployeeVo joinEmployeeVo) {
+		sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateEmployeeCntP", joinEmployeeVo);
+		
+	}
+	@Override
+	public void updateEmployeeCntM(EmployeeVo employeeVo) {
+		sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateEmployeeCntM", employeeVo);
+		
+	}
+	
+	
+	
+	@Override
+	public void deleteEmployeeByNo(int e_no) {
+		sqlSession.delete("net.haebang.employee.dao.EmployeeDao.deleteEmployeeByNo", e_no);
+		
+	}
+	
+	@Override
+	public void updateCompanyBizNo(CompanyVo companyVo) {
+		sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateCompanyBizNo", companyVo);
+		
+	}
+	
+	
+	@Override
+	public void updateEmpPicture(EmployeeVo employeeVo) {
+		sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateEmpPicture", employeeVo);
+		
+	}
+	
 
-	// 진화
+
+	// -------------------------------------- 진화 ------------------------------------------
 	@Override
 	public EmployeeVo selectById(EmployeeVo employeeVo) {	
 		

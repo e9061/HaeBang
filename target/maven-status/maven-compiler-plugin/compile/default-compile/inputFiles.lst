@@ -14,6 +14,7 @@
 /home/ubuntu/HaeBang/src/main/java/net/haebang/employee/dao/EmployeeDaoImpl.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/qna/dao/QnADAO.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/exception/IdPasswordNotMatchingException.java
+/home/ubuntu/HaeBang/src/main/java/net/haebang/employee/controller/UpdateCompanyBizNoValidator.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/exception/AlreadyExistingMemberException.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/employee/service/EmployeeService.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/employee/controller/EmployeeController.java
