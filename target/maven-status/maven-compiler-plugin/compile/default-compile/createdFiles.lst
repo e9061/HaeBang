@@ -11,6 +11,7 @@ net/haebang/exception/NoSuchIdException.class
 net/haebang/admin/dao/AdminDaoImpl.class
 net/haebang/qna/service/QnAService.class
 net/haebang/vo/JoinEmployeeVo.class
+net/haebang/vo/NoticeBoardVo.class
 net/haebang/employee/service/EmployeeServiceImpl.class
 net/haebang/member/service/MemberServiceImpl.class
 net/haebang/qna/dao/QnADAO.class
@@ -33,4 +34,5 @@ net/haebang/employee/controller/CommonUtils.class
 net/haebang/admin/controller/AdminMainController.class
 net/haebang/vo/CompanyVo.class
 net/haebang/employee/dao/EmployeeDao.class
+net/haebang/admin/controller/NoticeAdminController.class
 net/haebang/qna/dao/QnADAOimpl.class

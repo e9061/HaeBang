@@ -22,6 +22,8 @@
 /home/ubuntu/HaeBang/src/main/java/net/haebang/admin/dao/AdminDaoImpl.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/admin/service/AdminService.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/qna/dao/QnADAOimpl.java
+/home/ubuntu/HaeBang/src/main/java/net/haebang/vo/NoticeBoardVo.java
+/home/ubuntu/HaeBang/src/main/java/net/haebang/admin/controller/NoticeAdminController.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/employee/controller/CommonUtils.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/employee/service/EmployeeServiceImpl.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/employee/controller/LoginCommandValidator.java

@@ -14,16 +14,13 @@
  		from t_member
  		where m_type = 'm'
  	</select>
- 	
  	<!-- 비회원 전체조회  -->
  	<select id="selectNoneMemberList" resultType="memberVo">
  		select m_no, m_id, m_owner, m_phone, m_name, date_format(m_joinDate,'%Y-%m-%d') as m_joinDate, m_address
  		from t_member
  		where m_type = 'b'
  	</select>
- 	
- 	
- 	 	<!-- 조건 선택 해방회원  -->
+ 	 <!-- 회원 조건 선택   -->
  	<select id="memberSelected" resultType="memberVo" parameterType="memberVo">
  		select m_no, m_id, m_owner, m_phone, m_name, date_format(m_joinDate,'%Y-%m-%d') as m_joinDate, m_address
  		from t_member
@@ -37,7 +34,6 @@
  	</select>
  	
  	
- 	
  	<!-- 해방업체리스트 전체 조회 -->  
  	<select id="selectHbCompanyList" resultType="hashMap">
  		select  c.c_name, e.e_name ,  c.c_address, c.c_phone, c.c_code, date_format(c.c_regDate,'%Y-%m-%d') as c_regDate, c.c_bizNo, c.c_empCnt
@@ -49,7 +45,6 @@
  			AND
  			e.e_type = 'O'
  	</select>
- 	
  	<!-- 일반업체리스트 전체 조회 -->
  	<select id="selectNCompanyList" resultType="hashMap">
  		select  e.e_name, c.c_name, c.c_address, c.c_phone, date_format(c_signDate, '%Y-%m-%d') as c_signDate, c.c_bizNo, c.c_empCnt
@@ -61,7 +56,6 @@
  			AND
  			e.e_type = 'O'
  	</select>
- 	
   	<!-- 해방업체리스트 조건 검색 -->
  	<select id="searchHbCompanyList" resultType="hashMap" parameterType="companyVo">
  		select  c.c_name, e.e_name ,  c.c_address, c.c_phone, c.c_code, date_format(c.c_regDate,'%Y-%m-%d') as c_regDate, c.c_bizNo, c.c_empCnt
@@ -78,7 +72,6 @@
  			<if test="c_bizNo != null" >c_bizNo = #{c_bizNo}</if>
  			<if test="c_code != null" >c_code = #{c_code}</if>
  	</select>
- 	
  	<!-- 일반업체리스트 조건 검색 -->
  	<select id="searchNCompanyList" resultType="hashMap" parameterType="companyVo">
  		select  e.e_name, c.c_name, c.c_address, c.c_phone, date_format(c_signDate, '%Y-%m-%d') as c_signDate, c.c_bizNo, c.c_empCnt
@@ -95,5 +88,57 @@
  			<if test="c_bizNo != null" >c_bizNo = #{c_bizNo}</if>
  	</select>
  
- 
+ 	
+ 	<!-- 사업자 공지사항 리스트 조회   -->
+ 		<select id="getOwnerNoticeList" parameterType="java.util.Map" resultType="noticeBoardVo">
+ 			select n_no, n_writer, n_title, n_content, n_viewCnt, date_format( n_regDate, '%Y-%m-%d' ) as n_regDate, n_type
+ 			from t_notice
+ 			where
+ 				n_type = #{ n_type }
+ 				<if test="titlecontent != null">
+	 				AND
+ 					(n_content like CONCAT('%',#{titlecontent},'%') or n_title like CONCAT('%',#{titlecontent},'%'))
+ 				</if>
+ 			order by n_no DESC
+ 			limit #{startPoint}, #{row}
+ 		</select> 
+ 	<!-- 사업자 공지사항 총 갯수  -->
+ 		<select id="selectTotalCount" parameterType="java.util.Map" resultType="Integer">
+ 			select count(*) 
+ 			from t_notice
+ 			where
+ 				n_type = #{ n_type }
+ 				<if test="titlecontent != null"> 
+ 					AND
+ 					(n_content like CONCAT('%',#{titlecontent},'%') or n_title like CONCAT('%',#{titlecontent},'%'))
+ 				</if>
+ 		</select>
+ 	<!-- 선택 공지사항 디테일  -->
+		<select id="selectOneNDetailByNo" parameterType="noticeBoardVo" resultType="noticeBoardVo">
+			 select n_no, n_writer, n_title, n_content, n_viewCnt, date_format( n_regDate, '%Y-%m-%d' ) as n_regDate, n_type
+			 from t_notice 
+			 where n_no = #{ n_no } 
+		</select> 		
+ 	<!-- updateViewCnt ++   -->
+ 		<select id="updateViewCnt" parameterType="noticeBoardVo">
+			update t_notice set n_viewCnt = #{n_viewCnt} where 	n_no = #{n_no}	
+ 		</select>
+ 	
+ 		<select id="insertNotice" parameterType="noticeBoardVo">
+ 			insert into t_notice(n_title, n_content, n_writer, n_type, n_fileOriName, n_fileSaveName)
+ 			values(#{n_title}, #{n_content}, #{n_writer}, #{n_type}, #{n_fileOriName}, #{n_fileSaveName})
+ 		</select>
+ 	<!-- 공지사항 업데이트  -->
+ 		<select id="updateNotice" parameterType="noticeBoardVo">
+ 			update t_notice 
+ 			set 
+ 				n_title = #{n_title}, n_content = #{n_content}, n_type = #{n_type} ,n_viewCnt = 0, n_regDate= now()
+ 			where
+ 				n_no = #{n_no} 
+ 		</select>
+ 		
+ 		<select id="deleteNotice" parameterType="Integer">
+ 			delete from t_notice where n_no = #{n_no}
+ 		</select>
+ 	
 </mapper>

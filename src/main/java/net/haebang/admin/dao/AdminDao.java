@@ -2,9 +2,11 @@ package net.haebang.admin.dao;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.haebang.vo.CompanyVo;
 import net.haebang.vo.MemberVo;
+import net.haebang.vo.NoticeBoardVo;
 
 public interface AdminDao {
 	
@@ -20,5 +22,15 @@ public interface AdminDao {
 	
 	List<HashMap<String, Object>> searchHbComList(CompanyVo companyVo);
 	List<HashMap<String, Object>> searchNComList(CompanyVo companyVo);
+
 	
+	// 공지사항 dao
+	List<NoticeBoardVo> getOwnerNoticeList(Map<String, Object> map);
+	int selectTotalCount(Map<String, Object> map);
+	
+	NoticeBoardVo getNoticeBoardByNo(NoticeBoardVo noticeBoardVo);
+	NoticeBoardVo getNoticeBoardByNo(int no);
+	void insertNotice(NoticeBoardVo noticeBoardVo);
+	void updateNotice(NoticeBoardVo noticeBoardVo);
+	void noticeDelete(int no);
 }

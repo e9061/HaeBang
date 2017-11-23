@@ -143,7 +143,7 @@ strong{
 </head>
 <body>
 	<header>
-		<jsp:include page="/WEB-INF/view/admin_include/topmenu.jsp"/>
+		<jsp:include page="../admin_include/topmenu.jsp"/>
 	</header>
 
 	<section>

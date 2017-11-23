@@ -9,7 +9,7 @@
 		<typeAlias type="net.haebang.vo.MapVo" alias="mapVo"/>
 		<typeAlias type="net.haebang.vo.CompanyVo" alias="companyVo"/>
 		<typeAlias type="net.haebang.vo.JoinEmployeeVo" alias="joinEmployeeVo"/>
-		<typeAlias type="net.haebang.vo.noticeBoardVo" alias="noticeBoardVo"/>
+		<typeAlias type="net.haebang.vo.NoticeBoardVo" alias="noticeBoardVo"/>
 		<typeAlias type="net.haebang.vo.QnAVo" alias="QnAVo"/>
 
 	</typeAliases>

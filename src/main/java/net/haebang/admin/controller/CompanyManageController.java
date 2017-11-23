@@ -3,16 +3,13 @@ package net.haebang.admin.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import net.haebang.admin.service.AdminService;
@@ -42,15 +39,7 @@ public class CompanyManageController {
 	@RequestMapping(value="/admin/hbCompanyManage")
 	public @ResponseBody List<HashMap<String, Object>> hbComList(){
 		
-		CompanyVo companyVo = new CompanyVo();
-		EmployeeVo employeeVo = new EmployeeVo();
-		HashMap<String, Object> map = new HashMap<String, Object>(); 
-		map.put("companyVo", companyVo);
-		map.put("employeeVo", employeeVo);
-		
-		
 		List<HashMap<String, Object>> hbComList = new ArrayList<HashMap<String, Object>>();
-		hbComList.add(map);
 		hbComList = service.hbComList();
 		
 		return hbComList;
@@ -59,15 +48,8 @@ public class CompanyManageController {
 	// 일반업체 조회
 	@RequestMapping(value="/admin/nCompanyManage")
 	public @ResponseBody List<HashMap<String, Object>> nComList(){
-		CompanyVo companyVo = new CompanyVo();
-		EmployeeVo employeeVo = new EmployeeVo();
-		HashMap<String, Object> map = new HashMap<String, Object>(); 
-		map.put("companyVo", companyVo);
-		map.put("employeeVo", employeeVo);
 		
-		List<HashMap<String, Object>> nComList = new ArrayList<HashMap<String, Object>>();
-		nComList.add(map);
-		nComList = service.nComList();
+		List<HashMap<String, Object>> nComList = service.nComList();
 		
 		return nComList;
 	}

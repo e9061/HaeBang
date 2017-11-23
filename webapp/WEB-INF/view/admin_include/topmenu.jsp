@@ -33,8 +33,8 @@
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">공지사항<b class=" icon-angle-down"></b></a>
 								<ul class="dropdown-menu">
-									<li><a href="${ pageContext.request.contextPath }/admin/memberNotice">소비자 공지사항</a></li>
-									<li><a href="${ pageContext.request.contextPath }/admin/ownerNotice">사업자 공지사항</a></li>
+									<li><a href="${ pageContext.request.contextPath }/admin/adminNotice?n_type=m">소비자 공지사항</a></li>
+									<li><a href="${ pageContext.request.contextPath }/admin/adminNotice?n_type=o">사업자 공지사항</a></li>
 								</ul>
 							</li>
 								

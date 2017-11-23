@@ -22,8 +22,8 @@
 						<div class="widget">
 							<h5 class="widgetheading">Pages</h5>
 							<ul class="link-list">
-								<li><a href="#">해방 소비자 사이트</a></li>
-								<li><a href="#">해방 관리자 사이트</a></li>
+								<li><a href="${ pageContext.request.contextPath }">해방 소비자 사이트</a></li>
+								<li><a href="${ pageContext.request.contextPath }/ceo/">해방 관리자 사이트</a></li>
 								<li><a href="#">Privacy policy</a></li>
 								<li><a href="#">Career center</a></li>
 								<li><a href="#">Contact us</a></li>																
