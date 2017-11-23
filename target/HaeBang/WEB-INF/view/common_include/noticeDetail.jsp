@@ -11,7 +11,7 @@
 <script>
 	$(document).ready(function(){
 		$('#goBack').click(function(){
-			location.href="${ pageContext.request.contextPath }<%= path %>/adminNotice?n_type=${noticeDetail.n_type}"
+			location.href="${ pageContext.request.contextPath }<%= path %><%=path %>Notice?n_type=${noticeDetail.n_type}"
 		});
 		
 		$('#retouch').click(function(){
@@ -31,7 +31,7 @@
 			<h2>
 				<strong>
 					<c:choose>
-						<c:when test="${ n_type eq 'o' }">
+						<c:when test="${ noticeDetail.n_type eq 'o' }">
 							사업자 공지사항
 						</c:when>
 						<c:otherwise>
@@ -81,8 +81,10 @@
    
       </table>
       
-      <button class="btn btn-theme" id="retouch">수정</button>
-      <button class="btn btn-theme" id="delete">삭제</button>
+      <c:if test="${ userVo.e_type eq 'A' }  ">
+	      <button class="btn btn-theme" id="retouch">수정</button>
+	      <button class="btn btn-theme" id="delete">삭제</button>
+      </c:if>
       <button class="btn btn-theme" id="goBack">뒤로가기</button>
       <br/>
       <br/>

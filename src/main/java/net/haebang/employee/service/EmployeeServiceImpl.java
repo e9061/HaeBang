@@ -23,7 +23,7 @@ import net.haebang.exception.NoSuchMemberException;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
 import net.haebang.vo.MapVo;
-import net.haebang.vo.noticeBoardVo;
+import net.haebang.vo.NoticeBoardVo;
 
 
 @Service
@@ -121,56 +121,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return maplist;
 	}
 	
-/***********************************************************************************	
-
-	private final int LINE_PER_PAGE = 10;
-	
 	@Override
-	public List<noticeBoardVo> getnoticelist(int page, String word, String searchCondition) {
-
-		int startpoint = page * LINE_PER_PAGE;		
-				
-		PageHelper pageHelper = new PageHelper(startpoint, LINE_PER_PAGE);
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("pageHelper", pageHelper);
-        
-        System.out.println("에헤헤헤헤헤");
-        System.out.println(startpoint);  
-                
-        map.put("startpoint", startpoint);
-        map.put("row", LINE_PER_PAGE);
-        map.put(searchCondition, word);
-        
-        List<noticeBoardVo> noticelist = employeeDao.getnoticelist(map);
-        System.out.println("서비스");
-        System.out.println(noticelist);
-        return noticelist;
-
-	}
-	
-	
-
-	@Override
-	public int getlastpage(String word, String searchCondition) {
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put(searchCondition, word);
-		
-		int lastpage = (int)((double)employeeDao.selectTotalCount(map)/LINE_PER_PAGE);		
-		System.out.println(lastpage);
-		return lastpage;
-	
-	}
-
-	@Override
-	public noticeBoardVo getnoticeBoardByNo(int no) {
-		noticeBoardVo getnoticeBoardByNo = employeeDao.getnoticeBoardByNo(no);
-		return getnoticeBoardByNo;
-	}
-********************************************************************************/
-	@Override
-	public List<noticeBoardVo> getMainnoticelist() {
-		List<noticeBoardVo> mainNoticelist = employeeDao.getMainnoticelist();
+	public List<NoticeBoardVo> getMainnoticelist() {
+		List<NoticeBoardVo> mainNoticelist = employeeDao.getMainnoticelist();
 		return mainNoticelist;
 		
 	}
@@ -234,6 +187,49 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employeeDao.changePassword(employeeVo);
 		
 	}
+
+/*******************************************공지사항***********************************************************/
+	private final int LINE_PER_PAGE = 10;
+	
+	@Override
+	public List<NoticeBoardVo> getNoticeList(String n_type, int page, String word, String searchCondition) {
+	int startPoint = page * LINE_PER_PAGE;		
+		
+        Map<String, Object> map = new HashMap<String, Object>();
+        
+        map.put("n_type", n_type);
+        map.put("startPoint", startPoint);
+        map.put("row", LINE_PER_PAGE);
+        map.put(searchCondition, word);
+        
+        List<NoticeBoardVo> noticeList = employeeDao.getNoticeList(map);
+        System.out.println("서비스");
+        System.out.println(noticeList);
+        
+		return noticeList;
+	}
+
+	@Override
+	public int getLastPage(String n_type, String word, String searchCondition) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("n_type", n_type);
+		map.put(searchCondition, word);
+		
+		int lastPage =(int)((double)employeeDao.selectTotalCount(map)/LINE_PER_PAGE);
+		System.out.println(lastPage);
+		
+		System.out.println("Service lastPage : " +lastPage);
+		System.out.println("ServiceImpl - lastPage : "+lastPage);
+		return lastPage;
+	}
+
+	@Override
+	public NoticeBoardVo getNoticeBoardByNo(NoticeBoardVo noticeBoardVo) {
+		NoticeBoardVo getNoticeBoardByNo = employeeDao.getNoticeBoardByNo(noticeBoardVo);
+		return getNoticeBoardByNo;
+	}
+	
+/***************************************************************************************************************/
 
 }
 

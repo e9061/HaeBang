@@ -26,7 +26,7 @@ import net.haebang.exception.NoSuchIdException;
 import net.haebang.exception.NoSuchMemberException;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.MapVo;
-import net.haebang.vo.noticeBoardVo;
+import net.haebang.vo.NoticeBoardVo;
 import net.haebang.employee.dao.EmployeeDao;
 import net.haebang.employee.service.EmployeeService;
 import net.haebang.exception.AlreadyExistingMemberException;
@@ -159,7 +159,7 @@ public class EmployeeController {
 		
 		ModelAndView mav = new ModelAndView();
 		
-		List<noticeBoardVo> mainNoticelist = employeeService.getMainnoticelist();
+		List<NoticeBoardVo> mainNoticelist = employeeService.getMainnoticelist();
 		
 		mav.addObject("mainNoticelist", mainNoticelist);
 		mav.addObject("employeeVo", new EmployeeVo());
@@ -179,13 +179,7 @@ public class EmployeeController {
 	@RequestMapping(value="/ceo", method=RequestMethod.POST)
 	public ModelAndView loginform(@Valid EmployeeVo employeeVo, Errors errors, HttpSession session, ModelAndView mav) {		
 		
-/*		new LoginCommandValidator().validate(employeeVo, errors);
-		
-		if (errors.hasErrors()) {
-			mav.setViewName("company_main/companymain");
-			
-			return mav;
-		}*/
+		System.out.println(employeeVo.getE_id());
 		
 		try {
 			
@@ -205,7 +199,7 @@ public class EmployeeController {
 			mav.addObject("userVo", userVo);
 			mav.setViewName("company_main/companymain");
 			
-			List<noticeBoardVo> mainNoticelist = employeeService.getMainnoticelist();			
+			List<NoticeBoardVo> mainNoticelist = employeeService.getMainnoticelist();			
 			mav.addObject("mainNoticelist", mainNoticelist);
 		
 			List<MapVo> maplist = employeeService.selectAllmap(userVo);				
@@ -228,45 +222,62 @@ public class EmployeeController {
 		
 	}
 	
-/*************************************공지사항******************************************************	
+/******************************** 공지사항 made by juho ******************************************************	
+	*************************************************************************************/
   
-   @RequestMapping("/ceo/notice")
-	public ModelAndView notice(@RequestParam(value="nowpage", defaultValue="0") int page,
+	@RequestMapping("/ceo/ceoNotice")
+	public ModelAndView notice(
+			@RequestParam(value="n_type", required=false) String n_type, 
+			@RequestParam(value="nowpage", defaultValue="0") int page,
             @RequestParam(value="word", required=false) String word, 
             @RequestParam(value="searchCondition", defaultValue="null", required=false) String searchCondition) {
 		ModelAndView mav = new ModelAndView();
 		
-		// 페이징	
-		List<noticeBoardVo> noticelist = employeeService.getnoticelist(page, word, searchCondition);
-		System.out.println("컨트롤러");
-		System.out.println(word);
-		System.out.println(searchCondition);
+		System.out.println("************************************************************************");
+		System.out.println("!!!!!!!!!!!!!!!ceoNotice!!!!!!!!!!");
+		System.out.println(n_type + "  + " + page + "  + " + word +  "  + " + searchCondition);
+		System.out.println("************************************************************************");
 		
-		mav.addObject("page", page);
-		mav.addObject("totalpage", employeeService.getlastpage(word, searchCondition));				
-		mav.addObject("noticelist", noticelist);
-				
+		// 페이징	
+		List<NoticeBoardVo> getOwnerNoticeList = employeeService.getNoticeList(n_type ,page, word, searchCondition);
+		int totalPage = employeeService.getLastPage(n_type, word, searchCondition);
+		
+		// key 통일 - include 때문에
+		mav.addObject("n_type", n_type);
+		mav.addObject("nowpage", page);
+		mav.addObject("totalpage", totalPage);				
+		mav.addObject("noticelist", getOwnerNoticeList);
+		mav.addObject("word", word);
+		mav.addObject("titlecontent" ,searchCondition);
 		mav.setViewName("company_contact/companyNotice");		
 		                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
 		return mav;
 	}
 	
-	@RequestMapping("/ceo/noticeDetail")
-	public ModelAndView detail(@RequestParam("no") int no) {
-		
+	@RequestMapping(value="/ceo/ceoNoticeDetail", method = RequestMethod.GET)
+	public ModelAndView detail(@RequestParam("no") int no,
+							   @RequestParam("n_viewCnt") int n_viewCnt	) {
 		ModelAndView mav = new ModelAndView();
+		n_viewCnt ++;
 		
-		noticeBoardVo noticedetail = employeeService.getnoticeBoardByNo(no);
-		System.out.println(noticedetail);
+		NoticeBoardVo noticeBoardVo = new NoticeBoardVo();
+		noticeBoardVo.setN_no(no);
+		noticeBoardVo.setN_viewCnt(n_viewCnt);
 		
-		mav.addObject("noticedetail", noticedetail);
+		NoticeBoardVo noticeDetail = employeeService.getNoticeBoardByNo(noticeBoardVo);
+		
+		mav.addObject("noticeDetail", noticeDetail);
 		mav.setViewName("company_contact/companyNoticeDetail");		
 		
 		return mav;
 	}
 	
+/*******************************************************************************************	
+	*******************************************************************************************/
 	
-	*************************************************************************************/
+	
+	
+	
 	
 	@RequestMapping(value="/ceo/forgotmyid", method=RequestMethod.GET)
 	public String findIdGet() {

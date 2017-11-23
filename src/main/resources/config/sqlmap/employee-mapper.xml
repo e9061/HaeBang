@@ -44,38 +44,50 @@
 		insert into t_employee(e_id, e_name, e_password, e_phone, c_no) values(#{e_id}, #{e_name}, #{e_password},#{e_phone}, (select c_no from t_company where c_name=#{c_name} and c_bizNo =#{c_bizNo}))
 	</insert>
 
-	<!-- 공지사항 게시판 -->	
-	<select id="selectnoticeList" parameterType="java.util.Map" resultType="noticeBoardVo">
-        SELECT * FROM t_notice
-        <where>
-            <if test="titlecontent != null">
-                n_content like CONCAT('%',#{titlecontent},'%') or n_title like CONCAT('%',#{titlecontent},'%')
-            </if>
-        </where>
+<!--*************************************** 공지사항 ******************************************-->
+	<select id="getNoticeList" parameterType="java.util.Map" resultType="noticeBoardVo">
+ 			select n_no, n_writer, n_title, n_content, n_viewCnt, date_format( n_regDate, '%Y-%m-%d' ) as n_regDate, n_type
+ 			from t_notice
+ 			where
+ 				n_type = #{ n_type }
+ 				<if test="titlecontent != null">
+	 				AND
+ 					(n_content like CONCAT('%',#{titlecontent},'%') or n_title like CONCAT('%',#{titlecontent},'%'))
+ 				</if>
+ 			order by n_no DESC
+ 			limit #{startPoint}, #{row}
+ 		</select> 
+ 	<!-- 공지사항 총 갯수  -->
+ 		<select id="selectTotalCount" parameterType="java.util.Map" resultType="Integer">
+ 			select count(*) 
+ 			from t_notice
+ 			where
+ 				n_type = #{ n_type }
+ 				<if test="titlecontent != null"> 
+ 					AND
+ 					(n_content like CONCAT('%',#{titlecontent},'%') or n_title like CONCAT('%',#{titlecontent},'%'))
+ 				</if>
+ 		</select>
+ 	<!-- 선택 공지사항 디테일  -->
+		<select id="selectOneNDetailByNo" parameterType="noticeBoardVo" resultType="noticeBoardVo">
+			 select n_no, n_writer, n_title, n_content, n_viewCnt, date_format( n_regDate, '%Y-%m-%d' ) as n_regDate, n_type
+			 from t_notice 
+			 where n_no = #{ n_no } 
+		</select> 		
+ 	<!-- updateViewCnt ++   -->
+ 		<select id="updateViewCnt" parameterType="noticeBoardVo">
+			update t_notice set n_viewCnt = #{n_viewCnt} where 	n_no = #{n_no}	
+ 		</select>
 
-        ORDER BY n_no DESC
-        limit #{startpoint}, #{row} 
-    </select>
 
-	
-	<select id="selectTotalCount" parameterType="java.util.Map" resultType="Integer">
-        SELECT COUNT(*) FROM t_notice        
-        <where>
-            <if test="titlecontent != null">
-                n_content like CONCAT('%',#{titlecontent},'%') or n_title like CONCAT('%',#{titlecontent},'%')
-            </if>
-        </where>        
-
-    </select>
-
-	<select id="selectnoticeDetail" parameterType="int" resultType="noticeBoardVo">
-		select * from t_notice where n_no = #{no}
-	</select>
-	
-	
 	<select id="selectmainnoticelist" resultType="noticeBoardVo">
-		SELECT n_no, n_title, n_writer, n_content, n_viewCnt, date_format(n_regDate, '%Y-%m-%d') as n_regDate FROM t_notice ORDER BY n_no DESC LIMIT 0, 5;
+		SELECT n_no, n_title, n_writer, n_content, n_viewCnt, date_format(n_regDate, '%Y-%m-%d') as n_regDate 
+		FROM t_notice 
+		where n_type='O'
+		ORDER BY n_no DESC LIMIT 0, 5
 	</select>
+<!--*************************************** 공지사항 끝 ******************************************-->
+	
 	
 	<select id="selectIdByPhone" parameterType="hashMap" resultType="employeeVo">
 		select e_id, date_format(e_joinDate, '%Y-%m-%d') as e_joinDate from t_employee where e_name=#{name} and e_phone=#{phone}

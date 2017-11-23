@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
 import net.haebang.vo.MapVo;
-import net.haebang.vo.noticeBoardVo;
+import net.haebang.vo.NoticeBoardVo;
 
 public interface EmployeeService {
 
@@ -17,16 +17,17 @@ public interface EmployeeService {
 	void modifyEmployee(EmployeeVo employee);
 	EmployeeVo authenticate(EmployeeVo employeeVo);
 	List<MapVo> selectAllmap(EmployeeVo employeeVo);
-	/**********************************************************************************
-	List<noticeBoardVo> getnoticelist(int page, String word, String searchCondition);
-	int getlastpage(String word, String searchCondition);
-	noticeBoardVo getnoticeBoardByNo(int no);
-	**************************************************************************************/
-	List<noticeBoardVo> getMainnoticelist();
+	List<NoticeBoardVo> getMainnoticelist();
 	EmployeeVo getIdByPhone(String name, String phone);
 	EmployeeVo getIdByBizNo(String name, String companyName, String bizNo);
 	EmployeeVo getIdbyId(EmployeeVo employeeVo);
 	void changePassword(EmployeeVo employeeVo);
+	
+	/********************************공지사항**************************************************************/
+	List<NoticeBoardVo> getNoticeList(String n_type, int page, String word, String searchCondition);
+	int getLastPage(String n_type, String word, String searchCondition);
+	NoticeBoardVo getNoticeBoardByNo(NoticeBoardVo noticeBoardVo);
+	/********************************공지사항**************************************************************/
 
 }
 
