@@ -71,4 +71,26 @@
 	<select id="selectnoticeDetail" parameterType="int" resultType="noticeBoardVo">
 		select * from t_notice where n_no = #{no}
 	</select>
+	
+	
+	<select id="selectmainnoticelist" resultType="noticeBoardVo">
+		SELECT n_no, n_title, n_writer, n_content, n_viewCnt, date_format(n_regDate, '%Y-%m-%d') as n_regDate FROM t_notice ORDER BY n_no DESC LIMIT 0, 5;
+	</select>
+	
+	<select id="selectIdByPhone" parameterType="hashMap" resultType="employeeVo">
+		select e_id, date_format(e_joinDate, '%Y-%m-%d') as e_joinDate from t_employee where e_name=#{name} and e_phone=#{phone}
+	</select>
+	
+	<select id="selectIdByBizNo" parameterType="java.util.Map" resultType="employeeVo">
+		select e.e_id, date_format(e_joinDate, '%Y-%m-%d') as e_joinDate from t_employee e, t_company c where e.e_name=#{name} and c.c_name=#{companyName} and c.c_bizNo=#{bizNo} and c.c_no = e.c_no;
+	</select>
+	
+	<select id="getIdbyId" parameterType="employeeVo" resultType="employeeVo"> 
+		select e_id from t_employee where e_id=#{e_id}
+	</select>
+	
+	<select id="changepassword" parameterType="employeeVo">
+		update t_employee set e_password=#{e_password} where e_id=#{e_id}
+	</select>
+	
 </mapper>

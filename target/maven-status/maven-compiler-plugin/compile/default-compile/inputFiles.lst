@@ -9,7 +9,9 @@
 /home/ubuntu/HaeBang/src/main/java/net/haebang/vo/MapVo.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/admin/dao/AdminDao.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/vo/MemberVo.java
+/home/ubuntu/HaeBang/src/main/java/net/haebang/exception/NoSuchMemberException.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/qna/service/QnAService.java
+/home/ubuntu/HaeBang/src/main/java/net/haebang/exception/NoSuchIdException.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/employee/dao/EmployeeDaoImpl.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/qna/dao/QnADAO.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/exception/IdPasswordNotMatchingException.java
@@ -28,7 +30,6 @@
 /home/ubuntu/HaeBang/src/main/java/net/haebang/employee/dao/EmployeeDao.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/member/service/MemberService.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/member/service/MemberServiceImpl.java
-/home/ubuntu/HaeBang/src/main/java/net/haebang/employee/controller/PageHelper.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/admin/service/AdminServiceImpl.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/admin/controller/CompanyManageController.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/vo/CompanyVo.java

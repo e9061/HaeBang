@@ -20,42 +20,14 @@ public class EmployeeVo {
 	private String e_id;
 	private String e_name;
 	private String e_password;
-	private int e_phone;
+	private String e_phone;
 	private String e_type; //default 'E'(직원일경우), 사장 'C'
 	private String e_oriName;
 	private String e_saveName;
-	private Date e_registerDate;  //테이블 추가!,  default now()
+	private String e_joinDate;  //테이블 추가!,  default now()
 	private int c_no;
 	
 	
-	public int getC_no() {
-		return c_no;
-	}
-
-	public void setC_no(int c_no) {
-		this.c_no = c_no;
-	}
-
-	public void changePassword(String oldPassword, String newPassword) {
-		
-		if(!e_password.equals(oldPassword))
-			throw new IdPasswordNotMatchingException();
-		this.e_password = newPassword;
-		
-	}
-	
-	public boolean matchPassword(String pwd) {
-		return this.e_password.equals(pwd);
-	}
-	
-	
-	
-	public Date getE_registerDate() {
-		return e_registerDate;
-	}
-	public void setE_registerDate(Date e_registerDate) {
-		this.e_registerDate = e_registerDate;
-	}
 	public int getE_no() {
 		return e_no;
 	}
@@ -80,10 +52,10 @@ public class EmployeeVo {
 	public void setE_password(String e_password) {
 		this.e_password = e_password;
 	}
-	public int getE_phone() {
+	public String getE_phone() {
 		return e_phone;
 	}
-	public void setE_phone(int e_phone) {
+	public void setE_phone(String e_phone) {
 		this.e_phone = e_phone;
 	}
 	public String getE_type() {
@@ -104,14 +76,23 @@ public class EmployeeVo {
 	public void setE_saveName(String e_saveName) {
 		this.e_saveName = e_saveName;
 	}
-
-
-
+	public String getE_joinDate() {
+		return e_joinDate;
+	}
+	public void setE_joinDate(String e_joinDate) {
+		this.e_joinDate = e_joinDate;
+	}
+	public int getC_no() {
+		return c_no;
+	}
+	public void setC_no(int c_no) {
+		this.c_no = c_no;
+	}
 	@Override
 	public String toString() {
 		return "EmployeeVo [e_no=" + e_no + ", e_id=" + e_id + ", e_name=" + e_name + ", e_password=" + e_password
 				+ ", e_phone=" + e_phone + ", e_type=" + e_type + ", e_oriName=" + e_oriName + ", e_saveName="
-				+ e_saveName + ", e_registerDate=" + e_registerDate + ", c_no=" + c_no + "]";
+				+ e_saveName + ", e_joinDate=" + e_joinDate + ", c_no=" + c_no + "]";
 	}
 
 	

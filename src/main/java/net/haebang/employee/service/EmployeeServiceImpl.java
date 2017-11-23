@@ -18,6 +18,8 @@ import net.haebang.employee.dao.EmployeeDao;
 import net.haebang.exception.AlreadyExistingMemberException;
 
 import net.haebang.exception.IdPasswordNotMatchingException;
+import net.haebang.exception.NoSuchIdException;
+import net.haebang.exception.NoSuchMemberException;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
 import net.haebang.vo.MapVo;
@@ -37,7 +39,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Transactional
-	public void registerEmployeeAnd(JoinEmployeeVo joinEmployeeVo, MultipartHttpServletRequest request) {
+	public void registerEmployee(JoinEmployeeVo joinEmployeeVo, MultipartHttpServletRequest request) {
 
 		EmployeeVo employeeVo = employeeDao.selectById(joinEmployeeVo.getE_id());
 		if (employeeVo != null) {
@@ -95,24 +97,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	}
 
-	
-	@Transactional
-	public void registerEmployee(JoinEmployeeVo joinEmployeeVo, MultipartHttpServletRequest request) {
-		EmployeeVo employeeVo = employeeDao.selectById(joinEmployeeVo.getE_id());
-		if (employeeVo != null) {
-			throw new AlreadyExistingMemberException("중복" + joinEmployeeVo.getE_id());
-		}
-		
-		employeeDao.insertEmployee(joinEmployeeVo);
-		
-	}	
-
-
-
-	
-
-///////////////////////////////////진화////////////////////////////////////////////////
-
 	public void modifyEmployee(EmployeeVo employee) {
 
 	}
@@ -136,6 +120,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 		List<MapVo> maplist = employeeDao.selectAllmap(employeeVo);
 		return maplist;
 	}
+	
+/***********************************************************************************	
 
 	private final int LINE_PER_PAGE = 10;
 	
@@ -144,9 +130,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 		int startpoint = page * LINE_PER_PAGE;		
 				
-		/*PageHelper pageHelper = new PageHelper(startpoint, LINE_PER_PAGE);*/
+		PageHelper pageHelper = new PageHelper(startpoint, LINE_PER_PAGE);
         Map<String, Object> map = new HashMap<String, Object>();
-        /*map.put("pageHelper", pageHelper);*/
+        map.put("pageHelper", pageHelper);
         
         System.out.println("에헤헤헤헤헤");
         System.out.println(startpoint);  
@@ -180,6 +166,73 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public noticeBoardVo getnoticeBoardByNo(int no) {
 		noticeBoardVo getnoticeBoardByNo = employeeDao.getnoticeBoardByNo(no);
 		return getnoticeBoardByNo;
+	}
+********************************************************************************/
+	@Override
+	public List<noticeBoardVo> getMainnoticelist() {
+		List<noticeBoardVo> mainNoticelist = employeeDao.getMainnoticelist();
+		return mainNoticelist;
+		
+	}
+
+	@Override
+	public EmployeeVo getIdByPhone(String name, String phone) {
+		
+		 Map<String, Object> map = new HashMap<String, Object>(); 
+		 
+		 System.out.println(name);
+		 System.out.println(phone);
+	
+	        map.put("name", name);
+	        map.put("phone", phone);	        
+		
+		EmployeeVo getIdByPhone = employeeDao.getIdByPhone(map);
+		
+		if (getIdByPhone == null ) {
+			throw new NoSuchMemberException();
+		}
+		
+		
+		return getIdByPhone;
+	}
+
+	@Override
+	public EmployeeVo getIdByBizNo(String name, String companyName, String bizNo) {
+		Map<String, Object> map = new HashMap<String, Object>(); 
+		
+		System.out.println(name);
+		System.out.println(companyName);
+		System.out.println(bizNo);
+		
+		map.put("name", name);
+	    map.put("companyName", companyName);
+	    map.put("bizNo", bizNo);
+		
+		EmployeeVo getIdByBizNo = employeeDao.getIdByBizNo(map);
+		
+		if (getIdByBizNo == null ) {
+			throw new NoSuchMemberException();
+		}
+		
+		return getIdByBizNo;
+	}
+
+	@Override
+	public EmployeeVo getIdbyId(EmployeeVo employeeVo) {
+		
+		EmployeeVo checkIdbyId  = employeeDao.getIdbyId(employeeVo);
+		
+		if(checkIdbyId == null) {
+			throw new NoSuchIdException();
+		}
+		
+		return checkIdbyId;
+	}
+
+	@Override
+	public void changePassword(EmployeeVo employeeVo) {
+		employeeDao.changePassword(employeeVo);
+		
 	}
 
 }

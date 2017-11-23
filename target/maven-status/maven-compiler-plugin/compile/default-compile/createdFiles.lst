@@ -3,10 +3,11 @@ net/haebang/admin/service/AdminService.class
 net/haebang/vo/MapVo.class
 net/haebang/admin/service/AdminServiceImpl.class
 net/haebang/exception/AlreadyExistingMemberException.class
+net/haebang/exception/NoSuchMemberException.class
 net/haebang/employee/controller/RegisterEmployeeValidator.class
 net/haebang/member/service/MemberService.class
 net/haebang/member/dao/MemberDao.class
-net/haebang/employee/controller/PageHelper.class
+net/haebang/exception/NoSuchIdException.class
 net/haebang/admin/dao/AdminDaoImpl.class
 net/haebang/qna/service/QnAService.class
 net/haebang/vo/JoinEmployeeVo.class

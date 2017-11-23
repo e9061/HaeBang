@@ -1,6 +1,7 @@
 package net.haebang.employee.controller;
 
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,12 +17,13 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import net.haebang.employee.service.EmployeeService;
 import net.haebang.exception.IdPasswordNotMatchingException;
+import net.haebang.exception.NoSuchIdException;
+import net.haebang.exception.NoSuchMemberException;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.MapVo;
 import net.haebang.vo.noticeBoardVo;
@@ -30,6 +32,7 @@ import net.haebang.employee.service.EmployeeService;
 import net.haebang.exception.AlreadyExistingMemberException;
 import net.haebang.exception.IdPasswordNotMatchingException;
 import net.haebang.vo.CompanyVo;
+import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
 
 
@@ -43,147 +46,122 @@ public class EmployeeController {
 	private EmployeeDao employeeDao;
 
 
-	@RequestMapping(value = "/ceo/register/step1", method = RequestMethod.GET)
-	public ModelAndView joinForm(String type) {
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("type", type);
-		mav.setViewName("employee/step1");
-
-		return mav;
-	}
-
 	@RequestMapping(value = "/ceo/register/step2", method = RequestMethod.GET)
 	public String joinForm1(Model model) {
-		System.out.println("뭐지 왜 두번 들어오지");
+		System.out.println("joinForm1");
 		model.addAttribute("joinEmployeeVo", new JoinEmployeeVo());
 		return "employee/step2";
 	}
 
 	@RequestMapping(value = "/ceo/register/step2", method = RequestMethod.POST)
-	public String joinForm2(Model model, @RequestParam(value = "ownerOrMember") String ownerOrMember) {
-		System.out.println(ownerOrMember);
-		model.addAttribute("ownerOrMember", ownerOrMember);
+	public String joinForm2(Model model) {
+		
+		System.out.println("joinForm2");
 		model.addAttribute("joinEmployeeVo", new JoinEmployeeVo());
 		return "employee/step2";
 	}
 	// 곧장 /register/step2로 들어오면 get방식으로 들어오므로 그걸 리다이렉트 해줘야함.
 
 	@RequestMapping(value = "/ceo/register/step3", method = RequestMethod.POST)
-	public String joinForm3(JoinEmployeeVo joinEmployeeVo, Errors errors, MultipartHttpServletRequest request, Model model) {
+	public String joinForm3(JoinEmployeeVo joinEmployeeVo, Errors errors, MultipartHttpServletRequest request) {
 		new RegisterEmployeeValidator().validate(joinEmployeeVo, errors);
-
-		if (joinEmployeeVo.getC_code() == null) {
-			if (errors.hasErrors()) {
-				return "employee/step2";
-			}
-			try {
-
-				employeeService.registerEmployeeAnd(joinEmployeeVo, request);
-				return "employee/step3";
-
-			} catch (AlreadyExistingMemberException ex) {
-				errors.rejectValue("e_id", "duplicate");
-				return "employee/step2";
-			}
-		}
-
-		if (errors.hasErrors()) {
-			model.addAttribute("ownerOrMember", request.getParameter("ownerOrMember"));
+		
+		if(errors.hasErrors())
+		{
 			return "employee/step2";
 		}
-
 		try {
+			
 			employeeService.registerEmployee(joinEmployeeVo, request);
 			return "employee/step3";
 
 		} catch (AlreadyExistingMemberException ex) {
-			model.addAttribute("ownerOrMember", request.getParameter("ownerOrMember"));
 			errors.rejectValue("e_id", "duplicate");
 			return "employee/step2";
 		}
-
+		
 	}
 
 	@RequestMapping(value = "/ceo/register/step3", method = RequestMethod.GET)
 	public String joinForm4() {
-		return "redirect:/ceo/register/step2";
+		System.out.println("joinForm4");
+				return "redirect:/ceo/register/step2";
 	}
-
-	@RequestMapping(value = "/ceo/register/duplicate1", method = RequestMethod.POST)
+	
+	
+	@RequestMapping(value="/ceo/register/duplicate1", method=RequestMethod.POST)
 	public String duplicate1(HttpServletRequest req, Model model) {
 		System.out.println(req.getParameter("e_id"));
 		EmployeeVo employeeVo = employeeDao.selectById(req.getParameter("e_id"));
-		String msg = null;
-
-		// Pattern pattern = Pattern.compile("[0-9].[a-zA-Z].{6,14}$");
+		String msg=null;
+		
+//		Pattern pattern = Pattern.compile("[0-9].[a-zA-Z].{6,14}$");
 		Pattern pattern1 = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[a-zA-Z]).{6,14}$");
-
+		
 		Matcher matcher = pattern1.matcher(req.getParameter("e_id"));
-		if (matcher.find()) {
-			if (employeeVo != null) {
-				msg = "존재하는 아이디입니다.";
-				model.addAttribute("msg", msg);
-			} else {
-				msg = "사용가능한 아이디입니다.";
+		if(matcher.find())
+		{
+			if(employeeVo!=null)
+			{
+				msg="존재하는 아이디입니다.";
 				model.addAttribute("msg", msg);
 			}
-
-		} else {
-
-			msg = "영문, 숫자 포함 6~14자리로 입력해주세요.";
+			else
+			{
+				msg="사용가능한 아이디입니다.";
+				model.addAttribute("msg", msg);
+			}
+			
+		}else{
+			
+			msg="영문, 숫자 포함 6~14자리로 입력해주세요.";
 			model.addAttribute("msg", msg);
 		}
-
+		
+		
 		return "employee/duplicate";
-
+		
 	}
-
-	@RequestMapping(value = "/ceo/register/duplicate2", method = RequestMethod.POST)
+	
+	@RequestMapping(value="/ceo/register/duplicate2", method=RequestMethod.POST)
 	public String duplicate2(HttpServletRequest req, Model model) {
 		System.out.println(req.getParameter("c_bizNo"));
 		CompanyVo companyVo = employeeDao.selectBybizNo(req.getParameter("c_bizNo"));
-		String msg = null;
+		String msg=null;
 		Pattern pattern = Pattern.compile("^[0-9]{10}$");
-
+		
 		Matcher matcher = pattern.matcher(req.getParameter("c_bizNo"));
-		if (matcher.find()) {
-			if (companyVo != null) {
-				msg = "존재하는 사업자번호입니다.";
-				model.addAttribute("msg", msg);
-			} else {
-				msg = "사용가능한 사업자 번호입니다.";
+		if(matcher.find())
+		{	if(companyVo!=null)
+			{
+				msg="존재하는 사업자번호입니다.";
 				model.addAttribute("msg", msg);
 			}
-		} else {
-			msg = "10자리 숫자로만 입력해주세요.";
+			else
+			{
+				msg="사용가능한 사업자 번호입니다.";
+				model.addAttribute("msg", msg);
+			}
+			
+		}else
+		{
+			msg="10자리 숫자로만 입력해주세요.";
 			model.addAttribute("msg", msg);
 		}
+		
 		return "employee/duplicate";
+		
 	}
 
-	@RequestMapping(value = "/ceo/register/ccode", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody CompanyVo confirmCode(HttpServletRequest req) {
-
-		CompanyVo companyVo = employeeDao.selectByCode(req.getParameter("c_code"));
-
-		return companyVo;
-	}
-	
-
-
-
-
-
-
-
-
-	///////////////////////////////////////진화////////////////////////////////////////////////////////////////////////
 	
 	@RequestMapping(value="/ceo", method=RequestMethod.GET)
 	public ModelAndView main() {
 		
 		ModelAndView mav = new ModelAndView();
 		
+		List<noticeBoardVo> mainNoticelist = employeeService.getMainnoticelist();
+		
+		mav.addObject("mainNoticelist", mainNoticelist);
 		mav.addObject("employeeVo", new EmployeeVo());
 		mav.setViewName("company_main/companymain");
 		
@@ -227,6 +205,8 @@ public class EmployeeController {
 			mav.addObject("userVo", userVo);
 			mav.setViewName("company_main/companymain");
 			
+			List<noticeBoardVo> mainNoticelist = employeeService.getMainnoticelist();			
+			mav.addObject("mainNoticelist", mainNoticelist);
 		
 			List<MapVo> maplist = employeeService.selectAllmap(userVo);				
 			mav.addObject("maplist", maplist);
@@ -236,6 +216,7 @@ public class EmployeeController {
 						
 		} catch (IdPasswordNotMatchingException e) {			
 			
+			System.out.println("아이디패스워드낫매치드!");
 			mav.addObject("errorMessage", "입력하신 회원 정보가 존재하지 않습니다");
 			mav.setViewName("company_main/companymain");
 			
@@ -247,7 +228,9 @@ public class EmployeeController {
 		
 	}
 	
-	@RequestMapping("/ceo/notice")
+/*************************************공지사항******************************************************	
+  
+   @RequestMapping("/ceo/notice")
 	public ModelAndView notice(@RequestParam(value="nowpage", defaultValue="0") int page,
             @RequestParam(value="word", required=false) String word, 
             @RequestParam(value="searchCondition", defaultValue="null", required=false) String searchCondition) {
@@ -263,7 +246,7 @@ public class EmployeeController {
 		mav.addObject("totalpage", employeeService.getlastpage(word, searchCondition));				
 		mav.addObject("noticelist", noticelist);
 				
-		mav.setViewName("company_contact/notice");		
+		mav.setViewName("company_contact/companyNotice");		
 		                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
 		return mav;
 	}
@@ -277,9 +260,191 @@ public class EmployeeController {
 		System.out.println(noticedetail);
 		
 		mav.addObject("noticedetail", noticedetail);
-		mav.setViewName("company_contact/noticeDetail");		
+		mav.setViewName("company_contact/companyNoticeDetail");		
 		
 		return mav;
 	}
-}
+	
+	
+	*************************************************************************************/
+	
+	@RequestMapping(value="/ceo/forgotmyid", method=RequestMethod.GET)
+	public String findIdGet() {
+		return "company_main/forgotMyid";
+	}
 
+	
+	
+	@RequestMapping(value="/ceo/forgotmyid", method=RequestMethod.POST)
+	public ModelAndView findId(
+			@RequestParam("member-find-way") String findway,
+			@RequestParam(value="name1", defaultValue="null", required=false) String name1,
+			@RequestParam(value="name2", defaultValue="null", required=false) String name2,
+			@RequestParam(value="phone1", defaultValue="null", required=false) String phone1, 
+			@RequestParam(value="phone2", defaultValue="null", required=false) String phone2,
+			@RequestParam(value="phone3", defaultValue="null", required=false) String phone3,
+			@RequestParam(value="companyName", defaultValue="null", required=false) String companyName,
+			@RequestParam(value="bizNo1", defaultValue="null", required=false) String bizNo1, 
+			@RequestParam(value="bizNo2", defaultValue="null", required=false) String bizNo2,
+			@RequestParam(value="bizNo3", defaultValue="null", required=false) String bizNo3, ModelAndView mav) {
+		
+		
+			
+		
+		if(findway.equals("cellphone")) {
+			
+			try {
+			
+			String phone = phone1+phone2+phone3;
+						
+			EmployeeVo employeevo = employeeService.getIdByPhone(name1, phone);
+
+			String email = employeevo.getE_id();
+			
+			String emailid = "";
+			String emailaddress = "";
+			String modifiedEmail = "";
+			int at1 = email.indexOf("@");
+			int at2 = email.lastIndexOf("@");
+			emailid = email.substring(0, at1);
+			emailaddress = email.substring(at2);		
+
+			
+			int halfLength = (emailid.length()/2);
+			System.out.println(halfLength);
+			
+			Random r = new Random();		
+			StringBuilder sb = new StringBuilder(emailid);
+			for(int i = 0; i < halfLength; i++) {
+				int randomIndex = Math.abs(r.nextInt()%(emailid.length()));
+				if(sb.charAt(randomIndex) != '*') {
+					sb.setCharAt(randomIndex, '*');
+				}else {
+					i--;
+				}			
+		
+			}		
+			
+			modifiedEmail = sb+emailaddress;
+			
+			mav.addObject("joinDate", employeevo.getE_joinDate());
+			mav.addObject("modifiedEmail", modifiedEmail);
+			mav.setViewName("company_main/findmyid");
+			
+			}catch (NoSuchMemberException e) {
+				
+				System.out.println("셀폰-노서치멤버익셉션!");
+				mav.addObject("errorMessage", "입력하신 회원 정보가 존재하지 않습니다");
+				mav.setViewName("company_main/forgotMyid");			
+				
+				
+			}
+			
+			
+			
+		}
+		
+		if(findway.equals("bizNo")) {
+			
+			try {
+			
+			String bizNo = bizNo1 + bizNo2 + bizNo3;
+			EmployeeVo employeevo = employeeService.getIdByBizNo(name2, companyName, bizNo);
+			System.out.println(employeevo);
+			
+			String email = employeevo.getE_id();
+			String emailid = "";
+			String emailaddress = "";
+			String modifiedEmail = "";
+			int at1 = email.indexOf("@");
+			int at2 = email.lastIndexOf("@");
+			emailid = email.substring(0, at1);
+			emailaddress = email.substring(at2);		
+			
+			int halfLength = (emailid.length()/2);
+			
+			Random r = new Random();		
+			StringBuilder sb = new StringBuilder(emailid);
+			for(int i = 0; i < halfLength; i++) {
+				int randomIndex = Math.abs(r.nextInt()%(emailid.length()));
+				if(sb.charAt(randomIndex) != '*') {
+					sb.setCharAt(randomIndex, '*');
+				}else {
+					i--;
+				}			
+		
+			}		
+			
+			
+			modifiedEmail = sb+emailaddress;
+			
+			mav.addObject("joinDate", employeevo.getE_joinDate());
+			mav.addObject("modifiedEmail", modifiedEmail);
+			mav.setViewName("company_main/findmyid");
+			
+		}	catch (NoSuchMemberException e) {
+			
+			System.out.println("비-노서치멤버익셉션!");
+			mav.addObject("errorMessage", "입력하신 회원 정보가 존재하지 않습니다");
+			mav.setViewName("company_main/forgotMyid");			
+		
+			
+		}				
+				
+	}
+		return mav;
+	
+	}
+	
+
+	@RequestMapping(value="/ceo/forgotmypassword", method=RequestMethod.GET)
+	public ModelAndView forgotmypassword(ModelAndView mav) {		
+		mav.addObject("employeeVo", new EmployeeVo());
+		mav.setViewName("company_main/forgotMypassword");
+		return mav;
+	}
+	
+	
+	@RequestMapping(value="/ceo/forgotmypassword", method=RequestMethod.POST)
+	public ModelAndView phoneAuthforPw(EmployeeVo employeeVo, ModelAndView mav) {
+		
+		try {
+		
+			EmployeeVo checkIdbyId = employeeService.getIdbyId(employeeVo);
+		
+			mav.addObject("userID", checkIdbyId.getE_id());
+			mav.setViewName("company_main/phoneAuthforPw");
+		
+		} catch (NoSuchIdException e) {
+			
+			mav.addObject("errorMessage", "일치하는 회원정보가 없습니다");
+			mav.setViewName("company_main/forgotMypassword");
+			
+		}
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/ceo/passwordChangeForm", method=RequestMethod.GET)
+	public ModelAndView passwordChangeForm(@RequestParam("id")  String userid, ModelAndView mav) {
+		
+		mav.addObject("userID", userid);
+		mav.addObject("employeeVo", new EmployeeVo());
+		mav.setViewName("company_main/passwordChangeForm");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/ceo/passwordChangeForm", method=RequestMethod.POST)
+	public ModelAndView passwordChangeForm2(EmployeeVo employeeVo, ModelAndView mav) {
+		
+		System.out.println(employeeVo);
+		employeeService.changePassword(employeeVo);
+		System.out.println("passwordchange 업데이트 완료");
+		mav.setViewName("company_main/passwordChanged");
+		
+		return mav;
+	}
+	
+	
+}

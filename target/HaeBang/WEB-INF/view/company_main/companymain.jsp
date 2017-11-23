@@ -33,7 +33,7 @@
 <link
 	href="${ pageContext.request.contextPath }/resources/skins/default.css"
 	rel="stylesheet" />
-	
+
 
 <!-- =======================================================
     Theme Name: Moderna
@@ -45,12 +45,10 @@
 
 
 <style>
-
 #map {
-	height:500px;
-	width:700px;
+	height: 500px;
+	width: 700px;
 }
-
 </style>
 
 <script>
@@ -65,9 +63,9 @@
     }   
     
   </script>
-    
 
-    <!--Start of Tawk.to Script-->
+
+<!--Start of Tawk.to Script-->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 (function(){
@@ -80,11 +78,12 @@ s0.parentNode.insertBefore(s1,s0);
 })();
 </script>
 <!--End of Tawk.to Script-->
-    
 
-  
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA55tXe_wDtqEVlLtwacYJsOXG2zBQC7lk&callback=initMap"
-    async defer></script>
+
+
+<script
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA55tXe_wDtqEVlLtwacYJsOXG2zBQC7lk&callback=initMap"
+	async defer></script>
 
 
 
@@ -102,102 +101,121 @@ s0.parentNode.insertBefore(s1,s0);
 		</header>
 		<!-- end header -->
 		<jsp:include page="../employee_include/loginModal.jsp" />
-		
+
 		<section id="inner-headline">
-			<div class="container">
-				<!-- <div class="row" > -->
-				<div width="100%" height="300px">
-					<div class="col-lg-12">
-						<br/>
-						<br/>
-						<br/>
-					</div>
+		<div class="container">
+			<!-- <div class="row" > -->
+			<div width="100%" height="300px">
+				<div class="col-lg-12">
+					<br /> <br /> <br />
 				</div>
 			</div>
+		</div>
 		</section>
 		<section id="content">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-8"> 
-					
-					<article>
-						<c:if test="${ not empty userVo }">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8">
+
+					<article> <c:if test="${ not empty userVo }">
 						<h4>Today's Schedule</h4>
-						<div id="map"></div>	
-						</c:if>
-					</article>							
-						
-						
-						<article>
-						<h4>Quick Menu</h4>
-							<table border="1" bordercolor="lightgray" style="width: 700px; height: 150px;">
-						<tr>							
-							<td style="background-color:SteelBlue; color:white; text-align:center;">
-							<c:if test="${ empty userVo }">
-							<a href="#myModal" class="trigger-btn" data-toggle="modal">					
-							정산관리
-							</a>
-							</c:if>
-							<c:if test="${ not empty userVo }">
-							<a href="#">
-							정산관리
-							</a>
-							</c:if>
+						<div id="map"></div>
+					</c:if> </article>
+
+
+					<article>
+
+
+
+					<h4>
+						<strong>공지사항</strong>
+					</h4>
+					<br/>				
+
+
+
+				<table style="width: 800px;">
 					
-							</td>							
-							<td style="background-color:white; text-align:center;">
-							<c:if test="${ empty userVo }">
-							<a href="#myModal" class="trigger-btn" data-toggle="modal">					
-							스케쥴관리
-							</a>
-							</c:if>
-							<c:if test="${ not empty userVo }">
-							<a href="#">
-							스케쥴관리
-							</a>
-							</c:if>
-							</td>
-						</tr>
-						<tr style="width:350px;">
-							<td style="background-color:white; text-align:center;">
-							<c:if test="${ empty userVo }">
-							<a href="#myModal" class="trigger-btn" data-toggle="modal">					
-							종합통계
-							</a>
-							</c:if>
-							<c:if test="${ not empty userVo }">
-							<a href="#">
-							종합통계
-							</a>
-							</c:if>
-							</td>
-							<td style="background-color:SteelBlue; color:white; text-align:center;">
-							<c:if test="${ empty userVo }">
-							<a href="#myModal" class="trigger-btn" data-toggle="modal">					
-							예약내역
-							</a>
-							</c:if>
-							<c:if test="${ not empty userVo }">
-							<a href="#">
-							예약내역
-							</a>
-							</c:if>
-							</td>
-						</tr>
-					</table>
-						</article>
-						
-						
-						
-						<article>
-							<div class="post-slider">
-								<div class="post-heading">
-									<h4>Tips</h4>		
-									<h3><a href="#">우리 업체 필증 발급, 정확하게 하고있나요?</a></h3>
-								</div>
-								<!-- start flexslider -->
-								<img src="${ pageContext.request.contextPath }/resources/img/pestcontrol.jpg" alt="" width="700px" height="300px" />
-									<%-- <ul class="slides">
+
+					<tbody>
+						<c:forEach items="${ mainNoticelist }" var="board" varStatus="loop">
+							<tr>
+								<td><a href="javascript:doAction('${board.n_no }')"> 
+								<c:out value="${ board.n_title }" />
+								</a></td>
+								<td>${ board.n_regDate }</td>
+							</tr>
+						</c:forEach>
+
+						<c:if test="${ count eq 0 }">
+							<tr>
+								<td colspan="6" align="center">게시글이 없습니다.</td>
+							</tr>
+						</c:if>
+					</tbody>
+				</table>
+				</article>
+				<br/> <br/>
+
+				<article>
+				<h4>Quick Menu</h4>
+				<c:if test="${ empty userVo }">
+					<a href="#myModal" class="trigger-btn" data-toggle="modal"> <img
+						src="${ pageContext.request.contextPath }/resources/img/calculate.jpg"
+						width="160px" />
+					</a>
+				</c:if> <c:if test="${ not empty userVo }">
+					<a href="#"> <img
+						src="${ pageContext.request.contextPath }/resources/img/calculate.jpg"
+						width="160px" />
+					</a>
+				</c:if> &nbsp;&nbsp;&nbsp; <c:if test="${ empty userVo }">
+					<a href="#myModal" class="trigger-btn" data-toggle="modal"> <img
+						src="${ pageContext.request.contextPath }/resources/img/schedule.jpg"
+						width="160px" />
+					</a>
+				</c:if> <c:if test="${ not empty userVo }">
+					<a href="#"> <img
+						src="${ pageContext.request.contextPath }/resources/img/schedule.jpg"
+						width="160px" />
+					</a>
+				</c:if> &nbsp;&nbsp;&nbsp; <c:if test="${ empty userVo }">
+					<a href="#myModal" class="trigger-btn" data-toggle="modal"> <img
+						src="${ pageContext.request.contextPath }/resources/img/statistics.jpg"
+						width="180px" />
+					</a>
+				</c:if> <c:if test="${ not empty userVo }">
+					<a href="#"> <img
+						src="${ pageContext.request.contextPath }/resources/img/statistics.jpg"
+						width="180px" />
+					</a>
+				</c:if> &nbsp;&nbsp;&nbsp; <c:if test="${ empty userVo }">
+					<a href="#myModal" class="trigger-btn" data-toggle="modal"> <img
+						src="${ pageContext.request.contextPath }/resources/img/revdetail.jpg"
+						width="160px" />
+					</a>
+				</c:if> <c:if test="${ not empty userVo }">
+					<a href="#"> <img
+						src="${ pageContext.request.contextPath }/resources/img/revdetail.jpg"
+						width="160px" />
+					</a>
+				</c:if> </article>
+
+
+
+				<article>
+				<div class="post-slider">
+					<div class="post-heading">
+						<h4>Tips</h4>
+						<h3>
+							<a href="#">우리 업체 필증 발급, 정확하게 하고있나요?</a>
+						</h3>
+					</div>
+					<!-- start flexslider -->
+					<img
+						src="${ pageContext.request.contextPath }/resources/img/pestcontrol.jpg"
+						alt="" width="700px" height="300px" />
+					<%-- <ul class="slides">
 										<li>
 											<img src="${ pageContext.request.contextPath }/resources/img/pestcontrol.jpg" alt="" width="700px" height="300px" />
 										</li>
@@ -209,148 +227,164 @@ s0.parentNode.insertBefore(s1,s0);
 										</li>
 									</ul>
 								</div> --%>
-								<!-- end flexslider -->
-							</div>
-							<p>
-								소독필증은 대상시설물 교부용1부,보건소신고용1부,회사보관용1부 총3부를 작성하여 소독실시후 소독회사는 반드시 소독실시 대상시설물에 1부를 교부하고, 시설물 소재지 관할 보건소에 소독신고서와 같이 1부를 제출하고 나머지 1부는 소독회사에서 보관합니다.
-							</p>
-							<div class="bottom-article">
-								<ul class="meta-post">
-									<li><i class="icon-calendar"></i><a href="#"> Mar 23, 2013</a></li>
-									<li><i class="icon-user"></i><a href="#"> Admin</a></li>
-									<li><i class="icon-folder-open"></i><a href="#"> Blog</a></li>
-									<li><i class="icon-comments"></i><a href="#">4 Comments</a></li>
-								</ul>
-								<a href="#" class="pull-right">Continue reading <i class="icon-angle-right"></i></a>
-							</div>
-						</article>
-						
-						
-						<article>
-
-				
+					<!-- end flexslider -->
+				</div>
+				<p>소독필증은 대상시설물 교부용1부,보건소신고용1부,회사보관용1부 총3부를 작성하여 소독실시후 소독회사는 반드시
+					소독실시 대상시설물에 1부를 교부하고, 시설물 소재지 관할 보건소에 소독신고서와 같이 1부를 제출하고 나머지 1부는
+					소독회사에서 보관합니다.</p>
+				<div class="bottom-article">
+					<ul class="meta-post">
+						<li><i class="icon-calendar"></i><a href="#"> Mar 23,
+								2013</a></li>
+						<li><i class="icon-user"></i><a href="#"> Admin</a></li>
+						<li><i class="icon-folder-open"></i><a href="#"> Blog</a></li>
+						<li><i class="icon-comments"></i><a href="#">4 Comments</a></li>
+					</ul>
+					<a href="#" class="pull-right">Continue reading <i
+						class="icon-angle-right"></i></a>
+				</div>
+				</article>
 
 
-					</article>
-						
-						
-						
-						
-						<article>
-							<div class="post-quote">
-								<div class="post-heading">
-									<h3><a href="#">Nice example of quote post format below</a></h3>
-								</div>
-								<blockquote>
-									<i class="icon-quote-left"></i> Lorem ipsum dolor sit amet, ei quod constituto qui. Summo labores expetendis ad quo, lorem luptatum et vis. No qui vidisse signiferumque...
-								</blockquote>
-							</div>
-							<div class="bottom-article">
-								<ul class="meta-post">
-									<li><i class="icon-calendar"></i><a href="#"> Mar 23, 2013</a></li>
-									<li><i class="icon-user"></i><a href="#"> Admin</a></li>
-									<li><i class="icon-folder-open"></i><a href="#"> Blog</a></li>
-									<li><i class="icon-comments"></i><a href="#">4 Comments</a></li>
-								</ul>
-								<a href="#" class="pull-right">Continue reading <i class="icon-angle-right"></i></a>
-							</div>
-						</article>
-						<article>
-							<div class="post-video">
-								<div class="post-heading">
-									<h3><a href="#">Amazing video post format here</a></h3>
-								</div>
-								<div class="video-container">
-									<iframe src="http://player.vimeo.com/video/30585464?title=0&amp;byline=0">
-								</iframe>
-								</div>
-							</div>
-							<p>
-								Qui ut ceteros comprehensam. Cu eos sale sanctus eligendi, id ius elitr saperet, ocurreret pertinacia pri an. No mei nibh consectetuer, semper laoreet perfecto ad qui, est rebum nulla argumentum ei. Fierent adipisci iracundia est ei, usu timeam persius
-								ea. Usu ea justo malis, pri quando everti electram ei.
-							</p>
-							<div class="bottom-article">
-								<ul class="meta-post">
-									<li><i class="icon-calendar"></i><a href="#"> Mar 23, 2013</a></li>
-									<li><i class="icon-user"></i><a href="#"> Admin</a></li>
-									<li><i class="icon-folder-open"></i><a href="#"> Blog</a></li>
-									<li><i class="icon-comments"></i><a href="#">4 Comments</a></li>
-								</ul>
-								<a href="#" class="pull-right">Continue reading <i class="icon-angle-right"></i></a>
-							</div>
-						</article>
-						<div id="pagination">
-							<span class="all">Page 1 of 3</span>
-							<span class="current">1</span>
-							<a href="#" class="inactive">2</a>
-							<a href="#" class="inactive">3</a>
-						</div>
+
+
+
+
+				<article>
+				<div class="post-quote">
+					<div class="post-heading">
+						<h3>
+							<a href="#">Nice example of quote post format below</a>
+						</h3>
 					</div>
-					<div class="col-lg-4">
-						<aside class="right-sidebar">
-							<div class="widget">			
-				<h4>Login</h4>		
-		<c:if test="${ empty userVo }">
-			<form:form name="lform" action="${ pageContext.request.contextPath }/ceo" commandName="employeeVo" onsubmit="return checkForm()" method="post"> 
-				Username&nbsp;<form:input class="form-control" placeholder="아이디" type="text" size="20" name="e_id" id="e_id" path="e_id" />
-				<br />
-				
-				Password&nbsp;<form:input class="form-control" placeholder="비밀번호" type="password" size="20" name="e_password" id="e_password" path="e_password" />
-				<span style="color:red;">${errorMessage }</span><br/>
-				
-				<br />	
-				<input type="submit" class="btn btn-theme" id="login_btn" value="로그인">&nbsp;	<input class="btn btn-theme" type="button" id="register_btn" value="회원가입">
-			</form:form>		
-		</c:if>
-			<c:if test="${ not empty userVo }">
-		${ userVo.e_name }&nbsp; ${ userVo.e_type }님 환영합니다. <br />
-		
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<a href="${ pageContext.request.contextPath }/logout">로그아웃</a>
-		
-		</c:if>
-							</div>							
-							<div class="widget">
-								<h5 class="widgetheading">Latest notices</h5>
-								<ul class="recent">
-									<li>										
-										<h6><a href="#">Lorem ipsum dolor sit</a></h6>
-										<p>
-											Mazim alienum appellantur eu cu ullum officiis pro pri
-										</p>
-									</li>
-									<li>										
-										<h6><a href="#">Maiorum ponderum eum</a></h6>
-										<p>
-											Mazim alienum appellantur eu cu ullum officiis pro pri
-										</p>
-									</li>
-									<li>										
-										<h6><a href="#">Et mei iusto dolorum</a></h6>
-										<p>
-											Mazim alienum appellantur eu cu ullum officiis pro pri
-										</p>
-									</li>
-								</ul>
-							</div>
-							<div class="widget">
-								<h5 class="widgetheading">Popular tags</h5>
-								<ul class="tags">
-									<li><a href="#">Web design</a></li>
-									<li><a href="#">Trends</a></li>
-									<li><a href="#">Technology</a></li>
-									<li><a href="#">Internet</a></li>
-									<li><a href="#">Tutorial</a></li>
-									<li><a href="#">Development</a></li>
-								</ul>
-							</div>
-						</aside>
+					<blockquote>
+						<i class="icon-quote-left"></i> Lorem ipsum dolor sit amet, ei
+						quod constituto qui. Summo labores expetendis ad quo, lorem
+						luptatum et vis. No qui vidisse signiferumque...
+					</blockquote>
+				</div>
+				<div class="bottom-article">
+					<ul class="meta-post">
+						<li><i class="icon-calendar"></i><a href="#"> Mar 23,
+								2013</a></li>
+						<li><i class="icon-user"></i><a href="#"> Admin</a></li>
+						<li><i class="icon-folder-open"></i><a href="#"> Blog</a></li>
+						<li><i class="icon-comments"></i><a href="#">4 Comments</a></li>
+					</ul>
+					<a href="#" class="pull-right">Continue reading <i
+						class="icon-angle-right"></i></a>
+				</div>
+				</article>
+				<article>
+				<div class="post-video">
+					<div class="post-heading">
+						<h3>
+							<a href="#">Amazing video post format here</a>
+						</h3>
+					</div>
+					<div class="video-container">
+						<iframe
+							src="http://player.vimeo.com/video/30585464?title=0&amp;byline=0">
+						</iframe>
 					</div>
 				</div>
+				<p>Qui ut ceteros comprehensam. Cu eos sale sanctus eligendi, id
+					ius elitr saperet, ocurreret pertinacia pri an. No mei nibh
+					consectetuer, semper laoreet perfecto ad qui, est rebum nulla
+					argumentum ei. Fierent adipisci iracundia est ei, usu timeam
+					persius ea. Usu ea justo malis, pri quando everti electram ei.</p>
+				<div class="bottom-article">
+					<ul class="meta-post">
+						<li><i class="icon-calendar"></i><a href="#"> Mar 23,
+								2013</a></li>
+						<li><i class="icon-user"></i><a href="#"> Admin</a></li>
+						<li><i class="icon-folder-open"></i><a href="#"> Blog</a></li>
+						<li><i class="icon-comments"></i><a href="#">4 Comments</a></li>
+					</ul>
+					<a href="#" class="pull-right">Continue reading <i
+						class="icon-angle-right"></i></a>
+				</div>
+				</article>
+				<div id="pagination">
+					<span class="all">Page 1 of 3</span> <span class="current">1</span>
+					<a href="#" class="inactive">2</a> <a href="#" class="inactive">3</a>
+				</div>
 			</div>
-		</section>
-		<footer> <jsp:include page="../employee_include/bottom.jsp" />
-		</footer>
+			<div class="col-lg-4">
+				<aside class="right-sidebar">
+				<div class="widget">
+					<h4>Login</h4>
+					<c:if test="${ empty userVo }">
+						<form:form name="lform"	action="${ pageContext.request.contextPath }/ceo"
+							commandName="employeeVo" onsubmit="return checkForm()"
+							method="post"> 
+				Username&nbsp;<form:input class="form-control" placeholder="아이디"
+								type="text" size="20" name="e_id" id="e_id" path="e_id" />
+							<br />
+				
+				Password&nbsp;<form:input class="form-control" placeholder="비밀번호"
+								type="password" size="20" name="e_password" id="e_password"
+								path="e_password" />
+							<span style="color: red;">${errorMessage }</span>
+							<br />						
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<span style="font-size:small; text-align:right;"><a href="${ pageContext.request.contextPath }/ceo/forgotmyid">아이디</a> / <a href="${ pageContext.request.contextPath }/ceo/forgotmypassword">비밀번호</a>가 기억나지 않아요!</span><br/>
+							 <br/>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="submit" class="btn btn-theme" id="login_btn"
+								value="로그인">&nbsp;	<input class="btn btn-theme"
+								type="button" id="register_btn" value="회원가입">
+						</form:form>
+					</c:if>
+					<c:if test="${ not empty userVo }">
+		${ userVo.e_name }&nbsp; ${ userVo.e_type }님 환영합니다. <br />
+		
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="${ pageContext.request.contextPath }/logout">로그아웃</a>
+
+					</c:if>
+				</div>
+				<div class="widget">
+					<h5 class="widgetheading">해방 가이드</h5>
+					<ul class="recent">
+						<li>
+							<h6>
+								<a href="#">Lorem ipsum dolor sit</a>
+							</h6>
+							<p>Mazim alienum appellantur eu cu ullum officiis pro pri</p>
+						</li>
+						<li>
+							<h6>
+								<a href="#">Maiorum ponderum eum</a>
+							</h6>
+							<p>Mazim alienum appellantur eu cu ullum officiis pro pri</p>
+						</li>
+						<li>
+							<h6>
+								<a href="#">Et mei iusto dolorum</a>
+							</h6>
+							<p>Mazim alienum appellantur eu cu ullum officiis pro pri</p>
+						</li>
+					</ul>
+				</div>
+				<div class="widget">
+					<h5 class="widgetheading">Popular tags</h5>
+					<ul class="tags">
+						<li><a href="#">Web design</a></li>
+						<li><a href="#">Trends</a></li>
+						<li><a href="#">Technology</a></li>
+						<li><a href="#">Internet</a></li>
+						<li><a href="#">Tutorial</a></li>
+						<li><a href="#">Development</a></li>
+					</ul>
+				</div>
+				</aside>
+			</div>
+		</div>
+	</div>
+	</section>
+	<footer> <jsp:include page="../employee_include/bottom.jsp" />
+	</footer>
 	</div>
 	<a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
 	<!-- javascript
@@ -378,11 +412,11 @@ s0.parentNode.insertBefore(s1,s0);
 		src="${ pageContext.request.contextPath }/resources/js/animate.js"></script>
 	<script
 		src="${ pageContext.request.contextPath }/resources/js/custom.js"></script>
-		
-	
+
+
 
 </body>
- <script>
+<script>
     function isNull(obj, msg) {
     	if (obj.value == "") {
     		alert(msg);
@@ -406,8 +440,11 @@ s0.parentNode.insertBefore(s1,s0);
     	}
     }
 
-    
-    
-  </script> 
-</html>
+    function doAction(boardNo) {
+		location.href = "${ pageContext.request.contextPath }/ceo/noticeDetail?no=" + boardNo;
 
+	}
+    
+    
+  </script>
+</html>
