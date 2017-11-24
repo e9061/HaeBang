@@ -292,7 +292,7 @@ s0.parentNode.insertBefore(s1,s0);
 								<input type="submit" class="btn btn-theme" id="login_btn"
 									value="로그인">&nbsp;
 										
-							<a href="${ pageContext.request.contextPath }/ceo/register/join"></a><input class="btn btn-theme" type="button" id="register_btn" value="회원가입"></a>
+							<a href="${ pageContext.request.contextPath }/ceo/register/join"><input class="btn btn-theme" type="button" id="register_btn" value="회원가입"></a>
 							</form:form>
 						</c:if>
 						<c:if test="${ not empty userVo }">

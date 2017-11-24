@@ -81,10 +81,8 @@
    
       </table>
       
-      <c:if test="${ userVo.e_type eq 'A' }  ">
-	      <button class="btn btn-theme" id="retouch">수정</button>
-	      <button class="btn btn-theme" id="delete">삭제</button>
-      </c:if>
+      <button class="btn btn-theme" id="retouch">수정</button>
+      <button class="btn btn-theme" id="delete">삭제</button>
       <button class="btn btn-theme" id="goBack">뒤로가기</button>
       <br/>
       <br/>

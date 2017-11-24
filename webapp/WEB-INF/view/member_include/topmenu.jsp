@@ -68,6 +68,7 @@
 							<c:when test="${ empty userVO }">
 								<li><a href="${ pageContext.request.contextPath }/member/join">회원가입</a></li> 
 	        					<li><a href="${ pageContext.request.contextPath }/member/loginForm">로그인</a></li>
+	        					<li><a href="${ pageContext.request.contextPath }/member/memberNotice?n_type=m">공지사항</a></li>
       						   </c:when>	
 							<c:otherwise>
 								<li><a href="${ pageContext.request.contextPath }/member/myPage">${ userVO.m_id }<b class=" icon-angle-down"></b></a></li>
