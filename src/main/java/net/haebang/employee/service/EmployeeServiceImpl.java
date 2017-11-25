@@ -33,7 +33,7 @@ import net.haebang.vo.NoticeBoardVo;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-	private static final String filePath = "/Users/apple/eclipse-workspace/HaeBang1/src/main/webapp/resources/img/company/";
+	private static final String filePath = "/home/ubuntu/HaeBangPicture/";
 
 	@Autowired
 	public EmployeeDao employeeDao;

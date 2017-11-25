@@ -20,6 +20,18 @@ public class EmployeeVo {
 	private String e_saveName;
 	private String e_joinDate;  //테이블 추가!,  default now()
 	private int c_no;
+
+	private String encodedString;    // FileInputStream 통해서 받아서 byte[] 를 위한 String, 11/24 생성
+	
+	
+	
+	public String getEncodedString() {
+		return encodedString;
+	}
+
+	public void setEncodedString(String encodedString) {
+		this.encodedString = encodedString;
+	}
 	
 	
 	public int getE_no() {

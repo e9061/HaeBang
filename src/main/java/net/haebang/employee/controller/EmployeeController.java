@@ -1,5 +1,9 @@
 package net.haebang.employee.controller;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +39,6 @@ import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
 import net.haebang.vo.MapVo;
 import net.haebang.vo.NoticeBoardVo;
-
 
 @Controller
 public class EmployeeController {
@@ -187,20 +191,42 @@ public class EmployeeController {
 		}
 
 		////////////////////// 창대 info///////////////////////////////
+		
 		@RequestMapping(value = "/ceo/info")
-		public String info(HttpSession session, Model model) {
+		public String info(HttpSession session, Model model) throws IOException {
 
-			if (session.getAttribute("userVo") == null) {
-				return "redirect:/ceo";
-			}
-			EmployeeVo employeeVo = (EmployeeVo) session.getAttribute("userVo");
-			System.out.println(employeeVo.getC_no());
-			CompanyVo companyVo = employeeDao.selectByNo(employeeVo.getC_no());
-
-			model.addAttribute("employeeVo", employeeVo);
-			model.addAttribute("companyVo", companyVo);
-			return "employee/info";
+		if (session.getAttribute("userVo") == null) {
+			return "redirect:/ceo";
 		}
+		EmployeeVo employeeVo = (EmployeeVo) session.getAttribute("userVo");
+		
+		//******************************************파일 inputstream******************************************
+		File file = new File("/home/ubuntu/HaeBangPicture/"+employeeVo.getE_saveName());
+		FileInputStream fis=new FileInputStream(file);
+		ByteArrayOutputStream bos=new ByteArrayOutputStream();
+		int b;
+		byte[] buffer = new byte[1024];
+		while((b=fis.read(buffer))!=-1){
+		   bos.write(buffer,0,b);
+		}
+		byte[] fileBytes = bos.toByteArray();
+		fis.close();
+		bos.close();
+
+
+		byte[] encoded=Base64.encodeBase64(fileBytes);
+		String encodedString = new String(encoded);
+
+		model.addAttribute("image", encodedString);
+		//******************************************파일 inputstream 끝******************************************
+		
+		
+		
+		CompanyVo companyVo = employeeDao.selectByNo(employeeVo.getC_no());
+		model.addAttribute("employeeVo", employeeVo);
+		model.addAttribute("companyVo", companyVo);
+		return "employee/info";
+	}			
 
 		@RequestMapping(value = "/ceo/info/update", method = RequestMethod.POST, produces = "application/json")
 		public @ResponseBody HashMap<String, Object> updateEoC(HttpServletRequest request, HttpSession session,
@@ -231,20 +257,48 @@ public class EmployeeController {
 		}
 
 		@RequestMapping(value = "/ceo/empInfo")
-		public String empInfo(HttpSession session, Model model) {
+		public String empInfo(HttpSession session, Model model) throws IOException {
 
-			if (session.getAttribute("userVo") == null) {
-				return "redirect:/ceo";
-			}
-
-			EmployeeVo employeeVo = (EmployeeVo) session.getAttribute("userVo");
-			List<EmployeeVo> employeeVoList = employeeDao.selectByCNo(employeeVo.getC_no());
-
-			model.addAttribute("employeeVo", employeeVo);
-			model.addAttribute("employeeVoList", employeeVoList);
-
-			return "employee/empInfo";
+		if (session.getAttribute("userVo") == null) {
+			return "redirect:/ceo";
 		}
+
+		EmployeeVo employeeVo = (EmployeeVo) session.getAttribute("userVo");
+		List<EmployeeVo> employeeVoList = employeeDao.selectByCNo(employeeVo.getC_no());
+		
+		// ***************************** fileInputStream 파일 스프레드 ***************************************************
+		for(int i =0; i<employeeVoList.size();i++)
+		{
+			
+			
+			File file = new File("/home/ubuntu/HaeBangPicture/"+employeeVoList.get(i).getE_saveName());
+			FileInputStream fis = new FileInputStream(file);
+			ByteArrayOutputStream bos=new ByteArrayOutputStream();
+			
+			int b;
+			byte[] buffer = new byte[1024];
+			while((b=fis.read(buffer))!=-1){
+			   bos.write(buffer,0,b);
+			}
+			byte[] fileBytes = bos.toByteArray();
+			fis.close();
+			bos.close();
+
+
+			byte[] encoded=Base64.encodeBase64(fileBytes);
+			String encodedString = new String(encoded);
+			
+			employeeVoList.get(i).setEncodedString(encodedString);	
+		}
+		// ***************************** fileInputStream 파일 스프레드 ***************************************************
+		System.out.println(employeeVoList.get(0).getEncodedString());
+		model.addAttribute("employeeVo", employeeVo);
+		model.addAttribute("employeeVoList", employeeVoList);
+
+		return "employee/empInfo";
+	}
+
+
 
 		@Transactional
 		@RequestMapping(value = "/ceo/empInfo/delete", method = RequestMethod.POST)

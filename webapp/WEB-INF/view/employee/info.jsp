@@ -121,7 +121,7 @@ ul.meta-post li{
 									<li style="width:150px; ">아 이 디&nbsp;&nbsp;&nbsp;</li>
 									<li style="width:400px; " >${employeeVo.e_id }</li>
 								</ul>
-								<a href="${pageContext.request.contextPath }/ceo/info/updateEmpPicture" class="pull-right abc"><img src="${pageContext.request.contextPath }/resources/img/company/${employeeVo.e_saveName}" style="width: 100px; height: auto;" /></a>
+								<a href="${pageContext.request.contextPath }/ceo/info/updateEmpPicture" class="pull-right abc"><img src="data:image/jpeg;base64,${image}" style="width: 100px; height: auto;" /></a>
 							</div>
 							<div class="bottom-article">
 								<ul class="meta-post">

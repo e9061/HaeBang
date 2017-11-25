@@ -142,7 +142,7 @@ ul.meta-post li{
 									<li style="width:150px;">${emp.e_name }</li>
 									<li style="width:180px;">${emp.e_phone }</li>
 									<li style="width:180px;">${emp.e_joinDate }</li>
-									<li style="width:150px;"><img src="${pageContext.request.contextPath }/resources/img/company/${emp.e_saveName}" style="width: 40px; height: auto;" /></li>
+									<li style="width:150px;"><img src="data:image/jpeg;base64,${emp.encodedString}" style="width: 40px; height: auto;" /></li>
 									<li style="width:150px;"><c:if test="${emp.e_type ne 'O' }"><a class="delete" href="#" ><img src="${pageContext.request.contextPath }/resources/img/noun_945742_cc.png" style="width: 40px; height: auto;" /></a></c:if></li>
 									<li ><input type="hidden" value="${emp.e_no }"/></li>
 								</ul>
@@ -223,13 +223,13 @@ $(document).on("click",".delete", function(){
 					msg += list[i].e_joinDate;
 					msg +="</li>";
 					msg +="<li style='width:150px;'>";
-					msg +="<img src='${pageContext.request.contextPath }/resources/img/company/";
-					msg += list[i].e_saveName;
+					msg +="<img src='data:image/jpeg;base64,";
+					msg += list[i].encodedString;
 					msg += "' style='width: 40px; height: auto;' /></li>";
 					msg += "<li style='width:150px;'>";
 					if(list[i].e_type !='O')
 						{
-							msg +="<a class='delete' href='#' ><img src='${pageContext.request.contextPath }/resources/img/noun_945742_cc.png' style='width: 300px; height: auto;' /></a>";
+							msg +="<a class='delete' href='#' ><img src='${pageContext.request.contextPath }/resources/img/noun_945742_cc.png' style='width: 40px; height: auto;' /></a>";
 						}
 					msg += "</li>";					
 					msg += "<li>";
