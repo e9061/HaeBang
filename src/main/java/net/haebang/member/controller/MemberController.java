@@ -1,5 +1,7 @@
 package net.haebang.member.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -11,10 +13,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.ModelAndView;
 
 import net.haebang.member.service.MemberService;
 import net.haebang.vo.MemberVo;
+import net.haebang.vo.NoticeBoardVo;
 
 @RequestMapping("/member")
 @Controller
@@ -210,4 +215,68 @@ public class MemberController {
 		return "member/service";
 	}
 	
+	
+	/********************************************** 공지사항 ***********************************************************/
+	
+
+	@RequestMapping("/memberNotice")
+	public ModelAndView notice(
+			@RequestParam(value="n_type", required=false) String n_type, 
+			@RequestParam(value="nowpage", defaultValue="0") int page,
+            @RequestParam(value="word", required=false) String word, 
+            @RequestParam(value="searchCondition", defaultValue="null", required=false) String searchCondition) {
+		ModelAndView mav = new ModelAndView();
+		
+		System.out.println("************************************************************************");
+		System.out.println("!!!!!!!!!!!!!!!memberNotice!!!!!!!!!!");
+		System.out.println(n_type + "  + " + page + "  + " + word +  "  + " + searchCondition);
+		System.out.println("************************************************************************");
+		
+		// 페이징	
+		List<NoticeBoardVo> getNoticeList = service.getNoticeList(n_type ,page, word, searchCondition);
+		int totalPage = service.getLastPage(n_type, word, searchCondition);
+		
+		// key 통일 - include 때문에
+		mav.addObject("n_type", n_type);
+		mav.addObject("nowpage", page);
+		mav.addObject("totalpage", totalPage);				
+		mav.addObject("noticelist", getNoticeList);
+		mav.addObject("word", word);
+		mav.addObject("titlecontent" ,searchCondition);
+		mav.setViewName("member/noticeMember");		
+		                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+		return mav;
+	}
+	
+	@RequestMapping(value="/memberNoticeDetail", method = RequestMethod.GET)
+	public ModelAndView detail(@RequestParam("no") int no,
+							   @RequestParam("n_viewCnt") int n_viewCnt	) {
+		System.out.println("********************************************************************");
+		System.out.println("!!!!!!!!!!!!!!!memberNoticeDetail!!!!!!!!!!");
+		System.out.println("************************************************************************");		
+		ModelAndView mav = new ModelAndView();
+		n_viewCnt ++;
+		
+		NoticeBoardVo noticeBoardVo = new NoticeBoardVo();
+		noticeBoardVo.setN_no(no);
+		noticeBoardVo.setN_viewCnt(n_viewCnt);
+		
+		NoticeBoardVo noticeDetail = service.getNoticeBoardByNo(noticeBoardVo);
+		
+		mav.addObject("noticeDetail", noticeDetail);
+		mav.setViewName("member/noticeDetailMember");		
+		System.out.println("********************************************************************");
+		System.out.println("!!!!!!!!!!!!!!!"+noticeDetail+"!!!!!!!!!!");
+		System.out.println("************************************************************************");		
+		
+		return mav;
+	}	
+	
+	/**********************************************************************************************************************/
+	
+	
+	
+	
+	
+		
 }

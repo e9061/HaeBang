@@ -1,6 +1,7 @@
 package net.haebang.member.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.haebang.vo.MemberVo;
+import net.haebang.vo.NoticeBoardVo;
 
 @Repository
 public class MemberDaoImpl implements MemberDao{
@@ -62,6 +64,7 @@ public class MemberDaoImpl implements MemberDao{
 		return resultVO;
 	}
 
+
 	/*@Override
 	public MemberVO login(MemberVO Member) {
 
@@ -71,5 +74,33 @@ public class MemberDaoImpl implements MemberDao{
 		
 		return resultVO;
 	}*/
+	
+	
+	
+	/****************************************** 공지사항 *****************************************************/
+	
+	@Override
+	public List<NoticeBoardVo> getNoticeList(Map<String, Object> map) {
+		System.out.println("impl map : " + map);
+		List<NoticeBoardVo> getNoticeList = sqlSession.selectList("net.haebang.member.dao.MemberDao.getNoticeList", map);
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!"+getNoticeList+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		return getNoticeList;
+	}
+	@Override
+	public double selectTotalCount(Map<String, Object> map) {
+		int totalPage = sqlSession.selectOne("net.haebang.member.dao.MemberDao.selectTotalCount",map); 
+		return totalPage;
+	}
+	@Override
+	public NoticeBoardVo getNoticeBoardByNo(NoticeBoardVo noticeBoardVo) {
+		sqlSession.update("net.haebang.member.dao.MemberDao.updateViewCnt",noticeBoardVo);
+		NoticeBoardVo getNoticeBoardByNo = sqlSession.selectOne("net.haebang.member.dao.MemberDao.selectOneNDetailByNo",noticeBoardVo);
+		return getNoticeBoardByNo;
+	}
+
+	/*******************************************************************************************************/
+	
+	
+	
 	
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import net.haebang.vo.MemberVo;
+import net.haebang.vo.NoticeBoardVo;
 
 public interface MemberService {
 
@@ -16,4 +17,11 @@ public interface MemberService {
 	void logout(HttpSession session);
 	MemberVo login(MemberVo member);
 	
+	
+	
+	/**********************공지사항*********************************/
+	List<NoticeBoardVo> getNoticeList(String n_type, int page, String word, String searchCondition);
+	int getLastPage(String n_type, String word, String searchCondition);
+	NoticeBoardVo getNoticeBoardByNo(NoticeBoardVo noticeBoardVo);		
+	/**************************************************************/
 }
