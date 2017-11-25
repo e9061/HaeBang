@@ -23,8 +23,35 @@ public class JoinEmployeeVo {
 	private String e_saveName;
 	
 	
+	private String e_phone1;
+	private String e_phone2;
+	private String e_phone3;
 	
 	
+	
+	
+	
+	
+	
+	
+	public String getE_phone1() {
+		return e_phone1;
+	}
+	public void setE_phone1(String e_phone1) {
+		this.e_phone1 = e_phone1;
+	}
+	public String getE_phone2() {
+		return e_phone2;
+	}
+	public void setE_phone2(String e_phone2) {
+		this.e_phone2 = e_phone2;
+	}
+	public String getE_phone3() {
+		return e_phone3;
+	}
+	public void setE_phone3(String e_phone3) {
+		this.e_phone3 = e_phone3;
+	}
 	public String getE_oriName() {
 		return e_oriName;
 	}
@@ -36,8 +63,7 @@ public class JoinEmployeeVo {
 	}
 	public void setE_saveName(String e_saveName) {
 		this.e_saveName = e_saveName;
-	}	
-	
+	}
 	public String getC_code() {
 		return c_code;
 	}

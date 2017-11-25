@@ -81,7 +81,10 @@ public class EmployeeController {
 				Model model) {
 			System.out.println(errors.hasErrors());
 			new RegisterEmployeeValidator().validate(joinEmployeeVo, errors);
-
+			joinEmployeeVo.setC_address(joinEmployeeVo.getC_address()+" "+request.getParameter("c_detailAddress"));
+			joinEmployeeVo.setE_phone(request.getParameter("e_phone1")+request.getParameter("e_phone2")+request.getParameter("e_phone3"));
+		
+			
 			if (joinEmployeeVo.getC_code() == null) {
 				if (errors.hasErrors()) {
 					return "employee/step2";
@@ -370,8 +373,8 @@ public class EmployeeController {
 			return "redirect:/ceo/info";
 		}
 		
-		@RequestMapping(value="/ceo/info/changeBizNo", method = RequestMethod.GET)
-		public String changeBizNo(HttpSession session, Model model) {
+		@RequestMapping(value="/ceo/info/updateBizNo", method = RequestMethod.GET)
+		public String updateBizNo(HttpSession session, Model model) {
 			if(session.getAttribute("userVo") == null)
 			{
 				return "redirect:/ceo";
@@ -382,8 +385,8 @@ public class EmployeeController {
 			return "employee/changeBizNo";
 		}
 		
-		@RequestMapping(value="/ceo/info/changeBizNo", method = RequestMethod.POST)
-		public String changeBizNo(CompanyVo companyVo, Errors errors, HttpSession session, MultipartHttpServletRequest request) {
+		@RequestMapping(value="/ceo/info/updateBizNo", method = RequestMethod.POST)
+		public String updateBizNo(CompanyVo companyVo, Errors errors, HttpSession session, MultipartHttpServletRequest request) {
 			new UpdateCompanyBizNoValidator().validate(companyVo, errors);
 			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
 			companyVo.setC_no(userVo.getC_no());
@@ -471,6 +474,35 @@ public class EmployeeController {
 			
 		}
 		
+	//		------------------------------------ 창대 11/25일작업 ----------------------------------------------
+	// changeBizNo -> 주소를 updateBizNo 으로 바꿈!!
+		
+		@RequestMapping(value="/ceo/info/updateAddress", method = RequestMethod.GET)
+		public String updateAddress(HttpSession session, Model model) {
+			if(session.getAttribute("userVo") == null)
+			{
+				return "redirect:/ceo";
+			}
+			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+			model.addAttribute("companyVo", new CompanyVo());
+			model.addAttribute("employeeVo", userVo);
+			return "employee/changeAddress";
+		}
+		
+		@RequestMapping(value="/ceo/info/updateAddress", method = RequestMethod.POST)
+		public String updateAddress(HttpSession session, HttpServletRequest request) {
+			
+			CompanyVo companyVo = new CompanyVo();
+			companyVo.setC_address(request.getParameter("c_address")+""+request.getParameter("c_detailAddress"));
+			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+			companyVo.setC_no(userVo.getC_no());
+			
+			employeeDao.updateCompanyAddress(companyVo);
+			
+			return "redirect:/ceo/info";
+		}
+		
+	//		------------------------------------ 창대 11/25일 작업 종료! ----------------------------------------------
 		
 
 	

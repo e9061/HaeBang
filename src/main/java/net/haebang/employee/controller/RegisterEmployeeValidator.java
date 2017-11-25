@@ -42,7 +42,9 @@ public class RegisterEmployeeValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "e_id", "required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "e_name", "required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "e_password", "required");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "e_phone", "required");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "e_phone1", "required");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "e_phone2", "required");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "e_phone3", "required");
 		ValidationUtils.rejectIfEmpty(errors, "confirmPassword", "required");
 		ValidationUtils.rejectIfEmpty(errors, "c_name", "required");
 		ValidationUtils.rejectIfEmpty(errors, "c_address", "required");

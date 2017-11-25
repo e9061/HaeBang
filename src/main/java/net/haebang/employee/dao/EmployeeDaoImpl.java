@@ -120,6 +120,19 @@ public class EmployeeDaoImpl implements EmployeeDao{
 		
 	}
 	
+	//	------------------------------------ 창대 11/25일 작업  ----------------------------------------------
+
+	@Override
+	public void updateCompanyAddress(CompanyVo companyVo) {
+		sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateCompanyAddress", companyVo);
+		
+		
+	}
+	
+	
+	//	------------------------------------ 창대 11/25일 작업 종료! ----------------------------------------------
+	
+	
 
 
 	// -------------------------------------- 진화 ------------------------------------------

@@ -118,10 +118,10 @@ ul.meta-post li{
 						
 							<div class="bottom-article">
 								<ul class="meta-post" >
-									<li style="width:150px; ">아 이 디&nbsp;&nbsp;&nbsp;</li>
+									<li style="width:150px; ">아이디</li>
 									<li style="width:400px; " >${employeeVo.e_id }</li>
 								</ul>
-								<a href="${pageContext.request.contextPath }/ceo/info/updateEmpPicture" class="pull-right abc"><img src="data:image/jpeg;base64,${image}" style="width: 100px; height: auto;" /></a>
+								<a href="${pageContext.request.contextPath }/ceo/info/updateEmpPicture" class="pull-right abc"><img src="data:image/jpeg;base64,${image}"  style="width: 100px; height: auto;" /></a>
 							</div>
 							<div class="bottom-article">
 								<ul class="meta-post">
@@ -131,7 +131,7 @@ ul.meta-post li{
 							</div>
 							<div class="bottom-article">
 								<ul class="meta-post">
-									<li style="width:150px" class="e_phone" >휴 대 전 화</li>
+									<li style="width:150px" class="e_phone" >휴대전화</li>
 									<li style="width:400px" >${employeeVo.e_phone }</li>
 									<li></li>
 								</ul>
@@ -139,7 +139,7 @@ ul.meta-post li{
 							</div>
 							<div class="bottom-article">
 								<ul class="meta-post">
-									<li style="width:150px" class="e_password">비 밀 번 호</li>
+									<li style="width:150px" class="e_password">비밀번호</li>
 									<li style="width:400px" >************</li>
 									<li></li>
 								</ul>
@@ -177,7 +177,7 @@ ul.meta-post li{
 									<li style="width:400px" id= "${companyVo.c_address }"> ${companyVo.c_address }</li>
 									<li></li>
 								</ul>
-								<c:if test="${employeeVo.e_type =='사장' }"><a href="javascript:click_update('${companyVo.c_address }');" class="pull-right"><img src="${pageContext.request.contextPath }/resources/img/noun_1060075_cc.png" style="width: 25px; height: auto;" /></a></c:if>
+								<c:if test="${employeeVo.e_type =='사장' }"><a href="${pageContext.request.contextPath }/ceo/info/updateAddress" class="pull-right"><img src="${pageContext.request.contextPath }/resources/img/noun_1060075_cc.png" style="width: 25px; height: auto;" /></a></c:if>
 							</div>
 							<div class="bottom-article">
 								<ul class="meta-post">
@@ -198,7 +198,7 @@ ul.meta-post li{
 									<li style="width:400px" >${companyVo.c_bizNo }</li>
 									<li></li>
 								</ul>
-								<a href="${pageContext.request.contextPath }/ceo/info/changeBizNo" class="pull-right"><img src="${pageContext.request.contextPath }/resources/img/noun_1060075_cc.png" style="width: 25px; height: auto;" /></a>
+								<a href="${pageContext.request.contextPath }/ceo/info/updateBizNo" class="pull-right"><img src="${pageContext.request.contextPath }/resources/img/noun_1060075_cc.png" style="width: 25px; height: auto;" /></a>
 							</div>
 								<div class="bottom-article">
 								<ul class="meta-post">
@@ -244,6 +244,7 @@ ul.meta-post li{
 					</div>
 				</div>
 			</div>
+			
 		</section>
 		<footer> <jsp:include page="../employee_include/bottom.jsp" />
 		</footer>
@@ -275,7 +276,7 @@ $(document).on("click", "#e_phone, #c_name, #c_phone", function(){
 			alert($(this).parents('li').prev().prev().html()+"를 입력해주세요.")
 			return false; 
 	}
-	if($(this).parents('li').prev().prev().html()=="휴 대 전 화" || $(this).parents('li').prev().prev().html()=="대표전화번호"){
+	if($(this).parents('li').prev().prev().html()=="휴대전화" || $(this).parents('li').prev().prev().html()=="대표전화번호"){
 			var pattern1 = /^[0-9]+$/g; // 숫자
 			if(!pattern1.test($(this).parents('li').prev().children().val())){
 				alert('숫자만 입력해주세요.')

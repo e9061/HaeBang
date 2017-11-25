@@ -47,5 +47,9 @@ public interface EmployeeDao {
     	CompanyVo selectByBizNo2(CompanyVo companyVo);
     	void updateCompanyBizNo(CompanyVo companyVo);
     	void updateEmpPicture(EmployeeVo employeeVo);
+//    	------------------------------------ 창대 11/25일 작업  ----------------------------------------------
+    	void updateCompanyAddress(CompanyVo companyVo);
+    	
+//    	------------------------------------ 창대 11/25일 작업 종료! ----------------------------------------------
 
 }
