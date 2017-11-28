@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 <link
 	href="${ pageContext.request.contextPath }/resources/css/bootstrap.min.css"
 	rel="stylesheet" />
@@ -69,7 +68,11 @@
 									<li><a href="pricingbox.html">서비스약관</a></li>
 								</ul>
 							</li>
-							
+							<c:if test="${ not empty userVo }">
+								<li>
+								<a href="${ pageContext.request.contextPath }/ceo/info">내 정보</a>
+								</li>
+							</c:if>
 							
 						</ul>
 					</div>

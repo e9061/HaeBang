@@ -8,7 +8,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <style type="text/css">
-    body { 
+
+    body {
       font-family: 'Varela Round', sans-serif;
    }
    .modal-login {
@@ -151,6 +152,7 @@ $(document).ready(function(){
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
          </div>
          <div class="modal-body">
+
             <form action="${ pageContext.request.contextPath }/ceoModal" name="lform" onsubmit="return checkForm()" method="post" >
                <div class="form-group">
                   <i class="fa fa-user"></i>

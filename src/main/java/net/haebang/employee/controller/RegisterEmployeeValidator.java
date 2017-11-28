@@ -52,12 +52,6 @@ public class RegisterEmployeeValidator implements Validator {
 		ValidationUtils.rejectIfEmpty(errors, "c_bizNo", "required");
 	}
 	
-
-
-
-	
-	
-	
 	
 	
 	
@@ -65,3 +59,10 @@ public class RegisterEmployeeValidator implements Validator {
 	
 	
 }
+
+
+
+
+	
+	
+	

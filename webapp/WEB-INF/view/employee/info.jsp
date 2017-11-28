@@ -28,13 +28,10 @@
 	======================================================= -->
 
 <style type="text/css">
-
 .container1 {
 	padding:0 30px 0 50px;
 	position:relative;
 }
-
-
 ul.meta-post li{
 	float:left;
 	margin:0 10px 0 0;
@@ -43,13 +40,9 @@ ul.meta-post li{
 	border-right:0px dotted #e9e9e9;
 	padding-right:50px;
 }
-
-
 </style>
 
 <script type="text/javascript">
-
-
 	function click_update(data){
 		if(data == "e_password"){
 			
@@ -61,13 +54,10 @@ ul.meta-post li{
 		$(document.getElementsByClassName(data)).next().html(msg);
 		$(document.getElementsByClassName(data)).next().next().html(msg1);
 		$(document.getElementsByClassName(data)).parent().next().html("");
-
 	}
-
 	
 	
 	
-
 </script>
 
 </head>
@@ -118,10 +108,10 @@ ul.meta-post li{
 						
 							<div class="bottom-article">
 								<ul class="meta-post" >
-									<li style="width:150px; ">아 이 디&nbsp;&nbsp;&nbsp;</li>
+									<li style="width:150px; ">아이디</li>
 									<li style="width:400px; " >${employeeVo.e_id }</li>
 								</ul>
-								<a href="${pageContext.request.contextPath }/ceo/info/updateEmpPicture" class="pull-right abc"><img src="${pageContext.request.contextPath }/resources/img/company/${employeeVo.e_saveName}" style="width: 100px; height: auto;" /></a>
+								<a href="${pageContext.request.contextPath }/ceo/info/updateEmpPicture" class="pull-right abc"><img src="data:image/jpeg;base64,${image}"  style="width: 100px; height: auto;" /></a>
 							</div>
 							<div class="bottom-article">
 								<ul class="meta-post">
@@ -131,7 +121,7 @@ ul.meta-post li{
 							</div>
 							<div class="bottom-article">
 								<ul class="meta-post">
-									<li style="width:150px" class="e_phone" >휴 대 전 화</li>
+									<li style="width:150px" class="e_phone" >휴대전화</li>
 									<li style="width:400px" >${employeeVo.e_phone }</li>
 									<li></li>
 								</ul>
@@ -139,7 +129,7 @@ ul.meta-post li{
 							</div>
 							<div class="bottom-article">
 								<ul class="meta-post">
-									<li style="width:150px" class="e_password">비 밀 번 호</li>
+									<li style="width:150px" class="e_password">비밀번호</li>
 									<li style="width:400px" >************</li>
 									<li></li>
 								</ul>
@@ -177,7 +167,7 @@ ul.meta-post li{
 									<li style="width:400px" id= "${companyVo.c_address }"> ${companyVo.c_address }</li>
 									<li></li>
 								</ul>
-								<c:if test="${employeeVo.e_type =='사장' }"><a href="javascript:click_update('${companyVo.c_address }');" class="pull-right"><img src="${pageContext.request.contextPath }/resources/img/noun_1060075_cc.png" style="width: 25px; height: auto;" /></a></c:if>
+								<c:if test="${employeeVo.e_type =='사장' }"><a href="${pageContext.request.contextPath }/ceo/info/updateAddress" class="pull-right"><img src="${pageContext.request.contextPath }/resources/img/noun_1060075_cc.png" style="width: 25px; height: auto;" /></a></c:if>
 							</div>
 							<div class="bottom-article">
 								<ul class="meta-post">
@@ -198,7 +188,7 @@ ul.meta-post li{
 									<li style="width:400px" >${companyVo.c_bizNo }</li>
 									<li></li>
 								</ul>
-								<a href="${pageContext.request.contextPath }/ceo/info/changeBizNo" class="pull-right"><img src="${pageContext.request.contextPath }/resources/img/noun_1060075_cc.png" style="width: 25px; height: auto;" /></a>
+								<a href="${pageContext.request.contextPath }/ceo/info/updateBizNo" class="pull-right"><img src="${pageContext.request.contextPath }/resources/img/noun_1060075_cc.png" style="width: 25px; height: auto;" /></a>
 							</div>
 								<div class="bottom-article">
 								<ul class="meta-post">
@@ -244,6 +234,7 @@ ul.meta-post li{
 					</div>
 				</div>
 			</div>
+			
 		</section>
 		<footer> <jsp:include page="../employee_include/bottom.jsp" />
 		</footer>
@@ -267,7 +258,6 @@ ul.meta-post li{
 
 </body>
 <script>
-
 $(document).on("click", "#e_phone, #c_name, #c_phone", function(){
 	
 	if($(this).parents('li').prev().children().val() =="")
@@ -275,7 +265,7 @@ $(document).on("click", "#e_phone, #c_name, #c_phone", function(){
 			alert($(this).parents('li').prev().prev().html()+"를 입력해주세요.")
 			return false; 
 	}
-	if($(this).parents('li').prev().prev().html()=="휴 대 전 화" || $(this).parents('li').prev().prev().html()=="대표전화번호"){
+	if($(this).parents('li').prev().prev().html()=="휴대전화" || $(this).parents('li').prev().prev().html()=="대표전화번호"){
 			var pattern1 = /^[0-9]+$/g; // 숫자
 			if(!pattern1.test($(this).parents('li').prev().children().val())){
 				alert('숫자만 입력해주세요.')
@@ -295,12 +285,10 @@ $(document).on("click", "#e_phone, #c_name, #c_phone", function(){
 			
 		},
 		success: function(result){
-
 				var msg = "<img src='${pageContext.request.contextPath }/resources/img/noun_1060075_cc.png' style='width: 25px; height: auto;' />"; 
 				$("#e_phone").parents('li').prev().html(result.employeeVo.e_phone);
 				$("#e_phone").parent().parent().next().html(msg);
 				$("#e_phone").parents('li').html("");
-
 				$("#c_name").parents('li').prev().html(result.companyVo.c_name);
 				$("#c_name").parent().parent().next().html(msg);
 				$("#c_name").parents('li').html("");
@@ -327,8 +315,6 @@ $(document).on("click", "#e_phone, #c_name, #c_phone", function(){
 		}
 	}); 
 });
-
-
 $(document).on("click", "#e_password",function(){
 	
 	if( $("#hidden").val() == $(this).parents().prev().children().val()){
@@ -342,7 +328,6 @@ $(document).on("click", "#e_password",function(){
 		        hiddenField.setAttribute("value", "step");
 		        form.appendChild(hiddenField);
 		        document.body.appendChild(form);
-
 		        form.submit();
 		}
 	else{
@@ -350,8 +335,6 @@ $(document).on("click", "#e_password",function(){
 		return false;
 	}
 });
-
-
 </script>
 
 
