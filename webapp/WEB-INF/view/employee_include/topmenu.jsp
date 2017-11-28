@@ -32,11 +32,10 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-						<a class="navbar-brand" href="index.jsp"><span>H</span>AEBANG CEO SITE</a>
+						<a class="navbar-brand" href="${ pageContext.request.contextPath }/ceo"><span>H</span>AEBANG CEO SITE</a>
 					</div>
 					<div class="navbar-collapse collapse ">
 						<ul class="nav navbar-nav">
-							<li class="active"><a href="index.jsp">Home</a></li>
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">해방<b class=" icon-angle-down"></b></a>
 								<ul class="dropdown-menu">
@@ -65,7 +64,7 @@
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">고객센터<b class=" icon-angle-down"></b></a>
 								<ul class="dropdown-menu">
-									<li><a href="${ pageContext.request.contextPath }/ceo/notice">공지사항</a></li>
+									<li><a href="${ pageContext.request.contextPath }/ceo/ceoNotice?n_type=o">공지사항</a></li>
 									<li><a href="components.html">자주묻는질문</a></li>
 									<li><a href="pricingbox.html">서비스약관</a></li>
 								</ul>

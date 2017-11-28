@@ -1,6 +1,7 @@
 package net.haebang.employee.dao;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +13,7 @@ import net.haebang.vo.CompanyVo;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
 import net.haebang.vo.MapVo;
-import net.haebang.vo.noticeBoardVo;
+import net.haebang.vo.NoticeBoardVo;
 
 
 @Repository
@@ -22,12 +23,46 @@ public class EmployeeDaoImpl implements EmployeeDao{
 	private SqlSessionTemplate sqlSession;	
 	
 
-	// 창대
+	// ------------------------------------------- 창대 -------------------------------------
 	@Override
-	public CompanyVo selectBybizNo(String c_bizNo) {
-		CompanyVo companyVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectBybizNo", c_bizNo);
+	public CompanyVo selectByNo(int c_no) {
+		CompanyVo companyVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectByNo", c_no);
 		return companyVo;
 	}
+	
+	@Override
+	public List<EmployeeVo> selectByCNo(int c_no) {
+		
+		List<EmployeeVo> employeeVoList = sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectByCNo", c_no);
+		return employeeVoList;
+		
+	}
+	
+	
+	
+	
+	
+	
+	@Override
+	public CompanyVo selectByCode(String c_code) {
+		CompanyVo companyVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectByCode", c_code);
+		return companyVo;
+	}
+	
+	@Override
+	public CompanyVo selectByBizNo1(String c_bizNo) {
+		CompanyVo companyVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectByBizNo1", c_bizNo);
+		return companyVo;
+	}
+	
+	@Override
+	public CompanyVo selectByBizNo2(CompanyVo companyVo) {
+		CompanyVo confirmVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectByBizNo2", companyVo);
+		return confirmVo;
+	}
+	
+	
+	
 	@Override
 	public EmployeeVo selectById(String e_id) {
 		EmployeeVo employeeVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectById", e_id);
@@ -38,12 +73,69 @@ public class EmployeeDaoImpl implements EmployeeDao{
 		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertCompany", joinEmployeeVo);
 	}
 	@Override
+	public void insertEmployeeAnd(JoinEmployeeVo joinEmployeeVo) {
+		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertEmployeeAnd", joinEmployeeVo);
+	}
+	@Override
 	public void insertEmployee(JoinEmployeeVo joinEmployeeVo) {
 		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertEmployee", joinEmployeeVo);
 	}
 
+	
+	@Override
+	public void updateEoC(HashMap<String, String> updateMap) {
+		sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateEmployeeOr", updateMap);
+		
+	}
+	
+	@Override
+	public void updateEmployeeCntP(JoinEmployeeVo joinEmployeeVo) {
+		sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateEmployeeCntP", joinEmployeeVo);
+		
+	}
+	@Override
+	public void updateEmployeeCntM(EmployeeVo employeeVo) {
+		sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateEmployeeCntM", employeeVo);
+		
+	}
+	
+	
+	
+	@Override
+	public void deleteEmployeeByNo(int e_no) {
+		sqlSession.delete("net.haebang.employee.dao.EmployeeDao.deleteEmployeeByNo", e_no);
+		
+	}
+	
+	@Override
+	public void updateCompanyBizNo(CompanyVo companyVo) {
+		sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateCompanyBizNo", companyVo);
+		
+	}
+	
+	
+	@Override
+	public void updateEmpPicture(EmployeeVo employeeVo) {
+		sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateEmpPicture", employeeVo);
+		
+	}
+	
+	//	------------------------------------ 창대 11/25일 작업  ----------------------------------------------
 
-	// 진화
+	@Override
+	public void updateCompanyAddress(CompanyVo companyVo) {
+		sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateCompanyAddress", companyVo);
+		
+		
+	}
+	
+	
+	//	------------------------------------ 창대 11/25일 작업 종료! ----------------------------------------------
+	
+	
+
+
+	// -------------------------------------- 진화 ------------------------------------------
 	@Override
 	public EmployeeVo selectById(EmployeeVo employeeVo) {	
 		
@@ -59,32 +151,40 @@ public class EmployeeDaoImpl implements EmployeeDao{
 	
 	return maplist;
 	}
-	
-/****************************************************************************************************
-	@Override
-	public List<noticeBoardVo> getnoticelist(Map<String, Object> map) {
-		
-		return sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectnoticeList", map);
-		
-	}
+	/****************************************************************************************************
+	 **************************************************************************************************/
+
 	
 	@Override
-	public int selectTotalCount(Map<String, Object> map) {
-		return sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectTotalCount", map);
+	public List<NoticeBoardVo> getNoticeList(Map<String, Object> map) {
+		System.out.println("impl map : " + map);
+		List<NoticeBoardVo> getNoticeList = sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.getNoticeList", map);
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!"+getNoticeList+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		return getNoticeList;
 	}
 	@Override
-	public noticeBoardVo getnoticeBoardByNo(int no) {
-		
-		return sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectnoticeDetail", no);
+	public double selectTotalCount(Map<String, Object> map) {
+		int totalPage = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectTotalCount",map); 
+		return totalPage;
 	}
-	
-	**************************************************************************************************/
 	@Override
-	public List<noticeBoardVo> getMainnoticelist() {
-		List<noticeBoardVo> mainNoticelist = sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectmainnoticelist"); 
+	public NoticeBoardVo getNoticeBoardByNo(NoticeBoardVo noticeBoardVo) {
+		sqlSession.update("net.haebang.admin.dao.AdminDao.updateViewCnt",noticeBoardVo);
+		NoticeBoardVo getNoticeBoardByNo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectOneNDetailByNo",noticeBoardVo);
+		return getNoticeBoardByNo;
+	}
+
+	@Override
+	public List<NoticeBoardVo> getMainnoticelist() {
+		List<NoticeBoardVo> mainNoticelist = sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectmainnoticelist"); 
 		System.out.println(mainNoticelist);
 		return mainNoticelist;
 	}
+	
+	
+	
+/****************************************************************************************************
+	**************************************************************************************************/
 
 	@Override
 	public EmployeeVo getIdByPhone(Map<String, Object> map) {
@@ -106,8 +206,6 @@ public class EmployeeDaoImpl implements EmployeeDao{
 	public void changePassword(EmployeeVo employeeVo) {
 		sqlSession.update("net.haebang.employee.dao.EmployeeDao.changepassword", employeeVo);		
 	}
-
 	
 
 }
-

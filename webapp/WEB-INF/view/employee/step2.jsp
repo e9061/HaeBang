@@ -12,21 +12,21 @@
 <meta name="description" content="" />
 <!-- css -->
 <link
-	href="<%=request.getContextPath()%>/resources/css/bootstrap.min.css"
+	href="${ pageContext.request.contextPath }/resources/css/bootstrap.min.css"
 	rel="stylesheet" />
 <link
-	href="<%=request.getContextPath()%>/resources/css/fancybox/jquery.fancybox.css"
+	href="${ pageContext.request.contextPath }/resources/css/fancybox/jquery.fancybox.css"
 	rel="stylesheet">
-<link href="<%=request.getContextPath()%>/resources/css/jcarousel.css"
+<link href="${ pageContext.request.contextPath }/resources/css/jcarousel.css"
 	rel="stylesheet" />
-<link href="<%=request.getContextPath()%>/resources/css/flexslider.css"
+<link href="${ pageContext.request.contextPath }/resources/css/flexslider.css"
 	rel="stylesheet" />
-<link href="<%=request.getContextPath()%>/resources/css/style.css"
+<link href="${ pageContext.request.contextPath }/resources/css/style.css"
 	rel="stylesheet" />
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <!-- Theme skin -->
-<link href="<%=request.getContextPath()%>/resources/skins/default.css"
+<link href="${ pageContext.request.contextPath }/resources/skins/default.css"
 	rel="stylesheet" />
 
 <!-- =======================================================
@@ -149,6 +149,8 @@
 		
 		
 		*/
+		
+	
 
 			function checkPasswordPattern(str) {
 
@@ -159,29 +161,44 @@
 			if (!pattern1.test(str) || !pattern2.test(str)
 					|| !pattern3.test(str) || str.length < 8) {
 				if (!pattern1.test(str) && !pattern2.test(str)) {
+				 document.getElementById('checkPasswordPattern').style.color = 'red';
+				 document.getElementById('e_password').style.borderColor='red'
 					document.getElementById('checkPasswordPattern').innerText = '영문자, 숫자를 입력하세요.';
 				} else if (!pattern1.test(str) && !pattern3.test(str)) {
+				 document.getElementById('checkPasswordPattern').style.color = 'red';
+				 document.getElementById('e_password').style.borderColor='red'
 					document.getElementById('checkPasswordPattern').innerText = '특수문자, 숫자를 입력하세요.';
 				} else if (!pattern2.test(str) && !pattern3.test(str)) {
+				 document.getElementById('checkPasswordPattern').style.color = 'red';
+				 document.getElementById('e_password').style.borderColor='red'
 					document.getElementById('checkPasswordPattern').innerText = '영문자, 특수문자를 입력하세요.';
 				} else if (!pattern1.test(str)) {
+				 document.getElementById('checkPasswordPattern').style.color = 'red';
+				 document.getElementById('e_password').style.borderColor='red'
 					document.getElementById('checkPasswordPattern').innerText = '숫자를 입력하세요.';
 				} else if (!pattern2.test(str)) {
+				 document.getElementById('checkPasswordPattern').style.color = 'red';
+				 document.getElementById('e_password').style.borderColor='red'
 					document.getElementById('checkPasswordPattern').innerText = '영문자를 입력하세요.';
 				} else if (!pattern3.test(str)) {
+				 document.getElementById('checkPasswordPattern').style.color = 'red';
+				 document.getElementById('e_password').style.borderColor='red'
 					document.getElementById('checkPasswordPattern').innerText = '특수문자를 입력하세요.';
 				} else if (str.length < 8) {
+				 document.getElementById('checkPasswordPattern').style.color = 'red';
+				 document.getElementById('e_password').style.borderColor='red'
 					document.getElementById('checkPasswordPattern').innerText = '8자리 이상 입력하세요.';
 				}
 
-				/* document.getElementById('checkPasswordPattern').innerText = '사용불가능'; */
-				/* document.getElementById('checkPasswordPattern').innerText =str; */
-				//alert("비밀번호는 8자리 이상 문자, 숫자, 특수문자로 구성하여야 합니다.");
 			} else {
+				 document.getElementById('checkPasswordPattern').style.color = 'green';
+				 document.getElementById('e_password').style.borderColor='green'
 				document.getElementById('checkPasswordPattern').innerText = '사용가능';
 			}
 
 			if (pattern4.test(str)) {
+				 document.getElementById('checkPasswordPattern').style.color = 'red';
+				 document.getElementById('e_password').style.borderColor='red'
 				document.getElementById('checkPasswordPattern').innerText = '공백은 입력할 수 없습니다';
 			}
 			if (str == "") {
@@ -189,6 +206,21 @@
 			}
 
 		}
+		
+		
+		var check = function() {
+		     if (document.getElementById('e_password').value ==
+		       document.getElementById('confirmPassword').value) {
+				 document.getElementById('confirmPassword').style.borderColor='green'
+		       document.getElementById('message').style.color = 'green';
+		       document.getElementById('message').innerHTML = '일치';
+		     } else {
+				 document.getElementById('confirmPassword').style.borderColor='red'
+		       document.getElementById('message').style.color = 'red';
+		       document.getElementById('message').innerHTML = '불일치';
+		     }
+		   }
+		
 
 		function nextStep() {
 			var form = document.form;
@@ -196,7 +228,7 @@
 			for (i = 0; i < form.length - 1; i++) {
 				if (form[i].value == "" || form[i].value == null) {
 					
-					if(form[i].name=='file'){
+					if(form[i].name=='fileCompany' || form[i].name=='fileEmployee'){
 						alert("사진을 첨부해주세요.");
 						form[i].focus();
 						return false;
@@ -263,8 +295,8 @@
 					data: {	
 						e_id : $(this).prev().val(),
 					},
-					success: function(data){
-						$("#duplicate1").next().text(data);
+					success: function(result){
+						$("#duplicate1").next().text(result);
 					}
 				}); 
 			});
@@ -316,9 +348,7 @@
 					msg2 += " <label for='c_bizNo' class='pop_label_03'>사업자 등록 번호</label> ";
 					msg2 += "<input type='text' style='width:50%;' name='c_bizNo' class='form-control' readonly='readonly' value='"+result.c_bizNo+"' />";
 					msg2 += "<input type='hidden' style='width:50%;' name='c_phone'  value='"+result.c_phone+"' />";
-			
 					
-				
 				}
 				$("#ajax").next().html(msg);
 				$("#ajax").next().next().html(msg1);
@@ -430,32 +460,25 @@
 							<strong>계정 정보</strong>
 						</h4>
 
-						<div id="sendmessage">Your message has been sent. Thank you!</div>
-						<div id="errormessage"></div>
 
 						<!-- $(document.first[0]).next().html() -->
 						<div class="form-group">
-							<label for="e_id" class="pop_label_03">아이디</label>
+							<label for="e_id" class="pop_label_03">아이디(이메일)</label>
 							<form:input style="width:50%;" path="e_id" class="form-control"
 								placeholder="아이디를 입력해주세요." />
-							<form:errors path="e_id" />
 							<!-- 아이디 t_employee 테이블 e_id -->
 							
 							<!-- onclick="javascript:chkeck_id($(this).prev().val())" -->
 							<a class="btn btn-info" id="duplicate1" style="width: 100px">중복 확인</a>
+							<form:errors path="e_id" />
 							<span></span>
-						<input id= "fileUpload1" type="file" style="width:50%;" name="fileFace"/>
+						<input id= "fileUpload1" type="file" style="width:50%;" name="fileEmployee"/>
 							<label for="fileUpload1" class="pop_label_03">회원사진 첨부</label>
 							<img id="blah1" src="#" alt="" style="height: 10%; width: 10%" />
 
 							<div id="holder1"></div>
 						</div>	
 						
-						
-						
-						<div class="form-group">
-							<span class="txt_right" style="text-align: right;">* 영문, 숫자 포함 6~14자리로 입력해주세요.</span>
-						</div>
 
 						<div class="form-group"></div>
 
@@ -463,8 +486,7 @@
 							<label for="e_password" class="pop_label_03">비밀번호</label>
 							<form:password onkeyup="checkPasswordPattern($(this).val())"
 								style="width:50%;" path="e_password" class="form-control"
-								placeholder="비밀번호를 입력해주세요." data-rule="minlen:4"
-								data-msg="Please enter at least 4 chars" />
+								placeholder="비밀번호를 입력해주세요."  />
 							<form:errors path="e_password" />
 							<!-- 비밀번호 t_employee 테이블 e_password -->
 
@@ -480,17 +502,18 @@
 						</div>
 
 
-
 						<div class="form-group">
 							<label for="confirmPassword" class="pop_label_03">비밀번호 확인</label>
 							<form:password style="width:50%;" path="confirmPassword"
 								class="form-control" placeholder="비밀번호를 다시 입력해주세요."
-								data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+								onkeyup='check();' />
 							<form:errors path="confirmPassword" />
 
 							<div class="validation"></div>
 						</div>
-
+<div class="form-group" id="message">
+							<span class="txt_right" style="text-align: right;"></span>
+						</div>
 
 					</div>
 				</div>
@@ -564,13 +587,12 @@
 						<div class="form-group">
 							<label for="c_bizNo" class="pop_label_03">사업자 등록번호</label>
 							<form:input style="width:50%;" path="c_bizNo"
-								class="form-control" placeholder="사업자 등록증상 등록번호"
-								data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+								class="form-control" placeholder="사업자 등록증상 등록번호"/>
 							<form:errors path="c_bizNo" />
 							<!-- 사업자 등록번호 t_company 테이블 변수 c_bizNo -->
-							<a class="btn btn-info" id="duplicate2" style="width: 100px">중복 확인</a>
+							<a class="btn btn-info" id="duplicate2" style="width: 100px;">중복 확인</a>
 							<span></span>
-							<input id= "fileUpload" type="file" style="width:50%;" name="file"/>
+							<input id= "fileUpload" type="file" style="width:50%;" name="fileCompany"/>
 							<label for="fileUpload" class="pop_label_03">사업자 등록증 첨부</label>
 							<img id="blah" src="#" alt="" style="height: 10%; width: 10%" />
 
@@ -675,28 +697,28 @@
 	<!-- javascript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="<%=request.getContextPath()%>/resources/js/jquery.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.js"></script>
 	<script
-		src="<%=request.getContextPath()%>/resources/js/jquery.easing.1.3.js"></script>
+		src="${ pageContext.request.contextPath }/resources/js/jquery.easing.1.3.js"></script>
 	<script
-		src="<%=request.getContextPath()%>/resources/js/bootstrap.min.js"></script>
+		src="${ pageContext.request.contextPath }/resources/js/bootstrap.min.js"></script>
 	<script
-		src="<%=request.getContextPath()%>/resources/js/jquery.fancybox.pack.js"></script>
+		src="${ pageContext.request.contextPath }/resources/js/jquery.fancybox.pack.js"></script>
 	<script
-		src="<%=request.getContextPath()%>/resources/js/jquery.fancybox-media.js"></script>
+		src="${ pageContext.request.contextPath }/resources/js/jquery.fancybox-media.js"></script>
 	<script
-		src="<%=request.getContextPath()%>/resources/js/google-code-prettify/prettify.js"></script>
+		src="${ pageContext.request.contextPath }/resources/js/google-code-prettify/prettify.js"></script>
 	<script
-		src="<%=request.getContextPath()%>/resources/js/portfolio/jquery.quicksand.js"></script>
+		src="${ pageContext.request.contextPath }/resources/js/portfolio/jquery.quicksand.js"></script>
 	<script
-		src="<%=request.getContextPath()%>/resources/js/portfolio/setting.js"></script>
+		src="${ pageContext.request.contextPath }/resources/js/portfolio/setting.js"></script>
 	<script
-		src="<%=request.getContextPath()%>/resources/js/jquery.flexslider.js"></script>
-	<script src="<%=request.getContextPath()%>/resources/js/animate.js"></script>
-	<script src="<%=request.getContextPath()%>/resources/js/custom.js"></script>
+		src="${ pageContext.request.contextPath }/resources/js/jquery.flexslider.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/animate.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/custom.js"></script>
 	
 	<script
-		src="<%=request.getContextPath()%>/resources/contactform/contactform.js"></script>
+		src="${ pageContext.request.contextPath }/resources/contactform/contactform.js"></script>
 
 </body>
 

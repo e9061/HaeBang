@@ -2,10 +2,14 @@ package net.haebang.employee.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,20 +20,20 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import net.haebang.employee.controller.CommonUtils;
 import net.haebang.employee.dao.EmployeeDao;
 import net.haebang.exception.AlreadyExistingMemberException;
-
 import net.haebang.exception.IdPasswordNotMatchingException;
 import net.haebang.exception.NoSuchIdException;
 import net.haebang.exception.NoSuchMemberException;
+import net.haebang.vo.CompanyVo;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
 import net.haebang.vo.MapVo;
-import net.haebang.vo.noticeBoardVo;
+import net.haebang.vo.NoticeBoardVo;
 
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-	private static final String filePath = "/Users/apple/Documents/workspace/HaeBangPicture/";
+	private static final String filePath = "/home/ubuntu/HaeBangPicture/";
 
 	@Autowired
 	public EmployeeDao employeeDao;
@@ -37,9 +41,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public void setEmployeeDao(EmployeeDao employeeDao) {
 		this.employeeDao = employeeDao;
 	}
+	
+	// -------------------------------------------- 아래 노 창 대 ------------------------------------------------------
 
 	@Transactional
-	public void registerEmployee(JoinEmployeeVo joinEmployeeVo, MultipartHttpServletRequest request) {
+	public void registerEmployeeAnd(JoinEmployeeVo joinEmployeeVo, MultipartHttpServletRequest request) {
 
 		EmployeeVo employeeVo = employeeDao.selectById(joinEmployeeVo.getE_id());
 		if (employeeVo != null) {
@@ -47,6 +53,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 
 		Iterator<String> iterator = request.getFileNames();
+		// request가 가져온 파라미터 이름들을 iterator에 저장
 
 		MultipartFile multipartFile = null;
 
@@ -60,7 +67,90 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 
 		while (iterator.hasNext()) {
+			System.out.println("12341234");
+			if (iterator.next().equals("fileEmployee")) {
+				multipartFile = request.getFile("fileEmployee");
+				if (multipartFile.isEmpty() == false) {
 
+					oriName = multipartFile.getOriginalFilename();
+					originalFileExtension = oriName.substring(oriName.lastIndexOf("."));
+					saveName = CommonUtils.getRandomString() + originalFileExtension;
+
+					file = new File(filePath + saveName);
+					try {
+
+						multipartFile.transferTo(file);
+
+					} catch (IllegalStateException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+					joinEmployeeVo.setE_oriName(oriName);
+					joinEmployeeVo.setE_saveName(saveName);
+
+				}
+			} else {
+				multipartFile = request.getFile("fileCompany");
+
+				if (multipartFile.isEmpty() == false) {
+
+					oriName = multipartFile.getOriginalFilename();
+					originalFileExtension = oriName.substring(oriName.lastIndexOf("."));
+					saveName = CommonUtils.getRandomString() + originalFileExtension;
+
+					file = new File(filePath + saveName);
+					try {
+
+						multipartFile.transferTo(file);
+
+					} catch (IllegalStateException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+					joinEmployeeVo.setC_oriName(oriName);
+					joinEmployeeVo.setC_saveName(saveName);
+
+				}
+
+			}
+
+			// System.out.println("-------------- file start --------------\n");
+			// System.out.println("oriName : " + oriName);
+			// System.out.println("saveName : " + saveName);
+			// System.out.println("filename : " + multipartFile.getOriginalFilename());
+			// System.out.println("size : " + multipartFile.getSize());
+			// System.out.println("-------------- file end --------------\n");
+
+		}
+
+		employeeDao.insertCompany(joinEmployeeVo);
+		employeeDao.insertEmployeeAnd(joinEmployeeVo);
+
+	}
+
+	@Transactional
+	public void registerEmployee(JoinEmployeeVo joinEmployeeVo, MultipartHttpServletRequest request) {
+		EmployeeVo employeeVo = employeeDao.selectById(joinEmployeeVo.getE_id());
+		if (employeeVo != null) {
+			throw new AlreadyExistingMemberException("중복" + joinEmployeeVo.getE_id());
+		}
+
+		Iterator<String> iterator = request.getFileNames();
+		MultipartFile multipartFile = null;
+		String oriName = null;
+		String originalFileExtension = null;
+		String saveName = null;
+
+		File file = new File(filePath);
+		if (file.exists() == false) {
+			file.mkdirs();
+		}
+
+		while (iterator.hasNext()) {
 			multipartFile = request.getFile(iterator.next());
 			if (multipartFile.isEmpty() == false) {
 
@@ -79,24 +169,144 @@ public class EmployeeServiceImpl implements EmployeeService {
 					e.printStackTrace();
 				}
 
-				joinEmployeeVo.setC_oriName(oriName);
-				joinEmployeeVo.setC_saveName(saveName);
-				System.out.println("-------------- file start --------------\n");
-				System.out.println("oriName : " + oriName);
-				System.out.println("saveName : " + saveName);
-				System.out.println("filename : " + multipartFile.getOriginalFilename());
-				System.out.println("size : " + multipartFile.getSize());
-				System.out.println("-------------- file end --------------\n");
+				joinEmployeeVo.setE_oriName(oriName);
+				joinEmployeeVo.setE_saveName(saveName);
 
 			}
 		}
 
-
-		employeeDao.insertCompany(joinEmployeeVo);
 		employeeDao.insertEmployee(joinEmployeeVo);
+		employeeDao.updateEmployeeCntP(joinEmployeeVo);
 
 	}
 
+	@Override
+	public void updateEoC(HttpServletRequest request, EmployeeVo userVo) {
+		HashMap<String, String> updateMap = new HashMap<String, String>();
+
+		Enumeration<String> enumeration = request.getParameterNames();
+		List<String> list = new ArrayList<String>();
+
+		while (enumeration.hasMoreElements()) {
+			String parameter = enumeration.nextElement();
+			list.add(parameter);
+
+		}
+		updateMap.put("key", request.getParameter(list.get(0)));
+		updateMap.put("value", request.getParameter(list.get(1)));
+
+		if (request.getParameter(list.get(0)).contains("c_")) {
+			updateMap.put("no", "c_no");
+			updateMap.put("noVal", Integer.toString(userVo.getC_no()));
+			updateMap.put("table", "t_company");
+
+		} else {
+			updateMap.put("no", "e_no");
+			updateMap.put("noVal", Integer.toString(userVo.getE_no()));
+			updateMap.put("table", "t_employee");
+		}
+		employeeDao.updateEoC(updateMap);
+	}
+
+	@Transactional
+	public void updateBizNo(CompanyVo companyVo, MultipartHttpServletRequest request) {
+
+		CompanyVo confirmVo = employeeDao.selectByBizNo2(companyVo);
+		if (confirmVo != null) {
+			throw new AlreadyExistingMemberException("중복" + confirmVo.getC_bizNo());
+		}
+
+		Iterator<String> iterator = request.getFileNames();
+		MultipartFile multipartFile = null;
+		String oriName = null;
+		String originalFileExtension = null;
+		String saveName = null;
+
+		File file = new File(filePath);
+		if (file.exists() == false) {
+			file.mkdirs();
+		}
+
+		while (iterator.hasNext()) {
+			multipartFile = request.getFile(iterator.next());
+			if (multipartFile.isEmpty() == false) {
+
+				oriName = multipartFile.getOriginalFilename();
+				originalFileExtension = oriName.substring(oriName.lastIndexOf("."));
+				saveName = CommonUtils.getRandomString() + originalFileExtension;
+
+				file = new File(filePath + saveName);
+				try {
+
+					multipartFile.transferTo(file);
+
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				companyVo.setC_oriName(oriName);
+				companyVo.setC_saveName(saveName);
+
+			}
+		}
+
+		employeeDao.updateCompanyBizNo(companyVo);
+
+	}
+
+	@Override
+	public void updateEmpPicture(EmployeeVo employeeVo, MultipartHttpServletRequest request) {
+
+		Iterator<String> iterator = request.getFileNames();
+		MultipartFile multipartFile = null;
+		String oriName = null;
+		String originalFileExtension = null;
+		String saveName = null;
+
+		File file = new File(filePath);
+		if (file.exists() == false) {
+			file.mkdirs();
+		}
+
+		while (iterator.hasNext()) {
+			multipartFile = request.getFile(iterator.next());
+			if (multipartFile.isEmpty() == false) {
+
+				oriName = multipartFile.getOriginalFilename();
+				originalFileExtension = oriName.substring(oriName.lastIndexOf("."));
+				saveName = CommonUtils.getRandomString() + originalFileExtension;
+
+				file = new File(filePath + saveName);
+				try {
+
+					multipartFile.transferTo(file);
+
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				employeeVo.setE_oriName(oriName);
+				employeeVo.setE_saveName(saveName);
+
+			}
+		}
+		
+		employeeDao.updateEmpPicture(employeeVo);
+
+		
+	}
+
+
+
+
+
+
+
+	// --------------------------------------------- 아래 박 진 화 ------------------------------------------------------
 	public void modifyEmployee(EmployeeVo employee) {
 
 	}
@@ -121,56 +331,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return maplist;
 	}
 	
-/***********************************************************************************	
-
-	private final int LINE_PER_PAGE = 10;
-	
 	@Override
-	public List<noticeBoardVo> getnoticelist(int page, String word, String searchCondition) {
-
-		int startpoint = page * LINE_PER_PAGE;		
-				
-		PageHelper pageHelper = new PageHelper(startpoint, LINE_PER_PAGE);
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("pageHelper", pageHelper);
-        
-        System.out.println("에헤헤헤헤헤");
-        System.out.println(startpoint);  
-                
-        map.put("startpoint", startpoint);
-        map.put("row", LINE_PER_PAGE);
-        map.put(searchCondition, word);
-        
-        List<noticeBoardVo> noticelist = employeeDao.getnoticelist(map);
-        System.out.println("서비스");
-        System.out.println(noticelist);
-        return noticelist;
-
-	}
-	
-	
-
-	@Override
-	public int getlastpage(String word, String searchCondition) {
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put(searchCondition, word);
-		
-		int lastpage = (int)((double)employeeDao.selectTotalCount(map)/LINE_PER_PAGE);		
-		System.out.println(lastpage);
-		return lastpage;
-	
-	}
-
-	@Override
-	public noticeBoardVo getnoticeBoardByNo(int no) {
-		noticeBoardVo getnoticeBoardByNo = employeeDao.getnoticeBoardByNo(no);
-		return getnoticeBoardByNo;
-	}
-********************************************************************************/
-	@Override
-	public List<noticeBoardVo> getMainnoticelist() {
-		List<noticeBoardVo> mainNoticelist = employeeDao.getMainnoticelist();
+	public List<NoticeBoardVo> getMainnoticelist() {
+		List<NoticeBoardVo> mainNoticelist = employeeDao.getMainnoticelist();
 		return mainNoticelist;
 		
 	}
@@ -235,5 +398,47 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 	}
 
-}
+/*******************************************공지사항***********************************************************/
+	private final int LINE_PER_PAGE = 10;
+	
+	@Override
+	public List<NoticeBoardVo> getNoticeList(String n_type, int page, String word, String searchCondition) {
+	int startPoint = page * LINE_PER_PAGE;		
+		
+        Map<String, Object> map = new HashMap<String, Object>();
+        
+        map.put("n_type", n_type);
+        map.put("startPoint", startPoint);
+        map.put("row", LINE_PER_PAGE);
+        map.put(searchCondition, word);
+        
+        List<NoticeBoardVo> noticeList = employeeDao.getNoticeList(map);
+        System.out.println("서비스");
+        System.out.println(noticeList);
+        
+		return noticeList;
+	}
 
+	@Override
+	public int getLastPage(String n_type, String word, String searchCondition) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("n_type", n_type);
+		map.put(searchCondition, word);
+		
+		int lastPage =(int)((double)employeeDao.selectTotalCount(map)/LINE_PER_PAGE);
+		System.out.println(lastPage);
+		
+		System.out.println("Service lastPage : " +lastPage);
+		System.out.println("ServiceImpl - lastPage : "+lastPage);
+		return lastPage;
+	}
+
+	@Override
+	public NoticeBoardVo getNoticeBoardByNo(NoticeBoardVo noticeBoardVo) {
+		NoticeBoardVo getNoticeBoardByNo = employeeDao.getNoticeBoardByNo(noticeBoardVo);
+		return getNoticeBoardByNo;
+	}
+	
+/***************************************************************************************************************/
+
+}

@@ -21,4 +21,3 @@ public class LoginCommandValidator implements Validator {
 	}
 
 }
-

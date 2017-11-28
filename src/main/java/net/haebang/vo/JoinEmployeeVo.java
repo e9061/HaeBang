@@ -19,7 +19,24 @@ public class JoinEmployeeVo {
 	
 	private String c_code;
 	
+	private String e_oriName;
+	private String e_saveName;
 	
+	
+	
+	
+	public String getE_oriName() {
+		return e_oriName;
+	}
+	public void setE_oriName(String e_oriName) {
+		this.e_oriName = e_oriName;
+	}
+	public String getE_saveName() {
+		return e_saveName;
+	}
+	public void setE_saveName(String e_saveName) {
+		this.e_saveName = e_saveName;
+	}	
 	
 	public String getC_code() {
 		return c_code;
