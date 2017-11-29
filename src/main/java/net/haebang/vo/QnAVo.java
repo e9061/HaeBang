@@ -1,9 +1,12 @@
 package net.haebang.vo;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class QnAVo {
 
 	public int q_no;
 	public String q_title;
+	public String q_writer;
 	public int m_no;
 	public String q_content;
 	public String q_regDate;
@@ -11,6 +14,8 @@ public class QnAVo {
 	public String q_oriName;
 	public String q_saveName;
 	public String q_flag;
+	public String img;
+	
 	public int getQ_no() {
 		return q_no;
 	}
@@ -22,6 +27,12 @@ public class QnAVo {
 	}
 	public void setQ_title(String q_title) {
 		this.q_title = q_title;
+	}
+	public String getQ_writer() {
+		return q_writer;
+	}
+	public void setQ_writer(String q_writer) {
+		this.q_writer = q_writer;
 	}
 	public int getM_no() {
 		return m_no;
@@ -65,13 +76,23 @@ public class QnAVo {
 	public void setQ_flag(String q_flag) {
 		this.q_flag = q_flag;
 	}
-	
+	public String getImg() {
+		return img;
+	}
+	public void setImg(String img) {
+		this.img = img;
+	}
 	@Override
 	public String toString() {
-		return "QnAVO [q_no=" + q_no + ", q_title=" + q_title + ", m_no=" + m_no + ", q_content=" + q_content
-				+ ", q_regDate=" + q_regDate + ", q_viewCnt=" + q_viewCnt + ", q_oriName=" + q_oriName + ", q_saveName="
-				+ q_saveName + ", q_flag=" + q_flag + "]";
+		return "QnAVo [q_no=" + q_no + ", q_title=" + q_title + ", q_writer=" + q_writer + ", m_no=" + m_no
+				+ ", q_content=" + q_content + ", q_regDate=" + q_regDate + ", q_viewCnt=" + q_viewCnt + ", q_oriName="
+				+ q_oriName + ", q_saveName=" + q_saveName + ", q_flag=" + q_flag + ", img=" + img + "]";
 	}
+	
+	
+	
+	
+	
 	
 	
 	

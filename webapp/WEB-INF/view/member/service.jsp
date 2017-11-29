@@ -33,9 +33,18 @@
 		font-color : #000000;
 		border : 1px-solid-black;
 	} */
+	#sodok{
+	width : 600px;
+}
 table { border:1px-solid-#000000; width:1000px; text-align : center;}
 table th {color:red; background-color:peachpuff; border:1px-solid-#000000; text-align : center;}
 table td {border : 1px-solid-#000000; text-align : center;}
+
+
+
+#hihihi{
+	align:center;
+}
 
 #service-call{
 	background-color:skyblue;
@@ -56,427 +65,146 @@ table td {border : 1px-solid-#000000; text-align : center;}
 			<h2>해방 서비스</h2>
 		</div>
 		<section id="content">
+		
 		<div>
-			<h3>바퀴벌레 해방!</h3>
-		</div>
-		<div>
-		<table border="1" align="right-center">
+		<table border="1" align="center">
 			<caption><h4>가정집</h4></caption>
 			<tr>
 				<th>적용평수</th>
 				<th>6개월 보장형</th>
 				<th>1년 보장형</th>
-				<th>연계약 정기관리형 (연 4회 방문)</th>
+				<th>연계약 정기관리형 (연 4회 방문) (회당)</th>
+				<th>소요시간</th>
+			</tr>
+			<tr>
+				<th>10평 이하</th>
+				<td>40,000원</td>
+				<td>70,000원</td>
+				<td>30,000원</td>
+				<td>30분</td>
+			</tr>
+			<tr>
+				<th>20평 이하</th>
+				<td>60,000원</td>
+				<td>100,000원</td>
+				<td>45,000원</td>
+				<td>30분</td>
 			</tr>
 			<tr>
 				<th>30평 이하</th>
 				<td>80,000원</td>
 				<td>130,000원</td>
-				<td>초기금액 80,000원. 2개월당 1회방문시 40,000원</td>
+				<td>60,000원</td>
+				<td>30분</td>
 			</tr>
 			<tr>
 				<th>50평 이하</th>
 				<td>100,000원</td>
 				<td>160,000원</td>
-				<td>초기금액 100,000원. 2개월당 1회방문시 50,000원</td>
+				<td>75,000원</td>
+				<td>60분</td>
 			</tr>
 			<tr>
 				<th>100평 이하</th>
 				<td>130,000원</td>
 				<td>230,000원</td>
-				<td>초기금액 130,000원. 2개월당 1회방문시 70,000원</td>
-			</tr>
-			<tr>
-				<th>101평 이상</th>
-				<td>평당 1,300원</td>
-				<td>별도 금액</td>
-				<td>별도 금액</td>
-			</tr>
-		</table>
-		</div>
-		<br/>
-		
-		<div>
-		<table border="1" align="right-center">
-			<caption><h4><Strong>사무실, 영업장</Strong></h4></caption>
-			<tr>
-				<th>적용평수</th>
-				<th>2개월 보장형</th>
-				<th colspan="2">연계약 정기관리형 (연 방문 6 ~ 12회)</th>
-			</tr>
-			<tr>
-				<th>30평 이하</th>
-				<td>80,000원</td>
-				<td colspan="2">초기금액 80,000원. 2개월당 1회방문시 40,000원</td>
-			</tr>
-			<tr>
-				<th>50평 이하</th>
 				<td>100,000원</td>
-				<td colspan="2">초기금액 100,000원. 2개월당 1회방문시 50,000원</td>
-			</tr>
-			<tr>
-				<th>100평 이하</th>
-				<td>130,000원</td>
-				<td colspan="2">초기금액 130,000원. 2개월당 1회방문시 70,000원</td>
+				<td>120분</td>
 			</tr>
 			<tr>
 				<th>101평 이상</th>
-				<td>평당 1,300원</td>
-				<td colspan="2">별도 금액</td>
-			</tr>
-		</table>
-		<br/>
-		<br/>
-		<hr/>
-		<hr/>
-		<br/>
-		<div>
-			<h3>개미 해방!</h3>
-		</div>
-		<div>
-		<table border="1" align="right-center">
-			<caption><h4>가정집</h4></caption>
-			<tr>
-				<th>적용평수</th>
-				<th>6개월 보장형</th>
-				<th>1년 보장형</th>
-				<th>연계약 정기관리형 (연 4회 방문)</th>
-			</tr>
-			<tr>
-				<th>30평 이하</th>
-				<td>80,000원</td>
-				<td>130,000원</td>
-				<td>초기금액 80,000원. 2개월당 1회방문시 40,000원</td>
-			</tr>
-			<tr>
-				<th>50평 이하</th>
-				<td>100,000원</td>
-				<td>160,000원</td>
-				<td>초기금액 100,000원. 2개월당 1회방문시 50,000원</td>
-			</tr>
-			<tr>
-				<th>100평 이하</th>
-				<td>130,000원</td>
-				<td>230,000원</td>
-				<td>초기금액 130,000원. 2개월당 1회방문시 70,000원</td>
-			</tr>
-			<tr>
-				<th>101평 이상</th>
-				<td>평당 1,300원</td>
-				<td>별도 금액</td>
-				<td>별도 금액</td>
-			</tr>
-		</table>
-		</div>
-		<br/>
-		<div>
-		<table border="1" align="right-center">
-			<caption><h4>사무실, 영업장</h4></caption>
-			<tr>
-				<th>적용평수</th>
-				<th>2개월 보장형</th>
-				<th colspan="2">연계약 정기관리형 (연 방문 6 ~ 12회)</th>
-			</tr>
-			<tr>
-				<th>30평 이하</th>
-				<td>80,000원</td>
-				<td colspan="2">초기금액 80,000원. 2개월당 1회방문시 40,000원</td>
-			</tr>
-			<tr>
-				<th>50평 이하</th>
-				<td>100,000원</td>
-				<td colspan="2">초기금액 100,000원. 2개월당 1회방문시 50,000원</td>
-			</tr>
-			<tr>
-				<th>100평 이하</th>
-				<td>130,000원</td>
-				<td colspan="2">초기금액 130,000원. 2개월당 1회방문시 70,000원</td>
-			</tr>
-			<tr>
-				<th>101평 이상</th>
-				<td>평당 1,300원</td>
-				<td colspan="2">별도 금액</td>
-			</tr>
-		</table>
-		</div>
-		<br/>
-		<hr/>
-		<br/>
-		
-		<div>
-			<h3>쥐 해방!</h3>
-		</div>
-		
-		<div>
-		<table border="1" align="right-center">
-			<caption><h4>가정집</h4></caption>
-			<tr>
-				<th>적용평수</th>
-				<th>2개월 보장형</th>
-				<th colspan="2">연계약 정기관리형 (연 방문 4회)</th>
-			</tr>
-			<tr>
-				<th>30평 이하</th>
-				<td>80,000원</td>
-				<td colspan="2">초기금액 80,000원. 2개월당 1회방문시 40,000원</td>
-			</tr>
-			<tr>
-				<th>50평 이하</th>
-				<td>100,000원</td>
-				<td colspan="2">초기금액 100,000원. 2개월당 1회방문시 50,000원</td>
-			</tr>
-			<tr>
-				<th>100평 이하</th>
-				<td>130,000원</td>
-				<td colspan="2">초기금액 130,000원. 2개월당 1회방문시 70,000원</td>
-			</tr>
-			<tr>
-				<th>101평 이상</th>
-				<td>평당 1,300원</td>
-				<td colspan="2">별도 금액</td>
-			</tr>
-		</table>
-		</div>
-		<br/>
-		<br/>
-		<div>
-		<table border="1" align="right-center">
-			<caption><h4>사무실, 영업장</h4></caption>
-			<tr>
-				<th>적용평수</th>
-				<th>2개월 보장형</th>
-				<th colspan="2">연계약 정기관리형 (연 방문 6 ~ 12회)</th>
-			</tr>
-			<tr>
-				<th>30평 이하</th>
-				<td>80,000원</td>
-				<td colspan="2">초기금액 80,000원. 2개월당 1회방문시 40,000원</td>
-			</tr>
-			<tr>
-				<th>50평 이하</th>
-				<td>100,000원</td>
-				<td colspan="2">초기금액 100,000원. 2개월당 1회방문시 50,000원</td>
-			</tr>
-			<tr>
-				<th>100평 이하</th>
-				<td>130,000원</td>
-				<td colspan="2">초기금액 130,000원. 2개월당 1회방문시 70,000원</td>
-			</tr>
-			<tr>
-				<th>101평 이상</th>
-				<td>평당 1,300원</td>
-				<td colspan="2">별도 금액</td>
-			</tr>
-		</table>
-		</div>
-		<br/>
-		<br/>
-		
-		<div>
-			<h3>기타해충 해방!</h3>
-		</div>
-		<div>
-		<table border="1" align="right-center">
-			<caption><h4>가정집, 사무실, 영업장 (공용)</h4></caption>
-			<tr>
-				<th>적용평수</th>
-				<th>1회성</th>
-				<th>2개월 보장형</th>
-				<th>연계약 정기관리형 (연 4회 방문)</th>
-			</tr>
-			<tr>
-				<th>30평 이하</th>
-				<td>120,000원</td>
-				<td>160,000원</td>
-				<td>초기금액 160,000원. 2개월당 1회방문시 90,000원</td>
-			</tr>
-			<tr>
-				<th>50평 이하</th>
-				<td>140,000원</td>
-				<td>180,000원</td>
-				<td>초기금액 180,000원. 2개월당 1회방문시 100,000원</td>
-			</tr>
-			<tr>
-				<th>100평 이하</th>
-				<td>170,000원</td>
 				<td>200,000원</td>
-				<td>초기금액 200,000원. 2개월당 1회방문시 120,000원</td>
-			</tr>
-			<tr>
-				<th>101평 이상</th>
-				<td>평당 1,700원</td>
-				<td>평당 2,000원</td>
-				<td>별도 금액</td>
-			</tr>
-		</table>
-		</div>
-		<br/>
-		<br/>
-		<hr/>
-		<br/>
-		<div>
-			<h3>해방 의무소독</h3>
-		</div>
-		
-			<div>
-		<table border="1" align="right-center">
-			<caption><h4>의무소독 단가표</h4></caption>
-			<tr>
-				<th>관리평수</th>
-				<th>1회당 가격</th>
-				<th>관리평수</th>
-				<th>1회당 가격</th>
-			</tr>
-			<tr>
-				<th>200평 이하</th>
-				<td>90,000원</td>
-				<th>4,000평 이하</th>
-				<td>320,000원</td>
-			</tr>
-			<tr>
-				<th>300평 이하</th>
-				<td>120,000원</td>
-				<th>6,000평 이하</th>
-				<td>350,000원</td>
-			</tr>
-			<tr>
-				<th>500평 이하</th>
+				<td>300,000원</td>
 				<td>150,000원</td>
-				<th>8,000평 이하</th>
-				<td>420,000원</td>
-			</tr>
-			<tr>
-				<th>1,000평 이하</th>
-				<td>200,000원</td>
-				<th>10,000평 이하</th>
-				<td>460,000원</td>
-			</tr>
-			<tr>
-				<th>2,000평 이하</th>
-				<td>250,000원</td>
-				<th>10,001평 이상</th>
-				<td>460,000 + 추가 평수당 + 50원</td>
+				<td>120분 ~</td>
 			</tr>
 		</table>
 		</div>
-
-		<br/>
-		<br/>
-		<hr/>
 		<br/>
 		
 		<div>
-			<h3>해방 공간소독</h3>
-		</div>
-		
-		<div>
-		<table border="1" align="right-center">
-			<caption><h4>공간소독 단가표</h4></caption>
+		<table border="1" align="center">
+			<caption><h4>사무실, 영업장</h4></caption>
 			<tr>
-				<th>평수</th>
-				<th>단가</th>
-				<th colspan="2">비고</th>
+				<th>적용평수</th>
+				<th>2개월 보장형</th>
+				<th colspan="2">연계약 정기관리형 (연 방문 6회) (회당)</th>
+				<th>소요시간</th>
+			</tr>
+			<tr>
+				<th>20평 이하</th>
+				<td>60,000원</td>
+				<td colspan="2">45,000원</td>
+				<td>30분</td>
+			</tr>
+			<tr>
+				<th>30평 이하</th>
+				<td>80,000원</td>
+				<td colspan="2">60,000원</td>
+				<td>30분</td>
+			</tr>
+			<tr>
+				<th>40평 이하</th>
+				<td>90,000원</td>
+				<td colspan="2">75,000원</td>
+				<td>30분</td>
+			</tr>
+			<tr>
+				<th>50평 이하</th>
+				<td>100,000원</td>
+				<td colspan="2">85,000원</td>
+				<td>60분</td>
+			</tr>
+			<tr>
+				<th>51평 이상</th>
+				<td>별도 견적</td>
+				<td colspan="2">150,000원</td>
+				<td>120분</td>
+			</tr>
+		</table>
+		</div>
+		<br/>
+		<div id="sodok">
+		<table border="1" align="center">
+			<caption><h4>의무, 공간소독</h4></caption>
+			<tr>
+				<th>적용평수</th>
+				<th>1회 가격</th>
+				<th>소요 시간</th>
 			</tr>
 			<tr>
 				<th>50평 이하</th>
 				<td>70,000원</td>
-				<td colspan="2" rowspan="2">가정집만 적용<br/> &lt;추가비용 없음&gt; </td>
+				<td>30분</td>
+			</tr>
+			<tr>
+				<th>70평 이하</th>
+				<td>80,000원</td>
+				<td>30분</td>
 			</tr>
 			<tr>
 				<th>100평 이하</th>
 				<td>90,000원</td>
+				<td>60분</td>
+			</tr>
+			<tr>
+				<th>200평 이하</th>
+				<td>110,000원</td>
+				<td>120분</td>
 			</tr>
 			<tr>
 				<th>500평 이하</th>
 				<td>120,000원</td>
-				<td colspan="2" rowspan="4">&lt;추가요금 적용&gt;<br/>
-평일야간(18:00이후) 30,000원<br/>
-주말(토요일) 50,000원<br/>
-주말(일요일) 50,000원</td>
+				<td>120분 ~</td>
 			</tr>
 			<tr>
-				<th>1,000평 이하</th>
-				<td>150,000원</td>
-			</tr>
-			<tr>
-				<th>1,500평 이하</th>
-				<td>200,000원</td>
-			</tr>
-			<tr>
-				<th>2,000평 이하</th>
-				<td>250,000원</td>
-			</tr>
-			<tr>
-				<th>2,001평 이상</th>
-				<td>평당 150원</td>
-				<td colspan="2" rowspan="3">&lt;추가요금 없음&gt;</td>
-			</tr>
-			<tr>
-				<th>5,000평 이상</th>
-				<td>평당 140원</td>
-			</tr>
-			<tr>
-				<th>10,000평 이상</th>
-				<td>평당 130원</td>
-			</tr>
-			
-		</table>
-		</div>
-		
-		<br/>
-		<br/>
-		<hr/>
-		<div>
-			<h3>집먼지 진드기 방제!</h3>
-		</div>
-		<div>
-		<table border="1" align="right-center">
-			<caption><h4>집먼지 진드기 방제</h4></caption>
-			<tr>
-				<th colspan="5">먼지다듬이 방제(일반/천연)</th>
-			</tr>
-			<tr>
-				<th>적용 평수</th>
-				<th>1회성</th>
-				<th>2개월 보장형</th>
-				<th>정기관리/회당</th>
-				<th>보장기간 이후(회당)</th>
-			</tr>
-			<tr>
-				<th>원룸</th>
-				<td>11/14</td>
-				<td>18/23</td>
-				<td>7</td>
-				<td>8</td>
-			</tr>
-			<tr>
-				<th>30평 이하</th>
-				<td>12/15</td>
-				<td>20/25</td>
-				<td>8</td>
-				<td>9</td>
-			</tr>
-			<tr>
-				<th>50평 이하</th>
-				<td>14/17</td>
-				<td>25/30</td>
-				<td>9</td>
-				<td>10</td>
-			</tr>
-			<tr>
-				<th>100평 이하</th>
-				<td>17/21</td>
-				<td>30/35</td>
-				<td>10</td>
-				<td>12</td>
-			</tr>
-			<tr>
-				<th>101평 이상</th>
-				<td colspan="4">별도 견적</td>
+				<th>501평 이상</th>
+				<td>별도 견적</td>
+				<td>120분 ~</td>
+				
 			</tr>
 		</table>
-		</div>
-
+	</div>
 
 
 

@@ -1,6 +1,7 @@
 package net.haebang.qna.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,9 @@ public class QnADAOimpl implements QnADAO{
 	private SqlSessionTemplate sqlSession;
 
 	@Override
-	public List<QnAVo> selectAll() {
-		List<QnAVo> list = sqlSession.selectList("net.haebang.qna.dao.QnADAO.selectAllBoard");
+	public List<QnAVo> selectAll(Map<String, Object> map) {
+		System.out.println(map);
+		List<QnAVo> list = sqlSession.selectList("net.haebang.qna.dao.QnADAO.selectAllBoard", map);
 		return list;
 	}
 
@@ -34,7 +36,7 @@ public class QnADAOimpl implements QnADAO{
 
 	@Override
 	public QnAVo selectOne(int q_no) {
-		
+		System.out.println(q_no+"dao");
 		return sqlSession.selectOne("net.haebang.qna.dao.QnADAO.selectOneBoard",q_no);
 	}
 
@@ -43,6 +45,20 @@ public class QnADAOimpl implements QnADAO{
 		sqlSession.update("net.haebang.qna.dao.QnADAO.updateBoard",QnA);
 		
 	}
+
+	@Override
+	public void updateviewCnt(int q_no) {
+		sqlSession.update("net.haebang.qna.dao.QnADAO.updateReadCnt",q_no);
+		
+	}
+
+	@Override
+	public double selectTotal(Map<String, Object> map) {
+		int totalPage = sqlSession.selectOne("net.haebang.qna.dao.QnADAO.selectTotal", map);
+		return totalPage;
+	}
+
+	
 	
 
 	

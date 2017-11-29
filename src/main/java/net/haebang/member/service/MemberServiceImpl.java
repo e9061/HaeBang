@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import net.haebang.exception.NoMemberException;
 import net.haebang.member.dao.MemberDao;
 import net.haebang.vo.MemberVo;
 import net.haebang.vo.NoticeBoardVo;
@@ -18,7 +19,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Autowired
 	public MemberDao dao;
-	
+
 	@Override
 	public List<MemberVo> selectAllMember() {
 		List<MemberVo> list = dao.selectAll();
@@ -28,7 +29,7 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public void insertMember(MemberVo Member) {
 		dao.insert(Member);
-		
+
 	}
 
 	@Override
@@ -37,43 +38,52 @@ public class MemberServiceImpl implements MemberService{
 		return dao.selectOne(m_id);
 	}
 
-	/*@Override
-	public boolean loginCheck(MemberVO Member, HttpSession session) {
-		boolean result = dao.loginCheck(Member);
-		
-		if (result) {
-			MemberVO userVO = viewMember(Member);
-			
-			session.setAttribute("m_id", userVO.getM_id());
-			session.setAttribute("m_name", userVO.getM_name());
-			
-		}
-		System.out.println(Member+"서비스");
-		return result;
-	}
-
-	@Override
-	public MemberVO viewMember(MemberVO Member) {
-		
-		return dao.viewMember(Member);
-	}*/
-
 	@Override
 	public void logout(HttpSession session) {
 		session.invalidate();
-		
+
 	}
 
 	@Override
 	public MemberVo login(MemberVo member) {
-		return dao.login(member);
+		MemberVo mem = dao.login(member);
+
+		if (mem == null) {
+			throw new NoMemberException();
+		}
+
+		return mem;
 	}
 
-	/*@Override
-	public MemberVO login(MemberVO Member) {
+	@Override
+	public MemberVo blogin(MemberVo member) {
+		MemberVo mem = dao.blogin(member);
+
+		if (mem == null) {
+			throw new NoMemberException();
+		}
+
+		return mem;
+	}
+
+	@Override
+	public MemberVo mainLogin(MemberVo member) {
+		MemberVo mem = dao.mainLogin(member);
+
+		if (mem == null) {
+			throw new NoMemberException();
+		}
+
+		return mem;
+	}
+
+	@Override
+	public void updateMember(MemberVo member) {
+		System.out.println(member+"서비스");
+		dao.updateMember(member);
 		
-		return dao.login(Member);
-	}*/
+	}
+
 	
 	
 	/******************************************** 공지사항 ***************************************************************/

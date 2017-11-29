@@ -49,51 +49,12 @@
 			<div class="row">
 				<div class="col-md-8 col-md-offset-2">
 					<h4>
-						<strong>${ userVO.m_id }</strong>님의 회원정보
+						"<strong>${ userVO.m_name }</strong>"님의 회원정보
 					</h4>
-
-					<%-- <form action="${ pageContext.request.contextPath }/member/login" name="form1" method="post" role="form"> --%>
-					<form>
-						<div class="form-group">
-
-							<div>아이디 :</div>
-							<div>${ userVO.m_id }</div>
-
-
-						</div>
-						<!-- <div class="form-group">
-							<input type="password" class="form-control" name="m_password"
-								id="m_password" placeholder="PASSWORD" />
-							<div class="validation"></div>
-						</div> -->
-					<!-- 	<input type="submit" value="로그인" /> -->
-						<%-- <div>
-							<input type="submit" id="btnLogin" value="로그인"/>
-							<c:if test="${ msg == 'failure' }">
-								<div style="color: red">아이디 또는 비밀번호가 일치하지 않습니다.</div>
-							</c:if>
-							<c:if test="${ msg == 'logout' }">
-								<div style="color: red"></div>
-							</c:if>
-						</div> --%>
-					</form>
 					<section>
 						<div class="box box-info">
 
-							<div class="box-header with-border">
-								
-
-								<div class="box-tools pull-right">
-									<button type="button" class="btn btn-box-tool"
-										data-widget="collapse">
-										<i class="fa fa-minus"></i>
-									</button>
-									<button type="button" class="btn btn-box-tool"
-										data-widget="remove">
-										<i class="fa fa-times"></i>
-									</button>
-								</div>
-							</div>
+							
 							<div class="box-body">
 								<div class="table-responsive">
 
@@ -103,16 +64,12 @@
 											<td>${ memberVO.m_name }</td>
 										</tr>
 										<tr>
-											<th>회원번호</th>
-											<td>${ memberVO.m_no }</td>
-										</tr>
-										<tr>
 											<th>아이디</th>
 											<td>${ memberVO.m_id }</td>
 										</tr>
 										<tr>
 											<th>비밀번호</th>
-											<td>${ memberVO.m_password }</td>
+											<td><input type="password" id="${ memberVO.m_password }" value ="${ memberVO.m_password }" readonly /></td>
 										</tr>
 										<tr>
 											<th>연락처</th>
@@ -127,36 +84,35 @@
 											<td>${ memberVO.m_owner }</td>
 										</tr>
 										<tr>
-											<th>카드 CVC</th>
+											<th>카드 번호</th>
 											<td>${ memberVO.m_cardNo }</td>
 										</tr>
 										<tr>
-											<th>작성일</th>
+											<th>카드 CVC</th>
 											<td>${ memberVO.m_cardCVC }</td>
 										</tr>
-										<tr>
-											<th>가입일</th>
-											<td>${ memberVO.m_joinDate }</td>
-										</tr>
 									</table>
+									<div style="display:inline-block; align:center;" >
 									<form
-										action="${ pageContext.request.contextPath }/member/myPage/${ memberVO.m_id }"
-										method="get">
-										<input type="submit" class="btn btn-default" value="수정" />
+										action="${ pageContext.request.contextPath }/member/${ memberVO.m_id }"
+										method="get" style="float:left;">
+										<input type="submit" class="btn btn-theme" value="수정" />
 									</form>
+									
 									<form
-										action="${ pageContext.request.contextPath }/member/myPage/${ memberVO.m_id }"
-										method="post">
+										action="${ pageContext.request.contextPath }/member/delete/${ memberVO.m_id }"
+										method="post" style="float:left; margin-left:10px;">
 										<input type="hidden" name="_method" value="delete"> <input
-											type="submit" value="삭제" class="btn btn-default" />
+											type="submit" value="회원탈퇴" class="btn btn-theme" />
 									</form>
-									<input type="button" class="btn btn-default"
+									</div>
+									<%-- <input type="button" class="btn btn-theme"
 										onclick="location.href='${ pageContext.request.contextPath }/board/list'"
-										value="목록" />
+										value="목록" /> --%>
 
 									<!-- 댓글 -->
 
-									<div class="container">
+									<%-- <div class="container">
 										<label for="content">comment</label>
 										<form name="commentInsertForm">
 											<div class="input-group">
@@ -169,8 +125,7 @@
 													class="btn btn-default">등록</button>
 											</div>
 										</form>
-									</div>
-
+									</div> --%>
 									<div class="container">
 										<div class="commentList"></div>
 									</div>

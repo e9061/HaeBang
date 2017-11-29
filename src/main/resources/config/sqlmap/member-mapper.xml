@@ -25,36 +25,14 @@
 	</select>
 	
 	<select id="selectInfo" resultMap="MapMemberVO" parameterType="memberVO">
-		select  m_name, m_no, m_id, m_password, m_phone, m_address, m_owner, m_cardNo, m_cardCVC, m_joinDate
-		from t_member where m_id = #{m_id};
+		select  m_name, m_id, m_password, m_phone, m_address, m_owner, m_cardNo, m_cardCVC
+		from t_member where m_id = #{m_id}
 	</select>
 		
-<!-- 	<select id="loginCheck" resultType="String" > -->
-<!--         SELECT m_name FROM t_member -->
-<!--         WHERE m_id = #{m_id} AND m_password = #{m_password} -->
-<!--     </select> -->
-
- 	<!-- <select id="loginCheck" resultType="String" parameterType="MemberVO">
-	<select id="loginCheck" resultMap="MapMemberVO" parameterType="String">
-		SELECT m_name FROM t_member WHERE (m_id = #{m_id} AND m_password = #{m_password})
-	</select> -->
-
-	<!-- <select id="viewMember" resultType="net.haebang.member.vo.MemberVO">
-        SELECT 
-            m_name,
-            m_id,
-            m_email,
-            m_regdate
-        FROM t_member
-        WHERE m_id = #{m_id} AND m_password = #{m_password}
-    </select> -->
-	
-	<!-- <select id="viewMember" resultType="MemberVO" parameterType="MemberVO">
-	 	SELECT m_name, m_id 
-	FROM t_member 
-	WHERE (m_id = #{m_id} 
-	AND m_password = #{m_password})
-	</select> -->
+	<select id="selectById" parameterType="String" resultType="memberVO">
+		select m_id from t_member where m_id = #{m_id}
+	</select>
+		
 	
 	<!-- 로그인 -->
   	<select id="login" parameterType="memberVO" resultType="memberVO">
@@ -67,6 +45,18 @@
 		insert into t_member(m_no, m_name, m_id, m_password, m_phone, m_type)
 		values(m_no, #{m_name}, #{m_id},#{m_password},#{m_phone},m_type)
 	</insert>
+	
+	<select id="blogin" parameterType="memberVO" resultType="memberVO">
+		select m_name, m_password, m_phone, m_type
+			from t_member
+			where m_name = #{m_name} and m_password = #{m_password} and m_phone = #{m_phone} and m_type = 'b'
+	</select>
+	
+	<update id="updateMember" parameterType="memberVO" >
+		update t_member
+		set m_name=#{m_name}, m_id=#{m_id}, m_password=#{m_password}, m_phone=#{m_phone}, m_address=#{m_address}, m_owner=#{m_owner}, m_cardNo=#{m_cardNo}, m_cardCVC=#{m_cardCVC}
+		where m_id = #{m_id}
+	</update>
 	
 	
 	

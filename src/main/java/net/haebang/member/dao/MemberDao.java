@@ -11,12 +11,14 @@ import net.haebang.vo.NoticeBoardVo;
 public interface MemberDao {
 
 	List<MemberVo> selectAll();
-	void insert(MemberVo QnA);
+	void insert(MemberVo Member);
 	MemberVo selectOne(String m_id);
-	/*boolean loginCheck(MemberVO Member);
-	MemberVO viewMember(MemberVO Member);*/
 	void logout(HttpSession session);
 	MemberVo login(MemberVo member);
+	MemberVo selectById(String m_id);
+	MemberVo blogin(MemberVo member);
+	MemberVo mainLogin(MemberVo member);
+	void updateMember(MemberVo member);
 	
 	
 	/******************************** 공지사항 *************************************************/

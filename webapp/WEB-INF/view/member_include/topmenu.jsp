@@ -2,12 +2,8 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE>
-<html>
-<head>
 
 	<meta charset="utf-8">
-	<title>Moderna - Bootstrap 3 flat corporate template</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="description" content="" />
 	<!-- css -->
@@ -22,18 +18,7 @@
 	<!-- Theme skin -->
 	<link href="${ pageContext.request.contextPath }/resources/skins/default.css" rel="stylesheet" />
 
-</head>
-<style>
-	#hi {
-	
-		background-color : skyblue;
-		family-font : bold;
-		width : 500px;
-		height : 50px;
-	
-	}
-</style>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js">
+<%-- <script src="https://code.jquery.com/jquery-1.11.1.min.js">
 		
 	</script>
 	<!-- Bootstrap JavaScript -->
@@ -42,11 +27,8 @@
 
 	<!-- Custom JavaScript -->
 	<script src="${ pageContext.request.contextPath }/resources/js/custom.js"></script>
-	<script src="<%=request.getContextPath()%>/resources/js/checkForm.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/checkForm.js"></script> --%>
 		
-<body>
-	<div id="wrapper">
-		<!-- start header -->
 	
 		<div class="navbar navbar-default navbar-static-top">
 				<div class="container">
@@ -68,16 +50,15 @@
 							<c:when test="${ empty userVO }">
 								<li><a href="${ pageContext.request.contextPath }/member/join">회원가입</a></li> 
 	        					<li><a href="${ pageContext.request.contextPath }/member/loginForm">로그인</a></li>
-	        					<li><a href="${ pageContext.request.contextPath }/member/memberNotice?n_type=m">공지사항</a></li>
+								<li><a href="${ pageContext.request.contextPath }/member/memberNotice?n_type=m">공지사항</a></li>
       						   </c:when>	
 							<c:otherwise>
-								<li><a href="${ pageContext.request.contextPath }/member/myPage">${ userVO.m_id }<b class=" icon-angle-down"></b></a></li>
+								<li><a href="${ pageContext.request.contextPath }/member/memberNotice?n_type=m">공지사항</a></li>
+								<li><a href="${ pageContext.request.contextPath }/member/myPage/${ userVO.m_id }">myPage<b class=" icon-angle-down"></b></a></li>
 									<li><a href="${ pageContext.request.contextPath }/qna/list">QnA</a></li>
           						<li><a href="${ pageContext.request.contextPath }/member/logout">로그아웃</a></li>
 							</c:otherwise>
 						</c:choose>
-						<!-- dropdown 지운링크 -->
-						<!--  class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" -->
 						</ul>
 					</div>
 				</div>
