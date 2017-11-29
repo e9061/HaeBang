@@ -39,6 +39,7 @@ import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
 import net.haebang.vo.MapVo;
 import net.haebang.vo.NoticeBoardVo;
+import net.haebang.vo.ScheduleVo;
 
 @Controller
 public class EmployeeController {
@@ -576,6 +577,43 @@ public class EmployeeController {
 		
 	}
 	
+	
+	
+	@RequestMapping(value="/ceoModal", method=RequestMethod.POST)
+	public @ResponseBody EmployeeVo loginModalform(EmployeeVo employeeVo, HttpSession session) {	
+		
+		
+		try {
+			
+		
+		EmployeeVo userVo = employeeService.authenticate(employeeVo);
+		
+		System.out.println(userVo);
+		
+		if(userVo.getE_type().equals("E")) {
+			userVo.setE_type("직원");
+		}
+		
+		if(userVo.getE_type().equals("O")) {
+			userVo.setE_type("사장");
+		}
+		
+		session.setAttribute("userVo", userVo);				
+		
+		return userVo;
+		
+		} catch (IdPasswordNotMatchingException e) {			
+			
+		return null;
+		
+		}
+		
+		
+	}
+		
+	
+	
+	
 /******************************** 공지사항 made by juho ******************************************************	
 	*************************************************************************************/
   
@@ -811,5 +849,17 @@ public class EmployeeController {
 		return mav;
 	}
 	
+	@RequestMapping(value="/ceo/schedulelist", method=RequestMethod.POST)
+	public @ResponseBody ScheduleVo calendarlistAjax (HttpServletRequest request, ModelAndView mav){
+		
+		ScheduleVo scheduleVo = new ScheduleVo(1, "주호네", "2017-11-25T15:00:00", "2017-11-25T15:30:00"); 
+		
+		System.out.println("컨트롤러 시작");	
+				
+		System.out.println(scheduleVo);
+		
+		return scheduleVo;
+	}
+		
 	
 }

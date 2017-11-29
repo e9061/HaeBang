@@ -150,9 +150,11 @@
 		update t_employee set e_oriName = #{e_oriName}, e_saveName = #{e_saveName} where e_no = #{e_no}
 	</update>
 
+
 	<update id="updateCompanyAddress" parameterType="companyVo">
 		update t_company set c_address = #{c_address} where c_no = #{c_no}
 	</update>
+
 
 	
 </mapper>

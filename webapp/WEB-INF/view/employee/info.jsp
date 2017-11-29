@@ -28,13 +28,10 @@
 	======================================================= -->
 
 <style type="text/css">
-
 .container1 {
 	padding:0 30px 0 50px;
 	position:relative;
 }
-
-
 ul.meta-post li{
 	float:left;
 	margin:0 10px 0 0;
@@ -43,13 +40,9 @@ ul.meta-post li{
 	border-right:0px dotted #e9e9e9;
 	padding-right:50px;
 }
-
-
 </style>
 
 <script type="text/javascript">
-
-
 	function click_update(data){
 		if(data == "e_password"){
 			
@@ -61,13 +54,10 @@ ul.meta-post li{
 		$(document.getElementsByClassName(data)).next().html(msg);
 		$(document.getElementsByClassName(data)).next().next().html(msg1);
 		$(document.getElementsByClassName(data)).parent().next().html("");
-
 	}
-
 	
 	
 	
-
 </script>
 
 </head>
@@ -268,7 +258,6 @@ ul.meta-post li{
 
 </body>
 <script>
-
 $(document).on("click", "#e_phone, #c_name, #c_phone", function(){
 	
 	if($(this).parents('li').prev().children().val() =="")
@@ -296,12 +285,10 @@ $(document).on("click", "#e_phone, #c_name, #c_phone", function(){
 			
 		},
 		success: function(result){
-
 				var msg = "<img src='${pageContext.request.contextPath }/resources/img/noun_1060075_cc.png' style='width: 25px; height: auto;' />"; 
 				$("#e_phone").parents('li').prev().html(result.employeeVo.e_phone);
 				$("#e_phone").parent().parent().next().html(msg);
 				$("#e_phone").parents('li').html("");
-
 				$("#c_name").parents('li').prev().html(result.companyVo.c_name);
 				$("#c_name").parent().parent().next().html(msg);
 				$("#c_name").parents('li').html("");
@@ -328,8 +315,6 @@ $(document).on("click", "#e_phone, #c_name, #c_phone", function(){
 		}
 	}); 
 });
-
-
 $(document).on("click", "#e_password",function(){
 	
 	if( $("#hidden").val() == $(this).parents().prev().children().val()){
@@ -343,7 +328,6 @@ $(document).on("click", "#e_password",function(){
 		        hiddenField.setAttribute("value", "step");
 		        form.appendChild(hiddenField);
 		        document.body.appendChild(form);
-
 		        form.submit();
 		}
 	else{
@@ -351,8 +335,6 @@ $(document).on("click", "#e_password",function(){
 		return false;
 	}
 });
-
-
 </script>
 
 

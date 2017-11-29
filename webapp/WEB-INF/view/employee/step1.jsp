@@ -228,7 +228,6 @@
 			}
 			return false;
 		}
-
 		function nextStep() {
 			var click = document.first;
 			if (isNull(click.third, document.getElementById('owner').innerText)) {
@@ -246,4 +245,3 @@
 </body>
 
 </html>
-
