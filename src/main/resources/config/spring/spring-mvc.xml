@@ -103,7 +103,7 @@
 
 
 	<mvc:view-controller path="/ceo/register/join" view-name="employee/join" />
-
+	<mvc:view-controller path="/ceo/schedule" view-name="company_management/scheduleManagement" />
 	
 </beans>
 

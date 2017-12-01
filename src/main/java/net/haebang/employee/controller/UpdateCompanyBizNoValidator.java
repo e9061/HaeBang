@@ -52,5 +52,3 @@ public class UpdateCompanyBizNoValidator implements Validator {
 	
 	
 }
-
-

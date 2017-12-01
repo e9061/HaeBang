@@ -8,6 +8,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <style type="text/css">
+
     body {
       font-family: 'Varela Round', sans-serif;
    }
@@ -113,6 +114,34 @@ function checkForm(){
    }
 }
 
+
+
+$(document).ready(function(){
+    $("#login_btn").click(function(){
+        
+    	alert("Submitted");
+        
+    	$.ajax({
+        	
+  	      	url:"${ pageContext.request.contextPath}/ceoModal",
+  	      	type: "POST",  
+  	      	data: {
+  	      		e_id : $('#e_id').val(),
+				e_password : $('#e_password').val()  	      		
+  	      	},
+  	      	success: function(data) {  	        	      	
+  	      		if(data==""){
+					alert("회원 정보가 존재하지 않습니다");	
+					window.location.href="#myModal";
+				}else{
+					
+					window.location.href="${ pageContext.request.contextPath}/ceo";
+				}	
+  	      	}
+        });           
+    });   
+});
+
 </script>
 
  <div id="myModal" class="modal fade">
@@ -123,25 +152,25 @@ function checkForm(){
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
          </div>
          <div class="modal-body">
-            <form:form name="lform" commandName="employeeVo" onsubmit="return checkForm()" method="post" >
+
+            <form action="${ pageContext.request.contextPath }/ceoModal" name="lform" onsubmit="return checkForm()" method="post" >
                <div class="form-group">
                   <i class="fa fa-user"></i>
-                  <form:input class="form-control" placeholder="아이디" name="e_id" id="e_id" path="e_id"/>
+                  <input type="text" class="form-control" placeholder="아이디" name="e_id" id="e_id" />
                </div>
                <div class="form-group">
                   <i class="fa fa-lock"></i>
-                  <form:password class="form-control" placeholder="패스워드" name="e_password" id="e_password"  path="e_password"/>               
+                  <input type="password" class="form-control" placeholder="패스워드" name="e_password" id="e_password" />               
                </div>
                     <div class="form-group small clearfix">
                         <label class="checkbox-inline"><%-- <form:checkbox path/>Remember me --%> </label>
                         <a href="${ pageContext.request.contextPath }/ceo/forgotmyid">아이디</a> / 
                         <a href="${ pageContext.request.contextPath }/ceo/forgotmypassword">비밀번호</a>를 잊으셨나요?
-               </div>
-               	<span style="color: red;">${errorMessage }</span>
+               </div>               
                <div class="form-group">
-                  <input type="submit" class="btn btn-primary btn-block btn-lg" value="로그인"/>
+                  <input type="button" id="login_btn" class="btn btn-primary btn-block btn-lg" value="로그인"/>
                </div>
-            </form:form>
+            </form>
          </div>
          <div class="modal-footer">아직 해방회원이 아니신가요? <a href="${ pageContext.request.contextPath }/ceo/register/join">회원가입하기</a></div>
       </div>

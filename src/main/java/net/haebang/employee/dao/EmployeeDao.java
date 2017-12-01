@@ -30,7 +30,7 @@ public interface EmployeeDao {
     
  // -------------------------------------- 창대 ----------------------------------------
     EmployeeVo selectById(String e_id);
-	CompanyVo selectByBizNo1(String c_bizNo);
+    CompanyVo selectByBizNo1(String c_bizNo);
 	CompanyVo selectByCode(String c_code);
 	CompanyVo selectByNo(int c_no);
 	List<EmployeeVo> selectByCNo(int c_no);

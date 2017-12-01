@@ -28,13 +28,10 @@
 	======================================================= -->
 
 <style type="text/css">
-
 .container1 {
 	padding:0 30px 0 50px;
 	position:relative;
 }
-
-
 ul.meta-post li{
 	float:left;
 	margin:0 10px 0 0;
@@ -45,25 +42,18 @@ ul.meta-post li{
 	padding-top: 10px;
 	
 }
-
-
 </style>
 
 <script type="text/javascript">
-
-
 	function click_update(data){
 		
 		var msg = "<input class='form-control' type='text' placeholder='"+$(document.getElementsByClassName(data)).next().html()+"'/>"
 		var msg1 = "<a class='btn btn-info' id='"+data+"' style='width: 70px; color:white';>수정</a>"
 		$(document.getElementsByClassName(data)).next().html(msg);
 		$(document.getElementsByClassName(data)).next().next().html(msg1);
-
 	}
-
 	
 	
-
 </script>
 
 </head>
@@ -184,7 +174,6 @@ ul.meta-post li{
 
 </body>
 <script>
-
 $(document).on("click",".delete", function(){
 	
 	if(confirm($(this).parents().parents().children().first().next().html() +" 직원을 삭제하시겠습니까?")== false)
@@ -249,11 +238,6 @@ $(document).on("click",".delete", function(){
 		}
 	});
 });
-
-
-
-
-
 </script>
 
 
