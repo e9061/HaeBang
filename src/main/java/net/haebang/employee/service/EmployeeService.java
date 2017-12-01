@@ -29,7 +29,6 @@ public interface EmployeeService {
 
 	void modifyEmployee(EmployeeVo employee);
 	EmployeeVo authenticate(EmployeeVo employeeVo);
-	List<MapVo> selectAllmap(EmployeeVo employeeVo);
 	List<NoticeBoardVo> getMainnoticelist();
 	EmployeeVo getIdByPhone(String name, String phone);
 	EmployeeVo getIdByBizNo(String name, String companyName, String bizNo);

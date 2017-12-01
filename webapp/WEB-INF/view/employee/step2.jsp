@@ -57,7 +57,7 @@
     function c_execDaumPostcode() {
         new daum.Postcode({
             oncomplete: function(data) {
-                // 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+            	// 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
                 // 각 주소의 노출 규칙에 따라 주소를 조합한다.
                 // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
@@ -81,9 +81,9 @@
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
                 document.getElementById('c_postcode').value = data.zonecode; //5자리 새우편번호 사용
                 document.getElementById('c_address').value = fullAddr;
+                  document.getElementById('c_address').focus();
 
-                // iframe을 넣은 element를 안보이게 한다.
-                // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
+	             
                 element_layer.style.display = 'none';
             },
             width : '100%',
@@ -433,11 +433,6 @@
 	});
 	
 	
- 	/* $(function(){
-		$("#fileUpload").on("change", function(){
-			readURL(this);	
-		});	
-	}); */
 	
 
 	$(document).on("click", "#fileUpload", function(){   
@@ -484,8 +479,45 @@
 	     } 
      
 
-    	 
-     
+		  function inputAddress(address){
+			  
+			  $.ajax({		
+					url: "http://apis.skplanetx.com/tmap/geo/fullAddrGeo",
+					type: "GET",
+					data: {	
+						version : 1,
+						fullAddr : address,
+						addressFlag : "F00",
+						format : "json",
+						appKey : "1d03f3c5-e620-375a-94d6-e359b011ec64"
+					},
+					success : function(result)
+					{
+						
+						document.getElementById('c_lon').value = result.coordinateInfo.coordinate[0].newLon;
+						document.getElementById('c_lat').value = result.coordinateInfo.coordinate[0].newLat;
+						
+					},
+					error: function(data){
+						var str = JSON.stringify(data.responseText);
+						var str1 = str.substring(str.lastIndexOf(",")+1);
+						var str2 = str.substring(0,str.lastIndexOf(","));
+						str1 = str1.substring(0, str1.length-1);
+						str2 = str2.substring(1, str2.length);
+						var str3 = str2.replace(/\\/gi,"")+str1.replace(/\\/gi,"");
+						var result = JSON.parse(str3);
+						
+						
+						document.getElementById('c_lon').value = result.coordinateInfo.coordinate[0].lon;
+						document.getElementById('c_lat').value = result.coordinateInfo.coordinate[0].lat;
+
+						
+					}
+			  });
+		  }
+							  
+		  
+		  
 	
 	
 	
@@ -703,16 +735,16 @@
 						&nbsp;&nbsp; <input type="button" class="btn btn-info1" onclick="c_execDaumPostcode()" value="우편번호 찾기"><br>
 						</div>
 						<div class="form-group">
-							<form:input style="width:50%;" path="c_address"
+							<form:input style="width:50%;" onblur="inputAddress($(this).val())" path="c_address"
 								class="form-control" placeholder="사업자 등록증상 업체 주소를 입력해 주세요." />
 							<form:errors path="c_address" />
 							<!-- 업체주소 t_company 테이블 변수 c_address -->
 						<input type="text" name="c_detailAddress" placeholder="상세입력" class="form-control" style="width:50%;"/>
-
-							<div class="validation"></div>
+						<form:hidden path="c_lon"/>
+						<form:hidden path="c_lat"/>
 						</div>
 						
-						
+						<div class="text-center" id="plz"></div>
 												<div class="text-center">
 							<a href="<%=request.getContextPath()%>/ceo"><input
 								type="button" value="취소" class="btn btn-theme"></a> <input
@@ -817,4 +849,5 @@
 </body>
 
 </html>
+
 

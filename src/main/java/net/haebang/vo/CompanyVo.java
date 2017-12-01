@@ -24,7 +24,25 @@ public class CompanyVo {
 	private String c_code;	// 부여된 난수code를 통해서 직원들 인증!
 	private int c_empCnt;  //직원 한명 늘어날 때마다 카운트 1씩 증가.
 
-
+	private String c_lon;	//경도
+	private String c_lat;	//위도
+	
+	
+	
+	
+	
+	public String getC_lon() {
+		return c_lon;
+	}
+	public void setC_lon(String c_lon) {
+		this.c_lon = c_lon;
+	}
+	public String getC_lat() {
+		return c_lat;
+	}
+	public void setC_lat(String c_lat) {
+		this.c_lat = c_lat;
+	}
 
 
 	
@@ -137,5 +155,6 @@ public class CompanyVo {
 	
 	
 	
+
 
 
