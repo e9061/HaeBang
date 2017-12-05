@@ -63,5 +63,14 @@ public interface EmployeeDao {
 	
 	
 	
+/***************************************스케쥴************************************************/
+	
+	List<HashMap<String, Object>> getScheduleList(int c_no);
+	HashMap<String, Object> getScheduleByMONo(int mo_no);
+	void deleteSchedule(String mo_orderNo);
+	
+/********************************************************************************************/
+	
+	
 }
 

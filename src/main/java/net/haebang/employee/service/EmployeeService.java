@@ -1,5 +1,6 @@
 package net.haebang.employee.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,5 +44,20 @@ public interface EmployeeService {
 	int getLastPage(String n_type, String word, String searchCondition);
 	NoticeBoardVo getNoticeBoardByNo(NoticeBoardVo noticeBoardVo);
 	/********************************공지사항**************************************************************/
+	
+	
+	/********************************스케쥴 **************************************************************/
+	List<HashMap<String, Object>> getScheduleList(int c_no);
+	HashMap<String, Object> getScheduleByMONo(int mo_no);
+	void deleteSchedule(String mo_orderNo);
+
+	
+	/********************************스케쥴**************************************************************/
+	
+	
+	
+	
+	
+	
 
 }

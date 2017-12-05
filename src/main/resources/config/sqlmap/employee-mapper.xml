@@ -218,6 +218,38 @@
 		insert into t_member(m_name, m_address, m_phone, m_type, m_lon, m_lat) values(#{name}, #{address}, #{phone}, #{type}, #{lon}, #{lat})
 	</insert>
 
+	<!-- *************************** 이주호 스케쥴  ************************************* -->
+ 	<!-- 스케줄리스트  -->
+	<select id="getScheduleList" parameterType="Integer" resultType="hashMap">
+		select date_format(mo_startTime, '%Y-%m-%dT%H:%i:%s') as mo_startTime, date_format(mo_endTime, '%Y-%m-%dT%H:%i:%s') as mo_endTime,m_address ,e_name,  t_m_order.mo_no
+		from ((( select * from t_employee where t_employee.c_no = #{c_no}) as e inner join t_e_order on e.e_no = t_e_order.e_no) inner join t_m_order on t_e_order.mo_no = t_m_order.mo_no) inner join t_member on t_m_order.m_no = t_member.m_no
+	</select>
+	
+ 	<!-- 스케쥴 디테일 - mo_no 로 조회  -->
+ 	<select id="getScheduleByMONo" parameterType="Integer" resultType="hashMap">
+ 	<!-- 
+		select m_name, m_address, m_phone, m_type,date_format(mo_startTime, '%Y년 %m월 %d일 %H시 %i분') as mo_startTime, date_format(mo_endTime, '%Y년 %m월 %d일 %H시 %i분') as mo_endTime, mo_orderNo, t_m_order.mo_no, s_style , s_name, mo_freqType, mo_freqCycle, mo_cnt, mo_total, e_name, e_phone
+		from ((((select * from t_m_order where mo_no = #{ mo_no } ) as t_m_order inner join t_member on t_m_order.m_no = t_member.m_no) inner join t_e_order on t_m_order.mo_no = t_e_order.mo_no) inner join t_employee on t_e_order.e_no = t_employee.e_no) inner join t_service on t_m_order.s_no = t_service.s_no
+	 -->
+		select m_name, m_address, m_phone, m_type,date_format(mo_startTime, '%Y년 %m월 %d일 %H시 %i분') as mo_startTime, date_format(mo_endTime, '%Y년 %m월 %d일 %H시 %i분') as mo_endTime, mo_orderNo, t_m_order.mo_no, mo_freqType, mo_freqCycle, mo_cnt, mo_total, e_name, e_phone
+		from (((select * from t_m_order where mo_no = #{ mo_no } ) as t_m_order inner join t_member on t_m_order.m_no = t_member.m_no) inner join t_e_order on t_m_order.mo_no = t_e_order.mo_no) inner join t_employee on t_e_order.e_no = t_employee.e_no
+	
+	
+	
+	</select>
+ 	
+ 	<!-- 스케쥴 삭제 where 조건 mo_orderNo 로 삭제  -->
+ 	<delete id="deleteSchedule" parameterType="String">
+		delete from t_employee where e_no = #{e_no}
+	</delete>
+ 	
+ 	<!-- *************************** 이주호 스케쥴  ************************************* -->
+ 	
+
+
+
+
+
 	
 </mapper>
 
