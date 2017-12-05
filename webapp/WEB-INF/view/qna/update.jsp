@@ -33,8 +33,31 @@
 
 	}
 </script> -->
+<style>
+
+	#content {
+	text-align: center;
+}
+
+table {
+	text-align: center;
+}
+
+tr {
+	text-align: center;
+}
+
+td {
+	text-align: center;
+}
+
+div {
+	text-align: center;
+	align: center;
+}
+</style>
 <script>
-$(document).on("click", "#fileUpload", function(){   
+/* $(document).on("click", "#fileUpload", function(){   
 
 	$("#fileUpload").on("change", function(){
 		readURL(this);	
@@ -75,7 +98,7 @@ $(document).on("click", "#fileUpload", function(){
 
            reader.readAsDataURL(fileUpload.files[0]);
          }
-     } 
+     }  */
  
 
 </script>
@@ -86,20 +109,20 @@ $(document).on("click", "#fileUpload", function(){
 		<header> <jsp:include page="../member_include/topmenu.jsp" />
 		</header>
 		
-		<section id="content">
-		<div class="container" align="center">
-			<div class="row" align="center">
-				<div class="col-lg-8" align="center">
+		<section>
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8">
 					<article> 
 					<div>
-						<h2>
+						<h2 align="center">
 							<span>QnA 작성</span>
 						</h2>
-						<form:form commandName="QnAVO" method="post" enctype="multipart/form-data">
+						<form:form commandName="QnAVO" method="PUT" >
 							<table border="1" width="80%">
 								<tr>
 									<th width="25%">제목</th>
-									<td><form:input path="q_title" class="form-control"/></td>
+									<td><form:input path="q_title" class="form-control" default="${ QnAList.q_title }" /></td>
 								</tr>
 								<tr>
 									<th width="25%">글쓴이</th>
@@ -107,11 +130,10 @@ $(document).on("click", "#fileUpload", function(){
 								</tr>
 								<tr>
 									<th width="25%">내용</th>
-									<td><form:textarea rows="7" cols="10" class="form-control" path="q_content" /></td>
-								</tr>
-								<!-- <tr>
-									<td bgcolor="orange" width="70">첨부파일</td>
-									<td><input type="file" name="q_oriName"/></td>
+									<td><form:textarea rows="7" cols="10" class="form-control" path="q_content" default="${ QnAList.q_title }"/></td>
+								<!-- </tr>
+									<td bgcolor="orange" width="70">첨부파일</td><td align="left">
+									<input type="file" name="q_oriName"/></td>
 								</tr> -->
 							</table>
 							<div class="form-group">
@@ -124,9 +146,7 @@ $(document).on("click", "#fileUpload", function(){
 
 							<div id="holder1"></div>
 						</div>	 -->
-						<div align="center">
-							<input type="submit" value="등록" class="btn btn-theme"s/>
-						</div>
+							<input type="submit" value="등록" />
 						</form:form>
 					</div>
 				

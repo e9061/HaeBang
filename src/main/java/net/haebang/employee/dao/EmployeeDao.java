@@ -7,16 +7,15 @@ import java.util.Map;
 import net.haebang.vo.CompanyVo;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
-import net.haebang.vo.MapVo;
 import net.haebang.vo.MemberVo;
+import net.haebang.vo.MapVo;
 import net.haebang.vo.NoticeBoardVo;
-
+import net.haebang.vo.OrderEmployeeVo;
 
 public interface EmployeeDao {
 
 	//진화
-        EmployeeVo selectById(EmployeeVo employeeVo);
-        List<MapVo> selectAllmap(EmployeeVo employeeVo);
+        EmployeeVo selectById(EmployeeVo employeeVo);        
         EmployeeVo getIdByPhone(Map<String, Object> map);
         EmployeeVo getIdByBizNo(Map<String, Object> map);
         EmployeeVo getIdbyId(EmployeeVo employeeVo);
@@ -33,30 +32,36 @@ public interface EmployeeDao {
         NoticeBoardVo getNoticeBoardByNo(NoticeBoardVo noticeBoardVo);
         List<NoticeBoardVo> getMainnoticelist();
    /**********************************************************************/
-        
-
-        
-	 // -------------------------------------- 창대 ----------------------------------------
-    EmployeeVo selectById(String e_id);
-    	CompanyVo selectByBizNo1(String c_bizNo);
-    	CompanyVo selectByCode(String c_code);
-    	CompanyVo selectByNo(int c_no);
-    	List<EmployeeVo> selectByCNo(int c_no);
-    	
-    	void insertEmployeeAnd(JoinEmployeeVo joinEmployeeVo);
-    	void insertEmployee(JoinEmployeeVo joinEmployeeVo);
-    	void insertCompany(JoinEmployeeVo joinEmployeeVo);
-    	
-    	void updateEoC(HashMap<String,String> updateMap);
-    	void updateEmployeeCntP(JoinEmployeeVo joinEmployeeVo);   // 증가 플러스
-    	void updateEmployeeCntM(EmployeeVo employeeVo);	// 감소 마이너스
-    	void deleteEmployeeByNo(int e_no);
-    	CompanyVo selectByBizNo2(CompanyVo companyVo);
-    	void updateCompanyBizNo(CompanyVo companyVo);
-    	void updateEmpPicture(EmployeeVo employeeVo);
-//    	------------------------------------ 창대 11/25일 작업  ----------------------------------------------
-    	void updateCompanyAddress(CompanyVo companyVo);
-    	
-//    	------------------------------------ 창대 11/25일 작업 종료! ----------------------------------------------
-
+	
+	//창대    
+	EmployeeVo selectById(String e_id);
+   	CompanyVo selectByBizNo1(String c_bizNo);
+	CompanyVo selectByCode(String c_code);
+	CompanyVo selectByNo(int c_no);
+	List<EmployeeVo> selectByCNo(int c_no);
+	
+	void insertEmployeeAnd(JoinEmployeeVo joinEmployeeVo);
+	void insertEmployee(JoinEmployeeVo joinEmployeeVo);
+	void insertCompany(JoinEmployeeVo joinEmployeeVo);
+	
+	void updateEoC(HashMap<String,String> updateMap);
+	void updateEmployeeCntP(JoinEmployeeVo joinEmployeeVo);   // 증가 플러스
+	void updateEmployeeCntM(EmployeeVo employeeVo);	// 감소 마이너스
+	void deleteEmployeeByNo(int e_no);
+	CompanyVo selectByBizNo2(CompanyVo companyVo);
+	void updateCompanyBizNo(CompanyVo companyVo);
+	void updateEmpPicture(EmployeeVo employeeVo);
+//	------------------------------------ 창대 11/25일 작업  ----------------------------------------------
+	void updateCompanyAddress(CompanyVo companyVo);
+	
+//	------------------------------------ 창대 11/25일 작업 종료! ----------------------------------------------
+	
+//	------------------------------------ 창대 11/29일 작업(지도 주문관련)  ----------------------------------------------
+	List<HashMap<String, Object>> selectAllmap(EmployeeVo employeeVo);
+	void updateEOrderStatus(OrderEmployeeVo orderEmployeeVo);
+	OrderEmployeeVo selectEOrderByMoNo(OrderEmployeeVo orderEmployeeVo);
+	
+	
+	
 }
+

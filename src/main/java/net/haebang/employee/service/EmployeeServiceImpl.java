@@ -26,8 +26,8 @@ import net.haebang.exception.NoSuchMemberException;
 import net.haebang.vo.CompanyVo;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
-import net.haebang.vo.MapVo;
 import net.haebang.vo.MemberVo;
+import net.haebang.vo.MapVo;
 import net.haebang.vo.NoticeBoardVo;
 
 
@@ -327,10 +327,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 	
 
-	public List<MapVo> selectAllmap(EmployeeVo employeeVo) {
-		List<MapVo> maplist = employeeDao.selectAllmap(employeeVo);
-		return maplist;
-	}
 	
 	@Override
 	public List<NoticeBoardVo> getMainnoticelist() {

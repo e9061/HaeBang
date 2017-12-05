@@ -13,9 +13,10 @@ import org.springframework.stereotype.Repository;
 import net.haebang.vo.CompanyVo;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
-import net.haebang.vo.MapVo;
 import net.haebang.vo.MemberVo;
+import net.haebang.vo.MapVo;
 import net.haebang.vo.NoticeBoardVo;
+import net.haebang.vo.OrderEmployeeVo;
 
 
 @Repository
@@ -122,6 +123,7 @@ public class EmployeeDaoImpl implements EmployeeDao{
 		
 	}
 	
+
 	//	------------------------------------ 창대 11/25일 작업  ----------------------------------------------
 
 	@Override
@@ -134,8 +136,28 @@ public class EmployeeDaoImpl implements EmployeeDao{
 	
 	//	------------------------------------ 창대 11/25일 작업 종료! ----------------------------------------------
 	
+	//	------------------------------------ 창대 11/29일 작업(지도 주문관련)  ----------------------------------------------
+	@Override
+	public List<HashMap<String, Object>> selectAllmap(EmployeeVo employeeVo) {	
+		List<HashMap<String, Object>> mapList = sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectAllmap", employeeVo); 
 	
-
+		return mapList;
+	}
+	
+	@Override
+	public void updateEOrderStatus(OrderEmployeeVo orderEmployeeVo) {
+		sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateEOrderStatus", orderEmployeeVo);
+		
+	}
+	
+	@Override
+	public OrderEmployeeVo selectEOrderByMoNo(OrderEmployeeVo orderEmployeeVo) {
+		OrderEmployeeVo newOne = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectEOrderByMoNo", orderEmployeeVo); 
+		return newOne;
+	}
+	
+	
+	//	------------------------------------ 창대 11/29일-30일 작업(지도 주문관련)  ----------------------------------------------
 
 	// -------------------------------------- 진화 ------------------------------------------
 	@Override
@@ -147,12 +169,7 @@ public class EmployeeDaoImpl implements EmployeeDao{
 		return employeevo;
 	}
 	
-	@Override
-	public List<MapVo> selectAllmap(EmployeeVo employeeVo) {	
-	List<MapVo> maplist = sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectAllmap", employeeVo); 
 	
-	return maplist;
-	}
 	/****************************************************************************************************
 	 **************************************************************************************************/
 

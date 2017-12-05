@@ -134,38 +134,30 @@ date_input2.datepicker({
 
     
     function inputAddress(address){
-		  
 		  $.ajax({		
-				url: "http://apis.skplanetx.com/tmap/geo/fullAddrGeo",
+				url: "https://api2.sktelecom.com/tmap/geo/fullAddrGeo",
 				type: "GET",
 				data: {	
 					version : 1,
 					fullAddr : address,
 					addressFlag : "F00",
 					format : "json",
-					appKey : "1d03f3c5-e620-375a-94d6-e359b011ec64"
+					appKey : "3a8e2503-7364-4259-9624-81dfdd0cb5ff"
 				},
 				success : function(result)
 				{
 					
-					document.getElementById('lon').value = result.coordinateInfo.coordinate[0].newLon;
-					document.getElementById('lat').value = result.coordinateInfo.coordinate[0].newLat;
-					
+					if(result.coordinateInfo.coordinate.length == '1')
+					{
+						document.getElementById('lon').value = result.coordinateInfo.coordinate[0].newLon;
+						document.getElementById('lat').value = result.coordinateInfo.coordinate[0].newLat;
+					}else
+					{
+						document.getElementById('lon').value = result.coordinateInfo.coordinate[0].lon;
+						document.getElementById('lat').value = result.coordinateInfo.coordinate[0].lat;
+					}
 				},
-				error: function(data){
-					var str = JSON.stringify(data.responseText);
-					var str1 = str.substring(str.lastIndexOf(",")+1);
-					var str2 = str.substring(0,str.lastIndexOf(","));
-					str1 = str1.substring(0, str1.length-1);
-					str2 = str2.substring(1, str2.length);
-					var str3 = str2.replace(/\\/gi,"")+str1.replace(/\\/gi,"");
-					var result = JSON.parse(str3);
-					
-					
-					document.getElementById('lon').value = result.coordinateInfo.coordinate[0].lon;
-					document.getElementById('lat').value = result.coordinateInfo.coordinate[0].lat;
-
-				}
+				
 		  });
 	  }
     

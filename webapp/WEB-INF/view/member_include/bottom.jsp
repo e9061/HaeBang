@@ -2,38 +2,7 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE>
-<html>
-<head>
-
-	<meta charset="utf-8">
-	<title>Moderna - Bootstrap 3 flat corporate template</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta name="description" content="" />
-	<!-- css -->
-	<link href="${ pageContext.request.contextPath }/resources/css/bootstrap.min.css" rel="stylesheet" />
-	<link href="${ pageContext.request.contextPath }/resources/css/fancybox/jquery.fancybox.css" rel="stylesheet">
-	<link href="${ pageContext.request.contextPath }/resources/css/jcarousel.css" rel="stylesheet" />
-	<link href="${ pageContext.request.contextPath }/resources/css/flexslider.css" rel="stylesheet" />
-	<link href="${ pageContext.request.contextPath }/resources/css/style.css" rel="stylesheet" />
-
-
-
-	<!-- Theme skin -->
-	<link href="${ pageContext.request.contextPath }/resources/skins/default.css" rel="stylesheet" />
-
-</head>
-<style>
-	#hi {
-	
-		background-color : skyblue;
-		family-font : bold;
-		width : 500px;
-		height : 50px;
-	
-	}
-</style>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js">
+<%-- <script src="https://code.jquery.com/jquery-1.11.1.min.js">
 		
 	</script>
 	<!-- Bootstrap JavaScript -->
@@ -42,7 +11,7 @@
 
 	<!-- Custom JavaScript -->
 	<script src="${ pageContext.request.contextPath }/resources/js/custom.js"></script>
-	<script src="${ pageContext.request.contextPath }/resources/js/checkForm.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/checkForm.js"></script> --%>
 	
 	<div class="container">
 				<div class="row">
@@ -140,7 +109,3 @@
 	<script src="${ pageContext.request.contextPath }/resources/js/jquery.flexslider.js"></script>
 	<script src="${ pageContext.request.contextPath }/resources/js/animate.js"></script>
 	<script src="${ pageContext.request.contextPath }/resources/js/custom.js"></script>
-
-</body>
-
-</html>

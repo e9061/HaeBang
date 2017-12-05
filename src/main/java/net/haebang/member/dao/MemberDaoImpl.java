@@ -39,18 +39,6 @@ public class MemberDaoImpl implements MemberDao{
 		return sqlSession.selectOne("net.haebang.member.dao.MemberDao.selectInfo",m_id);
 	}
 
-	/*@Override
-	public boolean loginCheck(MemberVO Member) {
-		
-		String m_name = sqlSession.selectOne("net.haebang.member.dao.MemberDAO.loginCheck",Member);
-		return (m_name == null) ? false : true;
-	}
-
-	@Override
-	public MemberVO viewMember(MemberVO Member) {
-		System.out.println(Member+"dao");
-		return sqlSession.selectOne("net.haebang.member.dao.MemberDAO.viewMember", Member);
-	}*/
 
 	@Override
 	public void logout(HttpSession session) {
@@ -64,18 +52,32 @@ public class MemberDaoImpl implements MemberDao{
 		return resultVO;
 	}
 
+	@Override
+	public MemberVo selectById(String m_id) {
+		MemberVo memberVo = sqlSession.selectOne("net.haebang.member.dao.MemberDao.selectById", m_id);
+		return memberVo;
+	}
 
-	/*@Override
-	public MemberVO login(MemberVO Member) {
-
-		
-		
-		MemberVO resultVO = sqlSession.selectOne("net.haebang.member.dao.MemberDAO.login", Member);
-		
+	@Override
+	public MemberVo blogin(MemberVo member) {
+		MemberVo resultVO = sqlSession.selectOne("net.haebang.member.dao.MemberDao.blogin", member);
 		return resultVO;
-	}*/
-	
-	
+	}
+
+	@Override
+	public MemberVo mainLogin(MemberVo member) {
+		MemberVo resultVO = sqlSession.selectOne("net.haebang.member.dao.MemberDao.login", member);
+		return resultVO;
+	}
+
+	@Override
+	public void updateMember(MemberVo member) {
+		System.out.println(member+"dao");
+		sqlSession.update("net.haebang.member.dao.MemberDao.updateMember", member);
+		
+	}
+
+
 	
 	/****************************************** 공지사항 *****************************************************/
 	

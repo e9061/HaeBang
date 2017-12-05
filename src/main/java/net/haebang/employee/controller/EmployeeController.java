@@ -1,5 +1,6 @@
 package net.haebang.employee.controller;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,6 +8,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -42,167 +44,164 @@ import net.haebang.exception.NoSuchMemberException;
 import net.haebang.vo.CompanyVo;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
-import net.haebang.vo.MapVo;
 import net.haebang.vo.NoticeBoardVo;
+import net.haebang.vo.OrderEmployeeVo;
 import net.haebang.vo.ScheduleVo;
 
 @Controller
 public class EmployeeController {
-	
+
 	@Autowired
 	private EmployeeService employeeService;
-		
+
 	@Autowired
 	private EmployeeDao employeeDao;
 
-
 	// ---------------------------------- 창대 회원가입 --------------------------------------------------------------------
 
-		@RequestMapping(value = "/ceo/register/step1", method = RequestMethod.GET)
-		public ModelAndView joinForm(String type) {
-			ModelAndView mav = new ModelAndView();
-			mav.addObject("type", type);
-			mav.setViewName("employee/step1");
+	@RequestMapping(value = "/ceo/register/step1", method = RequestMethod.GET)
+	public ModelAndView joinForm(String type) {
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("type", type);
+		mav.setViewName("employee/step1");
 
-			return mav;
-		}
+		return mav;
+	}
 
-		@RequestMapping(value = "/ceo/register/step2", method = RequestMethod.GET)
-		public String joinForm1(Model model) {
-			System.out.println("뭐지 왜 두번 들어오지");
-			model.addAttribute("joinEmployeeVo", new JoinEmployeeVo());
-			return "employee/step2";
-		}
+	@RequestMapping(value = "/ceo/register/step2", method = RequestMethod.GET)
+	public String joinForm1(Model model) {
+		System.out.println("뭐지 왜 두번 들어오지");
+		model.addAttribute("joinEmployeeVo", new JoinEmployeeVo());
+		return "employee/step2";
+	}
 
-		@RequestMapping(value = "/ceo/register/step2", method = RequestMethod.POST)
-		public String joinForm2(Model model, @RequestParam(value = "ownerOrMember") String ownerOrMember) {
-			System.out.println(ownerOrMember);
-			model.addAttribute("ownerOrMember", ownerOrMember);
-			model.addAttribute("joinEmployeeVo", new JoinEmployeeVo());
-			return "employee/step2";
-		}
+	@RequestMapping(value = "/ceo/register/step2", method = RequestMethod.POST)
+	public String joinForm2(Model model, @RequestParam(value = "ownerOrMember") String ownerOrMember) {
+		System.out.println(ownerOrMember);
+		model.addAttribute("ownerOrMember", ownerOrMember);
+		model.addAttribute("joinEmployeeVo", new JoinEmployeeVo());
+		return "employee/step2";
+	}
 
-		@RequestMapping(value = "/ceo/register/step3", method = RequestMethod.POST)
-		public String joinForm3(JoinEmployeeVo joinEmployeeVo, Errors errors, MultipartHttpServletRequest request,
-				Model model) {
-			System.out.println(errors.hasErrors());
-			new RegisterEmployeeValidator().validate(joinEmployeeVo, errors);
-			joinEmployeeVo.setC_address(joinEmployeeVo.getC_address()+" "+request.getParameter("c_detailAddress"));
-			joinEmployeeVo.setE_phone(request.getParameter("e_phone1")+request.getParameter("e_phone2")+request.getParameter("e_phone3"));
+	@RequestMapping(value = "/ceo/register/step3", method = RequestMethod.POST)
+	public String joinForm3(JoinEmployeeVo joinEmployeeVo, Errors errors, MultipartHttpServletRequest request,
+			Model model) {
+		System.out.println(errors.hasErrors());
+		new RegisterEmployeeValidator().validate(joinEmployeeVo, errors);
+		joinEmployeeVo.setC_address(joinEmployeeVo.getC_address()+" "+request.getParameter("c_detailAddress"));
+		joinEmployeeVo.setE_phone(request.getParameter("e_phone1")+request.getParameter("e_phone2")+request.getParameter("e_phone3"));
 		
-			
-			if (joinEmployeeVo.getC_code() == null) {
-				if (errors.hasErrors()) {
-					return "employee/step2";
-				}
-				try {
-
-					employeeService.registerEmployeeAnd(joinEmployeeVo, request);
-					return "employee/step3";
-
-				} catch (AlreadyExistingMemberException ex) {
-					errors.rejectValue("e_id", "duplicate");
-					return "employee/step2";
-				}
-			}
-
+		if (joinEmployeeVo.getC_code() == null) {
 			if (errors.hasErrors()) {
-				model.addAttribute("ownerOrMember", request.getParameter("ownerOrMember"));
 				return "employee/step2";
 			}
-
 			try {
-				employeeService.registerEmployee(joinEmployeeVo, request);
+
+				employeeService.registerEmployeeAnd(joinEmployeeVo, request);
 				return "employee/step3";
 
 			} catch (AlreadyExistingMemberException ex) {
-				model.addAttribute("ownerOrMember", request.getParameter("ownerOrMember"));
 				errors.rejectValue("e_id", "duplicate");
 				return "employee/step2";
 			}
-
 		}
 
-		@RequestMapping(value = "/ceo/register/step3", method = RequestMethod.GET)
-		public String joinForm4() {
-			return "redirect:/ceo/register/step2";
+		if (errors.hasErrors()) {
+			model.addAttribute("ownerOrMember", request.getParameter("ownerOrMember"));
+			return "employee/step2";
 		}
 
-		@RequestMapping(value = "/ceo/register/duplicate1", method = RequestMethod.POST)
-		public String duplicate1(HttpServletRequest req, Model model) {
-			System.out.println(req.getParameter("e_id"));
-			EmployeeVo employeeVo = employeeDao.selectById(req.getParameter("e_id"));
-			String msg = null;
+		try {
+			employeeService.registerEmployee(joinEmployeeVo, request);
+			return "employee/step3";
 
-			// Pattern pattern = Pattern.compile("[0-9].[a-zA-Z].{6,14}$");
-			Pattern pattern1 = Pattern.compile(
-					"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+		} catch (AlreadyExistingMemberException ex) {
+			model.addAttribute("ownerOrMember", request.getParameter("ownerOrMember"));
+			errors.rejectValue("e_id", "duplicate");
+			return "employee/step2";
+		}
 
-			Matcher matcher = pattern1.matcher(req.getParameter("e_id"));
-			if (matcher.find()) {
-				if (employeeVo != null) {
-					msg = "존재하는 아이디입니다.";
-					model.addAttribute("msg", msg);
-				} else {
-					msg = "사용가능한 아이디입니다.";
-					model.addAttribute("msg", msg);
-				}
+	}
 
+	@RequestMapping(value = "/ceo/register/step3", method = RequestMethod.GET)
+	public String joinForm4() {
+		return "redirect:/ceo/register/step2";
+	}
+
+	@RequestMapping(value = "/ceo/register/duplicate1", method = RequestMethod.POST)
+	public String duplicate1(HttpServletRequest req, Model model) {
+		System.out.println(req.getParameter("e_id"));
+		EmployeeVo employeeVo = employeeDao.selectById(req.getParameter("e_id"));
+		String msg = null;
+
+		// Pattern pattern = Pattern.compile("[0-9].[a-zA-Z].{6,14}$");
+		Pattern pattern1 = Pattern.compile(
+				"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+
+		Matcher matcher = pattern1.matcher(req.getParameter("e_id"));
+		if (matcher.find()) {
+			if (employeeVo != null) {
+				msg = "존재하는 아이디입니다.";
+				model.addAttribute("msg", msg);
 			} else {
-
-				msg = "이메일 형식을 지켜주세요.";
+				msg = "사용가능한 아이디입니다.";
 				model.addAttribute("msg", msg);
 			}
 
-			return "employee/duplicate";
+		} else {
 
+			msg = "이메일 형식을 지켜주세요.";
+			model.addAttribute("msg", msg);
 		}
 
-		@RequestMapping(value = "/ceo/register/duplicate2", method = RequestMethod.POST)
-		public String duplicate2(HttpServletRequest req, Model model) {
-			System.out.println(req.getParameter("c_bizNo"));
-			Enumeration<String> enumeration = req.getParameterNames();
-			String value = null;
+		return "employee/duplicate";
 
-			if (enumeration.hasMoreElements()) {
-				value = enumeration.nextElement();
-			}
+	}
 
-			System.out.println(value);
+	@RequestMapping(value = "/ceo/register/duplicate2", method = RequestMethod.POST)
+	public String duplicate2(HttpServletRequest req, Model model) {
+		System.out.println(req.getParameter("c_bizNo"));
+		Enumeration<String> enumeration = req.getParameterNames();
+		String value = null;
 
-			System.out.println();
-			CompanyVo companyVo = employeeDao.selectByBizNo1(req.getParameter("c_bizNo"));
-			String msg = null;
-			Pattern pattern = Pattern.compile("^[0-9]{10}$");
+		if (enumeration.hasMoreElements()) {
+			value = enumeration.nextElement();
+		}
 
-			Matcher matcher = pattern.matcher(req.getParameter("c_bizNo"));
-			if (matcher.find()) {
-				if (companyVo != null) {
-					msg = "존재하는 사업자번호입니다.";
-					model.addAttribute("msg", msg);
-				} else {
-					msg = "사용가능한 사업자 번호입니다.";
-					model.addAttribute("msg", msg);
-				}
+		System.out.println(value);
+
+		System.out.println();
+		CompanyVo companyVo = employeeDao.selectByBizNo1(req.getParameter("c_bizNo"));
+		String msg = null;
+		Pattern pattern = Pattern.compile("^[0-9]{10}$");
+
+		Matcher matcher = pattern.matcher(req.getParameter("c_bizNo"));
+		if (matcher.find()) {
+			if (companyVo != null) {
+				msg = "존재하는 사업자번호입니다.";
+				model.addAttribute("msg", msg);
 			} else {
-				msg = "10자리 숫자로만 입력해주세요.";
+				msg = "사용가능한 사업자 번호입니다.";
 				model.addAttribute("msg", msg);
 			}
-			return "employee/duplicate";
+		} else {
+			msg = "10자리 숫자로만 입력해주세요.";
+			model.addAttribute("msg", msg);
 		}
+		return "employee/duplicate";
+	}
 
-		@RequestMapping(value = "/ceo/register/ccode", method = RequestMethod.GET, produces = "application/json")
-		public @ResponseBody CompanyVo confirmCode(HttpServletRequest req) {
+	@RequestMapping(value = "/ceo/register/ccode", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody CompanyVo confirmCode(HttpServletRequest req) {
 
-			CompanyVo companyVo = employeeDao.selectByCode(req.getParameter("c_code"));
+		CompanyVo companyVo = employeeDao.selectByCode(req.getParameter("c_code"));
 
-			return companyVo;
-		}
+		return companyVo;
+	}
 
-		////////////////////// 창대 info///////////////////////////////
-		
-		@RequestMapping(value = "/ceo/info")
-		public String info(HttpSession session, Model model) throws IOException {
+	////////////////////// 창대 info///////////////////////////////
+	@RequestMapping(value = "/ceo/info")
+	public String info(HttpSession session, Model model) throws IOException {
 
 		if (session.getAttribute("userVo") == null) {
 			return "redirect:/ceo";
@@ -212,10 +211,11 @@ public class EmployeeController {
 		//******************************************파일 inputstream******************************************
 		File file = new File("/home/ubuntu/HaeBangPicture/"+employeeVo.getE_saveName());
 		FileInputStream fis=new FileInputStream(file);
+		BufferedInputStream bis = new BufferedInputStream(fis);
 		ByteArrayOutputStream bos=new ByteArrayOutputStream();
 		int b;
 		byte[] buffer = new byte[1024];
-		while((b=fis.read(buffer))!=-1){
+		while((b=bis.read(buffer))!=-1){
 		   bos.write(buffer,0,b);
 		}
 		byte[] fileBytes = bos.toByteArray();
@@ -235,38 +235,39 @@ public class EmployeeController {
 		model.addAttribute("employeeVo", employeeVo);
 		model.addAttribute("companyVo", companyVo);
 		return "employee/info";
-	}			
+	}
 
-		@RequestMapping(value = "/ceo/info/update", method = RequestMethod.POST, produces = "application/json")
-		public @ResponseBody HashMap<String, Object> updateEoC(HttpServletRequest request, HttpSession session,
-				Model model) {
+	@RequestMapping(value = "/ceo/info/update", method = RequestMethod.POST, produces = "application/json")
+	public @ResponseBody HashMap<String, Object> updateEoC(HttpServletRequest request, HttpSession session,
+			Model model) {
 
-			EmployeeVo userVo = (EmployeeVo) session.getAttribute("userVo");
-			employeeService.updateEoC(request, userVo);
+		EmployeeVo userVo = (EmployeeVo) session.getAttribute("userVo");
+		employeeService.updateEoC(request, userVo);
 
-			userVo = employeeDao.selectById(userVo);
-			CompanyVo companyVo = employeeDao.selectByNo(userVo.getC_no());
-
-			if (userVo.getE_type().equals("E")) {
-				userVo.setE_type("직원");
-			}
-
-			if (userVo.getE_type().equals("O")) {
-				userVo.setE_type("사장");
-			}
-
-			HashMap<String, Object> map = new HashMap<String, Object>();
-			map.put("employeeVo", userVo);
-			map.put("companyVo", companyVo);
-
-			session.setAttribute("userVo", userVo);
-
-			return map;
-
+		userVo = employeeDao.selectById(userVo);
+		CompanyVo companyVo = employeeDao.selectByNo(userVo.getC_no());
+		
+		
+		if (userVo.getE_type().equals("E")) {
+			userVo.setE_type("직원");
 		}
 
-		@RequestMapping(value = "/ceo/empInfo")
-		public String empInfo(HttpSession session, Model model) throws IOException {
+		if (userVo.getE_type().equals("O")) {
+			userVo.setE_type("사장");
+		}
+
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("employeeVo", userVo);
+		map.put("companyVo", companyVo);
+
+		session.setAttribute("userVo", userVo);
+
+		return map;
+
+	}
+
+	@RequestMapping(value = "/ceo/empInfo")
+	public String empInfo(HttpSession session, Model model) throws IOException {
 
 		if (session.getAttribute("userVo") == null) {
 			return "redirect:/ceo";
@@ -276,6 +277,49 @@ public class EmployeeController {
 		List<EmployeeVo> employeeVoList = employeeDao.selectByCNo(employeeVo.getC_no());
 		
 		// ***************************** fileInputStream 파일 스프레드 ***************************************************
+		for(int i =0; i<employeeVoList.size();i++)
+		{
+			
+			
+			File file = new File("/home/ubuntu/HaeBangPicture/"+employeeVoList.get(i).getE_saveName());
+			FileInputStream fis = new FileInputStream(file);
+			BufferedInputStream bis = new BufferedInputStream(fis);
+			ByteArrayOutputStream bos=new ByteArrayOutputStream();
+			
+			int b;
+			while((b=bis.read())!=-1){
+			   bos.write(b);
+			}
+			byte[] fileBytes = bos.toByteArray();
+			fis.close();
+			bos.close();
+
+			
+
+			byte[] encoded=Base64.encodeBase64(fileBytes);
+			String encodedString = new String(encoded);	
+			employeeVoList.get(i).setEncodedString(encodedString);	
+		}
+		// ***************************** fileInputStream 파일 스프레드 ***************************************************
+		model.addAttribute("employeeVo", employeeVo);
+		model.addAttribute("employeeVoList", employeeVoList);
+
+		return "employee/empInfo";
+	}
+
+	@Transactional
+	@RequestMapping(value = "/ceo/empInfo/delete", method = RequestMethod.POST)
+	public @ResponseBody List<EmployeeVo> empDelete(HttpSession session, Model model,
+			@RequestParam(value = "e_no") int e_no) throws IOException {
+		System.out.println(e_no);
+		// 딜리트 만들기
+
+		employeeDao.deleteEmployeeByNo(e_no);
+		EmployeeVo employeeVo = (EmployeeVo) session.getAttribute("userVo");
+		employeeDao.updateEmployeeCntM(employeeVo);
+
+		List<EmployeeVo> employeeVoList = employeeDao.selectByCNo(employeeVo.getC_no());
+
 		for(int i =0; i<employeeVoList.size();i++)
 		{
 			
@@ -299,225 +343,241 @@ public class EmployeeController {
 			
 			employeeVoList.get(i).setEncodedString(encodedString);	
 		}
-		// ***************************** fileInputStream 파일 스프레드 ***************************************************
-		System.out.println(employeeVoList.get(0).getEncodedString());
-		model.addAttribute("employeeVo", employeeVo);
+		
 		model.addAttribute("employeeVoList", employeeVoList);
 
-		return "employee/empInfo";
+		return employeeVoList;
 	}
 
-
-
-		@Transactional
-		@RequestMapping(value = "/ceo/empInfo/delete", method = RequestMethod.POST)
-		public @ResponseBody List<EmployeeVo> empDelete(HttpSession session, Model model,
-				@RequestParam(value = "e_no") int e_no) {
-			System.out.println(e_no);
-			// 딜리트 만들기
-
-			employeeDao.deleteEmployeeByNo(e_no);
-			EmployeeVo employeeVo = (EmployeeVo) session.getAttribute("userVo");
-			employeeDao.updateEmployeeCntM(employeeVo);
-
-			List<EmployeeVo> employeeVoList = employeeDao.selectByCNo(employeeVo.getC_no());
-
-			model.addAttribute("employeeVoList", employeeVoList);
-
-			return employeeVoList;
+	
+	@RequestMapping(value = "/ceo/info/changePassword", method = RequestMethod.GET)
+	public String changePassword(HttpSession session) {
+		if (session.getAttribute("userVo") == null) {
+			return "redirect:/ceo";
 		}
+		return "redirect:/ceo/info";
+	}
+	
+	@RequestMapping(value = "/ceo/info/changePassword", method = RequestMethod.POST)
+	public String changePassword(HttpSession session, Model model) {
+		
+		EmployeeVo userVo = (EmployeeVo) session.getAttribute("userVo");
+		model.addAttribute("newEmployeeVo", new EmployeeVo());
+		model.addAttribute("employeeVo", userVo);
+		
+		return "employee/changePasswordForm";
+	}
+
+	@RequestMapping(value = "/ceo/info/changingPassword", method = RequestMethod.GET)
+	public String changingPassword(HttpSession session) {
+		if (session.getAttribute("userVo") == null) {
+			return "redirect:/ceo";
+		}
+		return "redirect:/ceo/info";
+	}
+	@RequestMapping(value = "/ceo/info/changingPassword", method = RequestMethod.POST)
+	public String changingPassword( HttpSession session, EmployeeVo newEmployeeVo) {
 
 		
-		@RequestMapping(value = "/ceo/info/changePassword", method = RequestMethod.GET)
-		public String changePassword(HttpSession session) {
-			if (session.getAttribute("userVo") == null) {
-				return "redirect:/ceo";
-			}
-			return "redirect:/ceo/info";
+		employeeService.changePassword(newEmployeeVo);
+		
+		EmployeeVo userVo = (EmployeeVo) session.getAttribute("userVo");
+		
+		userVo.setE_password(newEmployeeVo.getE_password());
+		
+		userVo = employeeDao.selectById(userVo);
+		
+		if (userVo.getE_type().equals("E")) {
+			userVo.setE_type("직원");
+		}
+
+		if (userVo.getE_type().equals("O")) {
+			userVo.setE_type("사장");
 		}
 		
-		@RequestMapping(value = "/ceo/info/changePassword", method = RequestMethod.POST)
-		public String changePassword(HttpSession session, Model model) {
-			
-			EmployeeVo userVo = (EmployeeVo) session.getAttribute("userVo");
-			model.addAttribute("newEmployeeVo", new EmployeeVo());
-			model.addAttribute("employeeVo", userVo);
-			
-			return "employee/changePasswordForm";
-		}
-
-		@RequestMapping(value = "/ceo/info/changingPassword", method = RequestMethod.GET)
-		public String changingPassword(HttpSession session) {
-			if (session.getAttribute("userVo") == null) {
-				return "redirect:/ceo";
-			}
-			return "redirect:/ceo/info";
-		}
-		@RequestMapping(value = "/ceo/info/changingPassword", method = RequestMethod.POST)
-		public String changingPassword( HttpSession session, EmployeeVo newEmployeeVo) {
-
-			
-			employeeService.changePassword(newEmployeeVo);
-			
-			EmployeeVo userVo = (EmployeeVo) session.getAttribute("userVo");
-			
-			userVo.setE_password(newEmployeeVo.getE_password());
-			
-			userVo = employeeDao.selectById(userVo);
-			
-			if (userVo.getE_type().equals("E")) {
-				userVo.setE_type("직원");
-			}
-
-			if (userVo.getE_type().equals("O")) {
-				userVo.setE_type("사장");
-			}
-			
-			session.setAttribute("userVo", userVo);
-			
-			
-			return "redirect:/ceo/info";
-		}
+		session.setAttribute("userVo", userVo);
 		
-		@RequestMapping(value="/ceo/info/updateBizNo", method = RequestMethod.GET)
-		public String updateBizNo(HttpSession session, Model model) {
-			if(session.getAttribute("userVo") == null)
+		
+		return "redirect:/ceo/info";
+	}
+	
+	@RequestMapping(value="/ceo/info/updateBizNo", method = RequestMethod.GET)
+	public String updateBizNo(HttpSession session, Model model) {
+		if(session.getAttribute("userVo") == null)
+		{
+			return "redirect:/ceo";
+		}
+		EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+		model.addAttribute("companyVo", new CompanyVo());
+		model.addAttribute("employeeVo", userVo);
+		return "employee/changeBizNo";
+	}
+	
+	@RequestMapping(value="/ceo/info/updateBizNo", method = RequestMethod.POST)
+	public String updateBizNo(CompanyVo companyVo, Errors errors, HttpSession session, MultipartHttpServletRequest request) {
+		new UpdateCompanyBizNoValidator().validate(companyVo, errors);
+		EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+		companyVo.setC_no(userVo.getC_no());
+
+		
+			if (errors.hasErrors()) {
+				return "employee/changeBizNo";
+			}
+			try {
+
+				employeeService.updateBizNo(companyVo, request);
+				return "redirect:/ceo/info";
+
+			} catch (AlreadyExistingMemberException ex) {
+				errors.rejectValue("c_bizNo", "duplicate");
+				return "employee/changeBizNo";
+			}
+		
+	}
+	
+	
+	@RequestMapping(value = "/ceo/register/duplicate3", method = RequestMethod.POST)
+	public String duplicate3(CompanyVo companyVo, Model model, HttpSession session) {
+		
+		EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+		companyVo.setC_no(userVo.getC_no());
+		
+		CompanyVo confirmVo = employeeDao.selectByBizNo2(companyVo);
+		String msg = null;
+		Pattern pattern = Pattern.compile("^[0-9]{10}$");
+
+		Matcher matcher = pattern.matcher(companyVo.getC_bizNo());
+		if (matcher.find()) {
+			if (confirmVo != null) {
+				msg = "존재하는 사업자번호입니다.";
+				model.addAttribute("msg", msg);
+			} else 
 			{
-				return "redirect:/ceo";
-			}
-			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
-			model.addAttribute("companyVo", new CompanyVo());
-			model.addAttribute("employeeVo", userVo);
-			return "employee/changeBizNo";
-		}
-		
-		@RequestMapping(value="/ceo/info/updateBizNo", method = RequestMethod.POST)
-		public String updateBizNo(CompanyVo companyVo, Errors errors, HttpSession session, MultipartHttpServletRequest request) {
-			new UpdateCompanyBizNoValidator().validate(companyVo, errors);
-			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
-			companyVo.setC_no(userVo.getC_no());
-
-			
-				if (errors.hasErrors()) {
-					return "employee/changeBizNo";
-				}
-				try {
-
-					employeeService.updateBizNo(companyVo, request);
-					return "redirect:/ceo/info";
-
-				} catch (AlreadyExistingMemberException ex) {
-					errors.rejectValue("c_bizNo", "duplicate");
-					return "employee/changeBizNo";
-				}
-			
-		}
-		
-		
-		@RequestMapping(value = "/ceo/register/duplicate3", method = RequestMethod.POST)
-		public String duplicate3(CompanyVo companyVo, Model model, HttpSession session) {
-			
-			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
-			companyVo.setC_no(userVo.getC_no());
-			
-			CompanyVo confirmVo = employeeDao.selectByBizNo2(companyVo);
-			String msg = null;
-			Pattern pattern = Pattern.compile("^[0-9]{10}$");
-
-			Matcher matcher = pattern.matcher(companyVo.getC_bizNo());
-			if (matcher.find()) {
-				if (confirmVo != null) {
-					msg = "존재하는 사업자번호입니다.";
-					model.addAttribute("msg", msg);
-				} else 
-				{
-					msg = "사용가능한 사업자 번호입니다.";
-					model.addAttribute("msg", msg);
-				}
-			} else {
-				msg = "10자리 숫자로만 입력해주세요.";
+				msg = "사용가능한 사업자 번호입니다.";
 				model.addAttribute("msg", msg);
 			}
-			return "employee/duplicate";
+		} else {
+			msg = "10자리 숫자로만 입력해주세요.";
+			model.addAttribute("msg", msg);
 		}
-		
-		
-		@RequestMapping(value="/ceo/info/updateEmpPicture", method = RequestMethod.GET)
-		public String updateEmpEmpPicture(HttpSession session, Model model) {
-			if(session.getAttribute("userVo") == null)
-			{
-				return "redirect:/ceo";
-			}
-			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
-			model.addAttribute("employeeVo", userVo);
-			return "employee/changeEmpPicture";
-		}
-		
-		
-		@RequestMapping(value="/ceo/info/updateEmpPicture", method = RequestMethod.POST)
-		public String updateEmpPicture(HttpSession session, MultipartHttpServletRequest request) {
-			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
-
-					employeeService.updateEmpPicture(userVo, request);
-					
-					
-					
-					userVo = employeeDao.selectById(userVo);
-					
-					if (userVo.getE_type().equals("E")) {
-						userVo.setE_type("직원");
-					}
-
-					if (userVo.getE_type().equals("O")) {
-						userVo.setE_type("사장");
-					}
-					
-					session.setAttribute("userVo", userVo);
-					
-					
-					return "redirect:/ceo/info";
-
-			
-		}
-		
-	//		------------------------------------ 창대 11/25일작업 ----------------------------------------------
-	// changeBizNo -> 주소를 updateBizNo 으로 바꿈!!
-		
-		@RequestMapping(value="/ceo/info/updateAddress", method = RequestMethod.GET)
-		public String updateAddress(HttpSession session, Model model) {
-			if(session.getAttribute("userVo") == null)
-			{
-				return "redirect:/ceo";
-			}
-			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
-			model.addAttribute("companyVo", new CompanyVo());
-			model.addAttribute("employeeVo", userVo);
-			return "employee/changeAddress";
-		}
-		
-		@RequestMapping(value="/ceo/info/updateAddress", method = RequestMethod.POST)
-		public String updateAddress(HttpSession session, HttpServletRequest request) {
-			
-			CompanyVo companyVo = new CompanyVo();
-			companyVo.setC_address(request.getParameter("c_address")+""+request.getParameter("c_detailAddress"));
-			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
-			companyVo.setC_no(userVo.getC_no());
-			
-			employeeDao.updateCompanyAddress(companyVo);
-			
-			return "redirect:/ceo/info";
-		}
-		
-	//		------------------------------------ 창대 11/25일 작업 종료! ----------------------------------------------
-		
-
+		return "employee/duplicate";
+	}
 	
-	//  -------------------------------------- 진화 -------------------------------------------------
+	
+	@RequestMapping(value="/ceo/info/updateEmpPicture", method = RequestMethod.GET)
+	public String updateEmpEmpPicture(HttpSession session, Model model) {
+		if(session.getAttribute("userVo") == null)
+		{
+			return "redirect:/ceo";
+		}
+		EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+		model.addAttribute("employeeVo", userVo);
+		return "employee/changeEmpPicture";
+	}
+	
+	
+	@RequestMapping(value="/ceo/info/updateEmpPicture", method = RequestMethod.POST)
+	public String updateEmpPicture(HttpSession session, MultipartHttpServletRequest request) {
+		EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+
+				employeeService.updateEmpPicture(userVo, request);
+				
+				
+				
+				userVo = employeeDao.selectById(userVo);
+				
+				if (userVo.getE_type().equals("E")) {
+					userVo.setE_type("직원");
+				}
+
+				if (userVo.getE_type().equals("O")) {
+					userVo.setE_type("사장");
+				}
+				
+				session.setAttribute("userVo", userVo);
+				
+				
+				return "redirect:/ceo/info";
+
+		
+	}
+//	------------------------------------ 창대 11/25일작업 ----------------------------------------------
+	// changeBizNo -> 주소를 updateBizNo 으로 바꿈!!
+	
+	@RequestMapping(value="/ceo/info/updateAddress", method = RequestMethod.GET)
+	public String updateAddress(HttpSession session, Model model) {
+		if(session.getAttribute("userVo") == null)
+		{
+			return "redirect:/ceo";
+		}
+		EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+		model.addAttribute("companyVo", new CompanyVo());
+		model.addAttribute("employeeVo", userVo);
+		return "employee/changeAddress";
+	}
+	
+	@RequestMapping(value="/ceo/info/updateAddress", method = RequestMethod.POST)
+	public String updateAddress(HttpSession session, HttpServletRequest request) {
+		
+		CompanyVo companyVo = new CompanyVo();
+		companyVo.setC_address(request.getParameter("c_address")+""+request.getParameter("c_detailAddress"));
+		EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+		companyVo.setC_no(userVo.getC_no());
+		
+		employeeDao.updateCompanyAddress(companyVo);
+		
+		return "redirect:/ceo/info";
+	}
+	
+//	------------------------------------ 창대 11/25일 작업 종료! ----------------------------------------------
+	
+//	------------------------------------ 창대 11/29일 작업(지도 주문관련)  ----------------------------------------------
+	
+	
+	@RequestMapping(value = "/ceo/selectAllmap", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody List<HashMap<String, Object>> selectAllmap(HttpSession session, Model model){
+		
+		EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+		List<HashMap<String, Object>> mapList = new ArrayList<HashMap<String, Object>>();
+		
+		mapList = employeeDao.selectAllmap(userVo);
+		
+		model.addAttribute("mapList", mapList);
+		System.out.println(mapList);
+		System.out.println(mapList.size());
+		return mapList;
+	}
+	
+	
+	// 11/30 창대 지도 관련 ajax 지도상에서 출발 눌렀을때
+	@Transactional
+	@RequestMapping(value = "/ceo/updateEOrderStatus", method = RequestMethod.POST, produces = "application/json")
+	public @ResponseBody OrderEmployeeVo updateEOrderStatus(OrderEmployeeVo orderEmployeeVo, HttpSession session, Model model){
+
+		employeeDao.updateEOrderStatus(orderEmployeeVo);
+		
+		OrderEmployeeVo newOne = employeeDao.selectEOrderByMoNo(orderEmployeeVo);
+		System.out.println(newOne.getEo_status());
+		
+		return newOne;
+	}
+	
+	
+	
+	
+//  -------------------------------------- 진화 -------------------------------------------------
 	
 	@RequestMapping(value="/ceo", method=RequestMethod.GET)
-	public ModelAndView main() {
-		
+	public ModelAndView main(HttpSession session) {
+		CompanyVo companyVo;
 		ModelAndView mav = new ModelAndView();
+
+		if(session.getAttribute("userVo") !=null)
+		{
+			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+			companyVo = employeeDao.selectByNo(userVo.getC_no());  // 창대 손 댐
+			mav.addObject("companyVo",companyVo); // 창대 손 댐
+		}
 		
 		List<NoticeBoardVo> mainNoticelist = employeeService.getMainnoticelist();
 		
@@ -562,9 +622,15 @@ public class EmployeeController {
 			List<NoticeBoardVo> mainNoticelist = employeeService.getMainnoticelist();			
 			mav.addObject("mainNoticelist", mainNoticelist);
 		
-			List<MapVo> maplist = employeeService.selectAllmap(userVo);				
-			mav.addObject("maplist", maplist);
 							
+			CompanyVo companyVo = employeeDao.selectByNo(userVo.getC_no());  // 창대 손 댐
+			mav.addObject("companyVo",companyVo); // 창대 손 댐
+			List<HashMap<String, Object>> mapList = new ArrayList<HashMap<String, Object>>();
+			
+			mapList = employeeDao.selectAllmap(userVo);
+			
+			mav.addObject("mapList", mapList);
+			
 			return mav;
 			
 						
@@ -646,8 +712,7 @@ public class EmployeeController {
 		mav.addObject("noticelist", getOwnerNoticeList);
 		mav.addObject("word", word);
 		mav.addObject("titlecontent" ,searchCondition);
-		mav.setViewName("company_contact/companyNotice");		
-		                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+		mav.setViewName("company_contact/companyNotice");
 		return mav;
 	}
 	
@@ -1138,4 +1203,16 @@ public class EmployeeController {
 		}
 		
 	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+
 }
+
