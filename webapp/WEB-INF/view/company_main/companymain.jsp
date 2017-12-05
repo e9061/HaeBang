@@ -10,8 +10,8 @@
 <script src="${ pageContext.request.contextPath }/resources/js/jquery.js"></script>
 	<script
 		src="${ pageContext.request.contextPath }/resources/js/jquery.easing.1.3.js"></script>
-<script
-	src="https://apis.skplanetx.com/tmap/js?version=1&format=javascript&appKey=1d03f3c5-e620-375a-94d6-e359b011ec64"></script>
+
+ <script src="https://api2.sktelecom.com/tmap/js?version=1&format=javascript&appKey=3a8e2503-7364-4259-9624-81dfdd0cb5ff"></script>
 
 <!--Tmap api-->
 
@@ -19,14 +19,57 @@
 
 var map;
 var marker;
-var officeLocation = new Tmap.LonLat("${companyVo.c_lon}", "${companyVo.c_lat}");
+var markerLayer;
+var curlonlat= new Tmap.LonLat('127.027606', '37.49462').transform("EPSG:4326","EPSG:3857");  // 긴 형태 
+var curlon;
+var curlat;
+var PR_3857;
+var PR_4326;
+var officeLocation = new Tmap.LonLat("${companyVo.c_lon}", "${companyVo.c_lat}").transform("EPSG:4326", "EPSG:3857");
+
+
 function init() {
 	 map = new Tmap.Map({div:'map_div', width:"100%", height:"300px", animation:true}); 
 	    // div : 지도가 생성될 div의 id값과 같은 값을 옵션으로 정의 합니다.
 	    // Tmap,Map 클래스에 대한 상세 사항은 "JavaScript" 하위메뉴인 "기본 기능" 페이지를 참조 해주세요. 
 		map.addControl(new Tmap.Control.KeyboardDefaults());
-	    var markerLayer = new Tmap.Layer.Markers();
+	    markerLayer = new Tmap.Layer.Markers();
 		map.addLayer(markerLayer);
+		
+		
+		if(navigator.geolocation){
+			navigator.geolocation.getCurrentPosition(function(position){
+			
+				curlat = position.coords.latitude;
+				curlon = position.coords.longitude;
+				/* alert(curlat); */
+				/* WGS84GEO 짧은 lon,lat 형태 */
+				/* EPSG3857 긴 lon,lat 형태 */
+				
+				PR_3857 = new Tmap.Projection("EPSG:3857");  // Google Mercator 좌표계인 EPSG:3857
+				PR_4326 = new Tmap.Projection("EPSG:4326");  // WGS84 GEO 좌표계인 EPSG:4326        
+				curlonlat = new Tmap.LonLat(curlon, curlat).transform(PR_4326, PR_3857); // 짧은 lonlat을 긴 lonlat으로 바꾼다
+				var cursize = new Tmap.Size(24, 38);
+				var curoffset = new Tmap.Pixel(-(cursize.w / 2), -(cursize.h));
+				var curicon = new Tmap.Icon('http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_h.png',cursize, curoffset);
+				
+				marker = new Tmap.Marker(curlonlat, curicon);
+				markerLayer.addMarker(marker);
+				
+				var curpopup;
+				var curcontent ="<div>현재위치</div>";
+				curpopup = new Tmap.Popup("cp",curlonlat,new Tmap.Size(155,50),curcontent,onPopupClose);
+				curpopup.setBorder("1px solid #8d8d8d");//popup border 조절
+				curpopup.autoSize=true;//popup 사이즈 자동 조절	
+				map.addPopup(curpopup); // 지도에 팝업을 추가해 줍니다. 
+				curpopup.show(); // 팝업을 보여줍니다.
+				//팝업창을 닫을수 있는 이벤트 함수
+				function onPopupClose(){
+					select.unselectAll();
+				}
+				
+			})
+		}
 		
 	var lon;
 	var lat;
@@ -35,7 +78,8 @@ function init() {
 	$.ajax({		
 		url: "${pageContext.request.contextPath}/ceo/selectAllmap",
 		type: "GET",
-		data: { go : "go"
+		data: {
+			go : "go"
 		},
 		success: function(result){
 			/* ajax success function 시작 */
@@ -44,53 +88,57 @@ function init() {
 					lon = result[i].m_lon;
 					lat = result[i].m_lat;
 					
-					var lonlat = new Tmap.LonLat(lon, lat);
+					var m_lonlat = new Tmap.LonLat(lon, lat).transform("EPSG:4326", "EPSG:3857");
 					 
 					var size = new Tmap.Size(24,38);
 					var offset = new Tmap.Pixel(-(size.w/2), -(size.h/2));
 					var icon = new Tmap.Icon('https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png', size, offset); 
 					     
-					marker = new Tmap.Marker(lonlat, icon);
+					marker = new Tmap.Marker(m_lonlat, icon);
 					markerLayer.addMarker(marker);
 				if(result[i].eo_status =="대기중")
 				{	popup = new Tmap.Popup("p1",
-			                        new Tmap.LonLat(lon, lat),
-			                        new Tmap.Size(200, 100),
-			                        "<div>고객명 : "+result[i].m_name+" 고객님</div>"+"<div><span>주소 : </span><span>"+result[i].m_address+"</span></div>"+"<div>진행상태 : "+
+									m_lonlat,
+			                        new Tmap.Size(150, 200),
+			                        "<div>고객명 : "+result[i].m_name+" 고객님</div>"+"<div><span>주소 : </span><span>"+result[i].m_address+"</span></div>"+"<div>담당 해방맨 : "+result[i].e_name+"</div>"+"<div>진행상태 : "+
 			                        result[i].eo_status+"</div>"+"<div><a class='btn btn-info1 start' style='width: 50px'>출발</a><input type='hidden' value='"+lon+"'/><input type='hidden' value='"+lat+"'/><input type='hidden' id='"+result[i].mo_no+"' value='"+result[i].mo_no+"'/></div>",
 			                        true);
+				
 				}else if(result[i].eo_status =="출동중")
 					{
 					popup = new Tmap.Popup("p1",
-	                        new Tmap.LonLat(lon, lat),
-	                        new Tmap.Size(200, 100),
-	                        "<div>고객명 : "+result[i].m_name+" 고객님</div>"+"<div><span>주소 : </span><span>"+result[i].m_address+"</span></div>"+"<div>진행상태 : "+
+	                        m_lonlat,
+	                        new Tmap.Size(150, 200),
+	                        "<div>고객명 : "+result[i].m_name+" 고객님</div>"+"<div><span>주소 : </span><span>"+result[i].m_address+"</span></div>"+"<div>담당 해방맨 : "+result[i].e_name+"</div>"+"<div>진행상태 : "+
 	                        result[i].eo_status+"</div>"+"<div><a class='btn btn-info1 try' style='width: 80px'>도전! 해방</a></div>",
 	                        true);
 					
 					}else if(result[i].eo_status =="해방중")
 						{
 						popup = new Tmap.Popup("p1",
-		                        new Tmap.LonLat(lon, lat),
-		                        new Tmap.Size(200, 100),
-		                        "<div>고객명 : "+result[i].m_name+" 고객님</div>"+"<div><span>주소 : </span><span>"+result[i].m_address+"</span></div>"+"<div>진행상태 : "+
+		                        m_lonlat,
+		                        new Tmap.Size(150, 200),
+		                        "<div>고객명 : "+result[i].m_name+" 고객님</div>"+"<div><span>주소 : </span><span>"+result[i].m_address+"</span></div>"+"<div>담당 해방맨 : "+result[i].e_name+"</div>"+"<div>진행상태 : "+
 		                        result[i].eo_status+"</div>"+"<div><a class='btn btn-info1 succeed' style='width: 80px'>해방 성공!</a></div>",
 		                        true);
 						
 						}
 				map.addPopup(popup);
+				popup.autoSize=true;//popup 사이즈 자동 조절	
 				popup.hide();
 
 				
 				marker.events.register("mouseover", popup, onMouseMarker);	
-				/* marker.events.register("mouseout", popup, onMouseMarker); */	
+				marker.events.register("mouseout", popup, onMouseMarker);	
+				popup.events.register("mouseover", popup, onMouseMarker);	
+				popup.events.register("mouseout", popup, onMouseMarker);	
 				
 				}
 			
 			var lonlat1 = officeLocation;
 			 
 			var size1 = new Tmap.Size(24,38);
-			/* var offset1 = new Tmap.Pixel(-(size.w/2), -(size.h/2)); */
+			var offset1 = new Tmap.Pixel(-(size1.w/2), -(size1.h/2)); 
 			var icon1 = new Tmap.Icon('${pageContext.request.contextPath }/resources/img/map/laboratory.png', size1); 
 			var label = new Tmap.Label("우리회사");     
 			marker1 = new Tmap.Markers(lonlat1, icon1, label);
@@ -98,7 +146,7 @@ function init() {
 			/* marker1.popup.show(); */
 			
 			
-			map.setCenter(new Tmap.LonLat(14136395.789421, 4515900.949421),11);
+			map.setCenter(curlonlat,11);
 			 
 			/* ajax success function 끝 */
 		}
@@ -109,11 +157,8 @@ function init() {
 function onMouseMarker (evt){
     if(evt.type == "mouseover"){
         this.show();
-		this.getSafeContentSize(new Tmap.Size(200, 100));
-        console.log(evt)
     } else {
         this.hide();
-        console.log(evt)
     }
 }
 
@@ -125,7 +170,7 @@ window.onload = function() {
 
 $(document).on("click",".start",function(){
 	
-	getRoute($(this).next().val(),$(this).next().next().val(),$(this).parents().prev().prev().prev().html());
+	getRoute($(this).next().val(), $(this).next().next().val(), $(this).parents().prev().prev().prev().prev().html());
 	
 	$.ajax({
 		url : "${ pageContext.request.contextPath }/ceo/updateEOrderStatus",
@@ -146,32 +191,65 @@ $(document).on("click",".start",function(){
 
 function getRoute(endLon, endLat, endName) {
 
-		var startPoint = officeLocation;
-		var endPoint = new Tmap.LonLat(endLon, endLat);
+		var startPoint = curlonlat;
+		var endPoint = new Tmap.LonLat(endLon, endLat).transform("EPSG:4326", "EPSG:3857");
 
-		var option = {
-			version : "1"
-			/* format : 'xml',
-			speed : "50",
-			carType : "1", */
-		}
+		var optionObj = {
+	             reqCoordType:"EPSG3857", //요청 좌표계 옵셥 설정입니다.
+	             resCoordType:"EPSG3857"  //응답 좌표계 옵셥 설정입니다.
+	             }
+		
 		var tData = new Tmap.TData();
-
-		tData.getRoutePlan(startPoint, endPoint, option);
-
+		tData.getRoutePlan(startPoint, endPoint, optionObj);
+	
+		tData.events.register("onError", tData, onError);//데이터 로드가 실패했을 떄 발생하는 이벤트를 등록합니다.
 		tData.events.register("onComplete", tData, function(){
-			
+		
 		var xmlDoc = this.responseXML;
 		console.log(xmlDoc);
 		
 		var time = $(xmlDoc).find('tmap\\:totalTime').html();
-		alert(endName+"의 집까지 소요시간 : "+time/60+"분");
+
+		//경로 정보 로드
+		var routeFormat = new Tmap.Format.KML({extractStyles:true, extractAttributes:true});
+		//KML을 구문 분석(parsing)하기 위한 새로운 파서(parser)를 생성 합니다.
+		var urlStr = this.responseXML.URL;
+			var prtcl = new Tmap.Protocol.HTTP({
+			                                    url: urlStr,//http 요청 url 입니다.
+			                                    format:routeFormat//KML을 구문 분석(parsing)하기 위한 새로운 파서
+			                                    });
+			var routeLayer = new Tmap.Layer.Vector("route", {protocol:prtcl, strategies:[new Tmap.Strategy.Fixed()]});//신규 벡터 레이어(vector layer)를 생성합니다.
+			routeLayer.events.register("featuresadded", routeLayer, onDrawnFeatures);
+			routeLayer.events.register("click", routeLayer, endLookFor);
+			
+			//벡터 도형(Feature)들이 트리거 된 후에 추가합니다.
+			map.addLayer(routeLayer);//map에 레이어를 추가합니다.
+			
+			//경로 그리기 후 해당영역에 맞게 map을 줌 합니다.
+			function onDrawnFeatures(e){
+				map.zoomToExtent(this.getDataExtent());//지정된 영역으로 줌(Zoom)
+			}
+			function endLookFor(e){
+				alert("현재위치부터 "+endName+"의 집까지 소요시간 : "+time/60+"분");
+				this.destroy();
+			}
+			
+			
+			
+			
 		});
 
 	}
 
 
-
+//데이터 로드중 발생하는 이벤트 함수입니다.
+function onProgress(){
+	//alert("onComplete");
+}
+//데이터 로드시 에러가 발생시 발생하는 이벤트 함수입니다.
+function onError(){
+	alert("onError");
+}
 
 
 
@@ -541,9 +619,7 @@ s0.parentNode.insertBefore(s1,s0);
 								<input type="submit" class="btn btn-theme" id="login_btn"
 									value="로그인">&nbsp;
 										
-
 							<a href="${ pageContext.request.contextPath }/ceo/register/join"><input class="btn btn-theme" type="button" id="register_btn" value="회원가입"></a>
-
 							</form:form>
 						</c:if>
 						<c:if test="${ not empty userVo }">

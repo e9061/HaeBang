@@ -135,8 +135,8 @@ public class EmployeeDaoImpl implements EmployeeDao{
 	
 	//	------------------------------------ 창대 11/29일 작업(지도 주문관련)  ----------------------------------------------
 	@Override
-	public List<HashMap<String, Object>> selectAllmap(EmployeeVo employeeVo) {	
-		List<HashMap<String, Object>> mapList = sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectAllmap", employeeVo); 
+	public List<HashMap<String, Object>> selectAllmap(List<EmployeeVo> list) {	
+		List<HashMap<String, Object>> mapList = sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectAllmap", list); 
 	
 		return mapList;
 	}
@@ -225,3 +225,5 @@ public class EmployeeDaoImpl implements EmployeeDao{
 	
 
 }
+
+

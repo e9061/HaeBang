@@ -30,7 +30,7 @@ public interface EmployeeDao {
     
  // -------------------------------------- 창대 ----------------------------------------
     EmployeeVo selectById(String e_id);
-    CompanyVo selectByBizNo1(String c_bizNo);
+	CompanyVo selectByBizNo1(String c_bizNo);
 	CompanyVo selectByCode(String c_code);
 	CompanyVo selectByNo(int c_no);
 	List<EmployeeVo> selectByCNo(int c_no);
@@ -52,7 +52,7 @@ public interface EmployeeDao {
 //	------------------------------------ 창대 11/25일 작업 종료! ----------------------------------------------
 	
 //	------------------------------------ 창대 11/29일 작업(지도 주문관련)  ----------------------------------------------
-	List<HashMap<String, Object>> selectAllmap(EmployeeVo employeeVo);
+	List<HashMap<String, Object>> selectAllmap(List<EmployeeVo> list);
 	void updateEOrderStatus(OrderEmployeeVo orderEmployeeVo);
 	OrderEmployeeVo selectEOrderByMoNo(OrderEmployeeVo orderEmployeeVo);
 	
