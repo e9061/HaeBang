@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Moderna - Bootstrap 3 flat corporate template</title>
+<title>HaeBang</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="description" content="" />
 <!-- css -->
@@ -48,18 +48,22 @@
 <script>
     // 우편번호 찾기 화면을 넣을 element
     var element_layer = document.getElementById('layer');
+
     function closeDaumPostcode() {
         // iframe을 넣은 element를 안보이게 한다.
         element_layer.style.display = 'none';
     }
+
     function c_execDaumPostcode() {
         new daum.Postcode({
             oncomplete: function(data) {
-                // 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+            	// 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
                 // 각 주소의 노출 규칙에 따라 주소를 조합한다.
                 // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
                 var fullAddr = data.address; // 최종 주소 변수
                 var extraAddr = ''; // 조합형 주소 변수
+
                 // 기본 주소가 도로명 타입일때 조합한다.
                 if(data.addressType === 'R'){
                     //법정동명이 있을 경우 추가한다.
@@ -73,22 +77,27 @@
                     // 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다.
                     fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
                 }
+
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
                 document.getElementById('c_postcode').value = data.zonecode; //5자리 새우편번호 사용
                 document.getElementById('c_address').value = fullAddr;
-                // iframe을 넣은 element를 안보이게 한다.
-                // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
+                  document.getElementById('c_address').focus();
+
+	             
                 element_layer.style.display = 'none';
             },
             width : '100%',
             height : '100%',
             maxSuggestItems : 5
         }).embed(element_layer);
+
         // iframe을 넣은 element를 보이게 한다.
         element_layer.style.display = 'block';
+
         // iframe을 넣은 element의 위치를 화면의 가운데로 이동시킨다.
         initLayerPosition();
     }
+
     // 브라우저의 크기 변경에 따라 레이어를 가운데로 이동시키고자 하실때에는
     // resize이벤트나, orientationchange이벤트를 이용하여 값이 변경될때마다 아래 함수를 실행 시켜 주시거나,
     // 직접 element_layer의 top,left값을 수정해 주시면 됩니다.
@@ -96,6 +105,7 @@
         var width = 300; //우편번호서비스가 들어갈 element의 width
         var height = 400; //우편번호서비스가 들어갈 element의 height
         var borderWidth = 5; //샘플에서 사용하는 border의 두께
+
         // 위에서 선언한 값들을 실제 element에 넣는다.
         element_layer.style.width = width + 'px';
         element_layer.style.height = height + 'px';
@@ -115,6 +125,7 @@
 		// var idReg = /^[a-z]+[a-z0-9]{5,19}$/g;
 		// 시작 /^과 끝 슬러시로 구분. 끝날때/g put, [a-z]  소문자, [a-zA-Z]소대문자, [a-z0-9]소문자숫자 $(달러표현이 마지막에 들어가면 마지막 문자에 대한 조건임)
 		//{5,19} 5-19자리 가능!!
+
 		/* 	var idReg = /[A-Za-z0-9]+[~!@\#$%<>^&*\()\-=+_\’]{6,20}/g
 			if (!idReg.test($("input[name=uid]").val())) {
 				alert("아이디는 영문자로 시작하는 6~20자 영문자 또는 숫자이어야 합니다.");
@@ -143,7 +154,9 @@
 		*/
 		
 	
+
 			function checkPasswordPattern(str) {
+
 			var pattern1 = /[0-9]/; // 숫자 
 			var pattern2 = /[a-zA-Z]/; // 문자 
 			var pattern3 = /[~!@\#$%<>^&*\()\-=+_\’]/; // 특수문자
@@ -179,11 +192,13 @@
 				 document.getElementById('e_password').style.borderColor='red'
 					document.getElementById('checkPasswordPattern').innerText = '8자리 이상 입력하세요.';
 				}
+
 			} else {
 				 document.getElementById('checkPasswordPattern').style.color = 'green';
 				 document.getElementById('e_password').style.borderColor='green'
 				document.getElementById('checkPasswordPattern').innerText = '사용가능';
 			}
+
 			if (pattern4.test(str)) {
 				 document.getElementById('checkPasswordPattern').style.color = 'red';
 				 document.getElementById('e_password').style.borderColor='red'
@@ -192,6 +207,7 @@
 			if (str == "") {
 				document.getElementById('checkPasswordPattern').innerText = str;
 			}
+
 		}
 		
 		
@@ -208,6 +224,7 @@
 		     }
 		   }
 		
+
 		function nextStep() {
 			var form = document.form;
 			var i;
@@ -320,6 +337,7 @@
 							
 				
 						}
+
 					}else if($(document.form[i]).parents().prev().html()=="사업자 등록번호")
 					{	
 						if($(document.form[i]).next().next().html() !='사용가능한 사업자 번호입니다.'){
@@ -415,13 +433,10 @@
 	});
 	
 	
- 	/* $(function(){
-		$("#fileUpload").on("change", function(){
-			readURL(this);	
-		});	
-	}); */
 	
+
 	$(document).on("click", "#fileUpload", function(){   
+
 		$("#fileUpload").on("change", function(){
 			readURL(this);	
 		});	
@@ -431,13 +446,18 @@
 	 function readURL(fileUpload) {
          if (fileUpload.files && fileUpload.files[0]) {
          var reader = new FileReader();
+
          reader.onload = function (e) {
                  $('#blah').attr('src', e.target.result);
                  
              }
+
            reader.readAsDataURL(fileUpload.files[0]);
          }
      } 
+
+
+
 	 
 	 	$(function(){
 			$("#fileUpload1").on("change", function(){
@@ -448,25 +468,76 @@
 		 function readURL1(fileUpload) {
 	         if (fileUpload.files && fileUpload.files[0]) {
 	         var reader = new FileReader();
+
 	         reader.onload = function (e) {
 	                 $('#blah1').attr('src', e.target.result);
 	                 
 	             }
+
 	           reader.readAsDataURL(fileUpload.files[0]);
 	         }
 	     } 
      
-    	 
-     
+
+		  function inputAddress(address){
+			  $.ajax({		
+					url: "https://api2.sktelecom.com/tmap/geo/fullAddrGeo",
+					type: "GET",
+					data: {	
+						version : 1,
+						fullAddr : address,
+						addressFlag : "F00",
+						format : "json",
+						appKey : "3a8e2503-7364-4259-9624-81dfdd0cb5ff"
+					},
+					success : function(result)
+					{
+						
+						if(result.coordinateInfo.coordinate.length == '1')
+						{
+							document.getElementById('c_lon').value = result.coordinateInfo.coordinate[0].newLon;
+							document.getElementById('c_lat').value = result.coordinateInfo.coordinate[0].newLat;
+						}else
+						{
+							document.getElementById('c_lon').value = result.coordinateInfo.coordinate[0].lon;
+							document.getElementById('c_lat').value = result.coordinateInfo.coordinate[0].lat;
+						}
+					},
+					
+			  });
+		  }
+							  
+		  
+		  
 	
 	
-	
+		  /* error: function(data){
+			
+			
+			var str = JSON.stringify(data.responseText);
+			var str1 = str.substring(str.lastIndexOf(",")+1);
+			var str2 = str.substring(0,str.lastIndexOf(","));
+			str1 = str1.substring(0, str1.length-1);
+			str2 = str2.substring(1, str2.length);
+			var str3 = str2.replace(/\\/gi,"")+str1.replace(/\\/gi,"");
+			var result = JSON.parse(str3);
+			
+			
+			document.getElementById('c_lon').value = result.coordinateInfo.coordinate[0].lon;
+			document.getElementById('c_lat').value = result.coordinateInfo.coordinate[0].lat;
+
+			
+		} */	
 	
 	
 	
 	</script>
 
+
+
 <style type="text/css">
+
+
 .btn-info1:hover {
   color : #000000;
   border: 1px solid #000000;
@@ -475,6 +546,9 @@
   color : #000000;
   border: 0.5px thin #000000;
 }
+
+
+
 </style>
 
 
@@ -670,16 +744,16 @@
 						&nbsp;&nbsp; <input type="button" class="btn btn-info1" onclick="c_execDaumPostcode()" value="우편번호 찾기"><br>
 						</div>
 						<div class="form-group">
-							<form:input style="width:50%;" path="c_address"
+							<form:input style="width:50%;" onblur="inputAddress($(this).val())" path="c_address"
 								class="form-control" placeholder="사업자 등록증상 업체 주소를 입력해 주세요." />
 							<form:errors path="c_address" />
 							<!-- 업체주소 t_company 테이블 변수 c_address -->
 						<input type="text" name="c_detailAddress" placeholder="상세입력" class="form-control" style="width:50%;"/>
-
-							<div class="validation"></div>
+						<form:hidden path="c_lon"/>
+						<form:hidden path="c_lat"/>
 						</div>
 						
-						
+						<div class="text-center" id="plz"></div>
 												<div class="text-center">
 							<a href="<%=request.getContextPath()%>/ceo"><input
 								type="button" value="취소" class="btn btn-theme"></a> <input
@@ -784,3 +858,5 @@
 </body>
 
 </html>
+
+

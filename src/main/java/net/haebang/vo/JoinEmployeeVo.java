@@ -27,13 +27,25 @@ public class JoinEmployeeVo {
 	private String e_phone2;
 	private String e_phone3;
 	
+	private String c_lon;	//경도
+	private String c_lat;	//위도
 	
 	
 	
 	
 	
-	
-	
+	public String getC_lon() {
+		return c_lon;
+	}
+	public void setC_lon(String c_lon) {
+		this.c_lon = c_lon;
+	}
+	public String getC_lat() {
+		return c_lat;
+	}
+	public void setC_lat(String c_lat) {
+		this.c_lat = c_lat;
+	}
 	public String getE_phone1() {
 		return e_phone1;
 	}
@@ -148,5 +160,6 @@ public class JoinEmployeeVo {
 
 	
 }
+
 
 

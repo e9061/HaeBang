@@ -7,26 +7,261 @@
 <head>
 <meta charset="utf-8">
 <title>해방 사장님 사이트</title>
+<script src="${ pageContext.request.contextPath }/resources/js/jquery.js"></script>
+	<script
+		src="${ pageContext.request.contextPath }/resources/js/jquery.easing.1.3.js"></script>
 
-<style>
-#map {
-	height: 500px;
-	width: 700px;
+ <script src="https://api2.sktelecom.com/tmap/js?version=1&format=javascript&appKey=3a8e2503-7364-4259-9624-81dfdd0cb5ff"></script>
+
+<!--Tmap api-->
+
+<script type="text/javascript">
+
+var map;
+var marker;
+var markerLayer;
+var curlonlat= new Tmap.LonLat('127.027606', '37.49462').transform("EPSG:4326","EPSG:3857");  // 긴 형태 
+var curlon;
+var curlat;
+var PR_3857;
+var PR_4326;
+var officeLocation = new Tmap.LonLat("${companyVo.c_lon}", "${companyVo.c_lat}").transform("EPSG:4326", "EPSG:3857");
+
+
+function init() {
+	 map = new Tmap.Map({div:'map_div', width:"100%", height:"300px", animation:true}); 
+	    // div : 지도가 생성될 div의 id값과 같은 값을 옵션으로 정의 합니다.
+	    // Tmap,Map 클래스에 대한 상세 사항은 "JavaScript" 하위메뉴인 "기본 기능" 페이지를 참조 해주세요. 
+		map.addControl(new Tmap.Control.KeyboardDefaults());
+	    markerLayer = new Tmap.Layer.Markers();
+		map.addLayer(markerLayer);
+		
+		
+		if(navigator.geolocation){
+			navigator.geolocation.getCurrentPosition(function(position){
+			
+				curlat = position.coords.latitude;
+				curlon = position.coords.longitude;
+				/* alert(curlat); */
+				/* WGS84GEO 짧은 lon,lat 형태 */
+				/* EPSG3857 긴 lon,lat 형태 */
+				
+				PR_3857 = new Tmap.Projection("EPSG:3857");  // Google Mercator 좌표계인 EPSG:3857
+				PR_4326 = new Tmap.Projection("EPSG:4326");  // WGS84 GEO 좌표계인 EPSG:4326        
+				curlonlat = new Tmap.LonLat(curlon, curlat).transform(PR_4326, PR_3857); // 짧은 lonlat을 긴 lonlat으로 바꾼다
+				var cursize = new Tmap.Size(24, 38);
+				var curoffset = new Tmap.Pixel(-(cursize.w / 2), -(cursize.h));
+				var curicon = new Tmap.Icon('http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_h.png',cursize, curoffset);
+				
+				marker = new Tmap.Marker(curlonlat, curicon);
+				markerLayer.addMarker(marker);
+				
+				var curpopup;
+				var curcontent ="<div>현재위치</div>";
+				curpopup = new Tmap.Popup("cp",curlonlat,new Tmap.Size(155,50),curcontent,onPopupClose);
+				curpopup.setBorder("1px solid #8d8d8d");//popup border 조절
+				curpopup.autoSize=true;//popup 사이즈 자동 조절	
+				map.addPopup(curpopup); // 지도에 팝업을 추가해 줍니다. 
+				curpopup.show(); // 팝업을 보여줍니다.
+				//팝업창을 닫을수 있는 이벤트 함수
+				function onPopupClose(){
+					select.unselectAll();
+				}
+				
+			})
+		}
+		
+	var lon;
+	var lat;
+	var popup;
+	
+	$.ajax({		
+		url: "${pageContext.request.contextPath}/ceo/selectAllmap",
+		type: "GET",
+		data: {
+			go : "go"
+		},
+		success: function(result){
+			/* ajax success function 시작 */
+			for(i=0;i<result.length;i++)
+				{
+					lon = result[i].m_lon;
+					lat = result[i].m_lat;
+					
+					var m_lonlat = new Tmap.LonLat(lon, lat).transform("EPSG:4326", "EPSG:3857");
+					 
+					var size = new Tmap.Size(24,38);
+					var offset = new Tmap.Pixel(-(size.w/2), -(size.h/2));
+					var icon = new Tmap.Icon('https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png', size, offset); 
+					     
+					marker = new Tmap.Marker(m_lonlat, icon);
+					markerLayer.addMarker(marker);
+				if(result[i].eo_status =="대기중")
+				{	popup = new Tmap.Popup("p1",
+									m_lonlat,
+			                        new Tmap.Size(150, 200),
+			                        "<div>고객명 : "+result[i].m_name+" 고객님</div>"+"<div><span>주소 : </span><span>"+result[i].m_address+"</span></div>"+"<div>담당 해방맨 : "+result[i].e_name+"</div>"+"<div>진행상태 : "+
+			                        result[i].eo_status+"</div>"+"<div><a class='btn btn-info1 start' style='width: 50px'>출발</a><input type='hidden' value='"+lon+"'/><input type='hidden' value='"+lat+"'/><input type='hidden' id='"+result[i].mo_no+"' value='"+result[i].mo_no+"'/></div>",
+			                        true);
+				
+				}else if(result[i].eo_status =="출동중")
+					{
+					popup = new Tmap.Popup("p1",
+	                        m_lonlat,
+	                        new Tmap.Size(150, 200),
+	                        "<div>고객명 : "+result[i].m_name+" 고객님</div>"+"<div><span>주소 : </span><span>"+result[i].m_address+"</span></div>"+"<div>담당 해방맨 : "+result[i].e_name+"</div>"+"<div>진행상태 : "+
+	                        result[i].eo_status+"</div>"+"<div><a class='btn btn-info1 try' style='width: 80px'>도전! 해방</a></div>",
+	                        true);
+					
+					}else if(result[i].eo_status =="해방중")
+						{
+						popup = new Tmap.Popup("p1",
+		                        m_lonlat,
+		                        new Tmap.Size(150, 200),
+		                        "<div>고객명 : "+result[i].m_name+" 고객님</div>"+"<div><span>주소 : </span><span>"+result[i].m_address+"</span></div>"+"<div>담당 해방맨 : "+result[i].e_name+"</div>"+"<div>진행상태 : "+
+		                        result[i].eo_status+"</div>"+"<div><a class='btn btn-info1 succeed' style='width: 80px'>해방 성공!</a></div>",
+		                        true);
+						
+						}
+				map.addPopup(popup);
+				popup.autoSize=true;//popup 사이즈 자동 조절	
+				popup.hide();
+
+				
+				marker.events.register("mouseover", popup, onMouseMarker);	
+				marker.events.register("mouseout", popup, onMouseMarker);	
+				popup.events.register("mouseover", popup, onMouseMarker);	
+				popup.events.register("mouseout", popup, onMouseMarker);	
+				
+				}
+			
+			var lonlat1 = officeLocation;
+			 
+			var size1 = new Tmap.Size(24,38);
+			var offset1 = new Tmap.Pixel(-(size1.w/2), -(size1.h/2)); 
+			var icon1 = new Tmap.Icon('${pageContext.request.contextPath }/resources/img/map/laboratory.png', size1); 
+			var label = new Tmap.Label("우리회사");     
+			marker1 = new Tmap.Markers(lonlat1, icon1, label);
+			markerLayer.addMarker(marker1);
+			/* marker1.popup.show(); */
+			
+			
+			map.setCenter(curlonlat,11);
+			 
+			/* ajax success function 끝 */
+		}
+	}); 
+    
+}  
+
+function onMouseMarker (evt){
+    if(evt.type == "mouseover"){
+        this.show();
+    } else {
+        this.hide();
+    }
 }
-</style>
 
-<script>
 
-    var map;
-    
-    function initMap() {
-      map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 37.548460113062, lng: 126.98654938037113},
-        zoom: 11
-      });
-    }   
-    
-  </script>
+
+window.onload = function() {
+    init();
+}
+
+$(document).on("click",".start",function(){
+	
+	getRoute($(this).next().val(), $(this).next().next().val(), $(this).parents().prev().prev().prev().prev().html());
+	
+	$.ajax({
+		url : "${ pageContext.request.contextPath }/ceo/updateEOrderStatus",
+		type : "POST",
+		data : {
+			mo_no : $(this).next().next().next().val(),
+		},
+		success : changeStatus 
+	});
+	
+	function changeStatus(result){
+		console.log(result);
+		$(document.getElementById(result.mo_no)).parents().prev()[0].innerHTML ="진행상태 : "+result.eo_status;
+		$(document.getElementById(result.mo_no)).parents().children().first().html('도전! 해방');
+		$(document.getElementById(result.mo_no)).parents().children().first().attr('class','btn btn-info1 try');
+	}
+})
+
+function getRoute(endLon, endLat, endName) {
+
+		var startPoint = curlonlat;
+		var endPoint = new Tmap.LonLat(endLon, endLat).transform("EPSG:4326", "EPSG:3857");
+
+		var optionObj = {
+	             reqCoordType:"EPSG3857", //요청 좌표계 옵셥 설정입니다.
+	             resCoordType:"EPSG3857"  //응답 좌표계 옵셥 설정입니다.
+	             }
+		
+		var tData = new Tmap.TData();
+		tData.getRoutePlan(startPoint, endPoint, optionObj);
+	
+		tData.events.register("onError", tData, onError);//데이터 로드가 실패했을 떄 발생하는 이벤트를 등록합니다.
+		tData.events.register("onComplete", tData, function(){
+		
+		var xmlDoc = this.responseXML;
+		console.log(xmlDoc);
+		
+		var time = $(xmlDoc).find('tmap\\:totalTime').html();
+
+		//경로 정보 로드
+		var routeFormat = new Tmap.Format.KML({extractStyles:true, extractAttributes:true});
+		//KML을 구문 분석(parsing)하기 위한 새로운 파서(parser)를 생성 합니다.
+		var urlStr = this.responseXML.URL;
+			var prtcl = new Tmap.Protocol.HTTP({
+			                                    url: urlStr,//http 요청 url 입니다.
+			                                    format:routeFormat//KML을 구문 분석(parsing)하기 위한 새로운 파서
+			                                    });
+			var routeLayer = new Tmap.Layer.Vector("route", {protocol:prtcl, strategies:[new Tmap.Strategy.Fixed()]});//신규 벡터 레이어(vector layer)를 생성합니다.
+			routeLayer.events.register("featuresadded", routeLayer, onDrawnFeatures);
+			routeLayer.events.register("click", routeLayer, endLookFor);
+			
+			//벡터 도형(Feature)들이 트리거 된 후에 추가합니다.
+			map.addLayer(routeLayer);//map에 레이어를 추가합니다.
+			
+			//경로 그리기 후 해당영역에 맞게 map을 줌 합니다.
+			function onDrawnFeatures(e){
+				map.zoomToExtent(this.getDataExtent());//지정된 영역으로 줌(Zoom)
+			}
+			function endLookFor(e){
+				alert("현재위치부터 "+endName+"의 집까지 소요시간 : "+time/60+"분");
+				this.destroy();
+			}
+			
+			
+			
+			
+		});
+
+	}
+
+
+//데이터 로드중 발생하는 이벤트 함수입니다.
+function onProgress(){
+	//alert("onComplete");
+}
+//데이터 로드시 에러가 발생시 발생하는 이벤트 함수입니다.
+function onError(){
+	alert("onError");
+}
+
+
+
+
+
+
+
+
+
+
+</script>
+
 
 
 <!--Start of Tawk.to Script-->
@@ -43,25 +278,35 @@ s0.parentNode.insertBefore(s1,s0);
 </script>
 <!--End of Tawk.to Script-->
 
+<style type="text/css">
 
 
-<script
-	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA55tXe_wDtqEVlLtwacYJsOXG2zBQC7lk&callback=initMap" async defer>
-</script>
+.btn-info1:hover {
+  color : #000000;
+  border: 1px solid #000000;
+}
+.btn-info1 {
+  color : #000000;
+  border: 0.5px thin #000000;
+}
+
+
+
+</style>
+
 
 </head>
 <body>
 	<div id="wrapper">
-	
 		<header>
 			<jsp:include page="../employee_include/topmenu.jsp" />
 		</header>
 		
 		<jsp:include page="../employee_include/loginModal.jsp" />
 
-		<section id="inner-headline">
+ 		<section id="inner-headline">
 			<div class="container">
-				<!-- <div class="row" > -->
+				<div class="row" >
 				<div width="100%" height="300px">
 					<div class="col-lg-12">
 						<br /> <br /> <br />
@@ -70,20 +315,21 @@ s0.parentNode.insertBefore(s1,s0);
 			</div>
 		</section>
 		
-		<section id="content">
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-8">
 	
 						<article> <c:if test="${ not empty userVo }">
 							<h4>Today's Schedule</h4>
-							<div id="map"></div>
+						<div id="map_div"></div>
+							
 						</c:if> </article>
 	
-	
+						<c:choose>
+						<c:when test="${ empty userVo }">
+						
+												
 						<article>
-	
-	
 	
 						<h4>
 							<strong>공지사항</strong>
@@ -133,6 +379,53 @@ s0.parentNode.insertBefore(s1,s0);
 							width="160px" />
 						</a>
 					</c:if> <c:if test="${ not empty userVo }">
+						<a href="${ pageContext.request.contextPath }/ceo/schedule"> 
+						<img src="${ pageContext.request.contextPath }/resources/img/schedule.jpg"
+							width="160px" />
+						</a>
+					</c:if> &nbsp;&nbsp;&nbsp; <c:if test="${ empty userVo }">
+						<a href="#myModal" class="trigger-btn" data-toggle="modal"> <img
+							src="${ pageContext.request.contextPath }/resources/img/statistics.jpg"
+							width="180px" />
+						</a>
+					</c:if> <c:if test="${ not empty userVo }">
+						<a href="#"> <img
+							src="${ pageContext.request.contextPath }/resources/img/statistics.jpg"
+							width="180px" />
+						</a>
+					</c:if> &nbsp;&nbsp;&nbsp; <c:if test="${ empty userVo }">
+						<a href="#myModal" class="trigger-btn" data-toggle="modal"> <img
+							src="${ pageContext.request.contextPath }/resources/img/revdetail.jpg"
+							width="160px" />
+						</a>
+					</c:if> <c:if test="${ not empty userVo }">
+						<a href="#"> <img
+							src="${ pageContext.request.contextPath }/resources/img/revdetail.jpg"
+							width="160px" />
+						</a>
+					</c:if> </article>
+	
+	</c:when>
+	<c:otherwise>
+	
+	<article>
+					<h4>Quick Menu</h4>
+					<c:if test="${ empty userVo }">
+						<a href="#myModal" class="trigger-btn" data-toggle="modal"> <img
+							src="${ pageContext.request.contextPath }/resources/img/calculate.jpg"
+							width="160px" />
+						</a>
+					</c:if> <c:if test="${ not empty userVo }">
+						<a href="#"> <img
+							src="${ pageContext.request.contextPath }/resources/img/calculate.jpg"
+							width="160px" />
+						</a>
+					</c:if> &nbsp;&nbsp;&nbsp; <c:if test="${ empty userVo }">
+						<a href="#myModal" class="trigger-btn" data-toggle="modal"> <img
+							src="${ pageContext.request.contextPath }/resources/img/schedule.jpg"
+							width="160px" />
+						</a>
+					</c:if> <c:if test="${ not empty userVo }">
 						<a href="#"> <img
 							src="${ pageContext.request.contextPath }/resources/img/schedule.jpg"
 							width="160px" />
@@ -158,8 +451,42 @@ s0.parentNode.insertBefore(s1,s0);
 							width="160px" />
 						</a>
 					</c:if> </article>
+					
+					<article>
+	
+						<h4>
+							<strong>공지사항</strong>
+						</h4>
+						<br/>				
 	
 	
+	
+					<table style="width: 800px;">
+						
+	
+						<tbody>
+							<c:forEach items="${ mainNoticelist }" var="board" varStatus="loop">
+								<tr>
+									<td><a href="javascript:doAction(${ board.n_no }, ${ board.n_viewCnt })"> 
+									<c:out value="${ board.n_title }" />
+									</a></td>
+									<td>${ board.n_regDate }</td>
+								</tr>
+							</c:forEach>
+	
+							<c:if test="${ count eq 0 }">
+								<tr>
+									<td colspan="6" align="center">게시글이 없습니다.</td>
+								</tr>
+							</c:if>
+						</tbody>
+					</table>
+					</article>
+					<br/> <br/>
+	
+	
+	</c:otherwise>
+						</c:choose>
 	
 					<article>
 					<div class="post-slider">
@@ -210,7 +537,7 @@ s0.parentNode.insertBefore(s1,s0);
 	
 					<article>
 					<div class="post-quote">
-						<div class="post-heading">
+						<div  class="post-heading">
 							<h3>
 								<a href="#">Nice example of quote post format below</a>
 							</h3>
@@ -292,9 +619,7 @@ s0.parentNode.insertBefore(s1,s0);
 								<input type="submit" class="btn btn-theme" id="login_btn"
 									value="로그인">&nbsp;
 										
-
 							<a href="${ pageContext.request.contextPath }/ceo/register/join"><input class="btn btn-theme" type="button" id="register_btn" value="회원가입"></a>
-
 							</form:form>
 						</c:if>
 						<c:if test="${ not empty userVo }">
@@ -312,7 +637,7 @@ s0.parentNode.insertBefore(s1,s0);
 								<h6>
 									<a href="#">Lorem ipsum dolor sit</a>
 								</h6>
-								<p>Mazim alienum appellantur eu cu ullum officiis pro pri</p>
+								<p id="plz">Mazim alienum appellantur eu cu ullum officiis pro pri</p>
 							</li>
 							<li>
 								<h6>
@@ -343,7 +668,6 @@ s0.parentNode.insertBefore(s1,s0);
 				</div>
 			</div>
 		</div>
-	</section>
 	
 	<footer> 
 		<jsp:include page="../employee_include/bottom.jsp" />
@@ -383,3 +707,4 @@ s0.parentNode.insertBefore(s1,s0);
     
   </script>
 </html>
+

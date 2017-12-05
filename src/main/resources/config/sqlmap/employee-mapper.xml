@@ -9,12 +9,7 @@
 		select * from t_employee where e_id = #{e_id} and e_password = #{e_password}		
 	</select>
 	
-	<!-- 지도 -->
-	<select id="selectAllmap" parameterType="employeeVo" resultType="mapVo">
-		select m.m_name as m_name, m.m_address as m_address, e.e_name as e_name, eo.eo_status as eo_status 
-		from t_member m, t_e_order eo, t_employee e, t_m_order mo 
-		where e.c_no= #{c_no} and e.e_no = eo.e_no and eo.mo_no = mo.mo_no and mo.m_no = m.m_no;
-	</select>
+	
 
 
 <!--*************************************** 공지사항 ******************************************-->
@@ -84,7 +79,7 @@
 	</select>
 	
 	<select id="selectByBizNo1" parameterType="String" resultType = "companyVo">
-		select c_bizNo from t_company where c_bizNo = #{c_bizNo}
+		select * from t_company where c_bizNo = #{c_bizNo}
 	</select>
 
 	<select id="selectByBizNo2" parameterType="companyVo" resultType = "companyVo">
@@ -92,12 +87,13 @@
 	</select>
 
 	<select id="selectByCode" parameterType="String" resultType = "companyVo">
-		select c_no, c_name, c_phone, c_address, c_bizNo from t_company where c_code = #{c_code}
+		select * from t_company where c_code = #{c_code}
 	</select>
 	
 	
 	<insert id="insertCompany" parameterType="joinEmployeeVo" >
-		insert into t_company(c_name, c_address, c_phone, c_bizNo, c_oriName, c_saveName) values(#{c_name}, #{c_address}, #{c_phone}, #{c_bizNo}, #{c_oriName}, #{c_saveName})
+		insert into t_company(c_name, c_address, c_lon, c_lat, c_phone, c_bizNo, c_oriName, c_saveName) 
+		values(#{c_name}, #{c_address}, #{c_lon}, #{c_lat}, #{c_phone}, #{c_bizNo}, #{c_oriName}, #{c_saveName})
 	</insert>
 
 	<insert id="insertEmployeeAnd" parameterType="joinEmployeeVo" >
@@ -122,7 +118,7 @@
 
 
 	<select id="selectByNo" parameterType="int" resultType = "companyVo">
-		select c_no, c_name, c_address, c_phone, c_bizNo, c_accNo, date_format(c_signDate,'%Y-%m-%d') as c_signDate, 
+		select c_no, c_name, c_address, c_lon, c_lat, c_phone, c_bizNo, c_accNo, date_format(c_signDate,'%Y-%m-%d') as c_signDate, 
 		date_format(c_regDate,'%Y-%m-%d') as c_regDate, c_bank, c_oriName, c_saveName, c_code, c_empCnt from t_company where c_no = #{c_no}
 	</select>
 
@@ -149,12 +145,114 @@
 	<update id="updateEmpPicture" parameterType="employeeVo">
 		update t_employee set e_oriName = #{e_oriName}, e_saveName = #{e_saveName} where e_no = #{e_no}
 	</update>
-
-
 	<update id="updateCompanyAddress" parameterType="companyVo">
 		update t_company set c_address = #{c_address} where c_no = #{c_no}
 	</update>
+	
+	<!-- 로그인 후 로그인 회원과 당일 일치하는 주문정보가져오기 11/29-30일 시작 -->
+	<!-- 지도 -->
+	
+	<select id="selectAllmap" resultType="hashMap">
+select t_m_order.mo_no, t_m_order.mo_orderNo, t_m_order.mo_startTime, t_e_order.eo_status, t_e_order.e_no, t_employee.e_name, t_member.m_name, t_member.m_address, t_member.m_lon, t_member.m_lat
+        from (((t_m_order inner join (select * from t_e_order where
+         	<foreach collection="list" item="employeeVo" separator="or">
+         e_no =#{employeeVo.e_no}       
+         </foreach>     
+         ) as t_e_order on t_m_order.mo_no = t_e_order.mo_no)
+        inner join t_member on t_m_order.m_no = t_member.m_no) inner join t_employee on t_employee.e_no = t_e_order.e_no) where date_format(t_m_order.mo_startTime, '%Y-%m-%d') = date_format(now(),'%Y-%m-%d');
+
+	</select>
+	
+	<update id="updateEOrderStatus" parameterType="orderEmployeeVo">
+		update t_e_order set eo_status = '출동중', eo_startTime = #{eo_startTime} where mo_no = #{mo_no}
+	</update>
+	
+	<select id="selectEOrderByMoNo" parameterType="orderEmployeeVo" resultType="orderEmployeeVo">
+		select * from t_e_order where mo_no = #{mo_no}
+	</select>
+	
+	
+	<!-- 지도 끝-->
+	<!-- 로그인 후 로그인 회원과 당일 일치하는 주문정보가져오기 11/29-30일 끝 -->
+
+
+	<!-- ************************************스케쥴: 진화************************************** -->
+	
+	<select id="selectUserByInfo" parameterType="java.util.HashMap" resultType="memberVo">
+		select m_no from t_member where m_phone=#{phone}
+	</select>
+	
+	
+	<insert id="insertScdByMNoOnetime" parameterType="java.util.HashMap">
+		insert into t_m_order(mo_orderNo, m_no, mo_startTime, mo_endTime, mo_svcName, mo_cnt, mo_freqType) 
+		values(#{orderNo}, #{m_no}, #{startTime}, #{endTime}, #{service}, #{cnt}, #{unit})
+	</insert>
+	
+	
+	<select id="selectMoNoByOrderNoOnetime" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select mo_no from t_m_order where mo_orderNo=#{orderNo}
+	</select>
+	
+	<insert id="insertScdByOrderNoOnetime" parameterType="java.util.HashMap">
+		insert into t_e_order(mo_no, e_no, eo_memo) values(#{mo_no}, #{e_no}, #{comments})
+	</insert>
+		
+	
+	
+	<insert id="insertScdByMNo" parameterType="java.util.HashMap">
+		insert into t_m_order(mo_orderNo, m_no, mo_startTime, mo_endTime, mo_svcName, mo_cnt, mo_total, mo_freqType, mo_freqCycle) values
+		<foreach collection="scheduleList" item="item" separator=",">
+		(#{orderNo}, #{m_no}, #{item.startTime}, #{item.endTime}, #{service}, #{item.cnt}, #{total}, #{unit}, #{cycle})
+		</foreach>
+	</insert>
+	
+	<select id="selectMoNoByOrderNo" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select mo_no from t_m_order where mo_orderNo=#{orderNo}
+	</select>
+	
+	<insert id="insertScdByOrderNo" parameterType="java.util.HashMap">
+		insert into t_e_order(mo_no, e_no, eo_memo) values
+		<foreach collection="mo_noList" item="item" separator=",">
+		(#{item.mo_no}, #{e_no}, #{comments})
+		</foreach> 
+	</insert>
+	
+	<insert id="insertScdToNewMember" parameterType="java.util.HashMap">
+		insert into t_member(m_name, m_address, m_phone, m_type, m_lon, m_lat) values(#{name}, #{address}, #{phone}, #{type}, #{lon}, #{lat})
+	</insert>
+
+	<!-- *************************** 이주호 스케쥴  ************************************* -->
+ 	<!-- 스케줄리스트  -->
+	<select id="getScheduleList" parameterType="Integer" resultType="hashMap">
+		select date_format(mo_startTime, '%Y-%m-%dT%H:%i:%s') as mo_startTime, date_format(mo_endTime, '%Y-%m-%dT%H:%i:%s') as mo_endTime,m_address ,e_name,  t_m_order.mo_no
+		from ((( select * from t_employee where t_employee.c_no = #{c_no}) as e inner join t_e_order on e.e_no = t_e_order.e_no) inner join t_m_order on t_e_order.mo_no = t_m_order.mo_no) inner join t_member on t_m_order.m_no = t_member.m_no
+	</select>
+	
+ 	<!-- 스케쥴 디테일 - mo_no 로 조회  -->
+ 	<select id="getScheduleByMONo" parameterType="Integer" resultType="hashMap">
+ 	<!-- 
+		select m_name, m_address, m_phone, m_type,date_format(mo_startTime, '%Y년 %m월 %d일 %H시 %i분') as mo_startTime, date_format(mo_endTime, '%Y년 %m월 %d일 %H시 %i분') as mo_endTime, mo_orderNo, t_m_order.mo_no, s_style , s_name, mo_freqType, mo_freqCycle, mo_cnt, mo_total, e_name, e_phone
+		from ((((select * from t_m_order where mo_no = #{ mo_no } ) as t_m_order inner join t_member on t_m_order.m_no = t_member.m_no) inner join t_e_order on t_m_order.mo_no = t_e_order.mo_no) inner join t_employee on t_e_order.e_no = t_employee.e_no) inner join t_service on t_m_order.s_no = t_service.s_no
+	 -->
+		select m_name, m_address, m_phone, m_type,date_format(mo_startTime, '%Y년 %m월 %d일 %H시 %i분') as mo_startTime, date_format(mo_endTime, '%Y년 %m월 %d일 %H시 %i분') as mo_endTime, mo_orderNo, t_m_order.mo_no, mo_freqType, mo_freqCycle, mo_cnt, mo_total, e_name, e_phone
+		from (((select * from t_m_order where mo_no = #{ mo_no } ) as t_m_order inner join t_member on t_m_order.m_no = t_member.m_no) inner join t_e_order on t_m_order.mo_no = t_e_order.mo_no) inner join t_employee on t_e_order.e_no = t_employee.e_no
+	
+	
+	
+	</select>
+ 	
+ 	<!-- 스케쥴 삭제 where 조건 mo_orderNo 로 삭제  -->
+ 	<delete id="deleteSchedule" parameterType="String">
+		delete from t_employee where e_no = #{e_no}
+	</delete>
+ 	
+ 	<!-- *************************** 이주호 스케쥴  ************************************* -->
+ 	
+
+
+
 
 
 	
 </mapper>
+

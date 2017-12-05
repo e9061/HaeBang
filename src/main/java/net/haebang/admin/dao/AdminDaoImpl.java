@@ -113,8 +113,15 @@ public class AdminDaoImpl implements AdminDao {
 		
 	}
 
+	//  ----------------------------창대 작업물 12/2 지도 관련 주문 정보--------------------------------------
 	
+	@Override
+	public List<HashMap<String, Object>> selectAllmap() {
+		List<HashMap<String, Object>> list = sqlSession.selectList("net.haebang.admin.dao.AdminDao.selectAllMap");
+		return list;
+	}
 	
 	
 
 }
+

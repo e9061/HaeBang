@@ -140,5 +140,22 @@
  		<select id="deleteNotice" parameterType="Integer">
  			delete from t_notice where n_no = #{n_no}
  		</select>
+
+<!-- 12/2일 지도 관련 주문정보 불러오기 창대 -->
+ 		<select id="selectAllMap" resultType="hashMap">
+ 		
+<!--  		select t_m_order.mo_no, t_m_order.mo_orderNo, t_m_order.mo_startTime, t_e_order.eo_status, t_e_order.e_no, t_employee.e_name, t_member.m_name, t_member.m_address, t_member.m_lon, t_member.m_lat, t_member.m_gu
+        from (((t_m_order inner join t_e_order on t_m_order.mo_no = t_e_order.mo_no)
+        inner join t_member on t_m_order.m_no = t_member.m_no) inner join t_employee on t_employee.e_no = t_e_order.e_no) where date_format(t_m_order.mo_startTime, '%Y-%m-%d') = date_format(now(),'%Y-%m-%d');
+ --> 
+ 	select allOrder.m_gu, allOrder.eo_status, count(allOrder.eo_status) as cnt from (select t_e_order.eo_status,  
+	t_member.m_gu from 
+	(((t_m_order inner join t_e_order on t_m_order.mo_no = t_e_order.mo_no)
+       inner join t_member on t_m_order.m_no = t_member.m_no) 
+       inner join t_employee on t_employee.e_no = t_e_order.e_no) 
+       where date_format(t_m_order.mo_startTime, '%Y-%m-%d') = date_format(now(),'%Y-%m-%d') ) as allOrder group by m_gu, eo_status;
+ 		
+ 		</select>
+ 		
  	
 </mapper>
