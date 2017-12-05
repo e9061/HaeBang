@@ -15,7 +15,7 @@
 	family-font: bold;
 	width: 500px;
 	height: 50px;
-}
+
 
 .container {
 	display: inline-block;
@@ -27,7 +27,7 @@
 </style>
 
 <body>
-	<div id="wrapper">
+	<div id="wrapper" align="center">
 		<!-- start header -->
 		<header>
 			<jsp:include page="member_include/topmenu.jsp" />
@@ -320,11 +320,13 @@
 					</div>
 				</div>
 			</div>
-	</div>
 	</section>
+	</div>
+	<div style="">
 	<footer>
 		<jsp:include page="member_include/bottom.jsp" />
 	</footer>
+
 	</div>
 	<a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
 	<!-- javascript

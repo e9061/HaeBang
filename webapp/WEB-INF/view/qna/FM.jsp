@@ -85,7 +85,7 @@ td {
 						<td>${ list.q_no }</td>
 						<td>
 							<%-- <a onclick="doAction('${ board.no }')"> --%> <a
-							href="${ pageContext.request.contextPath }/qna/detail/${ list.q_no }">
+							href="${ pageContext.request.contextPath }/qna/FM/${ list.q_no }">
 								<c:out value="${ list.q_title }" />
 						</a>
 						</td>
@@ -101,7 +101,7 @@ td {
 			<div align="center">
 				<ul class="pagination">
 					<li><a
-						href="${ pageContext.request.contextPath }/qna/list?pageNo=0">처음</a></li>
+						href="${ pageContext.request.contextPath }/qna/FM?pageNo=0">처음</a></li>
 					<%-- 				<li><a href="${ pageContext.request.contextPath }/list/&pageNo=0&searchCondition=${ titlecontent }&word=${ word }">처음</a></li>
  --%>
 					<!--현재 페이지가 0보다 작아질 경우 이전 버튼을 disabled하는 조건문 -->
@@ -112,7 +112,7 @@ td {
 
 						<c:otherwise>
 							<li><a
-								href="${ pageContext.request.contextPath }/qna/list?pageNo=${pageNo -1}">이전</a></li>
+								href="${ pageContext.request.contextPath }/qna/FM?pageNo=${pageNo -1}">이전</a></li>
 							<%-- 							href="${ pageContext.request.contextPath }/list/&pageNo=${pageNo -1}&searchCondition=${ titlecontent }&word=${ word }">이전</a></li> --%>
 						</c:otherwise>
 					</c:choose>
@@ -120,7 +120,7 @@ td {
 					<!--해당하는 페이지로 갈 수 있는 버튼 -->
 					<c:forEach var="i" begin="0" end="${lastPage-1}">
 						<li><a
-							href="${ pageContext.request.contextPath }/qna/list?pageNo=${i}">${i+1}</a></li>
+							href="${ pageContext.request.contextPath }/qna/FM?pageNo=${i}">${i+1}</a></li>
 						<%-- 					<li><a href="${ pageContext.request.contextPath }/list/&pageNo=${i}&searchCondition=${ titlecontent }&word=${ word }">${i+1}</a></li> --%>
 					</c:forEach>
 
@@ -132,23 +132,23 @@ td {
 
 						<c:otherwise>
 							<li><a
-								href="${ pageContext.request.contextPath }/qna/list?pageNo=${pageNo+1}">다음</a></li>
+								href="${ pageContext.request.contextPath }/qna/FM?pageNo=${pageNo+1}">다음</a></li>
 							<%-- 							href="${ pageContext.request.contextPath }/list/&pageNo=${pageNo+1}&searchCondition=${ titlecontent }&word=${ word }">다음</a></li> --%>
 						</c:otherwise>
 					</c:choose>
 
 					<li><a
-						href="${ pageContext.request.contextPath }/qna/list?pageNo=${lastPage-1}">마지막</a></li>
+						href="${ pageContext.request.contextPath }/qna/FM?pageNo=${lastPage-1}">마지막</a></li>
 					<%-- 				<li><a href="${ pageContext.request.contextPath }/list/&pageNo=${totalpage}&searchCondition=${ titlecontent }&word=${ word }">마지막</a></li> --%>
 				</ul>
 			</div>
 			<br /> <br />
-			<c:if test="${ not empty userVO }">
+			<%-- <c:if test="${ not empty userVO }">
 			<div align="center">
 				<input type="button" value="새글등록" onclick="doAction()"
 					class="btn btn-theme"  />
 					</div>
-			</c:if>
+			</c:if> --%>
 		</div>
 		</section>
 		<br /> <br /> <br />

@@ -15,5 +15,8 @@ public interface QnAService {
 	void updateBoard(QnAVo QnA);
 	void updateViewCnt(int q_no);
 	int getLastPage();
-	
+	void insertFM(QnAVo QnA);
+	void insertFE(QnAVo QnA);
+	List<QnAVo> selectFM(int page);
+	List<QnAVo> selectFE(int page);
 }

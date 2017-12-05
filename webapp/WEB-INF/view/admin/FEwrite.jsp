@@ -21,18 +21,6 @@
 <!-- Theme skin -->
 <link href="resources/skins/default.css" rel="stylesheet" />
 
-<!-- =======================================================
-    Theme Name: Moderna
-    Theme URL: https://bootstrapmade.com/free-bootstrap-template-corporate-moderna/
-    Author: BootstrapMade
-    Author URL: https://bootstrapmade.com
-	======================================================= -->
-<!-- <script type="text/javascript">
-	function doAction() {
-		location.href = "${ pageContext.request.contextPath }/qna/write"
-
-	}
-</script> -->
 <script>
 $(document).on("click", "#fileUpload", function(){   
 
@@ -93,7 +81,7 @@ $(document).on("click", "#fileUpload", function(){
 					<article> 
 					<div>
 						<h2>
-							<span>QnA 작성</span>
+							<span>사업자 FAQ 작성</span>
 						</h2>
 						<form:form commandName="QnAVO" method="post" enctype="multipart/form-data">
 							<table border="1" width="80%">
@@ -103,7 +91,7 @@ $(document).on("click", "#fileUpload", function(){
 								</tr>
 								<tr>
 									<th width="25%">글쓴이</th>
-									<td><form:input id="q_writer" class="form-control" placeholder="${ userVO.m_name }" name ="q_writer" value="${ userVO.m_name }" path="q_writer" readonly="true" /></td>
+									<td><form:input id="q_writer" class="form-control" placeholder="관리자" name ="q_writer" value="관리자" path="q_writer" readonly="true" /></td>
 								</tr>
 								<tr>
 									<th width="25%">내용</th>
@@ -112,7 +100,7 @@ $(document).on("click", "#fileUpload", function(){
 							</table>
 							
 							<div class="form-group">
-								 <input type="file" name="qnaFile">
+								 <input type="file" name="file">
 							</div>
 						<div align="center">
 							<input type="submit" value="등록" class="btn btn-theme"s/>

@@ -28,8 +28,9 @@
 							<li class="active" data-close-others="false"><a href="${ pageContext.request.contextPath }/admin/main">진행현황</a></li>
 							<li><a href="${ pageContext.request.contextPath }/admin/schedule">스케쥴관리</a></li>
 							<li><a href="${ pageContext.request.contextPath }/admin/bal">정산관리</a></li>
-							<li><a href="${ pageContext.request.contextPath }/admin/qna">소비자 Q&A</a></li>
-							<li><a href="${ pageContext.request.contextPath }/admin/faq">사업자 FAQ</a></li>
+							<li><a href="${ pageContext.request.contextPath }/admin/list">소비자 Q&A</a></li>
+							<li><a href="${ pageContext.request.contextPath }/admin/FE">사업자 FAQ</a></li>
+							<li><a href="${ pageContext.request.contextPath }/admin/FM">소비자 FAQ</a></li>
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">공지사항<b class=" icon-angle-down"></b></a>
 								<ul class="dropdown-menu">

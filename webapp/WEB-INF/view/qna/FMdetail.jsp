@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="replyQnA.jsp"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -37,7 +36,7 @@
 	
 	function GotoList(){
 		
-		location.href = "${ pageContext.request.contextPath }/qna/list";
+		location.href = "${ pageContext.request.contextPath }/qna/FM";
 	}
 	
 </script>
@@ -67,7 +66,6 @@
 		<div class="container">
 			<div class="row">
 				<div class="box-body">
-					
 					<div class="form-group" style="width: 50%;">
 						<label>번호</label> <input type="text" style="width: 50%;"
 							name="q_no" class="form-control" value="${ QnA.q_no }"
@@ -94,21 +92,17 @@
 							style="width: 100px; height: auto;" />
 					</div>
 					</c:if>
-					
-					
+
 				</div>
-
-				<div class="container"
-					style="border-top: 1px solid lightgray; border-bottom: 1px solid lightgray; background-color: #F6F6F6; border-left: 1px solid lightgray; border-right: 1px solid lightgray; border-inner: 1px solid lightgray;">
-					<div class="commentList"></div>
-				</div>
-
-
+				<!-- 
+					<div class="container">
+						<div class="commentList"></div>
+					</div> -->
 
 			</div>
 		</div>
-		<a href="${ pageContext.request.contextPath }/qna/${ QnA.q_no }"
-			class="btn btn-theme">수정</a> <%-- <c:if test=${ QnA.q_writer } eq ${ userVO.m_name }>
+		<%-- <a href="${ pageContext.request.contextPath }/qna/${ QnA.q_no }" class="btn btn-theme" >수정</a> --%>
+		<%-- <c:if test=${ QnA.q_writer } eq ${ userVO.m_name }>
 					</c:if> --%> <input type="button" value="목록" onclick="GotoList()"
 			class="btn btn-theme" align="middle" /> </section>
 		<footer> <jsp:include

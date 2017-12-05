@@ -33,8 +33,31 @@
 
 	}
 </script> -->
+<style>
+
+	#content {
+	text-align: center;
+}
+
+table {
+	text-align: center;
+}
+
+tr {
+	text-align: center;
+}
+
+td {
+	text-align: center;
+}
+
+div {
+	text-align: center;
+	align: center;
+}
+</style>
 <script>
-$(document).on("click", "#fileUpload", function(){   
+/* $(document).on("click", "#fileUpload", function(){   
 
 	$("#fileUpload").on("change", function(){
 		readURL(this);	
@@ -75,7 +98,7 @@ $(document).on("click", "#fileUpload", function(){
 
            reader.readAsDataURL(fileUpload.files[0]);
          }
-     } 
+     }  */
  
 
 </script>
@@ -83,40 +106,47 @@ $(document).on("click", "#fileUpload", function(){
 
 <body>
 	<div id="wrapper">
-		<header> <jsp:include page="../member_include/topmenu.jsp" />
+		<header> <jsp:include page="../admin_include/topmenu.jsp" />
 		</header>
 		
-		<section id="content">
-		<div class="container" align="center">
-			<div class="row" align="center">
-				<div class="col-lg-8" align="center">
+		<section>
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8">
 					<article> 
 					<div>
-						<h2>
-							<span>QnA 작성</span>
+						<h2 align="center">
+							<span>FAQ 수정</span>
 						</h2>
-						<form:form commandName="QnAVO" method="post" enctype="multipart/form-data">
+						<form:form commandName="QnA" method="PUT" >
 							<table border="1" width="80%">
 								<tr>
 									<th width="25%">제목</th>
-									<td><form:input path="q_title" class="form-control"/></td>
+									<td><form:input path="q_title" class="form-control" value="" default="${ QnA.q_title }" /></td>
 								</tr>
 								<tr>
 									<th width="25%">글쓴이</th>
-									<td><form:input id="q_writer" class="form-control" placeholder="${ userVO.m_name }" name ="q_writer" value="${ userVO.m_name }" path="q_writer" readonly="true" /></td>
+									<td><form:input id="q_writer" class="form-control" placeholder="관리자" name ="q_writer" value="관리자" path="q_writer" readonly="true" /></td>
 								</tr>
 								<tr>
 									<th width="25%">내용</th>
-									<td><form:textarea rows="7" cols="10" class="form-control" path="q_content" /></td>
-								</tr>
+									<td><form:textarea rows="7" cols="10" class="form-control" path="q_content" default="${ QnA.q_content }"/></td>
+								<!-- </tr>
+									<td bgcolor="orange" width="70">첨부파일</td><td align="left">
+									<input type="file" name="q_oriName"/></td>
+								</tr> -->
 							</table>
-							
 							<div class="form-group">
-								 <input type="file" name="qnaFile">
-							</div>
-						<div align="center">
-							<input type="submit" value="등록" class="btn btn-theme"s/>
-						</div>
+							<!-- 아이디 t_employee 테이블 e_id -->
+							
+							<!-- onclick="javascript:chkeck_id($(this).prev().val())" -->
+						<!-- <input id= "fileUpload1" type="file" style="width:50%;" name="fileQnA"/>
+							<label for="fileUpload1" class="pop_label_03">첨부 파일</label>
+							<img id="blah1" src="#" alt="" style="height: 10%; width: 10%" />
+
+							<div id="holder1"></div>
+						</div>	 -->
+							<input type="submit" value="수정" />
 						</form:form>
 					</div>
 				
@@ -126,7 +156,7 @@ $(document).on("click", "#fileUpload", function(){
 			</div>
 		</div>
 		</section>
-		<footer> <jsp:include page="/WEB-INF/view/member_include/bottom.jsp" />
+		<footer> <jsp:include page="/WEB-INF/view/admin_include/bottom.jsp" />
 		</footer>
 	</div>
 	<a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>

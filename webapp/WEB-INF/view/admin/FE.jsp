@@ -38,7 +38,7 @@ td {
 </style>
 <script type="text/javascript">
 	function doAction() {
-		location.href = "${ pageContext.request.contextPath }/qna/write";
+		location.href = "${ pageContext.request.contextPath }/admin/FEwrite";
 
 	}
 
@@ -65,7 +65,7 @@ td {
 <body>
 	<div id="wrapper">
 		<header> <jsp:include
-			page="/WEB-INF/view/member_include/topmenu.jsp" /> </header>
+			page="/WEB-INF/view/admin_include/topmenu.jsp" /> </header>
 		<section>
 		<div class="container">
 			<hr width="100%" />
@@ -83,9 +83,9 @@ td {
 				<c:forEach items="${ list }" var="list" varStatus="loop">
 					<tr <c:if test="${ loop.count mod 2 eq 0 }"  >class="even"</c:if>>
 						<td>${ list.q_no }</td>
-						<td>
+						<td style="text-align:left;">
 							<%-- <a onclick="doAction('${ board.no }')"> --%> <a
-							href="${ pageContext.request.contextPath }/qna/detail/${ list.q_no }">
+							href="${ pageContext.request.contextPath }/admin/FE/${ list.q_no }">
 								<c:out value="${ list.q_title }" />
 						</a>
 						</td>
@@ -143,17 +143,15 @@ td {
 				</ul>
 			</div>
 			<br /> <br />
-			<c:if test="${ not empty userVO }">
 			<div align="center">
 				<input type="button" value="새글등록" onclick="doAction()"
 					class="btn btn-theme"  />
 					</div>
-			</c:if>
 		</div>
 		</section>
 		<br /> <br /> <br />
 		<footer> <jsp:include
-			page="/WEB-INF/view/member_include/bottom.jsp" /> </footer>
+			page="/WEB-INF/view/admin_include/bottom.jsp" /> </footer>
 	</div>
 	<a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
 	<!-- javascript
