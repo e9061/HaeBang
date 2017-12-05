@@ -1,6 +1,7 @@
 package net.haebang.employee.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,6 +36,8 @@ public interface EmployeeService {
 	EmployeeVo getIdByBizNo(String name, String companyName, String bizNo);
 	EmployeeVo getIdbyId(EmployeeVo employeeVo);
 	void changePassword(EmployeeVo employeeVo);
+	void insertSchedule(Map<String, Object> map);
+	void insertScheduleByOnetime(Map<String, Object> map);
 	
 	/********************************공지사항**************************************************************/
 	List<NoticeBoardVo> getNoticeList(String n_type, int page, String word, String searchCondition);

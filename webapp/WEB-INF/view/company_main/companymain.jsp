@@ -133,7 +133,7 @@ s0.parentNode.insertBefore(s1,s0);
 							width="160px" />
 						</a>
 					</c:if> <c:if test="${ not empty userVo }">
-						<a href="#"> <img
+						<a href="${ pageContext.request.contextPath }/ceo/schedule"> <img
 							src="${ pageContext.request.contextPath }/resources/img/schedule.jpg"
 							width="160px" />
 						</a>

@@ -8,6 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="description" content="" />
 
+
 <link href="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/fullcalendar.css" rel="stylesheet"/>
 <link href="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/fullcalendar.print.css" rel="stylesheet" media="print"/>
 
@@ -19,45 +20,47 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
-    $.ajax({    	
-    	
-    	type : "POST",
-    	url : "${ pageContext.request.contextPath }/ceo/schedulelist",
-    	dataType : "json",
-    	contentType : "application/x-www-form-urlencoded; charset=UTF-8",
-    	error : function(request, status, error){
-    		alert("code : "+request.status + "\r\nmessage : " + request.reponseText);	    		
-    	},
-    	success : function(data){
-    		alert("왔니?1");
-    		setCalendar(data);
-    		
-    	}
-    	
+    $.ajax({       
+       
+       type : "POST",
+       url : "${ pageContext.request.contextPath }/ceo/scheduleList",
+       dataType : "json",
+       contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+       error : function(request, status, error){
+          alert("code : "+request.status + "\r\nmessage : " + request.reponseText);
+             
+       },
+       success : function(data){
+          
+          setCalendar(data);
+          
+       }
+       
     });
     
     
-	
-	
-	function setCalendar(data){
-    	
-    	  var date = new Date();
-    	  var d = date.getDate();
-    	  var m = date.getMonth();
-    	  var y = date.getFullYear();
-    	  var jsonData = data;
+   
+   
+   function setCalendar(data){
+       
+         var date = new Date();
+         var d = date.getDate();
+         var m = date.getMonth();
+         var y = date.getFullYear();
+         var jsonData = data;
 
-    	  alert(jsonData);
-    	  
-    	 $("#calendar").fullCalendar({
-    		header: {
- 				left: 'prev,next today',
- 				center: 'title',
- 				right: 'month,agendaWeek,agendaDay,listWeek'
- 			},
+        
+         
+        $("#calendar").fullCalendar({
+        	header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay,listWeek'
+             },
            editable : true,
-           events: [jsonData],
-           timeFormat: 'H(:mm)',
+           events: [
+              jsonData
+              ],           
            eventClick:function(event) {
                if(event.title) {
                    alert(event.title + "\n", "wicked", "width=700,height=600");
@@ -66,7 +69,7 @@ $(document).ready(function() {
            }
        });
 
-	}
+   }
  
  });
    
@@ -94,11 +97,19 @@ $(document).ready(function() {
    <header>
       <jsp:include page="../employee_include/topmenu.jsp" />
    </header>
-
+		
 
 <div id='calendar'></div>
+<br/>
+<div align="center">
+<a href="#addScheduleModal1" class="trigger-btn" data-toggle="modal">
+<input type="button" class="btn btn-theme" id="scheduleAdd_btn" value="일정 등록"></a>
+</div>
+<br/>
+<br/>
+<br/>
 
-   
+<jsp:include page="./addScheduleModal.jsp" />
    <footer>
       <jsp:include page="../employee_include/bottom.jsp" />
    </footer>

@@ -4,6 +4,7 @@ package net.haebang.employee.dao;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import net.haebang.vo.CompanyVo;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
 import net.haebang.vo.MapVo;
+import net.haebang.vo.MemberVo;
 import net.haebang.vo.NoticeBoardVo;
 
 
@@ -205,6 +207,110 @@ public class EmployeeDaoImpl implements EmployeeDao{
 	@Override
 	public void changePassword(EmployeeVo employeeVo) {
 		sqlSession.update("net.haebang.employee.dao.EmployeeDao.changepassword", employeeVo);		
+	}
+	
+	@Override
+	public MemberVo selectUserByInfo(Map<String, Object> map) {
+		return sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectUserByInfo", map);
+	}
+	
+	
+	
+	@Override
+	public void insertScdToRegisteredMemberOnetime(Map<String, Object> map) {
+		//기존멤버 추가
+		//맵의 m_no로 t_m_order에 insert(우다다다)
+			System.out.println("**********************dao 1회성 기존멤버 잘들어옴********************************");
+		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertScdByMNoOnetime", map);
+		System.out.println("***********************dao:1회성 맵의 m_no로 t_m_order에 insert 완료*******************************");
+		//orderNo로 mo_no 찾기
+		Map<String, Object> mo_noMap = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectMoNoByOrderNoOnetime", map);
+		//찾은 mo_no를 paramMap에 추가
+			System.out.println("***********************dao:1회성 orderNo로 mo_no 찾기완료*******************************");
+		Set<String> keys = mo_noMap.keySet();
+		for(String key : keys) {
+			System.out.println(key + " : "+ mo_noMap.get(key));
+			map.put("mo_no", mo_noMap.get(key));
+		}		
+		//mo_no로 t_e_order에 insert
+			System.out.println("***********************dao:1회성 mo_no로 t_e_order에 insert 실행전*******************************");
+		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertScdByOrderNoOnetime", map);
+		
+	}
+
+	@Override
+	public void insertScdToNewMemberOnetime(Map<String, Object> map) {
+		//새멤버 추가
+		//t_member에 새멤버 추가
+			System.out.println("**********************dao 1회성 새멤버 잘들어옴********************************");
+		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertScdToNewMember", map);
+		//M_no찾기
+		MemberVo registeredMember = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectUserByInfo", map);
+			System.out.println("**********************dao 1회성 새멤버 Mo_no찾기완료********************************");
+		map.put("m_no", registeredMember.getM_no());
+		//맵의 m_no로 t_m_order에 insert (고객정보로 select한 테이블에 insert)		
+		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertScdByMNoOnetime", map);
+			System.out.println("***********************dao:1회성 맵의 m_no로 t_m_order에 insert 완료*******************************");
+		//orderNo로 mo_no 찾기
+		Map<String, Object> mo_noMap = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectMoNoByOrderNoOnetime", map);
+		//찾은 mo_no를 paramMap에 추가
+			System.out.println("***********************dao:1회성 orderNo로 mo_no 찾기완료*******************************");
+		Set<String> keys = mo_noMap.keySet();
+			for(String key : keys) {
+				System.out.println(key + " : "+ mo_noMap.get(key));
+				map.put("mo_no", mo_noMap.get(key));
+			}		
+		//mo_no로 t_e_order에 insert
+			System.out.println("***********************dao:1회성 mo_no로 t_e_order에 insert 실행전*******************************");
+		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertScdByOrderNoOnetime", map);
+			
+		
+	}	
+	
+
+	@Override
+	public void insertScdToRegisteredMember(Map<String, Object> map) {
+		//기존멤버 추가
+		//맵의 m_no로 t_m_order에 insert(우다다다)
+			System.out.println("**********************dao 정기성 기존멤버 잘들어옴********************************");
+		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertScdByMNo", map);
+			System.out.println("***********************dao:정기성 맵의 m_no로 t_m_order에 insert 완료*******************************");
+		//orderNo로 mo_no 찾기
+		List<Map<String, Object>> mo_noList = sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectMoNoByOrderNo", map);
+			System.out.println("***********************dao:정기성 orderNo로 mo_no 찾기완료*******************************");
+		//찾은 mo_no들 paramMap에 추가
+		map.put("mo_noList", mo_noList);
+		//mo_no로 t_e_order에 insert
+			System.out.println("***********************dao:정기성 mo_no로 t_e_order에 insert 실행전*******************************");
+		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertScdByOrderNo", map);
+	}
+
+	@Override
+	public void insertScdToNewMember(Map<String, Object> map) {
+		//새멤버 추가
+		//t_member에 새멤버 추가
+			System.out.println("**********************dao 정기성 새멤버 잘들어옴********************************");
+		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertScdToNewMember", map);			
+		//M_no찾기
+		MemberVo registeredMember = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectUserByInfo", map);
+			System.out.println("**********************dao 정기성 새멤버 Mo_no찾기완료********************************");
+			System.out.println(registeredMember.getM_no());
+			map.put("m_no", registeredMember.getM_no());
+			Set<String> keys = map.keySet();
+			for(String key : keys) {
+				System.out.println(key + " : "+ map.get(key));				
+			}
+		//맵의 m_no로 t_m_order에 insert (고객정보로 select한 테이블에 insert)		
+		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertScdByMNo", map);
+			System.out.println("***********************dao:정기성 맵의 m_no로 t_m_order에 insert 완료*******************************");
+		//orderNo로 mo_no 찾기		
+		List<Map<String, Object>> mo_noList = sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectMoNoByOrderNo", map);
+			System.out.println("***********************dao:정기성 orderNo로 mo_no 찾기완료*******************************");
+		//찾은 mo_no들 paramMap에 추가
+		map.put("mo_noList", mo_noList);
+		//t_e_order에 mo_no로 insert
+			System.out.println("***********************dao:정기성 mo_no로 t_e_order에 insert 실행전*******************************");
+		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertScdByOrderNo", map);
 	}
 	
 
