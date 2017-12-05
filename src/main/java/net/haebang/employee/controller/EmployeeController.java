@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -540,11 +541,30 @@ public class EmployeeController {
 		EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
 		List<HashMap<String, Object>> mapList = new ArrayList<HashMap<String, Object>>();
 		
-		mapList = employeeDao.selectAllmap(userVo);
+		List<EmployeeVo> employeeVoList = null;
+		System.out.println(userVo.getE_type()+"힌트");
+		if(userVo.getE_type() == "사장") {
+			System.out.println("힌트1");
+			employeeVoList = employeeDao.selectByCNo(userVo.getC_no());
+			mapList = employeeDao.selectAllmap(employeeVoList);
+			
+		}else
+		{
+			System.out.println("힌트2");
+			employeeVoList = new ArrayList<EmployeeVo>(); 
+			employeeVoList.add(userVo);
+			mapList = employeeDao.selectAllmap(employeeVoList);
+		}
+		
+		
 		
 		model.addAttribute("mapList", mapList);
 		System.out.println(mapList);
 		System.out.println(mapList.size());
+		
+		
+		
+		
 		return mapList;
 	}
 	
@@ -553,7 +573,11 @@ public class EmployeeController {
 	@Transactional
 	@RequestMapping(value = "/ceo/updateEOrderStatus", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody OrderEmployeeVo updateEOrderStatus(OrderEmployeeVo orderEmployeeVo, HttpSession session, Model model){
-
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String datetime = sdf.format(cal.getTime());
+		System.out.println("--> " + datetime);
+		orderEmployeeVo.setEo_startTime(datetime);
 		employeeDao.updateEOrderStatus(orderEmployeeVo);
 		
 		OrderEmployeeVo newOne = employeeDao.selectEOrderByMoNo(orderEmployeeVo);
@@ -564,7 +588,7 @@ public class EmployeeController {
 	
 	
 	
-	
+
 //  -------------------------------------- 진화 -------------------------------------------------
 	
 	@RequestMapping(value="/ceo", method=RequestMethod.GET)
@@ -625,11 +649,8 @@ public class EmployeeController {
 							
 			CompanyVo companyVo = employeeDao.selectByNo(userVo.getC_no());  // 창대 손 댐
 			mav.addObject("companyVo",companyVo); // 창대 손 댐
-			List<HashMap<String, Object>> mapList = new ArrayList<HashMap<String, Object>>();
+
 			
-			mapList = employeeDao.selectAllmap(userVo);
-			
-			mav.addObject("mapList", mapList);
 			
 			return mav;
 			
@@ -922,4 +943,5 @@ public class EmployeeController {
 	
 
 }
+
 

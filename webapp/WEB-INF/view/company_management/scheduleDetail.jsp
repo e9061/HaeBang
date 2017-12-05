@@ -6,23 +6,22 @@
 $(document).ready(function(){
 	
 //	$('input').attr("readonly",true);		// 인풋 태그 수정 불가
-	$('input').attr("readonly",false);		
+//	$('input').attr("readonly",false);		
 	
 	$('#btn-modify-detail').click(function(){
 		if(confirm("수정 하시겠습니까?")){		// 처음 수정 버튼 클릭
 			if($('#btn-modify-detail').text() == "수정"){
-					alert("수정 66탐");
 					$('#btn-modify-detail').text("수정 완료");
 					$('#btn-close-detail').text("수정 취소");
-					$('input').attr("readonly", false);
+//					$('input').attr("readonly", false);
 					
 			} else {	// 수정 완료 ( 수정버튼 두번째 ) 눌렀을 경우
-				$('input').attr("readonly",true);
+//				$('input').attr("readonly",true);
 				$('#btn-modify-detail').text("수정");
 				$('#btn-close-detail').text("닫기");
 			}
 		}else{
-			$('input').attr("readonly",true);
+//			$('input').attr("readonly",true);
 		}
 	});
 	

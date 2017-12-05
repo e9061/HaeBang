@@ -15,6 +15,8 @@ import net.haebang.vo.OrderEmployeeVo;
 public interface EmployeeDao {
 
 	//진화
+    
+/*************************공지*******************************************/
         EmployeeVo selectById(EmployeeVo employeeVo);        
         EmployeeVo getIdByPhone(Map<String, Object> map);
         EmployeeVo getIdByBizNo(Map<String, Object> map);
@@ -57,7 +59,7 @@ public interface EmployeeDao {
 //	------------------------------------ 창대 11/25일 작업 종료! ----------------------------------------------
 	
 //	------------------------------------ 창대 11/29일 작업(지도 주문관련)  ----------------------------------------------
-	List<HashMap<String, Object>> selectAllmap(EmployeeVo employeeVo);
+	List<HashMap<String, Object>> selectAllmap(List<EmployeeVo> list);
 	void updateEOrderStatus(OrderEmployeeVo orderEmployeeVo);
 	OrderEmployeeVo selectEOrderByMoNo(OrderEmployeeVo orderEmployeeVo);
 	

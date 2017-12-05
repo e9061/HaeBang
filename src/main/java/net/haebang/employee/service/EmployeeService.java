@@ -11,12 +11,11 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import net.haebang.vo.CompanyVo;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
-import net.haebang.vo.MapVo;
 import net.haebang.vo.NoticeBoardVo;
 
 public interface EmployeeService {
 
-	//service에 있을 메소드와 있을 필요없는 메소드 구분하기 !
+	// 창대
 	/********************************노 창 대 **************************************************************/
 	void registerEmployeeAnd(JoinEmployeeVo joinEmployeeVo, MultipartHttpServletRequest request);
 	void registerEmployee(JoinEmployeeVo joinEmployeeVo, MultipartHttpServletRequest request);
@@ -26,9 +25,8 @@ public interface EmployeeService {
 
 
 
-
-	/********************************박 진 화**************************************************************/
-
+    /********************************박 진 화**************************************************************/
+    
 	void modifyEmployee(EmployeeVo employee);
 	EmployeeVo authenticate(EmployeeVo employeeVo);
 	List<NoticeBoardVo> getMainnoticelist();

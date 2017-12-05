@@ -152,16 +152,19 @@
 	<!-- 로그인 후 로그인 회원과 당일 일치하는 주문정보가져오기 11/29-30일 시작 -->
 	<!-- 지도 -->
 	
-	
-	<select id="selectAllmap" parameterType="employeeVo" resultType="hashMap">
-	select t_m_order.mo_no, t_m_order.mo_orderNo, t_m_order.mo_startTime, t_e_order.eo_status, t_e_order.e_no, t_member.m_name, t_member.m_address, t_member.m_lon, t_member.m_lat
-        from ((t_m_order inner join (select * from t_e_order where e_no =#{e_no}) as t_e_order on t_m_order.mo_no = t_e_order.mo_no)
-        inner join t_member on t_m_order.m_no = t_member.m_no) where date_format(t_m_order.mo_startTime, '%Y-%m-%d') = date_format(now(),'%Y-%m-%d');
-	
+	<select id="selectAllmap" resultType="hashMap">
+select t_m_order.mo_no, t_m_order.mo_orderNo, t_m_order.mo_startTime, t_e_order.eo_status, t_e_order.e_no, t_employee.e_name, t_member.m_name, t_member.m_address, t_member.m_lon, t_member.m_lat
+        from (((t_m_order inner join (select * from t_e_order where
+         	<foreach collection="list" item="employeeVo" separator="or">
+         e_no =#{employeeVo.e_no}       
+         </foreach>     
+         ) as t_e_order on t_m_order.mo_no = t_e_order.mo_no)
+        inner join t_member on t_m_order.m_no = t_member.m_no) inner join t_employee on t_employee.e_no = t_e_order.e_no) where date_format(t_m_order.mo_startTime, '%Y-%m-%d') = date_format(now(),'%Y-%m-%d');
+
 	</select>
 	
 	<update id="updateEOrderStatus" parameterType="orderEmployeeVo">
-		update t_e_order set eo_status = '출동중' where mo_no = #{mo_no}
+		update t_e_order set eo_status = '출동중', eo_startTime = #{eo_startTime} where mo_no = #{mo_no}
 	</update>
 	
 	<select id="selectEOrderByMoNo" parameterType="orderEmployeeVo" resultType="orderEmployeeVo">

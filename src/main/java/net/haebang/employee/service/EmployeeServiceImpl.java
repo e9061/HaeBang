@@ -30,7 +30,6 @@ import net.haebang.vo.MemberVo;
 import net.haebang.vo.MapVo;
 import net.haebang.vo.NoticeBoardVo;
 
-
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
@@ -68,7 +67,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 
 		while (iterator.hasNext()) {
-			System.out.println("12341234");
 			if (iterator.next().equals("fileEmployee")) {
 				multipartFile = request.getFile("fileEmployee");
 				if (multipartFile.isEmpty() == false) {
@@ -328,6 +326,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 
 	
+	
 	@Override
 	public List<NoticeBoardVo> getMainnoticelist() {
 		List<NoticeBoardVo> mainNoticelist = employeeDao.getMainnoticelist();
@@ -514,3 +513,4 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 
 }
+

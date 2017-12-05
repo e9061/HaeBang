@@ -33,4 +33,8 @@ public interface AdminDao {
 	void insertNotice(NoticeBoardVo noticeBoardVo);
 	void updateNotice(NoticeBoardVo noticeBoardVo);
 	void noticeDelete(int no);
+	
+	// 창대 지도관련 모든 주문 정보 가져오기
+	List<HashMap<String, Object>> selectAllmap();
 }
+
