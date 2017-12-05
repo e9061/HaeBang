@@ -7,30 +7,37 @@ import java.util.Map;
 import net.haebang.vo.CompanyVo;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
+import net.haebang.vo.MemberVo;
+import net.haebang.vo.MapVo;
 import net.haebang.vo.NoticeBoardVo;
 import net.haebang.vo.OrderEmployeeVo;
 
 public interface EmployeeDao {
 
 	//진화
-    EmployeeVo selectById(EmployeeVo employeeVo);
-    
     
 /*************************공지*******************************************/
-    List<NoticeBoardVo> getNoticeList(Map<String, Object> map);
-    double selectTotalCount(Map<String, Object> map);
-    NoticeBoardVo getNoticeBoardByNo(NoticeBoardVo noticeBoardVo);
-    List<NoticeBoardVo> getMainnoticelist();
-/**********************************************************************/
-    
-    EmployeeVo getIdByPhone(Map<String, Object> map);
-    EmployeeVo getIdByBizNo(Map<String, Object> map);
-    EmployeeVo getIdbyId(EmployeeVo employeeVo);
-    void changePassword(EmployeeVo employeeVo);
-    
- // -------------------------------------- 창대 ----------------------------------------
-    EmployeeVo selectById(String e_id);
-	CompanyVo selectByBizNo1(String c_bizNo);
+        EmployeeVo selectById(EmployeeVo employeeVo);        
+        EmployeeVo getIdByPhone(Map<String, Object> map);
+        EmployeeVo getIdByBizNo(Map<String, Object> map);
+        EmployeeVo getIdbyId(EmployeeVo employeeVo);
+        void changePassword(EmployeeVo employeeVo);
+        MemberVo selectUserByInfo(Map<String, Object> map);
+        void insertScdToRegisteredMember(Map<String, Object> map);
+        void insertScdToNewMember(Map<String, Object> map);
+        void insertScdToRegisteredMemberOnetime(Map<String, Object> map);
+        void insertScdToNewMemberOnetime(Map<String, Object> map);
+        
+    /*************************공지*******************************************/
+        List<NoticeBoardVo> getNoticeList(Map<String, Object> map);
+        double selectTotalCount(Map<String, Object> map);
+        NoticeBoardVo getNoticeBoardByNo(NoticeBoardVo noticeBoardVo);
+        List<NoticeBoardVo> getMainnoticelist();
+   /**********************************************************************/
+	
+	//창대    
+	EmployeeVo selectById(String e_id);
+   	CompanyVo selectByBizNo1(String c_bizNo);
 	CompanyVo selectByCode(String c_code);
 	CompanyVo selectByNo(int c_no);
 	List<EmployeeVo> selectByCNo(int c_no);

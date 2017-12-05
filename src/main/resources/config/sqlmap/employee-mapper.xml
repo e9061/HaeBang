@@ -176,6 +176,51 @@ select t_m_order.mo_no, t_m_order.mo_orderNo, t_m_order.mo_startTime, t_e_order.
 	<!-- 로그인 후 로그인 회원과 당일 일치하는 주문정보가져오기 11/29-30일 끝 -->
 
 
+	<!-- ************************************스케쥴: 진화************************************** -->
+	
+	<select id="selectUserByInfo" parameterType="java.util.HashMap" resultType="memberVo">
+		select m_no from t_member where m_phone=#{phone}
+	</select>
+	
+	
+	<insert id="insertScdByMNoOnetime" parameterType="java.util.HashMap">
+		insert into t_m_order(mo_orderNo, m_no, mo_startTime, mo_endTime, mo_svcName, mo_cnt, mo_freqType) 
+		values(#{orderNo}, #{m_no}, #{startTime}, #{endTime}, #{service}, #{cnt}, #{unit})
+	</insert>
+	
+	
+	<select id="selectMoNoByOrderNoOnetime" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select mo_no from t_m_order where mo_orderNo=#{orderNo}
+	</select>
+	
+	<insert id="insertScdByOrderNoOnetime" parameterType="java.util.HashMap">
+		insert into t_e_order(mo_no, e_no, eo_memo) values(#{mo_no}, #{e_no}, #{comments})
+	</insert>
+		
+	
+	
+	<insert id="insertScdByMNo" parameterType="java.util.HashMap">
+		insert into t_m_order(mo_orderNo, m_no, mo_startTime, mo_endTime, mo_svcName, mo_cnt, mo_total, mo_freqType, mo_freqCycle) values
+		<foreach collection="scheduleList" item="item" separator=",">
+		(#{orderNo}, #{m_no}, #{item.startTime}, #{item.endTime}, #{service}, #{item.cnt}, #{total}, #{unit}, #{cycle})
+		</foreach>
+	</insert>
+	
+	<select id="selectMoNoByOrderNo" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select mo_no from t_m_order where mo_orderNo=#{orderNo}
+	</select>
+	
+	<insert id="insertScdByOrderNo" parameterType="java.util.HashMap">
+		insert into t_e_order(mo_no, e_no, eo_memo) values
+		<foreach collection="mo_noList" item="item" separator=",">
+		(#{item.mo_no}, #{e_no}, #{comments})
+		</foreach> 
+	</insert>
+	
+	<insert id="insertScdToNewMember" parameterType="java.util.HashMap">
+		insert into t_member(m_name, m_address, m_phone, m_type, m_lon, m_lat) values(#{name}, #{address}, #{phone}, #{type}, #{lon}, #{lat})
+	</insert>
+
 	
 </mapper>
 

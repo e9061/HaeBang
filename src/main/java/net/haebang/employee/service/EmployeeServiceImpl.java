@@ -26,6 +26,8 @@ import net.haebang.exception.NoSuchMemberException;
 import net.haebang.vo.CompanyVo;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
+import net.haebang.vo.MemberVo;
+import net.haebang.vo.MapVo;
 import net.haebang.vo.NoticeBoardVo;
 
 @Service
@@ -431,6 +433,51 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public NoticeBoardVo getNoticeBoardByNo(NoticeBoardVo noticeBoardVo) {
 		NoticeBoardVo getNoticeBoardByNo = employeeDao.getNoticeBoardByNo(noticeBoardVo);
 		return getNoticeBoardByNo;
+	}
+	
+	@Override
+	public void insertScheduleByOnetime(Map<String, Object> map) {
+		
+		MemberVo registeredMember = employeeDao.selectUserByInfo(map);
+		System.out.println("***********************서비스:1회성 고객정보select 완료*******************************");
+		
+		System.out.println(registeredMember);
+		
+		if(registeredMember == null) {
+			System.out.println("***********************서비스:뉴멤버 1회성 insert메서드 실행전*******************************");
+			employeeDao.insertScdToNewMemberOnetime(map);
+		
+		
+		}else {
+		
+		map.put("m_no", registeredMember.getM_no());
+		System.out.println("***********************서비스:기존멤버 1회성 insert메서드 실행전*******************************");
+		
+		employeeDao.insertScdToRegisteredMemberOnetime(map);
+			
+		}	
+		
+	}
+
+	@Override
+	public void insertSchedule(Map<String, Object> map) {
+		
+		MemberVo registeredMember = employeeDao.selectUserByInfo(map);
+		System.out.println("***********************서비스:정기성 고객정보select 완료*******************************");
+		
+		if(registeredMember == null) {
+				
+			System.out.println("***********************서비스:뉴멤버 정기성 insert메서드실행전*******************************");
+			employeeDao.insertScdToNewMember(map);	
+		}else {
+		
+			map.put("m_no", registeredMember.getM_no());
+			System.out.println("***********************서비스:기존멤버 정기성 insert메서드실행전 *******************************");		
+			employeeDao.insertScdToRegisteredMember(map);
+			
+		}	
+		
+		
 	}
 	
 /***************************************************************************************************************/
