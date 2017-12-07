@@ -469,8 +469,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 				
 			System.out.println("***********************서비스:뉴멤버 정기성 insert메서드실행전*******************************");
 			employeeDao.insertScdToNewMember(map);	
+			
 		}else {
-		
+			
 			map.put("m_no", registeredMember.getM_no());
 			System.out.println("***********************서비스:기존멤버 정기성 insert메서드실행전 *******************************");		
 			employeeDao.insertScdToRegisteredMember(map);
@@ -504,6 +505,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public void deleteSchedule(String mo_orderNo) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public String getMtypebyMONo(int mo_no) {
+		String m_type = employeeDao.getMtypebyMONo(mo_no);
+		return m_type;
+	}
+
+	@Override
+	public HashMap<String, Object> getScheduleByMONoByHB(int mo_no) {
+		HashMap<String, Object> getScheduleByMONoByHB = employeeDao.getScheduleByMONoByHB(mo_no);
+		return getScheduleByMONoByHB;
 	}
 
 	/********************************* 스케쥴 서비스 임플 ****************************************************************/

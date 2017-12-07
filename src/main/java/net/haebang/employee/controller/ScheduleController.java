@@ -73,17 +73,234 @@ public class ScheduleController {
 	public @ResponseBody HashMap<String, Object> scheduleDetail(HttpServletRequest request){
 		int mo_no = Integer.parseInt(request.getParameter("mo_no"));
 		
-		OrderEmployeeVo oeVo = new OrderEmployeeVo();
-		OrderMemberVo omVo = new OrderMemberVo();
-		EmployeeVo emVo = new EmployeeVo();
-		MemberVo mVo = new MemberVo();
-		ServiceVo sVo = new ServiceVo();
+		System.out.println(mo_no);
+		//mo_no로 m_type을 가져온다!
+		String m_type=employeeService.getMtypebyMONo(mo_no);
+		System.out.println(m_type);
 		
-		HashMap<String, Object> scheduleByMONo = new HashMap<String, Object>();
 		
-		scheduleByMONo = employeeService.getScheduleByMONo(mo_no);
+		if(m_type.equals("N")) {
 			
-		return scheduleByMONo;
+			HashMap<String, Object> scheduleByMONo = new HashMap<String, Object>();
+			
+			scheduleByMONo = employeeService.getScheduleByMONo(mo_no);
+				
+				String phone = (String)scheduleByMONo.get("m_phone");
+				
+				if(phone.length()==10) {
+					
+					
+					
+					String m_phone1 = phone.substring(0, 3);
+					String m_phone2 = phone.substring(3, 6);
+					String m_phone3 = phone.substring(6, 10);
+					
+					scheduleByMONo.put("m_phone1", m_phone1);
+					scheduleByMONo.put("m_phone2", m_phone2);
+					scheduleByMONo.put("m_phone3", m_phone3);
+					
+				} else {
+					
+					
+					
+					String m_phone1 = phone.substring(0, 3);
+					String m_phone2 = phone.substring(3, 7);
+					String m_phone3 = phone.substring(7, 11);	
+					
+					scheduleByMONo.put("m_phone1", m_phone1);
+					scheduleByMONo.put("m_phone2", m_phone2);
+					scheduleByMONo.put("m_phone3", m_phone3);
+				}
+					
+				
+				String startDateTime = (String)scheduleByMONo.get("mo_startTime");
+				String startDate = startDateTime.substring(0, 10);
+				String startTime = startDateTime.substring(11, 16);
+				
+				scheduleByMONo.put("startDate", startDate);
+				scheduleByMONo.put("startTime", startTime);
+				
+				String endDateTime = (String)scheduleByMONo.get("mo_endTime");
+				String endDate = startDateTime.substring(0, 10);
+				String endTime = startDateTime.substring(11, 16);
+				
+				scheduleByMONo.put("endDate", endDate);
+				scheduleByMONo.put("endTime", endTime);
+				
+				
+				String mo_freqType=(String)scheduleByMONo.get("mo_freqType");
+				
+				if(mo_freqType.equals("W") || mo_freqType.equals("w")) {//주
+					
+					
+					scheduleByMONo.put("mo_freqType", "주단위 반복");
+					int mo_freqCycle1=(int)scheduleByMONo.get("mo_freqCycle");
+					String mo_freqCycle2=Integer.toString(mo_freqCycle1)+"주마다";					
+					scheduleByMONo.put("mo_freqCycle", mo_freqCycle2);
+					scheduleByMONo.put("periodType", "정기형");
+					
+				}else if(mo_freqType.equals("M") || mo_freqType.equals("m")) {//월
+					
+					
+					scheduleByMONo.put("mo_freqType", "월단위 반복");
+					int mo_freqCycle1=(int)scheduleByMONo.get("mo_freqCycle");
+					String mo_freqCycle2=Integer.toString(mo_freqCycle1)+"개월마다";
+					scheduleByMONo.put("mo_freqCycle", mo_freqCycle2);
+					scheduleByMONo.put("periodType", "정기형");
+					
+				}else {
+					
+					scheduleByMONo.put("periodType", "1회성");
+					
+				}
+				
+				
+				String e_phone = (String)scheduleByMONo.get("e_phone");
+				
+				if(e_phone.length()==10) {
+					
+					String e_phone1 = e_phone.substring(0, 3);
+					String e_phone2 = e_phone.substring(3, 6);
+					String e_phone3 = e_phone.substring(6, 10);
+					
+					scheduleByMONo.put("e_phone1", e_phone1);
+					scheduleByMONo.put("e_phone2", e_phone2);
+					scheduleByMONo.put("e_phone3", e_phone3);
+					
+				} else {
+					
+					String e_phone1 = e_phone.substring(0, 3);
+					String e_phone2 = e_phone.substring(3, 7);
+					String e_phone3 = e_phone.substring(7, 11);	
+					
+					scheduleByMONo.put("e_phone1", e_phone1);
+					scheduleByMONo.put("e_phone2", e_phone2);
+					scheduleByMONo.put("e_phone3", e_phone3);
+				}	
+				
+				return scheduleByMONo;
+					
+			
+		}else {//해방통해서 한사람들
+			
+			HashMap<String, Object> scheduleByMONo = new HashMap<String, Object>();
+			
+			scheduleByMONo = employeeService.getScheduleByMONoByHB(mo_no);
+			
+			System.out.println("해방통해서 한사람들 메서드실행후: "+scheduleByMONo);
+			
+			String phone = (String)scheduleByMONo.get("m_phone");
+			System.out.println("phone: "+phone);
+			
+			if(phone.length()==10) {
+				
+				String m_phone1 = phone.substring(0, 3);
+				String m_phone2 = phone.substring(3, 6);
+				String m_phone3 = phone.substring(6, 10);
+				
+				scheduleByMONo.put("m_phone1", m_phone1);
+				scheduleByMONo.put("m_phone2", m_phone2);
+				scheduleByMONo.put("m_phone3", m_phone3);
+				
+								
+			} else {
+				
+				String m_phone1 = phone.substring(0, 3);
+				String m_phone2 = phone.substring(3, 7);
+				String m_phone3 = phone.substring(7, 11);	
+		
+				scheduleByMONo.put("m_phone1", m_phone1);
+				scheduleByMONo.put("m_phone2", m_phone2);
+				scheduleByMONo.put("m_phone3", m_phone3);
+				
+			}
+				
+			
+			String startDateTime = (String)scheduleByMONo.get("mo_startTime");
+			
+			
+			String startDate = startDateTime.substring(0, 10);
+			String startTime = startDateTime.substring(11, 16);
+			
+			scheduleByMONo.put("startDate", startDate);
+			scheduleByMONo.put("startTime", startTime);
+			
+			String endDateTime = (String)scheduleByMONo.get("mo_endTime");
+			String endDate = startDateTime.substring(0, 10);
+			String endTime = startDateTime.substring(11, 16);
+			
+			scheduleByMONo.put("endDate", endDate);
+			scheduleByMONo.put("endTime", endTime);
+			
+			
+			
+			String e_phone = (String)scheduleByMONo.get("e_phone");
+			
+			if(e_phone.length()==10) {
+				
+				
+				String e_phone1 = e_phone.substring(0, 3);
+				String e_phone2 = e_phone.substring(3, 6);
+				String e_phone3 = e_phone.substring(6, 10);
+				
+				scheduleByMONo.put("e_phone1", e_phone1);
+				scheduleByMONo.put("e_phone2", e_phone2);
+				scheduleByMONo.put("e_phone3", e_phone3);
+				
+			} else {			
+				
+				String e_phone1 = e_phone.substring(0, 3);
+				String e_phone2 = e_phone.substring(3, 7);
+				String e_phone3 = e_phone.substring(7, 11);	
+				
+				scheduleByMONo.put("e_phone1", e_phone1);
+				scheduleByMONo.put("e_phone2", e_phone2);
+				scheduleByMONo.put("e_phone3", e_phone3);
+			}
+			
+			
+			
+			
+			String s_style = (String)scheduleByMONo.get("s_style");
+			System.out.println("s_style: "+s_style);
+			
+			if(s_style.equals("j")) {//정기형
+												
+							
+				scheduleByMONo.put("periodType", "정기형");
+		
+				String mo_freqType=(String)scheduleByMONo.get("mo_freqType");
+				
+				if(mo_freqType.equals("W") || mo_freqType.equals("w")) {//주
+					
+					scheduleByMONo.put("mo_freqType", "주단위 반복");
+					int mo_freqCycle1=(int)scheduleByMONo.get("mo_freqCycle");
+					String mo_freqCycle2=Integer.toString(mo_freqCycle1)+"주마다";					
+					scheduleByMONo.put("mo_freqCycle", mo_freqCycle2);
+					
+				}else if(mo_freqType.equals("M") || mo_freqType.equals("m")) {//월
+					
+					
+					scheduleByMONo.put("mo_freqType", "월단위 반복");					
+					int mo_freqCycle1=(int)scheduleByMONo.get("mo_freqCycle");
+					String mo_freqCycle2=Integer.toString(mo_freqCycle1)+"개월마다";
+					scheduleByMONo.put("mo_freqCycle", mo_freqCycle2);
+				}		
+		
+			}else {//보장형
+				
+				scheduleByMONo.put("periodType", "보장형");
+			
+			
+			}
+				
+			System.out.println(scheduleByMONo);
+			return scheduleByMONo;
+			
+		}
+	
+			
+		
 	}
 	
 	
@@ -111,7 +328,6 @@ public class ScheduleController {
 	
 	
 	
-	
 	@RequestMapping(value="/ceo/addSchedule", method=RequestMethod.POST)
 	public ModelAndView addschedule (
 			@RequestParam("name") String name,
@@ -128,7 +344,7 @@ public class ScheduleController {
 			@RequestParam(value="startTimeMinute1", defaultValue="null", required=false) String startTimeMinute1, 
 			@RequestParam(value="endTimeHour1", defaultValue="null", required=false) String endTimeHour1,
 			@RequestParam(value="endTimeMinute1", defaultValue="null", required=false) String endTimeMinute1,
-			@RequestParam(value="unit", defaultValue="null", required=false) String unit,
+			@RequestParam(value="unit1", defaultValue="null", required=false) String unit,
 			@RequestParam(value="cycle", defaultValue="null", required=false) String cycle1,
 			@RequestParam(value="totalCnt", defaultValue="null", required=false) String totalCnt1,
 			@RequestParam(value="date2", defaultValue="null", required=false) String date2,
@@ -365,6 +581,8 @@ public class ScheduleController {
 		
 			return mav;
 		}
+	
+	
 		
 	
 	

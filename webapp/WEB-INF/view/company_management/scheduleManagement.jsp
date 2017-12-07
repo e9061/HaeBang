@@ -8,6 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="description" content="" />
 
+
 <link href="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/fullcalendar.css" rel="stylesheet"/>
 <link href="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/fullcalendar.print.css" rel="stylesheet" media="print"/>
 
@@ -16,81 +17,44 @@
 <script type="text/javascript" src="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/fullcalendar.js"></script>
 <script type="text/javascript" src="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/locale-all.js"></script>
 
-<style>
-
-#scheduleDetail {
-	display: none;
-    position: fixed;
-    height: 72%;
- 	bottom: 10%;
- 	left: 25%;
- 	width: 50%;
-	background-color: #f3f3f3;
-    z-index: 11;
-	}
-/*
-input[type='text'] {
-}
-*/	
-
-.service {
-	height: 450px;
-}
-
-</style>
-
 <script type="text/javascript">
 
 $(document).ready(function() {
-	
-	$(function(){
-		$("#detail-background,#btn-close-detail").click(function () {
-			$('#btn-modify-detail').text("수정");
-			$('#btn-close-detail').text("닫기");
-			$('input').attr("readonly", true);
-			$("#scheduleDetail,#detail-background").toggle();
-		});
-	});
-	
-	
-    $.ajax({    	
-    	
-    	type : "POST",
-    	url : "${ pageContext.request.contextPath }/ceo/scheduleList",
-    	dataType : "json",
-    	contentType : "application/x-www-form-urlencoded; charset=UTF-8",
-    	error : function(request, status, error){
-    		alert("code : "+request.status + "\r\nmessage : " + request.reponseText);	    		
-    	},
-    	success : function(data){
-    		alert(data);
-    		setCalendar(data);
-    	}
-    	
+    $.ajax({       
+       
+       type : "POST",
+       url : "${ pageContext.request.contextPath }/ceo/scheduleList",
+       dataType : "json",
+       contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+       error : function(request, status, error){
+          alert("code : "+request.status + "\r\nmessage : " + request.reponseText);
+             
+       },
+       success : function(data){
+          setCalendar(data);
+          
+       }
+       
     });
     
     
-	
-	
-	function setCalendar(data){
-    	
-    	  var jsonData = data;
-			
-    	  console.log(jsonData);		// [{…}, {…}]
-    	  
-    	 $("#calendar").fullCalendar({
-    		header: {
- 				left: 'prev,next today',
- 				center: 'title',
- 				right: 'month,agendaWeek,agendaDay,listWeek'
- 			},
+   
+   
+   function setCalendar(data){
+       
+       
+         var jsonData = data;        
+         
+        $("#calendar").fullCalendar({
+        	header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay,listWeek'
+             },
            editable : true,
-           events: jsonData,
-           timeFormat: 'H(:mm)',
+           events: jsonData,           
            eventClick:function(event) {
-               if(event.title) {
-            	   alert("ajax");
-            	   alert(event.id);
+               if(event.title) {            	   
             	   $.ajax({
             		   type : "POST",
             	    	url : "${ pageContext.request.contextPath }/ceo/scheduleDetail",
@@ -103,52 +67,126 @@ $(document).ready(function() {
             	    		alert("code : "+request.status + "\r\nmessage : " + request.reponseText);	    		
             	    	},
             	    	success : function(data){
-            	    	//	console.log(data);
-            	    		alert(data.mo_orderNo);
-            	 	  		document.getElementById('m_name').value= data.m_name;
-            	    		document.getElementById('m_address').value= data.m_address;
-            	     		document.getElementById('m_phone').value= data.m_phone;
-            	    	//	document.getElementById('s_name').value= data.s_name;
-            	    	/* 	
-            	    		if(data.s_style == "j"){				// 정기형
-            	    			$("#j").prop("checked", true);
-            	    			$("#b").prop("checked", false);
-	            	    		if(data.mo_freqType == "W"){
-	            	    			$("#mo_freqType").val('W').prop("selected", true);
-	            	    			document.getElementById('mo_freqCycle').value = data.mo_freqCycle+" 주 단위";
-	            	    		}else{
-	            	    			$("#mo_freqType").val('M').prop("selected", true);
-	            	    			document.getElementById('mo_freqCycle').value = data.mo_freqCycle+" 개월 단위";
-	            	    		}
-	            	    		document.getElementById('mo_cnt').value= data.mo_cnt;
-	            	    		document.getElementById('mo_total').value= data.mo_total;
-            	    		}else{									// 보장형
-            	    			$("#j").prop("checked", false);
-            	    			$("#b").prop("checked", true);
-            	    			$("#mo_freqType").val('null').prop("selected", true);
-            	    			document.getElementById('mo_freqCycle').value = "-";
-	            	    		document.getElementById('mo_cnt').value= "1";
-	            	    		document.getElementById('mo_total').value= "-";
+            	    	
+            	    		if(data.m_type=="N"){ //해방통하지 않고 신청한 경우
+            	    			
+            	    			$('#m_name').text(data.m_name);
+            	    			$('#m_address').text(data.m_address);
+            	    			$('#m_phone1').text(data.m_phone1);
+            	    			$('#m_phone2').text(data.m_phone2);
+            	    			$('#m_phone3').text(data.m_phone3);
+            	    			$('#e_name').text(data.e_name);
+            	    			$('#e_phone1').text(data.e_phone1);
+            	    			$('#e_phone2').text(data.e_phone2);
+            	    			$('#e_phone3').text(data.e_phone3);
+            	    			$('#mo_service').text(data.mo_svcName);
+            	    			$('#eo_memo').text(data.eo_memo);
+            	    			$('#mo_orderNo').text(data.mo_orderNo);
+            	    			$('#sentence').html('<span style="color:blue;"><b>직접</b> 작성한 일정입니다.</span>');
+            	    			$('#memo').text('직원메모');
+            	    			
+            	    			if(data.mo_total==1){//1회성
+            	    				
+            	    				$('#type3').show();
+            	    		    	$('#type4').hide();
+
+            	    		    	$('#period-type').text(data.periodType);
+            	    		    	$('#unit').text("-");
+            	    		    	$('#mo_freqCycle').text("-");
+            	    		    	$('#mo_total').text("보장형");
+            	    		    	$('#mo_cnt').text("-");
+            	    		    	$('#date3').text(data.startDate);
+            	    		    	$('#startTime3').text(data.startTime);
+            	    		    	$('#endTime3').text(data.endTime);
+            	    				
+            	    				
+            	    			}else{//정기성
+            	    				
+            	    				$('#type4').show();
+            	    		    	$('#type3').hide();
+                    	    		
+            	    		    	$('#period-type').text(data.periodType);
+            	    		    	$('#unit').text(data.mo_freqType);
+            	    		    	$('#mo_freqCycle').text(data.mo_freqCycle);
+            	    		    	$('#mo_total').text(data.mo_total);
+            	    		    	$('#mo_cnt').text(data.mo_cnt);
+            	    		    	$('#startDate4').text(data.startDate);
+            	    		    	$('#endDate4').text(data.endDate);
+            	    		    	$('#startTime4').text(data.startTime);
+            	    		    	$('#endTime4').text(data.endTime);
+         	 
+            	    				
+            	    			}
+            	    			
+            	    			
+            	    		}else { //해방 통해서 신청한 경우
+            	    			
+            	    			$('#m_name').text(data.m_name);
+            	    			$('#m_address').text(data.m_address);
+            	    			$('#m_phone1').text(data.m_phone1);
+            	    			$('#m_phone2').text(data.m_phone2);
+            	    			$('#m_phone3').text(data.m_phone3);
+            	    			$('#e_name').text(data.e_name);
+            	    			$('#e_phone1').text(data.e_phone1);
+            	    			$('#e_phone2').text(data.e_phone2);
+            	    			$('#e_phone3').text(data.e_phone3);
+            	    			$('#mo_service').text(data.s_name);
+            	    			$('#eo_memo').text(data.mo_memo);
+            	    			$('#mo_orderNo').text(data.mo_orderNo);
+            	    			$('#sentence').html('<span style="color:red;"><b>해방</b>을 통해서 신청한 고객입니다.</span>');
+            	    			$('#memo').text('고객메모');
+            	    		
+                	    		if(data.s_style=="j"){//정기형
+                	    			
+                	    			$('#type4').show();
+            	    		    	$('#type3').hide();
+                	    			
+            	    		    	$('#period-type').text(data.periodType);
+            	    		    	$('#unit').text(data.mo_freqType);
+            	    		    	$('#mo_freqCycle').text(data.mo_freqCycle);
+            	    		    	$('#mo_total').text(data.mo_total);
+            	    		    	$('#mo_cnt').text(data.mo_cnt);
+            	    		    	$('#startDate4').text(data.startDate);
+            	    		    	$('#endDate4').text(data.endDate);
+            	    		    	$('#startTime4').text(data.startTime);
+            	    		    	$('#endTime4').text(data.endTime);
+
+                	    			         		
+            	    			}else{//보장형
+            	    				
+            	    				$('#type3').show();
+            	    		    	$('#type4').hide();
+            	    				
+            	    		    	$('#period-type').text(data.periodType);
+            	    		    	$('#unit').text("-");
+            	    		    	$('#mo_freqCycle').text("-");
+            	    		    	$('#mo_total').text("보장형");
+            	    		    	$('#mo_cnt').text("-");
+            	    		    	$('#date3').text(data.startDate);
+            	    		    	$('#startTime3').text(data.startTime);
+            	    		    	$('#endTime3  ').text(data.endTime);
+            	    		    	
+            	    			}
+                	    		
             	    		}
-						 */
-            	    		document.getElementById('mo_orderNo').value= data.mo_orderNo;
-            	    		document.getElementById('mo_startTime').value= data.mo_startTime;
-            	    		document.getElementById('mo_endTime').value= data.mo_endTime;
-            	    		document.getElementById('e_name').value= data.e_name;
-            	    		document.getElementById('e_phone').value= data.e_phone; 
-            	    		$('#scheduleDetail').toggle();
+            	    
+            	    		$("#scheduleDetailModal").modal('show');
+            	    		
             	    	}
-            	   });
-            	   
+            	   });            	   
+                   
                    return false;
+                   
+                   
                }
            }
        });
 
-	}
+   }
+
  
- });
    
+}); 
 
 
 </script>
@@ -161,7 +199,7 @@ $(document).ready(function() {
         font-size : 14px;
     }
     #calendar {
-        max-width : 65%;
+        max-width : 900px;
         margin : 0 auto;
     }
 
@@ -173,30 +211,20 @@ $(document).ready(function() {
    <header>
       <jsp:include page="../employee_include/topmenu.jsp" />
    </header>
-
-	<section>
-		<div id='calendar'></div>
-		<jsp:include page="../company_management/scheduleDetail.jsp"></jsp:include>	
 		
-		<div align="center">
-			<a href="#addScheduleModal1" class="trigger-btn" data-toggle="modal">
-			<input type="button" class="btn btn-theme" id="scheduleAdd_btn" value="일정 등록"></a>
-		</div>
-		<br/>
-		<br/>
-		<br/>
 
-		<jsp:include page="./addScheduleModal.jsp" />
-	</section>
+<div id='calendar'></div>
+<br/>
+<div align="center">
+<a href="#addScheduleModal1" class="trigger-btn" data-toggle="modal">
+<input type="button" class="btn btn-theme" id="scheduleAdd_btn" value="일정 등록"></a>
+</div>
+<br/>
+<br/>
+<br/>
 
-
-
-
-	<br/>
-	<br/>
-	<br/>
-		<div id="detail-background"></div>
-
+<jsp:include page="./addScheduleModal.jsp" />
+<jsp:include page="./scheduleDetail.jsp" />
    <footer>
       <jsp:include page="../employee_include/bottom.jsp" />
    </footer>

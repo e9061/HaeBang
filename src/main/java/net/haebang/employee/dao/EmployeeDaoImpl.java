@@ -348,12 +348,27 @@ public class EmployeeDaoImpl implements EmployeeDao{
 		System.out.println(getScheduleByMONo);
 		return getScheduleByMONo;
 	}
+	
 	// 스케쥴 삭제 
 	@Override
 	public void deleteSchedule(String mo_orderNo) {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public String getMtypebyMONo(int mo_no) {
+		String m_type= sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.getMtypebyMONo", mo_no);
+		return m_type;
+	}
+
+	@Override
+	public HashMap<String, Object> getScheduleByMONoByHB(int mo_no) {
+		HashMap<String, Object> getScheduleByMONoByHB = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.getScheduleByMONoByHB", mo_no);
+		System.out.println(getScheduleByMONoByHB);
+		return getScheduleByMONoByHB;
+	}
+
 
 	/********************************************************************************************/
 	
