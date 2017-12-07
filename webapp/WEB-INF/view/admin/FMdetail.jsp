@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="replyQnA.jsp"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -31,13 +30,13 @@
 	
 	function modify(){
 		
-		location.href = "${ pageContext.request.contextPath }/qna/${ QnAList.q_no }";
+		location.href = "${ pageContext.request.contextPath }/admin/FM/${ QnAList.q_no }";
 		
 	}
 	
 	function GotoList(){
 		
-		location.href = "${ pageContext.request.contextPath }/qna/list";
+		location.href = "${ pageContext.request.contextPath }/admin/FM";
 	}
 	
 </script>
@@ -47,7 +46,7 @@
 	<div id="wrapper">
 		<!-- start header -->
 		<header> <jsp:include
-			page="/WEB-INF/view/member_include/topmenu.jsp" /> </header>
+			page="/WEB-INF/view/admin_include/topmenu.jsp" /> </header>
 		<!-- end header -->
 		<section id="inner-headline">
 		<div class="container">
@@ -67,52 +66,63 @@
 		<div class="container">
 			<div class="row">
 				<div class="box-body">
-					
-					<div class="form-group" style="width: 50%;">
-						<label>번호</label> <input type="text" style="width: 50%;"
+					<%-- <h3>${ QnAVO.q_no }번 게시물</h3>
+						<hr/>
+						<h4>${ QnAVO.q_title }</h4>
+						<hr/>
+						<h4>${ QnAVO.q_writer }</h4>
+						<hr/>
+						<h4>${ QnAVO.q_content }</h4>
+						<hr/>
+						<h4>${ QnAVO.q_viewCnt }</h4>
+						<hr/>
+						<h4>${ QnAVO.q_regDate }</h4>
+						<hr/> --%>
+					<div class="form-group">
+						<label>번호</label> <input type="text" style="width: 800px;"
 							name="q_no" class="form-control" value="${ QnA.q_no }"
 							readonly="readonly">
 					</div>
-					<div class="form-group" style="width: 50%;">
-						<label>제목</label> <input type="text" style="width: 50%;"
+					<div class="form-group">
+						<label>제목</label> <input type="text" style="width: 800px;"
 							name="q_title" class="form-control" value="${ QnA.q_title }"
 							readonly="readonly">
 					</div>
-					<div class="form-group" style="width: 50%;">
-						<label>작성자</label> <input type="text" style="width: 50%;"
+					<div class="form-group">
+						<label>작성자</label> <input type="text" style="width: 800px;"
 							name="q_writer" class="form-control" value="${ QnA.q_writer }"
 							readonly="readonly">
 					</div>
-					<div class="form-group" style="width: 50%;">
+					<div class="form-group">
 						<label>내용</label>
 						<textarea style="width: 800px; height: 500px;" name="q_content"
 							class="form-control" readonly="readonly">${ QnA.q_content }</textarea>
 					</div>
 					<c:if test="${QnA.q_saveName ne null }">
-					<div class="form-group" style="width: 50%;">
-						<label>파일</label> <img src="data:image/jpeg;base64,${image}"
-							style="width: 100px; height: auto;" />
-					</div>
+						<div class="form-group" style="width: 50%;">
+							<label>파일</label> <img src="data:image/jpeg;base64,${image}"
+								style="width: 100px; height: auto;" />
+						</div>
 					</c:if>
-					
-					
 				</div>
-
-				<div class="container"
-					style="border-top: 1px solid lightgray; border-bottom: 1px solid lightgray; background-color: #F6F6F6; border-left: 1px solid lightgray; border-right: 1px solid lightgray; border-inner: 1px solid lightgray;">
-					<div class="commentList"></div>
-				</div>
-
-
+				<!-- 
+					<div class="container">
+						<div class="commentList"></div>
+					</div> -->
 
 			</div>
 		</div>
-		<a href="${ pageContext.request.contextPath }/qna/${ QnA.q_no }"
-			class="btn btn-theme">수정</a> <%-- <c:if test=${ QnA.q_writer } eq ${ userVO.m_name }>
-					</c:if> --%> <input type="button" value="목록" onclick="GotoList()"
-			class="btn btn-theme" align="middle" /> </section>
+		<div align="center">
+			<a href="${ pageContext.request.contextPath }/admin/M/${ QnA.q_no }"
+				class="btn btn-theme">수정</a>
+			<%-- <c:if test=${ QnA.q_writer } eq ${ userVO.m_name }>
+					</c:if> --%>
+			<input type="button" value="목록" onclick="GotoList()"
+				class="btn btn-theme" align="middle" />
+		</div>
+		</section>
 		<footer> <jsp:include
-			page="/WEB-INF/view/member_include/bottom.jsp" /> </footer>
+			page="/WEB-INF/view/admin_include/bottom.jsp" /> </footer>
 	</div>
 	<a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
 	<!-- javascript

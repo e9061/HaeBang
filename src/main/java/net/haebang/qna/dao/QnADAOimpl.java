@@ -58,7 +58,30 @@ public class QnADAOimpl implements QnADAO{
 		return totalPage;
 	}
 
-	
+	@Override
+	public void insertFM(QnAVo QnA) {
+		sqlSession.insert("net.haebang.qna.dao.QnADAO.insertMemberFaq", QnA);
+		
+	}
+
+	@Override
+	public void insertFE(QnAVo QnA) {
+		sqlSession.insert("net.haebang.qna.dao.QnADAO.insertEmployeeFaq", QnA);
+		
+	}
+
+	@Override
+	public List<QnAVo> selectFM(Map<String, Object> map) {
+		System.out.println(map+"dao");
+		List<QnAVo> list = sqlSession.selectList("net.haebang.qna.dao.QnADAO.selectFM", map);
+		return list;
+	}
+
+	@Override
+	public List<QnAVo> selectFE(Map<String, Object> map) {
+		List<QnAVo> list = sqlSession.selectList("net.haebang.qna.dao.QnADAO.selectFE", map);
+		return list;
+	}
 	
 
 	

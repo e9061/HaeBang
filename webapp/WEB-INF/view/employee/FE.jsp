@@ -143,12 +143,12 @@ td {
 				</ul>
 			</div>
 			<br /> <br />
-			<c:if test="${ not empty userVO }">
+			<%-- <c:if test="${ not empty userVO }">
 			<div align="center">
 				<input type="button" value="새글등록" onclick="doAction()"
 					class="btn btn-theme"  />
 					</div>
-			</c:if>
+			</c:if> --%>
 		</div>
 		</section>
 		<br /> <br /> <br />

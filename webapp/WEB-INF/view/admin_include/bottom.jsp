@@ -22,7 +22,7 @@
 						<div class="widget">
 							<h5 class="widgetheading">Pages</h5>
 							<ul class="link-list">
-								<li><a href="${ pageContext.request.contextPath }">해방  메인</a></li>
+								<li><a href="${ pageContext.request.contextPath }/">해방  메인</a></li>
 								<li><a href="${ pageContext.request.contextPath }/ceo">해방  사업자</a></li>
 								<li><a href="${ pageContext.request.contextPath }/admin/main">해방 관리자</a></li>
 								<li><a href="#">Privacy policy</a></li>

@@ -103,7 +103,7 @@ $(document).on("click", "#fileUpload", function(){
 								</tr>
 								<tr>
 									<th width="25%">글쓴이</th>
-									<td><form:input id="q_writer" class="form-control" placeholder="${ userVO.m_name }" name ="q_writer" value="${ userVO.m_name }" path="q_writer" readonly="true" /></td>
+									<td><form:input id="q_writer" class="form-control" placeholder="관리자" name ="q_writer" value="관리자" path="q_writer" readonly="true" /></td>
 								</tr>
 								<tr>
 									<th width="25%">내용</th>
@@ -112,8 +112,9 @@ $(document).on("click", "#fileUpload", function(){
 							</table>
 							
 							<div class="form-group">
-								 <input type="file" name="qnaFile">
+								 <input type="file" name="file">
 							</div>
+							
 						<div align="center">
 							<input type="submit" value="등록" class="btn btn-theme"s/>
 						</div>

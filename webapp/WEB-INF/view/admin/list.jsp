@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -65,7 +65,7 @@ td {
 <body>
 	<div id="wrapper">
 		<header> <jsp:include
-			page="/WEB-INF/view/member_include/topmenu.jsp" /> </header>
+			page="/WEB-INF/view/admin_include/topmenu.jsp" /> </header>
 		<section>
 		<div class="container">
 			<hr width="100%" />
@@ -85,7 +85,7 @@ td {
 						<td>${ list.q_no }</td>
 						<td>
 							<%-- <a onclick="doAction('${ board.no }')"> --%> <a
-							href="${ pageContext.request.contextPath }/qna/detail/${ list.q_no }">
+							href="${ pageContext.request.contextPath }/admin/detail/${ list.q_no }">
 								<c:out value="${ list.q_title }" />
 						</a>
 						</td>
@@ -101,7 +101,7 @@ td {
 			<div align="center">
 				<ul class="pagination">
 					<li><a
-						href="${ pageContext.request.contextPath }/qna/list?pageNo=0">처음</a></li>
+						href="${ pageContext.request.contextPath }/admin/list?pageNo=0">처음</a></li>
 					<%-- 				<li><a href="${ pageContext.request.contextPath }/list/&pageNo=0&searchCondition=${ titlecontent }&word=${ word }">처음</a></li>
  --%>
 					<!--현재 페이지가 0보다 작아질 경우 이전 버튼을 disabled하는 조건문 -->
@@ -112,7 +112,7 @@ td {
 
 						<c:otherwise>
 							<li><a
-								href="${ pageContext.request.contextPath }/qna/list?pageNo=${pageNo -1}">이전</a></li>
+								href="${ pageContext.request.contextPath }/admin/list?pageNo=${pageNo -1}">이전</a></li>
 							<%-- 							href="${ pageContext.request.contextPath }/list/&pageNo=${pageNo -1}&searchCondition=${ titlecontent }&word=${ word }">이전</a></li> --%>
 						</c:otherwise>
 					</c:choose>
@@ -120,7 +120,7 @@ td {
 					<!--해당하는 페이지로 갈 수 있는 버튼 -->
 					<c:forEach var="i" begin="0" end="${lastPage-1}">
 						<li><a
-							href="${ pageContext.request.contextPath }/qna/list?pageNo=${i}">${i+1}</a></li>
+							href="${ pageContext.request.contextPath }/admin/list?pageNo=${i}">${i+1}</a></li>
 						<%-- 					<li><a href="${ pageContext.request.contextPath }/list/&pageNo=${i}&searchCondition=${ titlecontent }&word=${ word }">${i+1}</a></li> --%>
 					</c:forEach>
 
@@ -132,13 +132,13 @@ td {
 
 						<c:otherwise>
 							<li><a
-								href="${ pageContext.request.contextPath }/qna/list?pageNo=${pageNo+1}">다음</a></li>
+								href="${ pageContext.request.contextPath }/admin/list?pageNo=${pageNo+1}">다음</a></li>
 							<%-- 							href="${ pageContext.request.contextPath }/list/&pageNo=${pageNo+1}&searchCondition=${ titlecontent }&word=${ word }">다음</a></li> --%>
 						</c:otherwise>
 					</c:choose>
 
 					<li><a
-						href="${ pageContext.request.contextPath }/qna/list?pageNo=${lastPage-1}">마지막</a></li>
+						href="${ pageContext.request.contextPath }/admin/list?pageNo=${lastPage-1}">마지막</a></li>
 					<%-- 				<li><a href="${ pageContext.request.contextPath }/list/&pageNo=${totalpage}&searchCondition=${ titlecontent }&word=${ word }">마지막</a></li> --%>
 				</ul>
 			</div>
@@ -153,7 +153,7 @@ td {
 		</section>
 		<br /> <br /> <br />
 		<footer> <jsp:include
-			page="/WEB-INF/view/member_include/bottom.jsp" /> </footer>
+			page="/WEB-INF/view/admin_include/bottom.jsp" /> </footer>
 	</div>
 	<a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
 	<!-- javascript

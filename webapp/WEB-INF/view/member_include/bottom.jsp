@@ -47,7 +47,7 @@
 								<li><a href="#">바퀴가 너무 많이 보여요...도와주세요</a></li>
 								<li><a href="#">서비스 최소범위가 어떻게되는지요?</a></li>
 								<li><a href="#">우리집엔 개미가 산다!</a></li>
-								<li><a href="#">더 보기</a></li>
+								<li><a href="${ pageContext.request.contextPath }/qna/FM">더 보기</a></li>
 							</ul>
 						</div>
 					</div>
