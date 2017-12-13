@@ -147,8 +147,66 @@ public class AdminServiceImpl implements AdminService{
 	public void noticeDelete(int no) {
 		dao.noticeDelete(no);
 	}
-	         
 	
-	
+
+	@Override
+	public List<HashMap<String, Object>> getScheduleList(int page, String word, String searchSchedule, String startDate,
+			String endDate) {
+		int startPoint = page * LINE_PER_PAGE;		
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("page", page);
+		map.put("word", word);
+		map.put("searchSchedule", searchSchedule);
+		map.put("startDate", startDate);
+		map.put("endDate", endDate);
+		map.put("startPoint", startPoint);
+        map.put("row", LINE_PER_PAGE);
+        
+        System.out.println("service단의 스케쥴리스트 관련 맵: "+map);
+		
+		List<HashMap<String, Object>> getScheduleList=dao.getScheduleList(map);
+		
+		System.out.println("서비스단의 getScheduleList: "+getScheduleList);
+		
+		return getScheduleList;
+	}
+
+	@Override
+	public int selectTotalCountSchedule(String word, String searchSchedule, String startDate, String endDate) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("word", word);
+		map.put("searchSchedule", searchSchedule);
+		map.put("startDate", startDate);
+		map.put("endDate", endDate);
+		
+		System.out.println("service단의 설렉토탈카운트 관련 맵: "+map);
+		System.out.println("dao select : "+dao.selectTotalCountSchedule(map));
+		int lastPage =(int)(((double)dao.selectTotalCountSchedule(map)-1)/LINE_PER_PAGE);
+		
+		System.out.println("int last page: "+lastPage);
+		
+		return lastPage;
+	}
+
+	// 스케쥴 디테일
+	@Override
+	public HashMap<String, Object> getScheduleByMONo(int mo_no) {
+	HashMap<String, Object> getScheduleByMONo = dao.getScheduleByMONo(mo_no);
+	return getScheduleByMONo;
+	}
+		
+			
+	@Override
+	public String getMtypebyMONo(int mo_no) {
+	String m_type = dao.getMtypebyMONo(mo_no);
+	return m_type;
+	}
+
+	@Override
+	public HashMap<String, Object> getScheduleByMONoByHB(int mo_no) {
+	HashMap<String, Object> getScheduleByMONoByHB = dao.getScheduleByMONoByHB(mo_no);
+	return getScheduleByMONoByHB;
+	}
 
 }

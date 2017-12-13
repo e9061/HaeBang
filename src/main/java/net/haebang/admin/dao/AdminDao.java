@@ -36,5 +36,14 @@ public interface AdminDao {
 	
 	// 창대 지도관련 모든 주문 정보 가져오기
 	List<HashMap<String, Object>> selectAllmap();
+	
+	//스케쥴 관리 서비스
+	List<HashMap<String, Object>> getScheduleList(Map<String, Object> map);
+	int selectTotalCountSchedule(Map<String, Object> map);	
+	HashMap<String, Object> getScheduleByMONo(int mo_no);	
+	String getMtypebyMONo(int mo_no);
+	HashMap<String, Object> getScheduleByMONoByHB(int mo_no);
+	
+		
 }
 
