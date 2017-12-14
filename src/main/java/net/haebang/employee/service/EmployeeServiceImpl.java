@@ -500,12 +500,54 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 	
 	// 스케쥴 삭제
-	@Override
-	public void deleteSchedule(String mo_orderNo) {
-		// TODO Auto-generated method stub
+		@Override
+		public void deleteSchedule(int mo_no) {
+			employeeDao.deleteSchedule(mo_no);
+			
+		}
 		
-	}
+		@Override
+		public String getMtypebyMONo(int mo_no) {
+			String m_type = employeeDao.getMtypebyMONo(mo_no);
+			return m_type;
+		}
 
+		@Override
+		public HashMap<String, Object> getScheduleByMONoByHB(int mo_no) {
+			HashMap<String, Object> getScheduleByMONoByHB = employeeDao.getScheduleByMONoByHB(mo_no);
+			return getScheduleByMONoByHB;
+		}
+		
+		// 스케쥴 수정 - 수정 리스트 받아오기 - 해방
+		@Override
+		public HashMap<String, Object> getScheduleByOdNo(int mo_no) {
+			HashMap<String, Object> getScheduleByOdNo = employeeDao.getScheduleByOdNo(mo_no);
+			return getScheduleByOdNo;
+		}
+		// 스케쥴 수정 - 수정 리스트 받아오기 - 비해방
+		@Override
+		public HashMap<String, Object> getScheduleByOdNoTypeN(int mo_no) {
+			HashMap<String, Object> getScheduleByOdNo = employeeDao.getScheduleByOdNoTypeN(mo_no);
+			return getScheduleByOdNo;
+		}
+		// 스케쥴 수정 - 해당업체 전체 직원 검색
+		@Override
+		public List<HashMap<String, Object>> getEmployeeList(int e_no) {
+			List<HashMap<String, Object>> getEmployeeList = employeeDao.getEmployeeList(e_no);
+			return getEmployeeList;
+		}
+		
+		// 스케쥴 수정 - 업뎃 - 비해방
+		@Override
+		public void updateNoHaebangSch(HashMap<String, Object> map) {
+			employeeDao.updateNoHaebangSch(map);
+		}
+		// 스케쥴 수정 - 업뎃 - 해방
+		@Override
+		public void updateHaebangSch(HashMap<String, Object> map) {
+			employeeDao.updateHaebangSch(map);
+		}
+		
 	/********************************* 스케쥴 서비스 임플 ****************************************************************/
 	
 	

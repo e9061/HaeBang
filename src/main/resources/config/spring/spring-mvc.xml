@@ -104,6 +104,9 @@
 
 	<mvc:view-controller path="/ceo/register/join" view-name="employee/join" />
 	<mvc:view-controller path="/ceo/schedule" view-name="company_management/scheduleManagement" />
+	<mvc:view-controller path="/ceo/schedule/PopUpScheduleAddr" view-name="company_management/PopUpScheduleAddr" />
+	<mvc:view-controller path="/ceo/schedule/PopUpScheduleDate" view-name="company_management/PopUpScheduleDate" />
+	<mvc:view-controller path="/ceo/schedule/PopUpScheduleEmp" view-name="company_management/PopUpScheduleEmp" />
 	
 </beans>
 
