@@ -350,25 +350,59 @@ public class EmployeeDaoImpl implements EmployeeDao{
 	}
 	
 	// 스케쥴 삭제 
-	@Override
-	public void deleteSchedule(String mo_orderNo) {
-		// TODO Auto-generated method stub
+		@Override
+		public void deleteSchedule(int mo_no) {
+			sqlSession.delete("net.haebang.employee.dao.EmployeeDao.deleteSchedule", mo_no);
+		}
+
 		
-	}
-	
-	@Override
-	public String getMtypebyMONo(int mo_no) {
-		String m_type= sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.getMtypebyMONo", mo_no);
-		return m_type;
-	}
+		@Override
+		public String getMtypebyMONo(int mo_no) {
+			String m_type= sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.getMtypebyMONo", mo_no);
+			return m_type;
+		}
 
-	@Override
-	public HashMap<String, Object> getScheduleByMONoByHB(int mo_no) {
-		HashMap<String, Object> getScheduleByMONoByHB = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.getScheduleByMONoByHB", mo_no);
-		System.out.println(getScheduleByMONoByHB);
-		return getScheduleByMONoByHB;
-	}
+		@Override
+		public HashMap<String, Object> getScheduleByMONoByHB(int mo_no) {
+			HashMap<String, Object> getScheduleByMONoByHB = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.getScheduleByMONoByHB", mo_no);
+			System.out.println(getScheduleByMONoByHB);
+			return getScheduleByMONoByHB;
+		}
 
+		
+		
+		
+		// 수정 - 해당 스케쥴 정보
+		@Override
+		public HashMap<String, Object> getScheduleByOdNo(int mo_no) {
+			HashMap<String, Object> getScheduleByOdNo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.getScheduleByOdNo", mo_no);
+			return getScheduleByOdNo;
+		}
+		@Override
+		public HashMap<String, Object> getScheduleByOdNoTypeN(int mo_no) {
+			HashMap<String, Object> getScheduleByOdNo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.getScheduleByOdNoTypeN", mo_no);
+			return getScheduleByOdNo;
+		}
+		
+		// 수정 - 직원 조회 버튼
+		@Override
+		public List<HashMap<String, Object>> getEmployeeList(int e_no) {
+			List<HashMap<String, Object>>  getEmployeeList = sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.getEmployeeList", e_no);
+			return getEmployeeList;
+		}
+
+		// 수정 - 노해방(스케쥴 case)
+		@Override
+		public void updateNoHaebangSch(HashMap<String, Object> map) {
+			sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateNoHaebangSch", map);
+		}
+		
+		// 수정 - 해방 case
+		@Override
+		public void updateHaebangSch(HashMap<String, Object> map) {
+			sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateHaebangSch", map);
+			
+		}
 
 	/********************************************************************************************/
 	

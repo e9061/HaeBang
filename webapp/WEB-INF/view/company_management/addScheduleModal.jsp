@@ -148,8 +148,17 @@ date_input2.datepicker({
 				success : function(result)
 				{
 					
-					document.getElementById('lon').value = result.coordinateInfo.coordinate[0].newLon;
-					document.getElementById('lat').value = result.coordinateInfo.coordinate[0].newLat;
+					if(result.coordinateInfo.coordinate.length == '1')
+					{
+						document.getElementById('lon').value = result.coordinateInfo.coordinate[0].newLon;
+						document.getElementById('lat').value = result.coordinateInfo.coordinate[0].newLat;
+						document.getElementById('gu').value = result.coordinateInfo.coordinate[0].gu_gun;
+					}else
+					{
+						document.getElementById('lon').value = result.coordinateInfo.coordinate[0].lon;
+						document.getElementById('lat').value = result.coordinateInfo.coordinate[0].lat;
+						document.getElementById('gu').value = result.coordinateInfo.coordinate[0].gu_gun;
+					}
 					
 				},
 				error: function(data){
@@ -296,6 +305,7 @@ date_input2.datepicker({
 						</div>
                         <input type="hidden" id="lon" name="lon" />
                         <input type="hidden" id="lat" name="lat" />
+                        <input type="hidden" id="gu" name="gu" />
                 </div>
                 
                 

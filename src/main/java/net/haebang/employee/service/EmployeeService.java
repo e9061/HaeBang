@@ -47,10 +47,19 @@ public interface EmployeeService {
 	/********************************스케쥴 **************************************************************/
 	List<HashMap<String, Object>> getScheduleList(int c_no);
 	HashMap<String, Object> getScheduleByMONo(int mo_no);
-	void deleteSchedule(String mo_orderNo);
+	void deleteSchedule(int mo_no);
+
 	String getMtypebyMONo(int mo_no);
 	HashMap<String, Object> getScheduleByMONoByHB(int mo_no);
-
+	
+	
+	// 수정 
+	HashMap<String, Object> getScheduleByOdNo(int mo_no);
+	HashMap<String, Object> getScheduleByOdNoTypeN(int mo_no);
+	List<HashMap<String, Object>> getEmployeeList(int e_no);
+	// 수정 업뎃
+	void updateNoHaebangSch(HashMap<String, Object> map);
+	void updateHaebangSch(HashMap<String, Object> map);
 	
 	/********************************스케쥴**************************************************************/
 	
