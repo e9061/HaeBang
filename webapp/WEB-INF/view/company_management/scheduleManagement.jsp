@@ -53,7 +53,6 @@ $(document).ready(function() {
             },
           editable : true,
           events: jsonData,
-  //        eventColor: '#378006',
           locale: 'ko',
           eventClick:function(event) {
               if(event.title) {            	   
@@ -423,14 +422,6 @@ $(document).ready(function() {
 		<jsp:include page="./addScheduleModal.jsp" />
 		<jsp:include page="./scheduleDetail.jsp" />
 	</section>
-
-
-
-
-	<br/>
-	<br/>
-	<br/>
-		<div id="detail-background"></div>
 
    <footer>
       <jsp:include page="../employee_include/bottom.jsp" />

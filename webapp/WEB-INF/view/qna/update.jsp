@@ -116,7 +116,7 @@ div {
 					<article> 
 					<div>
 						<h2 align="center">
-							<span>QnA 작성</span>
+							<span>QnA 수정</span>
 						</h2>
 						<form:form commandName="QnAVO" method="PUT" >
 							<table border="1" width="80%">

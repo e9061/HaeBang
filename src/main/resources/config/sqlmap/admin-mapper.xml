@@ -157,5 +157,63 @@
  		
  		</select>
  		
+ 		
+ 		<select id="getScheduleList123" parameterType="java.util.Map" resultType="java.util.HashMap">
+ 		select 
+		m.m_name, m.m_address, m.m_phone, m.m_type, 
+		date_format(mo.mo_startTime, '%Y-%m-%dT%H:%i:%s') as mo_startTime, date_format(mo.mo_endTime, '%Y-%m-%dT%H:%i:%s') as mo_endTime, mo.mo_orderNo, mo.mo_no, mo.mo_cnt, mo.mo_total, 
+		e.e_name, e.e_phone, eo.eo_status, c.c_name
+		from t_member m, t_m_order mo, t_employee e, t_e_order eo, t_company c where mo.m_no=m.m_no and eo.mo_no=mo.mo_no and e.e_no=eo.e_no and c.c_no=e.c_no 
+		<if test='searchSchedule != null and (searchSchedule=="orderNo")'>
+		and mo.mo_orderNo=#{word}
+		</if>
+		<if test='searchSchedule != null and (searchSchedule=="m_phone")'>
+		and m.m_phone=#{word}
+		</if>
+		<if test='searchSchedule != null and (searchSchedule=="c_code")'>
+		and c.c_code=#{word}
+		</if>
+		<if test='searchSchedule != null and (searchSchedule=="e_id")'>
+		and e.e_id=#{word}
+		</if>	
+		and DATE(mo_startTime) between #{startDate} and #{endDate}		
+		order by mo.mo_no DESC
+		limit #{startPoint}, #{row}
+ 		</select>
+ 		
+ 		
+ 		<select id="selectTotalCountSchedule" parameterType="hashMap" resultType="Integer">
+ 		select count(*) from t_member m, t_m_order mo, t_employee e, t_e_order eo, t_company c where mo.m_no=m.m_no and eo.mo_no=mo.mo_no and e.e_no=eo.e_no and c.c_no=e.c_no
+ 		<if test="searchSchedule != null and (searchSchedule=='orderNo'.toString())">
+		and mo.mo_orderNo=#{word}
+		</if>
+		<if test="searchSchedule != null and (searchSchedule=='m_phone'.toString())">
+		and m.m_phone=#{word}
+		</if>
+		<if test="searchSchedule != null and (searchSchedule=='c_code'.toString())">
+		and c.c_code=#{word}
+		</if>
+		<if test="searchSchedule != null and (searchSchedule=='e_id'.toString())">
+		and e.e_id=#{word}
+		</if>
+		and DATE(mo_startTime) between #{startDate} and #{endDate}
+ 		</select>
+ 		
+ 		
+ 		<!-- 스케쥴 디테일 - mo_no 로 조회  -->
+ 		<select id="getScheduleByMONoByHB" parameterType="Integer" resultType="java.util.HashMap">
+ 	 	select m.m_name, m.m_address, m.m_phone, m.m_type, date_format(mo.mo_startTime, '%Y-%m-%dT%H:%i:%s') as mo_startTime, date_format(mo.mo_endTime, '%Y-%m-%dT%H:%i:%s') as mo_endTime, mo.mo_orderNo, mo.mo_no, mo.mo_svcName, mo.mo_freqType, mo.mo_freqCycle, mo.mo_cnt, mo.mo_total, mo.mo_memo, e.e_name, e.e_phone, eo.eo_memo, s.s_style, s.s_name
+		from t_member m, t_m_order mo, t_employee e, t_e_order eo, t_service s where mo.mo_no=#{mo_no} and mo.m_no=m.m_no and eo.mo_no=mo.mo_no and e.e_no=eo.e_no and mo.s_no=s.s_no
+		 </select>
+	 
+ 	 	<select id="getScheduleByMONo" parameterType="Integer" resultType="java.util.HashMap">
+	 	select m.m_name, m.m_address, m.m_phone, m.m_type, date_format(mo.mo_startTime, '%Y-%m-%dT%H:%i:%s') as mo_startTime, date_format(mo.mo_endTime, '%Y-%m-%dT%H:%i:%s') as mo_endTime, mo.mo_orderNo, mo.mo_no, mo.mo_svcName, mo.mo_freqType, mo.mo_freqCycle, mo.mo_cnt, mo.mo_total, e.e_name, e.e_phone, eo.eo_memo 
+		from t_member m, t_m_order mo, t_employee e, t_e_order eo where mo.mo_no= #{mo_no} and mo.m_no=m.m_no and eo.mo_no=mo.mo_no and e.e_no=eo.e_no
+		</select>
+	
+		<select id="getMtypebyMONo" parameterType="Integer" resultType="String">
+ 		select m_type from t_member m, t_m_order mo where m.m_no=mo.m_no and mo.mo_no=#{mo_no}
+ 		</select>
+ 		
  	
 </mapper>

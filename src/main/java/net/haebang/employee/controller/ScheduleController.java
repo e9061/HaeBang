@@ -113,6 +113,8 @@ public class ScheduleController {
 		
 		HashMap<String, Object> scheduleByOdNo = new HashMap<String, Object>();
 		
+		System.out.println("**************************************** 스케쥴 수정 *********************************************");
+		System.out.println(scheduleByOdNo);
 		if(m_type.equals("n") || m_type.equals("N")) {
 			scheduleByOdNo = employeeService.getScheduleByOdNoTypeN(mo_no);
 		} else {

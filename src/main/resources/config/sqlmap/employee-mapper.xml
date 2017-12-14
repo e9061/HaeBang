@@ -242,6 +242,7 @@ select t_m_order.mo_no, t_m_order.mo_orderNo, t_m_order.mo_startTime, t_e_order.
 	<select id="getMtypebyMONo" parameterType="Integer" resultType="String">
  		select m_type from t_member m, t_m_order mo where m.m_no=mo.m_no and mo.mo_no=#{mo_no}
  	</select>  
+	
  	
  	<!-- 스케쥴 삭제 where 조건 mo_no 로 삭제  -->
  	<delete id="deleteSchedule" parameterType="Integer">
