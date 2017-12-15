@@ -50,7 +50,7 @@ public interface EmployeeService {
 	void deleteSchedule(String mo_orderNo);
 	String getMtypebyMONo(int mo_no);
 	HashMap<String, Object> getScheduleByMONoByHB(int mo_no);
-
+	List<HashMap<String, Object>> getmyScheduleList(Map<String, Object> map);
 	
 	/********************************스케쥴**************************************************************/
 	

@@ -69,6 +69,30 @@ public class ScheduleController {
 		
 	}
 	
+	@RequestMapping(value="/ceo/myScheduleList", method=RequestMethod.POST)
+	public @ResponseBody List<ScheduleVo> myCalendar(HttpSession session) throws Exception{
+		
+		EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("c_no", userVo.getC_no());
+		map.put("e_no", userVo.getE_no());
+		
+		List<HashMap<String, Object>> scheduleList = employeeService.getmyScheduleList(map);
+		
+		System.out.println("나의일정 리스트 가져온것"+scheduleList);
+		
+		List<ScheduleVo> scVo1 = new ArrayList<>();
+		
+		for(int i=0; i<scheduleList.size(); i++) {
+			ScheduleVo sc = new ScheduleVo((int) scheduleList.get(i).get("mo_no") ,(String) scheduleList.get(i).get("e_name") + "/" + (String) scheduleList.get(i).get("m_address"), (scheduleList.get(i).get("mo_startTime")).toString(), (scheduleList.get(i).get("mo_endTime")).toString() );
+			scVo1.add(sc);
+		}
+		System.out.println("나의일정" + scVo1);
+		return scVo1;
+		
+	}
+	
 	@RequestMapping(value="/ceo/scheduleDetail", method=RequestMethod.POST)
 	public @ResponseBody HashMap<String, Object> scheduleDetail(HttpServletRequest request){
 		int mo_no = Integer.parseInt(request.getParameter("mo_no"));

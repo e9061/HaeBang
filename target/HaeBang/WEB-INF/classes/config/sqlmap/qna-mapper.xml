@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.haebang.qna.dao.QnADAO">
+
+	<resultMap type="QnAVo" id="MapQnAVO">
+		<result column="q_viewCnt" property = "q_viewCnt"/>
+		<result column="q_regDate" property = "q_regDate"/>	
+	</resultMap>
+	
+	<sql id="selectAll">
+		select q_no,q_title,q_writer,q_content,q_viewCnt,date_format( q_regDate, '%Y-%M-%d' ) as q_regDate, q_oriName, q_saveName
+		from t_qna		
+	</sql>
+	
+	<select id="selectAllBoard" parameterType="java.util.Map" resultMap="MapQnAVO">
+		<include refid="selectAll"/>
+		where q_flag = 'Q'
+		order by q_no desc 
+		limit #{startPoint}, #{row}
+	</select>
+	<!-- 총 갯수 -->
+	<select id="selectTotal" parameterType="java.util.Map" resultType="Integer">
+		select count(*) from t_qna
+	</select>
+	
+	
+	<select id="selectOneBoard" parameterType="int" resultMap="MapQnAVO">
+		<include refid="selectAll"/>
+		where q_no = #{q_no}
+	</select>
+	
+	
+	<!-- faq -->
+	<insert id="insertMemberFaq" parameterType="QnAVo">
+		insert into t_qna(q_no, q_title, q_writer, q_content, q_viewCnt, q_flag)
+		values(q_no, #{q_title}, #{q_writer}, #{q_content}, q_viewCnt, 'FM')
+	</insert>
+	
+	<insert id="insertEmployeeFaq" parameterType="QnAVo">
+		insert into t_qna(q_no, q_title, q_writer, q_content, q_viewCnt, q_flag)
+		values(q_no, #{q_title}, #{q_writer}, #{q_content}, q_viewCnt, 'FE')
+	</insert>
+	
+	<select id="selectFM" parameterType="java.util.Map" resultMap="MapQnAVO">
+		<include refid="selectAll" />
+		where q_flag = 'FM'
+		order by q_no desc 
+		limit #{startPoint}, #{row}
+	</select>
+	
+	<select id="selectFE" parameterType="java.util.Map" resultMap="MapQnAVO">
+		<include refid="selectAll" />
+		where q_flag = 'FE'
+		order by q_no desc 
+		limit #{startPoint}, #{row}
+	</select>
+	<!--  	 -->
+	
+	
+	<insert id="insertBoard" parameterType="QnAVo">
+		insert into t_qna(q_no,q_title,q_writer,q_content,q_viewCnt,q_oriName,q_saveName,q_flag)
+		values (q_no,#{q_title},#{q_writer},#{q_content},q_viewCnt,#{q_oriName},#{q_saveName},'Q')
+	</insert>
+	
+	<update id="updateBoard" parameterType="QnAVo">
+		update t_qna
+		set q_title=#{q_title},q_writer=#{q_writer},q_content=#{q_content}
+		where q_no = #{q_no}
+	</update>
+	
+	<delete id="deleteBoard" parameterType="int">
+		delete from t_qna where q_no = #{q_no}
+	</delete>
+	
+	<update id ="updateReadCnt" parameterType="int">
+		update t_qna set q_viewCnt = q_viewCnt +1 where q_no = #{ q_no }
+	</update>
+	
+	<insert id="insertFile" parameterType="hashmap">
+		insert into t_qna(q_oriName, q_saveName) values(#{q_oriName}, #{q_saveName})
+	</insert>
+	
+</mapper>
