@@ -198,7 +198,6 @@ select t_m_order.mo_no, t_m_order.mo_orderNo, t_m_order.mo_startTime, t_e_order.
 	</insert>
 		
 	
-	
 	<insert id="insertScdByMNo" parameterType="java.util.HashMap">
 		insert into t_m_order(mo_orderNo, m_no, mo_startTime, mo_endTime, mo_svcName, mo_cnt, mo_total, mo_freqType, mo_freqCycle) values
 		<foreach collection="scheduleList" item="item" separator=",">
@@ -218,20 +217,20 @@ select t_m_order.mo_no, t_m_order.mo_orderNo, t_m_order.mo_startTime, t_e_order.
 	</insert>
 	
 	<insert id="insertScdToNewMember" parameterType="java.util.HashMap">
-		insert into t_member(m_name, m_address, m_phone, m_type, m_lon, m_lat) values(#{name}, #{address}, #{phone}, #{type}, #{lon}, #{lat})
+		insert into t_member(m_name, m_address, m_phone, m_type, m_lon, m_lat, m_gu) values(#{name}, #{address}, #{phone}, #{type}, #{m_lon}, #{m_lat}, #{m_gu})
 	</insert>
 
 	<!-- *************************** 스케쥴  ************************************* -->
  	<!-- 스케줄리스트  -->
 	<select id="getScheduleList" parameterType="Integer" resultType="hashMap">
-		select date_format(mo_startTime, '%Y-%m-%dT%H:%i:%s') as mo_startTime, date_format(mo_endTime, '%Y-%m-%dT%H:%i:%s') as mo_endTime, m_address ,e_name,  t_m_order.mo_no
+		select t_e_order.e_no, date_format(mo_startTime, '%Y-%m-%dT%H:%i:%s') as mo_startTime, date_format(mo_endTime, '%Y-%m-%dT%H:%i:%s') as mo_endTime, m_address ,e_name,  t_m_order.mo_no
 		from ((( select * from t_employee where t_employee.c_no = #{c_no}) as e inner join t_e_order on e.e_no = t_e_order.e_no) inner join t_m_order on t_e_order.mo_no = t_m_order.mo_no) inner join t_member on t_m_order.m_no = t_member.m_no
 	</select>
 	
  	<!-- 스케쥴 디테일 - mo_no 로 조회  -->
  	<select id="getScheduleByMONoByHB" parameterType="Integer" resultType="java.util.HashMap">
  	 	select m.m_name, m.m_address, m.m_phone, m.m_type, date_format(mo.mo_startTime, '%Y-%m-%dT%H:%i:%s') as mo_startTime, date_format(mo.mo_endTime, '%Y-%m-%dT%H:%i:%s') as mo_endTime, mo.mo_orderNo, mo.mo_no, mo.mo_svcName, mo.mo_freqType, mo.mo_freqCycle, mo.mo_cnt, mo.mo_total, mo.mo_memo, e.e_name, e.e_phone, eo.eo_memo, s.s_style, s.s_name
-		from t_member m, t_m_order mo, t_employee e, t_e_order eo, t_service s where mo.mo_no=#{mo_no} and mo.m_no=m.m_no and eo.mo_no=mo.mo_no and e.e_no=eo.e_no and mo.s_no=s.s_no
+		from t_member as m, t_m_order as mo, t_employee as e, t_e_order as eo, t_service s where mo.mo_no=#{mo_no} and mo.m_no=m.m_no and eo.mo_no=mo.mo_no and e.e_no=eo.e_no and mo.s_no=s.s_no
 	  </select>
 	 
  	 <select id="getScheduleByMONo" parameterType="Integer" resultType="java.util.HashMap">
@@ -244,25 +243,59 @@ select t_m_order.mo_no, t_m_order.mo_orderNo, t_m_order.mo_startTime, t_e_order.
  	</select>  
 	
  	
- 	<!-- 스케쥴 삭제 where 조건 mo_orderNo 로 삭제  -->
- 	<delete id="deleteSchedule" parameterType="String">
-		delete from t_employee where e_no = #{e_no}
+ 	<!-- 스케쥴 삭제 where 조건 mo_no 로 삭제  -->
+ 	<delete id="deleteSchedule" parameterType="Integer">
+		delete t_m_order from t_m_order where t_m_order.mo_no = #{mo_no};	
 	</delete>
 	
+
 	 <select id="getmyScheduleList" parameterType="java.util.Map" resultType="hashMap">
 		select date_format(mo_startTime, '%Y-%m-%dT%H:%i:%s') as mo_startTime, date_format(mo_endTime, '%Y-%m-%dT%H:%i:%s') as mo_endTime, m_address ,e_name,  t_m_order.mo_no
 		from ((( select * from t_employee where t_employee.c_no = #{c_no} and t_employee.e_no= #{e_no}) as e inner join t_e_order on e.e_no = t_e_order.e_no) inner join t_m_order on t_e_order.mo_no = t_m_order.mo_no) inner join t_member on t_m_order.m_no = t_member.m_no;
 			
 	</select>
  	
- 	
- 	<!-- *************************** 스케쥴  ************************************* -->
- 	
 
-
-
-
-
+	<!-- 스케쥴 수정 1. mo_no로 해당 리스트 받아오기  -->
+		<!-- 해방 서비스 통한 스케쥴  (서비스 테이블 있음 )-->
+			<select id="getScheduleByOdNo" parameterType="Integer" resultType="hashMap">
+				select m_type, t_member.m_no, m_lon, m_lat, m_gu, m_name, m_address, m_phone, m_type,date_format(mo_startTime, '%Y-%m-%d %H:%i') as mo_startTime, date_format(mo_endTime, '%Y-%m-%d %H:%i') as mo_endTime, mo_orderNo, t_m_order.mo_no, mo_freqType, mo_freqCycle, mo_cnt, mo_total, e_name, e_phone, t_employee.e_no, t_service.s_no, t_service.s_name, t_service.s_style
+				from ((((select * from t_m_order where mo_no = #{mo_no} ) as t_m_order inner join t_member on t_m_order.m_no = t_member.m_no) inner join t_e_order on t_m_order.mo_no = t_e_order.mo_no) inner join t_employee on t_e_order.e_no = t_employee.e_no) inner join t_service on t_m_order.s_no = t_service.s_no;
+			</select>
+		<!-- 자기 스케쥴 등록 통한 스케쥴 (서비스 테이블이 없음)  -->
+			<select	id="getScheduleByOdNoTypeN" parameterType="Integer" resultType="hashMap">
+				select m_type, t_member.m_no, m_lon, m_lat, m_gu, m_name, m_address, m_phone, m_type,date_format(mo_startTime, '%Y-%m-%d %H:%i') as mo_startTime, date_format(mo_endTime, '%Y-%m-%d %H:%i') as mo_endTime, mo_svcName ,mo_orderNo, t_m_order.mo_no, mo_freqType, mo_freqCycle, mo_cnt, mo_total, e_name, e_phone, t_employee.e_no 
+				from (((select * from t_m_order where mo_no = #{mo_no} ) as t_m_order inner join t_member on t_m_order.m_no = t_member.m_no) inner join t_e_order on t_m_order.mo_no = t_e_order.mo_no) inner join t_employee on t_e_order.e_no = t_employee.e_no;
+			</select>
 	
+
+
+
+	<!-- 스케쥴 수정 - 직원 리스트 받아오기 -->
+	<select id="getEmployeeList" parameterType="Integer" resultType="java.util.HashMap">
+		select e_no, e_name, e_phone from t_employee where t_employee.c_no = (select c_no from t_employee where e_no = #{e_no});
+	</select>
+		
+	<!-- 스케쥴 수정 사항 업데이트  -->
+	<update id="updateNoHaebangSch" parameterType="java.util.HashMap">
+		update t_member m, t_m_order mo, t_e_order eo 
+			set m.m_name=#{m_name}, m.m_phone=#{m_phone}, m.m_lon=#{m_lon}, m.m_lat=#{m_lat}, m.m_gu=#{m_gu}, m.m_address=#{m_address},
+				eo.e_no=#{e_no}, eo.eo_memo=#{eo_memo},
+				mo.mo_startTime=#{mo_startTime}, mo.mo_endTime=#{mo_endTime}, mo.mo_svcName=#{mo_svcName}, mo.mo_cnt = #{mo_cnt}
+			where mo.mo_no=#{mo_no}
+				and mo.m_no = m.m_no
+				and eo.mo_no = #{mo_no}
+	</update>
+
+	<update id="updateHaebangSch" parameterType="java.util.HashMap">
+		update t_m_order mo, t_e_order eo 
+			set eo.e_no=#{e_no}, 
+				mo.mo_cnt = #{mo_cnt}, mo.mo_startTime=#{mo_startTime}, mo.mo_endTime=#{mo_endTime}
+			where mo.mo_no=#{mo_no}
+				and eo.mo_no = mo.mo_no
+	</update>
+
+ 	<!-- *************************** 이주호 스케쥴  ************************************* -->
+ 	
 </mapper>
 

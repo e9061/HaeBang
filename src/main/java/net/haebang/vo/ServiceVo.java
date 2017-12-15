@@ -1,48 +1,21 @@
 package net.haebang.vo;
-	/**
-	 * 	서비스 vo 
-	 * @author LEEJUHO
-	 *
-	 */
 
+import java.util.Arrays;
+
+/**
+ * @author lvvvy
+ *
+ */
 public class ServiceVo {
-
 	private int s_no;
 	private String s_style;
 	private String s_name;
-	private int size;
-	private int price;
+	private	String s_size;
+	private int s_price;
 	private String s_detail;
 	private String s_type;
 	private String s_place;
 	private int s_duration;
-	
-	
-	public ServiceVo() {
-	}
-	
-	public ServiceVo(int s_no, String s_style, String s_name, int size, int price, String s_detail, String s_type,
-			String s_place, int s_duration) {
-		this.s_no = s_no;
-		this.s_style = s_style;
-		this.s_name = s_name;
-		this.size = size;
-		this.price = price;
-		this.s_detail = s_detail;
-		this.s_type = s_type;
-		this.s_place = s_place;
-		this.s_duration = s_duration;
-	}
-
-	@Override
-	public String toString() {
-		return "ServiceVo [s_no=" + s_no + ", s_style=" + s_style + ", s_name=" + s_name + ", size=" + size + ", price="
-				+ price + ", s_detail=" + s_detail + ", s_type=" + s_type + ", s_place=" + s_place + ", s_duration="
-				+ s_duration + "]";
-	}
-
-
-
 	public int getS_no() {
 		return s_no;
 	}
@@ -61,17 +34,17 @@ public class ServiceVo {
 	public void setS_name(String s_name) {
 		this.s_name = s_name;
 	}
-	public int getSize() {
-		return size;
+	public String getS_size() {
+		return s_size;
 	}
-	public void setSize(int size) {
-		this.size = size;
+	public void setS_size(String s_size) {
+		this.s_size = s_size;
 	}
-	public int getPrice() {
-		return price;
+	public int getS_price() {
+		return s_price;
 	}
-	public void setPrice(int price) {
-		this.price = price;
+	public void setS_price(int s_price) {
+		this.s_price = s_price;
 	}
 	public String getS_detail() {
 		return s_detail;
@@ -97,6 +70,13 @@ public class ServiceVo {
 	public void setS_duration(int s_duration) {
 		this.s_duration = s_duration;
 	}
+	@Override
+	public String toString() {
+		return "ServiceVo [s_no=" + s_no + ", s_style=" + s_style + ", s_name=" + s_name + ", s_size=" + s_size
+				+ ", s_price=" + s_price + ", s_detail=" + s_detail + ", s_type=" + s_type + ", s_place=" + s_place
+				+ ", s_duration=" + s_duration + "]";
+	}
+	
 	
 	
 	

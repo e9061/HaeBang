@@ -1,11 +1,14 @@
 package net.haebang.employee.controller;
 
+import java.awt.Color;
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -14,18 +17,22 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.annotation.SynthesizedAnnotation;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import ch.qos.logback.core.util.SystemInfo;
 import net.haebang.employee.service.EmployeeService;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.MemberVo;
 import net.haebang.vo.OrderEmployeeVo;
 import net.haebang.vo.OrderMemberVo;
+import net.haebang.vo.ScheduleModifyVo;
 import net.haebang.vo.ScheduleVo;
 import net.haebang.vo.ServiceVo;
 
@@ -41,34 +48,52 @@ public class ScheduleController {
 		
 		EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
 		
-		userVo.getC_no();
+	//	EmployeeVo userVo = new EmployeeVo();
+	//	userVo.setC_no(1);		// 임시
+	//	userVo.setE_no(1);		// 임시
 		
-		OrderEmployeeVo oeVo = new OrderEmployeeVo();
-		OrderMemberVo omVo = new OrderMemberVo();
-		EmployeeVo emVo = new EmployeeVo();
-		MemberVo mVo = new MemberVo();
+
+		// 로그인 상태의 직원또는 사장의 e_no로 해당 업체의 직원 수 알아내기
+		List<HashMap<String, Object>> getEmployeeList = employeeService.getEmployeeList(userVo.getE_no());
+		int empCnt = getEmployeeList.size();
 		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("oeVo", oeVo);
-		map.put("omVo", omVo);
-		map.put("emVo", emVo);
-		map.put("mVo", mVo);
-		List<HashMap<String, Object>> scheduleList = new ArrayList<HashMap<String, Object>>();
-		scheduleList.add(map);
+		// 랜덤 색상 만들기
+/*
+		final float hue = r.nextFloat();
+		final float saturation = 0.9f;//1.0 for brilliant, 0.0 for dull
+		final float luminance = 1.0f; //1.0 for brighter, 0.0 for black
+		color = Color.getHSBColor(hue, saturation, luminance);
+		System.out.println(rgb(color.getRed(),color.getGreen(),color.getBlue()));		// 파스텔 톤으로 색 만들기 나중에 참고 할 것.
+*/
+		Random r = new Random();
+		HashMap<Integer, String> cMap = new HashMap<Integer, String>();
+		for(int i=0; i<empCnt; i++) {
+			int empNo = (int) getEmployeeList.get(i).get("e_no");
+			System.out.println(empNo);
+			Color c = new Color(r.nextInt(256),r.nextInt(256),r.nextInt(256));
+			String colorToString = rgb(c.getRed(),c.getGreen(),c.getBlue());
+			cMap.put(empNo, colorToString);
+		}
 		
-		scheduleList = employeeService.getScheduleList(userVo.getC_no());
+		
+		// 로그인 한 유저(사장) 스케쥴(사장+직원들) 가져오기 
+		List<HashMap<String, Object>> scheduleList = employeeService.getScheduleList(userVo.getC_no());
 		
 		List<ScheduleVo> scVo = new ArrayList<>();
 		
 		for(int i=0; i<scheduleList.size(); i++) {
-			ScheduleVo sc = new ScheduleVo((int) scheduleList.get(i).get("mo_no") ,(String) scheduleList.get(i).get("e_name") + "/" + (String) scheduleList.get(i).get("m_address"), (scheduleList.get(i).get("mo_startTime")).toString(), (scheduleList.get(i).get("mo_endTime")).toString() );
+			
+			int e_no = (int) scheduleList.get(i).get("e_no");
+			ScheduleVo sc = new ScheduleVo((int) scheduleList.get(i).get("mo_no") ,(String) scheduleList.get(i).get("e_name") + " / " + (String) scheduleList.get(i).get("m_address"), (scheduleList.get(i).get("mo_startTime")).toString(), (scheduleList.get(i).get("mo_endTime")).toString());
+			
+			sc.setColor(cMap.get(e_no));
 			scVo.add(sc);
 		}
 		
 		return scVo;
 		
 	}
-	
+
 	@RequestMapping(value="/ceo/myScheduleList", method=RequestMethod.POST)
 	public @ResponseBody List<ScheduleVo> myCalendar(HttpSession session) throws Exception{
 		
@@ -80,27 +105,170 @@ public class ScheduleController {
 		
 		List<HashMap<String, Object>> scheduleList = employeeService.getmyScheduleList(map);
 		
-		System.out.println("나의일정 리스트 가져온것"+scheduleList);
 		
 		List<ScheduleVo> scVo1 = new ArrayList<>();
 		
 		for(int i=0; i<scheduleList.size(); i++) {
-			ScheduleVo sc = new ScheduleVo((int) scheduleList.get(i).get("mo_no") ,(String) scheduleList.get(i).get("e_name") + "/" + (String) scheduleList.get(i).get("m_address"), (scheduleList.get(i).get("mo_startTime")).toString(), (scheduleList.get(i).get("mo_endTime")).toString() );
+			ScheduleVo sc = new ScheduleVo((int) scheduleList.get(i).get("mo_no") , (String) scheduleList.get(i).get("m_address"), (scheduleList.get(i).get("mo_startTime")).toString(), (scheduleList.get(i).get("mo_endTime")).toString(), "rgb(68,193,195)");
+			
 			scVo1.add(sc);
 		}
-		System.out.println("나의일정" + scVo1);
+		
 		return scVo1;
 		
 	}
 	
+
+	
+	// 색만드는 메서드
+	private String rgb(int red, int green, int blue) {
+		System.out.println(red + "/" + green +"/" + blue);
+		String a = "rgb("+red+","+green+","+blue+")";
+		return a;
+	}
+
+
+
+	/**************************************** 스케쥴 수정 *********************************************/
+	
+	@RequestMapping(value="/ceo/sceduleModify", method=RequestMethod.GET)
+	public @ResponseBody HashMap<String, Object> sceduleModify(HttpServletRequest request){
+		int mo_no = Integer.parseInt(request.getParameter("mo_no"));
+		String m_type = request.getParameter("m_type");
+		
+		HashMap<String, Object> scheduleByOdNo = new HashMap<String, Object>();
+		
+		System.out.println("**************************************** 스케쥴 수정 *********************************************");
+		System.out.println(scheduleByOdNo);
+		if(m_type.equals("n") || m_type.equals("N")) {
+			scheduleByOdNo = employeeService.getScheduleByOdNoTypeN(mo_no);
+		} else {
+			scheduleByOdNo = employeeService.getScheduleByOdNo(mo_no);
+		}
+
+		//mo_startTime 날짜 / 시간으로 (띄어쓰기 기준)subString 후  mod_date, mod_startTime 에 나눠 넣는다.
+		
+		String tempDate = (String) scheduleByOdNo.get("mo_startTime");
+		String tempDate2 = (String) scheduleByOdNo.get("mo_endTime");
+		
+		String tempDateTime[] = tempDate.split(" ");
+		
+		String mod_date = tempDateTime[0];
+		String mod_startTime = tempDateTime[1];
+		
+		tempDateTime = tempDate2.split(" ");
+		
+		String mod_endTime = tempDateTime[1];
+		
+		scheduleByOdNo.put("mod_date", mod_date);
+		scheduleByOdNo.put("mod_startTime", mod_startTime);
+		scheduleByOdNo.put("mod_endTime", mod_endTime);
+		
+		return scheduleByOdNo;
+		
+	}
+	
+	// 직원 리스트 받아오기
+	@RequestMapping(value="/ceo/getEmployeeList", method=RequestMethod.GET)
+	public @ResponseBody List<HashMap<String, Object>> getEmployeeList(HttpServletRequest request){
+		int e_no = Integer.parseInt(request.getParameter("e_no"));
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		List<HashMap<String, Object>> getEmployeeList = new ArrayList<HashMap<String, Object>>();
+		getEmployeeList.add(map);
+		getEmployeeList = employeeService.getEmployeeList(e_no);
+		
+		return getEmployeeList;
+	}
+		
+	
+	
+	@RequestMapping(value="/ceo/sceduleModify", method=RequestMethod.POST)
+	public String sceduleModifyUpdate(@ModelAttribute ScheduleModifyVo sm){
+		
+		
+		String temp = sm.getMo_cnt().replaceAll(",", "");			// 왜 mo_cnt 에 "," 가 들어가는지 의문임...
+		sm.setMo_cnt(temp);
+		
+		sm.setMo_startTime(sm.getMod_date()+ " " +sm.getMod_startTime());
+		sm.setMo_endTime(sm.getMod_date()+ " " +sm.getMod_endTime());
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+	        Field[] fields = sm.getClass().getDeclaredFields();
+	        for(int i=0; i <fields.length; i++){
+	            fields[i].setAccessible(true);
+	            try{
+	            	if(fields[i].get(sm) != null & fields[i].get(sm) !="") {
+	            		map.put(fields[i].getName(), fields[i].get(sm));
+	            	}else {
+	            	}
+	            }catch(Exception e){
+	                e.printStackTrace();
+	            }
+	        }        
+	        
+	        map.remove("mod_date");
+	        map.remove("mod_startTime");
+	        map.remove("mod_endTime");
+	        map.remove("periodType");
+	
+		if(sm.getM_type().equals("n") || sm.getM_type().equals("N")) {		// 스케쥴 case
+			
+			map.remove("s_no");
+			map.remove("s_name");
+			map.remove("s_s_style");
+			
+			
+			
+			if(sm.getPeriodType().equals("1회형")){
+				map.remove("mo_cnt");
+			}
+			
+			employeeService.updateNoHaebangSch(map);
+			
+		} else {																// 해방 case
+		
+			
+			
+			if(sm.getS_style().equals("j")) {
+				
+			} else {
+				map.remove("mo_cnt");
+			}
+			
+			
+			employeeService.updateHaebangSch(map);
+		}
+		
+		
+		
+		return "redirect:schedule";
+//		return "redirect:/ceo/scheduleDetail?mo_no="+mo_no;		// 스케쥴 디테일 페이지로 보여줌
+	}
+	
+		
+	
+	
+	
+	
+	// 스케쥴 삭제
+	@RequestMapping(value="/ceo/scheduleDelete")
+	public void scheduleDelete(HttpServletRequest request) {
+		int mo_no = Integer.parseInt(request.getParameter("mo_no"));
+	    employeeService.deleteSchedule(mo_no);
+	}
+	
+	/**************************************** 스케쥴 수정 *********************************************/	
+	
+	
+	// 스케쥴 디테일
 	@RequestMapping(value="/ceo/scheduleDetail", method=RequestMethod.POST)
 	public @ResponseBody HashMap<String, Object> scheduleDetail(HttpServletRequest request){
 		int mo_no = Integer.parseInt(request.getParameter("mo_no"));
 		
-		System.out.println(mo_no);
 		//mo_no로 m_type을 가져온다!
 		String m_type=employeeService.getMtypebyMONo(mo_no);
-		System.out.println(m_type);
 		
 		
 		if(m_type.equals("N")) {
@@ -211,10 +379,8 @@ public class ScheduleController {
 			
 			scheduleByMONo = employeeService.getScheduleByMONoByHB(mo_no);
 			
-			System.out.println("해방통해서 한사람들 메서드실행후: "+scheduleByMONo);
 			
 			String phone = (String)scheduleByMONo.get("m_phone");
-			System.out.println("phone: "+phone);
 			
 			if(phone.length()==10) {
 				
@@ -286,7 +452,6 @@ public class ScheduleController {
 			
 			
 			String s_style = (String)scheduleByMONo.get("s_style");
-			System.out.println("s_style: "+s_style);
 			
 			if(s_style.equals("j")) {//정기형
 												
@@ -318,23 +483,15 @@ public class ScheduleController {
 			
 			}
 				
-			System.out.println(scheduleByMONo);
 			return scheduleByMONo;
 			
 		}
 	
-			
 		
 	}
 	
 	
-	@RequestMapping(value="/ceo/scheduleDelete")
-	public void scheduleDelete(HttpServletRequest request) {
-		System.out.println(request.getParameter("mo_orderNo"));
-	    String mo_orderNo = request.getParameter("mo_orderNo");
-	    System.out.println(mo_orderNo);
-	    employeeService.deleteSchedule(mo_orderNo);
-	}
+	
 	
 	
 	
@@ -349,6 +506,7 @@ public class ScheduleController {
 		String orderNo=orderType+orderDate+orderStartHour+orderStartMinute+orderPhone3;
 		return orderNo;
 	}
+	
 	
 	
 	
@@ -377,8 +535,9 @@ public class ScheduleController {
 			@RequestParam(value="endTimeHour2", defaultValue="null", required=false) String endTimeHour2,
 			@RequestParam(value="endTimeMinute2", defaultValue="null", required=false) String endTimeMinute2,
 			@RequestParam(value="comments", defaultValue="null", required=false) String comments,
-			@RequestParam(value="lon", defaultValue="null", required=false) String lon,
-			@RequestParam(value="lat", defaultValue="null", required=false) String lat,			
+			@RequestParam(value="lon", defaultValue="null", required=false) String m_lon,
+			@RequestParam(value="lat", defaultValue="null", required=false) String m_lat,			
+			@RequestParam(value="gu", defaultValue="null", required=false) String m_gu,			
 			ModelAndView mav, HttpServletRequest request, HttpSession session) {
 		
 		EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
@@ -409,8 +568,8 @@ public class ScheduleController {
 		System.out.println(endTimeHour2);
 		System.out.println(endTimeMinute2);
 		System.out.println(comments);
-		System.out.println(lon);
-		System.out.println(lat);
+		System.out.println(m_lon);
+		System.out.println(m_lat);
 		
 		
 		
@@ -434,8 +593,9 @@ public class ScheduleController {
 				paramMap.put("unit", "i");							
 				paramMap.put("cnt", 1);				
 				paramMap.put("comments", comments);		
-				paramMap.put("lon", lon);
-				paramMap.put("lat", lat);
+				paramMap.put("m_lon", m_lon);
+				paramMap.put("m_lat", m_lat);
+				paramMap.put("m_gu", m_gu);
 				
 				System.out.println("************************컨트롤러:1회성 paramMap잘들어감******************************");
 				
@@ -465,8 +625,9 @@ public class ScheduleController {
 				paramMap.put("comments", comments);
 				paramMap.put("cycle", cycle);
 				paramMap.put("total", totalCnt);
-				paramMap.put("lon", lon);
-				paramMap.put("lat", lat);
+				paramMap.put("m_lon", m_lon);
+				paramMap.put("m_lat", m_lat);
+				paramMap.put("m_gu", m_gu);
 				
 				System.out.println("***********************컨트롤러:정기성 ParamMap잘들어감*******************************");
 			
@@ -605,8 +766,6 @@ public class ScheduleController {
 		
 			return mav;
 		}
-	
-	
 		
 	
 	

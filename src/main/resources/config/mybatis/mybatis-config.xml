@@ -13,7 +13,9 @@
                 <typeAlias type="net.haebang.vo.QnAVo" alias="QnAVo"/>
                 <typeAlias type="net.haebang.vo.OrderEmployeeVo" alias="orderEmployeeVo"/>
                 <typeAlias type="net.haebang.vo.OrderMemberVo" alias="orderMemberVo"/>
-				<typeAlias type="net.haebang.vo.ReplyVo" alias="ReplyVo"/>
+		<typeAlias type="net.haebang.vo.ServiceVo" alias="serviceVo" />
+                <typeAlias type="net.haebang.vo.ScheduleModifyVo" alias="scheduleModifyVo"/>
+		<typeAlias type="net.haebang.vo.ReplyVo" alias="ReplyVo"/>
         </typeAliases>
 </configuration>
 

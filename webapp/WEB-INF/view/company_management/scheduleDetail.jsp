@@ -31,6 +31,11 @@
                     <label for="new_name" class="col-sm-2 control-label bg-danger">이름</label>
                     <div class="col-sm-10">
                         <span class="form-control" id="m_name" name="m_name" ></span>
+
+                        <input type="hidden" id="m_type" name="m_type">					<!-- detail 컨트롤러 넘기기 위해 넣음  by 주호-->
+                        <input type="hidden" id="mo_no" name="mo_no">					<!-- detail 컨트롤러 넘기기 위해 넣음  by 주호-->
+
+
                     </div>
                 </div>
       
@@ -243,7 +248,11 @@
                    
                    <div align="right"> 
                 <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>               
-                <input type="button" class="btn btn-primary" id="modify" value="수정하기"/>
+
+                <input type="button" class="btn btn-primary" id="modify_btn" value="수정하기"/>
+
+
+
                     </div>
                 </div>
                 
@@ -262,13 +271,21 @@
 
 
 
-     
-            
+
+
+
 
 
 </div> <!-- End modal body div -->
       </div> <!-- End modal content div -->
   </div> <!-- End modal dialog div -->
 </div> <!-- End modal div -->
+
+
+
+
+
+
+
 
 

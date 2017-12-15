@@ -7,18 +7,38 @@ public class ScheduleVo {
 	private String start;
 	private String end;
 	private boolean allDay=false;	
+	private String color;
 	
 	public ScheduleVo() {
 	}
 	
-	public ScheduleVo(int id, String title, String start, String end) {
-		
+	public ScheduleVo(int id, String title, String start, String end, String color) {
+		this.color =color;
 		this.id = id;
 		this.title = title;
 		this.start = start;
 		this.end = end;
 		
 	}
+	
+	public ScheduleVo(int id, String title, String start, String end) {
+		this.id = id;
+		this.title = title;
+		this.start = start;
+		this.end = end;
+		
+	}
+	
+	
+	
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -49,12 +69,13 @@ public class ScheduleVo {
 	public void setAllDay(boolean allDay) {
 		this.allDay = allDay;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "ScheduleVo [id=" + id + ", title=" + title + ", start=" + start + ", end=" + end + ", allDay=" + allDay
-				+ "]";
+				+ ", color=" + color + "]";
 	}
+
 	
 	
 	
