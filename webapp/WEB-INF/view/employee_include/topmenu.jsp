@@ -1,6 +1,53 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<script>
+function openPop(){
+    
+    
+    var pop_title = "popupOpener" ;
+     
+    window.open("", pop_title,"left=900, top=430, width=550, height=300, toolbar=no, scrollbars=no, status=no, resizable=no") ;
+     
+	var frmData = document.formData ;
+    frmData.target = pop_title ;
+    frmData.action = "/ceo/selectAllCall" ;
+     
+    frmData.submit() ;
+
+
+}
+
+window.setTimeout("window.location.reload()",60000*30);
+window.onload = function() {
+	
+    if(document.getElementById("userVo")!=null)
+	{
+    		$.ajax({
+    			url : "${pageContext.request.contextPath}/ceo/selectAllCallAjax",
+    			type: "POST",
+    			data : {
+    				
+    			},
+    			success : function(result){
+				
+    				var resultJSON = JSON.parse(result);
+    				console.log(resultJSON.length);
+    				if(resultJSON.length != 0){
+    					openPop();
+    				}
+    				
+    			}
+    		})
+    	
+	
+	}
+    init();
+}
+
+
+
+</script>
 <link
 	href="${ pageContext.request.contextPath }/resources/css/bootstrap.min.css"
 	rel="stylesheet" />
@@ -21,8 +68,10 @@
 <link
 	href="${ pageContext.request.contextPath }/resources/skins/default.css"
 	rel="stylesheet" />
-
-
+<c:if test="${ not empty userVo }">
+<form name=formData method="post">
+	<input id="userVo" name="e_no" type="hidden" value="${userVo.e_no}" />
+</form></c:if>
 			<div class="navbar navbar-default navbar-static-top">
 				<div class="container">
 					<div class="navbar-header">
@@ -46,7 +95,7 @@
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">업체관리<b class=" icon-angle-down"></b></a>
 								<ul class="dropdown-menu">
-									<li><a href="${ pageContext.request.contextPath }/ceo/schedule">스케쥴관리</a></li>
+									<li><a href="typography.html">스케쥴관리</a></li>
 									<li><a href="pricingbox.html">리뷰관리</a></li>
 									<li><a href="pricingbox.html">직원관리</a></li>
 								</ul>

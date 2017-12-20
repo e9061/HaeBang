@@ -7,6 +7,28 @@
 <head>
 <meta charset="utf-8">
 <title>해방 사장님 사이트</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="" />
+
+
+<style type="text/css">
+    body {
+        margin :40px 10px;
+        padding : 0;
+        font-family : "Lucida Grande", Helvetica, Arial, Verdana,sans-serif;
+        font-size : 14px;
+    }
+    #calendar {
+        max-width : 900px;
+        margin : 0 auto;
+    }
+
+</style>
+
+
+
+
+
 <script src="${ pageContext.request.contextPath }/resources/js/jquery.js"></script>
 	<script
 		src="${ pageContext.request.contextPath }/resources/js/jquery.easing.1.3.js"></script>
@@ -20,7 +42,7 @@
 var map;
 var marker;
 var markerLayer;
-var curlonlat= new Tmap.LonLat('127.027606', '37.49462').transform("EPSG:4326","EPSG:3857");  // 긴 형태 
+var curlonlat;  // 긴 형태 
 var curlon;
 var curlat;
 var PR_3857;
@@ -164,9 +186,13 @@ function onMouseMarker (evt){
 
 
 
-window.onload = function() {
-    init();
-}
+
+
+
+ 
+
+
+
 
 $(document).on("click",".start",function(){
 	
@@ -379,8 +405,8 @@ s0.parentNode.insertBefore(s1,s0);
 							width="160px" />
 						</a>
 					</c:if> <c:if test="${ not empty userVo }">
-						<a href="${ pageContext.request.contextPath }/ceo/schedule"> 
-						<img src="${ pageContext.request.contextPath }/resources/img/schedule.jpg"
+						<a href="#"> <img
+							src="${ pageContext.request.contextPath }/resources/img/schedule.jpg"
 							width="160px" />
 						</a>
 					</c:if> &nbsp;&nbsp;&nbsp; <c:if test="${ empty userVo }">
@@ -632,26 +658,7 @@ s0.parentNode.insertBefore(s1,s0);
 					</div>
 					<div class="widget">
 						<h5 class="widgetheading">해방 가이드</h5>
-						<ul class="recent">
-							<li>
-								<h6>
-									<a href="#">Lorem ipsum dolor sit</a>
-								</h6>
-								<p id="plz">Mazim alienum appellantur eu cu ullum officiis pro pri</p>
-							</li>
-							<li>
-								<h6>
-									<a href="#">Maiorum ponderum eum</a>
-								</h6>
-								<p>Mazim alienum appellantur eu cu ullum officiis pro pri</p>
-							</li>
-							<li>
-								<h6>
-									<a href="#">Et mei iusto dolorum</a>
-								</h6>
-								<p>Mazim alienum appellantur eu cu ullum officiis pro pri</p>
-							</li>
-						</ul>
+						<div id='calendar'></div>
 					</div>
 					<div class="widget">
 						<h5 class="widgetheading">Popular tags</h5>
@@ -675,6 +682,75 @@ s0.parentNode.insertBefore(s1,s0);
 	</div>
 	<a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
 </body>
+
+<link href="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/fullcalendar.css" rel="stylesheet"/>
+<link href="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/fullcalendar.print.css" rel="stylesheet" media="print"/>
+
+<script type="text/javascript" src="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/lib/moment.min.js"></script>
+<script type="text/javascript" src="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/lib/jquery.min.js"></script>
+<script type="text/javascript" src="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/fullcalendar.js"></script>
+<script type="text/javascript" src="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/locale-all.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+    $.ajax({    	
+    	
+    	type : "POST",
+    	url : "${ pageContext.request.contextPath }/ceo/scheduleList",
+    	dataType : "json",
+    	contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+    	error : function(request, status, error){
+    		alert("code : "+request.status + "\r\nmessage : " + request.reponseText);	    		
+    	},
+    	success : function(data){
+    		alert("왔니?1");
+    		setCalendar(data);
+    		
+    	}
+    	
+    });
+    
+    
+	
+	
+	function setCalendar(data){
+    	
+    	  var date = new Date();
+    	  var d = date.getDate();
+    	  var m = date.getMonth();
+    	  var y = date.getFullYear();
+    	  var jsonData = data;
+
+    	  alert(jsonData);
+    	  
+    	 $("#calendar").fullCalendar({
+    		header: {
+ 				left: 'prev,next today',
+ 				center: 'title',
+ 				right: 'agendaDay,month,agendaWeek,'
+ 			},
+           editable : true,
+           events: [jsonData],
+           timeFormat: 'H(:mm)',
+           eventClick:function(event) {
+               if(event.title) {
+                   alert(event.title + "\n", "wicked", "width=700,height=600");
+                   return false;
+               }
+           }
+       });
+
+	}
+ 
+ });
+   
+
+
+</script>
+
+
+
 <script>
     function isNull(obj, msg) {
     	if (obj.value == "") {
@@ -707,4 +783,3 @@ s0.parentNode.insertBefore(s1,s0);
     
   </script>
 </html>
-

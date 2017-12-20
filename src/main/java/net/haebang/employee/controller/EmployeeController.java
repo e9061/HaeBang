@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -586,9 +584,111 @@ public class EmployeeController {
 		return newOne;
 	}
 	
+	// ******************************** 창대 12/14(콜 팝업창) ********************************
 	
+	@RequestMapping(value= "/ceo/selectAllCall", method=RequestMethod.POST)
+	public String selectAllCall(HttpServletRequest request, HttpSession session, Model model) {
+		EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+		
+		List<HashMap<String,Object>> myCall = employeeDao.selectMyCall(userVo);
+		
+		System.out.println(myCall);
+		
+		System.out.println(userVo.getE_name());
+		int count = myCall.size();
+		model.addAttribute("count", count);
+		model.addAttribute("employeeVo", userVo);
+		model.addAttribute("myCall", myCall);
+		
+		return "employee/callIndex";
+	}
+	// ******************************** 창대 12/14 -********************************
 	
+	@RequestMapping(value= "/ceo/selectAllCallAjax", method=RequestMethod.POST)
+	public @ResponseBody List<HashMap<String, Object>> selectAllCallAjax(HttpSession session){
+		EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+		
+		List<HashMap<String,Object>> myCall = employeeDao.selectMyCall(userVo);
+	
+		return myCall;
+	}
+	
+	@RequestMapping(value= "/ceo/acceptMyCall", method=RequestMethod.POST)
+	public @ResponseBody List<HashMap<String, Object>> acceptMyCall(HttpServletRequest request, HttpSession session){
+		
+		
+		EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+		
+		String orderNo = request.getParameter("mo_orderNo");
+		String mo_no = request.getParameter("mo_no");
+		
+		System.out.println(orderNo);
+		System.out.println(orderNo);
+		System.out.println(mo_no);
+		System.out.println(mo_no);
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("userVo", userVo);
+		map.put("orderNo",orderNo);
+		map.put("mo_no",mo_no);
+		System.out.println("********************");
+		
+		List<HashMap<String,Object>> myCall = employeeService.acceptMyCall(map);
+		
+		
+		return myCall;
+	}
+	
+	@RequestMapping(value="/ceo/refuseMyCall", method=RequestMethod.POST)
+	public @ResponseBody List<HashMap<String,Object>> refuseMyCall(HttpServletRequest request, HttpSession session){
+		
+		//1. Insert into t_cancelCall(mo_no, e_no) values(클릭한 mo_no, 3번째 해쉬맵.e_no_first);
 
+		//2. update t_m_order set e_no_first=슝슝
+		//	Lon,lat, prevMonthOutCome, dateHourForNoOneEmployee
+
+		//3. Drop event ${mo_orderNo}
+		//4. Create event ${mo_orderNo}
+		//5. selectMyCall() 돌려서 돌려주기.
+		
+		String mo_no = request.getParameter("mo_no");
+		String mo_orderNo = request.getParameter("mo_orderNo");
+		
+		HashMap<String, Object> map = new HashMap<String, Object>(); 
+		map.put("mo_no", mo_no);
+		map.put("mo_orderNo",mo_orderNo);
+		
+		EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+		map.put("userVo", userVo);
+		
+		
+		List<HashMap<String,Object>> myCall = employeeService.refuseMyCall(map);
+
+		return myCall;
+		
+		
+	}
+	
+	
+	
+	@RequestMapping(value= "/ceo/selectAllStartTimes", method=RequestMethod.POST)
+	public @ResponseBody List<HashMap<String, Object>> selectAllStartTimes(HttpServletRequest request, HttpSession session){
+		
+		String mo_orderNo = request.getParameter("mo_orderNo");
+		
+		
+		
+		List<HashMap<String,Object>> myCall = employeeDao.selectAllStartTimes(mo_orderNo);
+	
+		return myCall;
+	}
+	
+	
+	
+	
+	// ********************************************************************************************
+
+		
 //  -------------------------------------- 진화 -------------------------------------------------
 	
 	@RequestMapping(value="/ceo", method=RequestMethod.GET)
@@ -1225,16 +1325,5 @@ public class EmployeeController {
 		
 	
 	
-	
-	
-
-	
-	
-	
-	
-	
-	
-
 }
-
 

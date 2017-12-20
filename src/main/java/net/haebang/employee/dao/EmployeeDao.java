@@ -8,7 +8,6 @@ import net.haebang.vo.CompanyVo;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
 import net.haebang.vo.MemberVo;
-import net.haebang.vo.MapVo;
 import net.haebang.vo.NoticeBoardVo;
 import net.haebang.vo.OrderEmployeeVo;
 
@@ -16,28 +15,28 @@ public interface EmployeeDao {
 
 	//진화
     
-/*************************공지*******************************************/
-        EmployeeVo selectById(EmployeeVo employeeVo);        
-        EmployeeVo getIdByPhone(Map<String, Object> map);
-        EmployeeVo getIdByBizNo(Map<String, Object> map);
-        EmployeeVo getIdbyId(EmployeeVo employeeVo);
-        void changePassword(EmployeeVo employeeVo);
-        MemberVo selectUserByInfo(Map<String, Object> map);
-        void insertScdToRegisteredMember(Map<String, Object> map);
-        void insertScdToNewMember(Map<String, Object> map);
-        void insertScdToRegisteredMemberOnetime(Map<String, Object> map);
-        void insertScdToNewMemberOnetime(Map<String, Object> map);
-        
-    /*************************공지*******************************************/
-        List<NoticeBoardVo> getNoticeList(Map<String, Object> map);
-        double selectTotalCount(Map<String, Object> map);
-        NoticeBoardVo getNoticeBoardByNo(NoticeBoardVo noticeBoardVo);
-        List<NoticeBoardVo> getMainnoticelist();
-   /**********************************************************************/
-	
-	//창대    
-	EmployeeVo selectById(String e_id);
-   	CompanyVo selectByBizNo1(String c_bizNo);
+	/*************************공지*******************************************/
+	        EmployeeVo selectById(EmployeeVo employeeVo);        
+	        EmployeeVo getIdByPhone(Map<String, Object> map);
+	        EmployeeVo getIdByBizNo(Map<String, Object> map);
+	        EmployeeVo getIdbyId(EmployeeVo employeeVo);
+	        void changePassword(EmployeeVo employeeVo);
+	        MemberVo selectUserByInfo(Map<String, Object> map);
+	        void insertScdToRegisteredMember(Map<String, Object> map);
+	        void insertScdToNewMember(Map<String, Object> map);
+	        void insertScdToRegisteredMemberOnetime(Map<String, Object> map);
+	        void insertScdToNewMemberOnetime(Map<String, Object> map);
+	        
+	    /*************************공지*******************************************/
+	        List<NoticeBoardVo> getNoticeList(Map<String, Object> map);
+	        double selectTotalCount(Map<String, Object> map);
+	        NoticeBoardVo getNoticeBoardByNo(NoticeBoardVo noticeBoardVo);
+	        List<NoticeBoardVo> getMainnoticelist();
+	   /**********************************************************************/
+    
+ // -------------------------------------- 창대 ----------------------------------------
+    EmployeeVo selectById(String e_id);
+	CompanyVo selectByBizNo1(String c_bizNo);
 	CompanyVo selectByCode(String c_code);
 	CompanyVo selectByNo(int c_no);
 	List<EmployeeVo> selectByCNo(int c_no);
@@ -62,8 +61,42 @@ public interface EmployeeDao {
 	List<HashMap<String, Object>> selectAllmap(List<EmployeeVo> list);
 	void updateEOrderStatus(OrderEmployeeVo orderEmployeeVo);
 	OrderEmployeeVo selectEOrderByMoNo(OrderEmployeeVo orderEmployeeVo);
+
+
+//	------------------------------------ 창대 12/15,16,17일 작업(콜 관련 정보)  ----------------------------------------------
+	List<HashMap<String, Object>> selectMyCall(EmployeeVo userVo);
+
+
+	void dropEvent(HashMap<String, Object> map);
+
+
+	void updateCallFlag(HashMap<String, Object> map);
+
+	List<HashMap<String, Object>> selectMoNoByOrderNo(HashMap<String, Object> map);
+
+
+	void insertEOrder(HashMap<String, Object> map);
+
+
+	void deleteCancelCallByMoNo(HashMap<String, Object> map);
+
+
+	void insertCancelCall(HashMap<String, Object> map);
+
+
+	void updateMOrderENoFirst(HashMap<String, Object> map);
+
+
+	void reCreateEvent(HashMap<String, Object> map);
+
+
+	List<HashMap<String, Object>> selectAllStartTimes(String mo_orderNo);
+
+
+
+
+
 	
 	
 	
 }
-

@@ -175,6 +175,222 @@ select t_m_order.mo_no, t_m_order.mo_orderNo, t_m_order.mo_startTime, t_e_order.
 	<!-- 지도 끝-->
 	<!-- 로그인 후 로그인 회원과 당일 일치하는 주문정보가져오기 11/29-30일 끝 -->
 
+	<!-- ***********************  12/15 노창대.  콜 관련 My Call 받아오기 시작 *********************** -->
+		
+		<select id="selectMyCall" parameterType="employeeVo" resultType="hashMap">
+		<!-- 무엇이 필요하냐. t_m_order, t_member, t_service, #{e_no} -->
+		
+		select t_m_order.mo_no, t_m_order.e_no_first, date_format(t_m_order.mo_startTime,"%Y-%m-%d") as mo_startTime,
+		date_format(t_m_order.mo_startTime,"%Y%m%d%H") as dateHourForNoOneEmployee,
+		date_format(t_m_order.mo_startTime,"%Y%m%d") as dateForNoOneEmployee,
+		t_member.m_address, t_member.m_lon, 
+		t_member.m_lat, t_member.m_gu, t_member.m_no, t_member.m_name, SUBSTRING(t_service.s_name,1,2) as s_shortName,
+		t_service.s_name,
+		t_service.s_no, cast(t_service.s_price as unsigned) as s_price, t_m_order.mo_total,
+		format(cast(t_m_order.mo_total as unsigned)*cast(t_service.s_price as unsigned),0) as mo_totalPrice, t_m_order.mo_freqType, 
+		t_m_order.mo_freqCycle, t_m_order.mo_orderNo 
+		from (select * from t_m_order where e_no_first=#{e_no} and mo_callFlag='ing') 
+		as t_m_order inner join t_member
+		on t_m_order.m_no = t_member.m_no inner join t_service on t_m_order.s_no=t_service.s_no;
+		
+		</select>
+
+	
+	<update id="dropEvent" parameterType="String">
+		drop event ${mo_orderNo};
+	</update>
+	<update id="updateCallFlag">
+	
+	update t_m_order set mo_callFlag='ed' where mo_orderNo=#{mo_orderNo}
+	
+	</update>
+	
+	
+	<insert id="insertEOrder" parameterType="hashMap">
+	insert into t_e_order(mo_no, e_no) values
+		<foreach collection="mo_noList" item="item" separator=",">
+		( #{item.mo_no}, #{userVo.e_no})
+		</foreach>
+	</insert>
+	
+	<delete id="deleteCancelCallByMoNo" parameterType="hashMap">
+		delete from t_cancelCall where mo_no = ${mo_no}
+	</delete>
+	
+	
+	<insert id="insertCancelCall" parameterType="hashMap">
+	
+		insert into t_cancelCall(mo_no, e_no) values(#{mo_no}, #{refuseMoNo.e_no_first});
+	
+	</insert>
+	
+	<update id="updateMOrderENoFirst" parameterType="hashMap">
+		
+		
+		update t_m_order set e_no_first=(Select LastOne.e_no from
+		(Select AA.c_no, AA.e_no, AA.e_name, AA.m_no, AA.m_name, AA.m_lon, AA.m_lat, AA.lonlatGrade, 
+		BB.starGrade, ZZZ.profitGrade, (AA.lonlatGrade+BB.starGrade+ZZZ.profitGrade) as totalGrade 
+	from ((select SSS.e_no, SSS.c_no, SSS.e_name, B.mo_no, B.m_no, B.mo_startTime, t_member.m_address, t_member.m_name, t_member.m_lon, t_member.m_lat, 
+	(case when (ABS(t_member.m_lon -#{refuseMoNo.lon}) + (ABS(t_member.m_lat-#{refuseMoNo.lat}))*3.3) >=0.5 then 1 when
+	(ABS(t_member.m_lon -#{refuseMoNo.lon}) +
+	(ABS(t_member.m_lat-#{refuseMoNo.lat}))*3.3) >=0.4 then 1.5 when
+	(ABS(t_member.m_lon -#{refuseMoNo.lon}) +
+	(ABS(t_member.m_lat-#{refuseMoNo.lat}))*3.3) >=0.3 then 2 when
+	(ABS(t_member.m_lon -#{refuseMoNo.lon}) +
+	(ABS(t_member.m_lat-#{refuseMoNo.lat}))*3.3) >=0.2 then 2.5 when
+	(ABS(t_member.m_lon -#{refuseMoNo.lon}) +
+	(ABS(t_member.m_lat-#{refuseMoNo.lat}))*3.3) >=0.1 then 3 when
+	(ABS(t_member.m_lon -#{refuseMoNo.lon}) +
+	(ABS(t_member.m_lat-#{refuseMoNo.lat}))*3.3) >=0.05 then 3.5 when
+	(ABS(t_member.m_lon -#{refuseMoNo.lon}) +
+	(ABS(t_member.m_lat-#{refuseMoNo.lat}))*3.3) >= 0 then 4 else 1 end) as
+	lonlatGrade from 
+	((select t_employee.e_no, t_employee.e_name, t_employee.c_no 
+	from (select A.mo_no, t_e_order.e_no from t_e_order inner join 
+	(select * from t_m_order where date_format(mo_startTime,"%Y%m%d%H") = #{refuseMoNo.dateHourForNoOneEmployee}) as A  
+	on t_e_order.mo_no=A.mo_no) as YY right join t_employee
+	on YY.e_no = t_employee.e_no where YY.e_no is null) as SSS left outer join 
+	(select C.mo_no, C.m_no, C.mo_startTime, t_e_order.e_no from t_e_order 
+	inner join (select * from t_m_order where 
+	date_format(mo_startTime,"%Y%m%d") = #{refuseMoNo.dateForNoOneEmployee} and 
+	date_format(mo_startTime,"%Y%m%d%H") != #{refuseMoNo.dateHourForNoOneEmployee} ) as C 
+	on t_e_order.mo_no = C.mo_no) as B on SSS.e_no =B.e_no) left join t_member on t_member.m_no = B.m_no) as AA 
+	inner join (select t_employee.c_no, if((AVG(D.mo_star)*4/5)>=1,(AVG(D.mo_star)*4/5),1) as starGrade 
+	from ((select mo_no, mo_startTime,mo_star from t_m_order where (date_format(mo_startTime, "%Y%m") = if(substring((date_format(now(), "%Y%m")-1),5,2)='00',
+	concat(substring((date_format(now(), "%Y%m")-1),1,4)-1,'12'),
+	date_format(now(), "%Y%m")-1))) as D inner join t_e_order on D.mo_no = t_e_order.mo_no) inner join t_employee on t_employee.e_no = t_e_order.e_no group by t_employee.c_no) as BB on AA.c_no= BB.c_no) inner join (select  t_employee.c_no, count(t_service.s_price), sum(t_service.s_price),
+	(case when sum(t_service.s_price)-#{prevMonthOutCome}=0 then 3 when sum(t_service.s_price)-#{prevMonthOutCome} >2000000 then 1.1
+	when sum(t_service.s_price)-#{prevMonthOutCome} >1600000 then 1.3
+	when sum(t_service.s_price)-#{prevMonthOutCome} >1400000 then 1.5
+	when sum(t_service.s_price)-#{prevMonthOutCome} >1200000 then 1.7
+	when sum(t_service.s_price)-#{prevMonthOutCome} >1000000 then 1.9
+	when sum(t_service.s_price)-#{prevMonthOutCome} >500000 then 2.1
+	when sum(t_service.s_price)-#{prevMonthOutCome} >100000 then 2.3
+	when sum(t_service.s_price)-#{prevMonthOutCome} >50000 then 2.5
+	when sum(t_service.s_price)-#{prevMonthOutCome} >20000 then 2.7
+	when sum(t_service.s_price)-#{prevMonthOutCome} >10000 then 2.9 else 2.95 end) as
+	profitGrade
+	from (((t_m_order inner join t_service on t_m_order.s_no=t_service.s_no) inner join t_e_order on t_e_order.mo_no=t_m_order.mo_no) 
+	inner join t_employee on t_employee.e_no= t_e_order.e_no) where date_format(t_m_order.mo_startTime, "%Y%m") = if(substring((date_format(now(), "%Y%m")-1),5,2)='00',
+		concat(substring((date_format(now(), "%Y%m")-1),1,4)-1,'12'),
+		date_format(now(), "%Y%m")-1) group by t_employee.c_no) as ZZZ on AA.c_no = ZZZ.c_no) as LastOne 
+		left join ((select * from t_cancelCall where mo_no=#{mo_no}) as t_cancelCall) 
+		on t_cancelCall.e_no = LastOne.e_no where t_cancelCall.e_no is null 
+		order by totalGrade desc, starGrade desc limit 1) where mo_no=#{mo_no};
+	
+	</update>
+	
+	
+	
+	<update id="reCreateEvent" parameterType="hashMap">
+	
+
+CREATE EVENT ${mo_orderNo} ON SCHEDULE
+EVERY 40 MINUTE STARTS CURRENT_TIMESTAMP + INTERVAL 40 MINUTE
+DO 
+BEGIN
+Insert into t_cancelCall(mo_no,e_no) values(#{mo_no}, (select e_no_first from t_m_order where mo_no=#{mo_no}));
+
+if (Select LastOne.e_no from (Select AA.c_no, AA.e_no, AA.e_name, AA.m_no, AA.m_name, AA.m_lon, AA.m_lat, AA.lonlatGrade, BB.starGrade, ZZZ.profitGrade, (AA.lonlatGrade+BB.starGrade+ZZZ.profitGrade) as totalGrade 
+from ((select SSS.e_no, SSS.c_no, SSS.e_name, B.mo_no, B.m_no, B.mo_startTime, t_member.m_address, t_member.m_name, t_member.m_lon, t_member.m_lat, (case when (ABS(t_member.m_lon -#{refuseMoNo.lon}) + (ABS(t_member.m_lat-#{refuseMoNo.lat}))*3.3) >=0.5 then 1 when
+(ABS(t_member.m_lon -#{refuseMoNo.lon}) +
+(ABS(t_member.m_lat-#{refuseMoNo.lat}))*3.3) >=0.4 then 1.5 when
+(ABS(t_member.m_lon -#{refuseMoNo.lon}) +
+(ABS(t_member.m_lat-#{refuseMoNo.lat}))*3.3) >=0.3 then 2 when
+(ABS(t_member.m_lon -#{refuseMoNo.lon}) +
+(ABS(t_member.m_lat-#{refuseMoNo.lat}))*3.3) >=0.2 then 2.5 when
+(ABS(t_member.m_lon -#{refuseMoNo.lon}) +
+(ABS(t_member.m_lat-#{refuseMoNo.lat}))*3.3) >=0.1 then 3 when
+(ABS(t_member.m_lon -#{refuseMoNo.lon}) +
+(ABS(t_member.m_lat-#{refuseMoNo.lat}))*3.3) >=0.05 then 3.5 when
+(ABS(t_member.m_lon -#{refuseMoNo.lon}) +
+(ABS(t_member.m_lat-#{refuseMoNo.lat}))*3.3) >= 0 then 4 else 1 end) as
+lonlatGrade from 
+((select t_employee.e_no, t_employee.e_name, t_employee.c_no 
+from (select A.mo_no, t_e_order.e_no from t_e_order inner join 
+(select * from t_m_order where date_format(mo_startTime,"%Y%m%d%H") = #{refuseMoNo.dateHourForNoOneEmployee}) as A  
+on t_e_order.mo_no=A.mo_no) as YY right join t_employee 
+on YY.e_no = t_employee.e_no where YY.e_no is null) as SSS left outer join (select C.mo_no, C.m_no, C.mo_startTime, t_e_order.e_no from t_e_order 
+inner join (select * from t_m_order where 
+date_format(mo_startTime,"%Y%m%d") = #{refuseMoNo.dateForNoOneEmployee} and date_format(mo_startTime,"%Y%m%d%H") != #{refuseMoNo.dateHourForNoOneEmployee} ) as C 
+on t_e_order.mo_no = C.mo_no) as B on SSS.e_no =B.e_no) left join t_member on t_member.m_no = B.m_no) as AA inner join 
+(select t_employee.c_no, if((AVG(D.mo_star)*4/5)>=1,(AVG(D.mo_star)*4/5),1) as starGrade from ((select mo_no, mo_startTime,mo_star from t_m_order where (date_format(mo_startTime, "%Y%m") = if(substring((date_format(now(), "%Y%m")-1),5,2)='00',
+		concat(substring((date_format(now(), "%Y%m")-1),1,4)-1,'12'),
+		date_format(now(), "%Y%m")-1))) as D inner join t_e_order on D.mo_no = t_e_order.mo_no) inner join t_employee on t_employee.e_no = t_e_order.e_no group by t_employee.c_no) as BB on AA.c_no= BB.c_no) inner join (select  t_employee.c_no, count(t_service.s_price), sum(t_service.s_price),
+(case when sum(t_service.s_price)-#{prevMonthOutCome}=0 then 3 when sum(t_service.s_price)-#{prevMonthOutCome} >2000000 then 1.1
+when sum(t_service.s_price)-#{prevMonthOutCome} >1600000 then 1.3
+when sum(t_service.s_price)-#{prevMonthOutCome} >1400000 then 1.5
+when sum(t_service.s_price)-#{prevMonthOutCome} >1200000 then 1.7
+when sum(t_service.s_price)-#{prevMonthOutCome} >1000000 then 1.9
+when sum(t_service.s_price)-#{prevMonthOutCome} >500000 then 2.1
+when sum(t_service.s_price)-#{prevMonthOutCome} >100000 then 2.3
+when sum(t_service.s_price)-#{prevMonthOutCome} >50000 then 2.5
+when sum(t_service.s_price)-#{prevMonthOutCome} >20000 then 2.7
+when sum(t_service.s_price)-#{prevMonthOutCome} >10000 then 2.9 else 2.95 end) as
+profitGrade
+from (((t_m_order inner join t_service on t_m_order.s_no=t_service.s_no) inner join t_e_order on t_e_order.mo_no=t_m_order.mo_no) inner join t_employee on t_employee.e_no= t_e_order.e_no) where date_format(t_m_order.mo_startTime, "%Y%m") = if(substring((date_format(now(), "%Y%m")-1),5,2)='00',
+		concat(substring((date_format(now(), "%Y%m")-1),1,4)-1,'12'),
+		date_format(now(), "%Y%m")-1) group by t_employee.c_no) as ZZZ on AA.c_no = ZZZ.c_no) as LastOne left join ((select * from t_cancelCall where mo_no=#{mo_no}) as t_cancelCall) on t_cancelCall.e_no = LastOne.e_no where t_cancelCall.e_no is null  order by totalGrade desc, starGrade desc limit 1) is null
+Then delete from t_cancelCall where mo_no=#{mo_no}; 
+End if;
+
+Update t_m_order set e_no_first=(Select LastOne.e_no from (Select AA.c_no, AA.e_no, AA.e_name, AA.m_no, AA.m_name, AA.m_lon, AA.m_lat, AA.lonlatGrade, BB.starGrade, ZZZ.profitGrade, (AA.lonlatGrade+BB.starGrade+ZZZ.profitGrade) as totalGrade 
+from ((select SSS.e_no, SSS.c_no, SSS.e_name, B.mo_no, B.m_no, B.mo_startTime, t_member.m_address, t_member.m_name, t_member.m_lon, t_member.m_lat, (case when (ABS(t_member.m_lon -#{refuseMoNo.lon}) + (ABS(t_member.m_lat-#{refuseMoNo.lat}))*3.3) >=0.5 then 1 when
+(ABS(t_member.m_lon -#{refuseMoNo.lon}) +
+(ABS(t_member.m_lat-#{refuseMoNo.lat}))*3.3) >=0.4 then 1.5 when
+(ABS(t_member.m_lon -#{refuseMoNo.lon}) +
+(ABS(t_member.m_lat-#{refuseMoNo.lat}))*3.3) >=0.3 then 2 when
+(ABS(t_member.m_lon -#{refuseMoNo.lon}) +
+(ABS(t_member.m_lat-#{refuseMoNo.lat}))*3.3) >=0.2 then 2.5 when
+(ABS(t_member.m_lon -#{refuseMoNo.lon}) +
+(ABS(t_member.m_lat-#{refuseMoNo.lat}))*3.3) >=0.1 then 3 when
+(ABS(t_member.m_lon -#{refuseMoNo.lon}) +
+(ABS(t_member.m_lat-#{refuseMoNo.lat}))*3.3) >=0.05 then 3.5 when
+(ABS(t_member.m_lon -#{refuseMoNo.lon}) +
+(ABS(t_member.m_lat-#{refuseMoNo.lat}))*3.3) >= 0 then 4 else 1 end) as
+lonlatGrade from 
+((select t_employee.e_no, t_employee.e_name, t_employee.c_no 
+from (select A.mo_no, t_e_order.e_no from t_e_order inner join 
+(select * from t_m_order where date_format(mo_startTime,"%Y%m%d%H") = #{refuseMoNo.dateHourForNoOneEmployee}) as A  
+on t_e_order.mo_no=A.mo_no) as YY right join t_employee
+on YY.e_no = t_employee.e_no where YY.e_no is null) as SSS left outer join (select C.mo_no, C.m_no, C.mo_startTime, t_e_order.e_no from t_e_order 
+inner join (select * from t_m_order where 
+date_format(mo_startTime,"%Y%m%d") = #{refuseMoNo.dateForNoOneEmployee} and date_format(mo_startTime,"%Y%m%d%H") != #{refuseMoNo.dateHourForNoOneEmployee} ) as C 
+on t_e_order.mo_no = C.mo_no) as B on SSS.e_no =B.e_no) left join t_member on t_member.m_no = B.m_no) as AA inner join 
+(select t_employee.c_no, if((AVG(D.mo_star)*4/5)>=1,(AVG(D.mo_star)*4/5),1) as starGrade from ((select mo_no, mo_startTime,mo_star from t_m_order where (date_format(mo_startTime, "%Y%m") = if(substring((date_format(now(), "%Y%m")-1),5,2)='00',
+		concat(substring((date_format(now(), "%Y%m")-1),1,4)-1,'12'),
+		date_format(now(), "%Y%m")-1))) as D inner join t_e_order on D.mo_no = t_e_order.mo_no) inner join t_employee on t_employee.e_no = t_e_order.e_no group by t_employee.c_no) as BB on AA.c_no= BB.c_no) inner join (select  t_employee.c_no, count(t_service.s_price), sum(t_service.s_price),
+(case when sum(t_service.s_price)-#{prevMonthOutCome}=0 then 3 when sum(t_service.s_price)-#{prevMonthOutCome} >2000000 then 1.1
+when sum(t_service.s_price)-#{prevMonthOutCome} >1600000 then 1.3
+when sum(t_service.s_price)-#{prevMonthOutCome} >1400000 then 1.5
+when sum(t_service.s_price)-#{prevMonthOutCome} >1200000 then 1.7
+when sum(t_service.s_price)-#{prevMonthOutCome} >1000000 then 1.9
+when sum(t_service.s_price)-#{prevMonthOutCome} >500000 then 2.1
+when sum(t_service.s_price)-#{prevMonthOutCome} >100000 then 2.3
+when sum(t_service.s_price)-#{prevMonthOutCome} >50000 then 2.5
+when sum(t_service.s_price)-#{prevMonthOutCome} >20000 then 2.7
+when sum(t_service.s_price)-#{prevMonthOutCome} >10000 then 2.9 else 2.95 end) as
+profitGrade
+from (((t_m_order inner join t_service on t_m_order.s_no=t_service.s_no) inner join t_e_order on t_e_order.mo_no=t_m_order.mo_no) inner join t_employee on t_employee.e_no= t_e_order.e_no) where date_format(t_m_order.mo_startTime, "%Y%m") = if(substring((date_format(now(), "%Y%m")-1),5,2)='00',
+		concat(substring((date_format(now(), "%Y%m")-1),1,4)-1,'12'),
+		date_format(now(), "%Y%m")-1) group by t_employee.c_no) as ZZZ on AA.c_no = ZZZ.c_no) as LastOne left join ((select * from t_cancelCall where mo_no=#{mo_no}) as t_cancelCall) on t_cancelCall.e_no = LastOne.e_no where t_cancelCall.e_no is null  order by totalGrade desc, starGrade desc limit 1) where mo_no=#{mo_no};
+END 
+	</update>
+	
+	<select id="selectAllStartTimes" parameterType="String" resultType="hashMap">
+	
+		select date_format(mo_startTime,"%Y-%m-%d %H:%i") as mo_startTime, mo_orderNo from t_m_order
+		where mo_orderNo=#{mo_orderNo};
+	</select>	
+	
+	
+	
+	
+	
+	
+	<!-- ***********************    콜 관련 My Call*********************** -->
+	
+
 
 	<!-- ************************************스케쥴: 진화************************************** -->
 	
@@ -221,6 +437,8 @@ select t_m_order.mo_no, t_m_order.mo_orderNo, t_m_order.mo_startTime, t_e_order.
 		insert into t_member(m_name, m_address, m_phone, m_type, m_lon, m_lat) values(#{name}, #{address}, #{phone}, #{type}, #{lon}, #{lat})
 	</insert>
 
+		
+	
+	
 	
 </mapper>
-
