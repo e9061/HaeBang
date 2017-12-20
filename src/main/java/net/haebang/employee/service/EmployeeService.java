@@ -13,6 +13,7 @@ import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
 import net.haebang.vo.NoticeBoardVo;
 
+
 public interface EmployeeService {
 
 	// 창대
@@ -22,7 +23,8 @@ public interface EmployeeService {
 	void updateEoC(HttpServletRequest request, EmployeeVo userVo);
 	void updateBizNo(CompanyVo companyVo, MultipartHttpServletRequest request);
 	void updateEmpPicture(EmployeeVo employeeVo, MultipartHttpServletRequest request);
-
+	List<HashMap<String, Object>> acceptMyCall(HashMap<String, Object> map);
+	List<HashMap<String, Object>> refuseMyCall(HashMap<String, Object> map);
 
 
     /********************************박 진 화**************************************************************/
