@@ -13,27 +13,27 @@ import net.haebang.vo.OrderEmployeeVo;
 
 public interface EmployeeDao {
 
-	//진화
+   //진화
     
-	/*************************공지*******************************************/
-	        EmployeeVo selectById(EmployeeVo employeeVo);        
-	        EmployeeVo getIdByPhone(Map<String, Object> map);
-	        EmployeeVo getIdByBizNo(Map<String, Object> map);
-	        EmployeeVo getIdbyId(EmployeeVo employeeVo);
-	        void changePassword(EmployeeVo employeeVo);
-	        MemberVo selectUserByInfo(Map<String, Object> map);
-	        void insertScdToRegisteredMember(Map<String, Object> map);
-	        void insertScdToNewMember(Map<String, Object> map);
-	        void insertScdToRegisteredMemberOnetime(Map<String, Object> map);
-	        void insertScdToNewMemberOnetime(Map<String, Object> map);
-	        
-	    /*************************공지*******************************************/
-	        List<NoticeBoardVo> getNoticeList(Map<String, Object> map);
-	        double selectTotalCount(Map<String, Object> map);
-	        NoticeBoardVo getNoticeBoardByNo(NoticeBoardVo noticeBoardVo);
-	        List<NoticeBoardVo> getMainnoticelist();
-	   /**********************************************************************/
-    
+/*************************공지*******************************************/
+        EmployeeVo selectById(EmployeeVo employeeVo);        
+        EmployeeVo getIdByPhone(Map<String, Object> map);
+        EmployeeVo getIdByBizNo(Map<String, Object> map);
+        EmployeeVo getIdbyId(EmployeeVo employeeVo);
+        void changePassword(EmployeeVo employeeVo);
+        MemberVo selectUserByInfo(Map<String, Object> map);
+        void insertScdToRegisteredMember(Map<String, Object> map);
+        void insertScdToNewMember(Map<String, Object> map);
+        void insertScdToRegisteredMemberOnetime(Map<String, Object> map);
+        void insertScdToNewMemberOnetime(Map<String, Object> map);
+        
+    /*************************공지*******************************************/
+        List<NoticeBoardVo> getNoticeList(Map<String, Object> map);
+        double selectTotalCount(Map<String, Object> map);
+        NoticeBoardVo getNoticeBoardByNo(NoticeBoardVo noticeBoardVo);
+        List<NoticeBoardVo> getMainnoticelist();
+   /**********************************************************************/
+ 
  // -------------------------------------- 창대 ----------------------------------------
     EmployeeVo selectById(String e_id);
 	CompanyVo selectByBizNo1(String c_bizNo);
@@ -94,7 +94,25 @@ public interface EmployeeDao {
 
 
 
+/***************************************스케쥴************************************************/
+	
+	List<HashMap<String, Object>> getScheduleList(int c_no);
+	HashMap<String, Object> getScheduleByMONo(int mo_no);
+	void deleteSchedule(int mo_no);
+	
+	String getMtypebyMONo(int mo_no);
+	HashMap<String, Object> getScheduleByMONoByHB(int mo_no);
+	List<HashMap<String, Object>> getmyScheduleList(Map<String, Object> map);
 
+	
+	HashMap<String, Object> getScheduleByOdNo(int mo_no);
+	HashMap<String, Object> getScheduleByOdNoTypeN(int mo_no);
+	List<HashMap<String, Object>> getEmployeeList(int e_no);
+	
+	void updateNoHaebangSch(HashMap<String, Object> map);
+	void updateHaebangSch(HashMap<String, Object> map);
+
+/********************************************************************************************/
 
 	
 	

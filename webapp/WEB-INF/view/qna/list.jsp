@@ -19,7 +19,6 @@
 
 <!-- Theme skin -->
 <link href="resources/skins/default.css" rel="stylesheet" />
-
 <style>
 #content {
 	text-align: center;
@@ -85,6 +84,7 @@ td {
 					<tr <c:if test="${ loop.count mod 2 eq 0 }"  >class="even"</c:if>>
 						<td>${ list.q_no }</td>
 						<td>
+							<%-- <a onclick="doAction('${ board.no }')"> --%> <a
 							href="${ pageContext.request.contextPath }/qna/detail/${ list.q_no }">
 								<c:out value="${ list.q_title }" />
 						</a>

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,319 +26,360 @@ import net.haebang.member.service.MemberService;
 import net.haebang.vo.MemberVo;
 import net.haebang.vo.NoticeBoardVo;
 
-@RequestMapping("/member")
+@RequestMapping
 @Controller
 public class MemberController {
 
-	@Autowired
-	MemberService service;
-	
-	@Autowired
-	MemberDao dao;
+   @Autowired
+   MemberService service;
+   
+   @Autowired
+   MemberDao dao;
 
-	@RequestMapping(value = "/join", method = RequestMethod.GET)
-	public String joinForm(Model model) {
+   @RequestMapping(value = "/member/join", method = RequestMethod.GET)
+   public String joinForm(Model model) {
 
-		MemberVo member = new MemberVo();
-		model.addAttribute("member",member);
+      MemberVo member = new MemberVo();
+      model.addAttribute("member",member);
 
-		return "member/join";
-	}
+      return "member/join";
+   }
 
-	@RequestMapping(value = "/join", method = RequestMethod.POST)
-	public String join(@Valid MemberVo Member, 
-						@RequestParam("m_name") String m_name,
-						@RequestParam("m_id") String m_id,
-						@RequestParam("m_password") String m_password,
-						@RequestParam("m_confirm") String m_confirm,
-						@RequestParam("phone1") String phone1, 
-						@RequestParam("phone2") String phone2, 
-						@RequestParam("phone3") String phone3) {
-		
-		String m_phone = phone1 + phone2 + phone3;
-		
-		Member.setM_phone(m_phone);
-		
-		service.insertMember(Member);
+   @RequestMapping(value = "/member/join", method = RequestMethod.POST)
+   public String join(@Valid MemberVo Member, 
+                  @RequestParam("m_name") String m_name,
+                  @RequestParam("m_id") String m_id,
+                  @RequestParam("m_password") String m_password,
+                  @RequestParam("m_confirm") String m_confirm,
+                  @RequestParam("phone1") String phone1, 
+                  @RequestParam("phone2") String phone2, 
+                  @RequestParam("phone3") String phone3) {
+      
+      String m_phone = phone1 + phone2 + phone3;
+      
+      Member.setM_phone(m_phone);
+      
+      service.insertMember(Member);
 
-		return "redirect:/";
-	}
+      return "redirect:/";
+   }
 
-	
-	@RequestMapping(value= "/myPage/{m_id}", method=RequestMethod.GET)
-	public String selectMyInfo(HttpServletRequest request, HttpServletResponse response) {
-		
-		HttpSession session = request.getSession();
-		
-		MemberVo memberVO = (MemberVo)session.getAttribute("userVO");
-		System.out.println(memberVO.getM_id());
-		memberVO = service.selectOneMember(memberVO.getM_id()); 
-		session.setAttribute("memberVO", memberVO);
-		System.out.println("잘된다");
-		return "member/myPage";
-	}
-	
-	
-	
-	
-	
-	@RequestMapping(value = "/loginForm", method=RequestMethod.GET)
-	public String loginForm() {
-		return "member/login";
-	}
-	
-	@RequestMapping(value= "/bloginForm", method=RequestMethod.GET)
-	public String bloginForm() {
-		return "member/blogin";
-	}
-	@RequestMapping(value= "/prevLoginForm", method=RequestMethod.GET)
-	public String prevLoginForm() {
-		return "member/prevLogin";
-	}
-	
-	
-	@RequestMapping(value="/prevLogin", method=RequestMethod.POST)
-	public String prevLogin(MemberVo member, HttpSession session, Model model, HttpServletRequest request) {
-		
-		String m_id = request.getParameter("m_id");
-		String m_password = request.getParameter("m_password");
-		String m_name = request.getParameter("m_name");
-		
-		MemberVo userVO = new MemberVo();
-		userVO.setM_id(m_id);
-		userVO.setM_password(m_password);
-		userVO.setM_name(m_name);
-		
-		try {
-		
-		userVO = service.login(member);
-		
-		
-				
-		session.setAttribute("userVO", userVO);
-		model.addAttribute("userVO",userVO);
-		
-		return "redirect:/";
-		
-		} catch (NoMemberException e) {
-			
-		model.addAttribute("ErrorMessage", "입력하신 회원 정보가 존재하지 않습니다.");
-		return "member/prevLogin";
-		
-		}
-		
-	}
-	
-	@RequestMapping(value="/mainLogin", method=RequestMethod.POST)
-	public String mainLogin(MemberVo member, HttpSession session, Model model, HttpServletRequest request) {
-		
-		String m_id = request.getParameter("m_id");
-		String m_password = request.getParameter("m_password");
-		String m_name = request.getParameter("m_name");
-		
-		MemberVo userVO = new MemberVo();
-		userVO.setM_id(m_id);
-		userVO.setM_password(m_password);
-		userVO.setM_name(m_name);
-		
-		try {
-		
-		userVO = service.login(member);
-		
-		
-				
-		session.setAttribute("userVO", userVO);
-		model.addAttribute("userVO",userVO);
-		
-		return "redirect:/";
-		
-		} catch (NoMemberException e) {
-			
-		model.addAttribute("ErrorMessage", "입력하신 회원 정보가 존재하지 않습니다.");
-		return "index";
-		
-		}
-		
-	}
-	
-	@RequestMapping(value="/blogin", method=RequestMethod.POST)
-	public String blogin(MemberVo member, HttpSession session, Model model, HttpServletRequest request) {
-		
-		String m_password = request.getParameter("m_password");
-		String m_name = request.getParameter("m_name");
-		String m_phone = request.getParameter("m_phone");
-		
-		MemberVo userVO = new MemberVo();
-		userVO.setM_password(m_password);
-		userVO.setM_name(m_name);
-		userVO.setM_phone(m_phone);
-		
-		
-		try {
-		
-		userVO = service.blogin(member);
-		
-		
-				
-		session.setAttribute("userVO", userVO);
-		model.addAttribute("userVO",userVO);
-		
-		return "redirect:/";
-		
-		} catch (NoMemberException e) {
-			
-		model.addAttribute("ErrorMessage", "입력하신 회원 정보가 존재하지 않습니다.");
-		return "member/blogin";
-		
-		}
-		
-	}
-	
-	@RequestMapping(value="/logout")
-	public String logout(HttpSession session, SessionStatus sessionStatus) {
-		
-		session.invalidate();
-		/*sessionStatus.setComplete();*/
-		
-		
-		return "redirect:/";
-	}
-	
-	@RequestMapping(value="/service")
-	public String service() {
-		
-		
-		
-		return "member/service";
-	}
-	
-	@RequestMapping(value = "/duplicate1", method = RequestMethod.POST)
-	public String duplicate1(HttpServletRequest req, Model model) {
-		System.out.println(req.getParameter("m_id"));
-		MemberVo memberVo = dao.selectById(req.getParameter("m_id"));
-		String msg = null;
-		
+   
+   @RequestMapping(value= "/member/myPage/{m_id}", method=RequestMethod.GET)
+   public String selectMyInfo(HttpServletRequest request, HttpServletResponse response) {
+      
+      HttpSession session = request.getSession();
+      
+      MemberVo memberVO = (MemberVo)session.getAttribute("userVO");
+      System.out.println(memberVO.getM_id());
+      memberVO = service.selectOneMember(memberVO.getM_id()); 
+      session.setAttribute("memberVO", memberVO);
+      System.out.println("잘된다");
+      return "member/myPage";
+   }
+   
+   
+   
+   
+   
+   @RequestMapping(value = "/member/loginForm", method=RequestMethod.GET)
+   public String loginForm() {
+      return "member/login";
+   }
+   
+   @RequestMapping(value= "/member/bloginForm", method=RequestMethod.GET)
+   public String bloginForm() {
+      return "member/blogin";
+   }
+   @RequestMapping(value= "/member/prevLoginForm", method=RequestMethod.GET)
+   public String prevLoginForm() {
+      return "member/prevLogin";
+   }
+   
+   
+   @RequestMapping(value="/member/prevLogin", method=RequestMethod.POST)
+   public String prevLogin(MemberVo member, HttpSession session, Model model, HttpServletRequest request) {
+      
+      String m_id = request.getParameter("m_id");
+      String m_password = request.getParameter("m_password");
+      String m_name = request.getParameter("m_name");
+      
+      MemberVo userVO = new MemberVo();
+      userVO.setM_id(m_id);
+      userVO.setM_password(m_password);
+      userVO.setM_name(m_name);
+      
+      try {
+      
+      userVO = service.login(member);
+      
+      
+            
+      session.setAttribute("userVO", userVO);
+      model.addAttribute("userVO",userVO);
+      
+      return "redirect:/";
+      
+      } catch (NoMemberException e) {
+         
+      model.addAttribute("ErrorMessage", "입력하신 회원 정보가 존재하지 않습니다.");
+      return "member/prevLogin";
+      
+      }
+      
+   }
+   
+   @RequestMapping(value="/member/mainLogin", method=RequestMethod.POST)
+   public String mainLogin(MemberVo member, HttpSession session, Model model, HttpServletRequest request) {
+      
+      String m_id = request.getParameter("m_id");
+      String m_password = request.getParameter("m_password");
+      String m_name = request.getParameter("m_name");
+      
+      MemberVo userVO = new MemberVo();
+      userVO.setM_id(m_id);
+      userVO.setM_password(m_password);
+      userVO.setM_name(m_name);
+      
+      try {
+      
+      userVO = service.login(member);
+      System.out.println(userVO.toString());
+      
+            
+      session.setAttribute("userVO", userVO);
+      model.addAttribute("userVO",userVO);
+      
+      return "redirect:/";
+      
+      } catch (NoMemberException e) {
+         
+      model.addAttribute("ErrorMessage", "입력하신 회원 정보가 존재하지 않습니다.");
+      return "index";
+      
+      }
+      
+   }
+   @RequestMapping(value="/member/modalLogin", method=RequestMethod.POST)
+   public @ResponseBody MemberVo modalLogin(HttpSession session, Model model, HttpServletRequest request) {
+	   
+	   String m_id = request.getParameter("signin-email");
+	   String m_password = request.getParameter("signin-password");
+	   
+	   MemberVo userVO = new MemberVo();
+	   userVO.setM_id(m_id);
+	   userVO.setM_password(m_password);
+	   
+	   try {
+		   
+		   userVO = service.login(userVO);
+		 /*  String phone = userVO.getM_phone();
+		   int length = phone.length();
+		   String first = phone.substring(0,3);
+		   String second = "";
+		   String third = "";
+		   if(length==10) {
+			   second = phone.substring(3, 6);
+			   third = phone.substring(6, 10);
+		   } else {
+			   second = phone.substring(3, 7);
+			   third = phone.substring(7, 11);
+		   }
+		   System.out.println(first+second+third);*/
+		   session.setAttribute("userVO", userVO);
+		   model.addAttribute("userVO",userVO);
+//		   model.addAttribute("first", first);
+//		   model.addAttribute("second", second);
+//		   model.addAttribute("third", third);
+		  
+		   return userVO;
+		   
+	   } catch (NoMemberException e) {
+		   
+		   model.addAttribute("ErrorMessage", "입력하신 회원 정보가 존재하지 않습니다.");
+		   return userVO;
+	   }
+	   
+   }
+   
+   @RequestMapping(value="/member/blogin", method=RequestMethod.POST)
+   public String blogin(MemberVo member, HttpSession session, Model model, HttpServletRequest request) {
+      
+      String m_password = request.getParameter("m_password");
+      String m_name = request.getParameter("m_name");
+      String m_phone = request.getParameter("m_phone");
+      
+      MemberVo userVO = new MemberVo();
+      userVO.setM_password(m_password);
+      userVO.setM_name(m_name);
+      userVO.setM_phone(m_phone);
+      
+      
+      try {
+      
+      userVO = service.blogin(member);
+      
+      
+            
+      session.setAttribute("userVO", userVO);
+      model.addAttribute("userVO",userVO);
+      
+      return "redirect:/";
+      
+      } catch (NoMemberException e) {
+         
+      model.addAttribute("ErrorMessage", "입력하신 회원 정보가 존재하지 않습니다.");
+      return "member/blogin";
+      
+      }
+      
+   }
+   
+   @RequestMapping(value="/member/logout")
+   public String logout(HttpSession session, SessionStatus sessionStatus) {
+      
+      session.invalidate();
+      /*sessionStatus.setComplete();*/
+      
+      
+      return "redirect:/";
+   }
+   
+   @RequestMapping(value="/member/service")
+   public String service() {
+      
+      
+      
+      return "member/service";
+   }
+   
+   @RequestMapping(value = "/member/duplicate1", method = RequestMethod.POST)
+   public String duplicate1(HttpServletRequest req, Model model) {
+      System.out.println(req.getParameter("m_id"));
+      MemberVo memberVo = dao.selectById(req.getParameter("m_id"));
+      String msg = null;
+      
 
-		// Pattern pattern = Pattern.compile("[0-9].[a-zA-Z].{6,14}$");
-		Pattern pattern1 = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" +
-				"[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-		
-		Matcher matcher = pattern1.matcher(req.getParameter("m_id"));
-		System.out.println(matcher);
-		if (matcher.find()) {
-			if (memberVo != null) {
-				msg = "존재하는 아이디입니다.";
-				model.addAttribute("msg", msg);
-			} else {
-				msg = "사용가능한 아이디입니다.";
-				model.addAttribute("msg", msg);
-			}
-			
-		} else {
+      // Pattern pattern = Pattern.compile("[0-9].[a-zA-Z].{6,14}$");
+      Pattern pattern1 = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" +
+            "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+      
+      Matcher matcher = pattern1.matcher(req.getParameter("m_id"));
+      System.out.println(matcher);
+      if (matcher.find()) {
+         if (memberVo != null) {
+            msg = "존재하는 아이디입니다.";
+            model.addAttribute("msg", msg);
+         } else {
+            msg = "사용가능한 아이디입니다.";
+            model.addAttribute("msg", msg);
+         }
+         
+      } else {
 
-			msg = "이메일 형식을 지켜주세요.";
-			model.addAttribute("msg", msg);
-		}
+         msg = "이메일 형식을 지켜주세요.";
+         model.addAttribute("msg", msg);
+      }
 
-		return "member/duplicate";
+      return "member/duplicate";
 
-	}
-	
-	@RequestMapping(value = "/{m_id}", method = RequestMethod.GET)
-	public String updateForm(Model model) {
+   }
+   
+   @RequestMapping(value = "/member/{m_id}", method = RequestMethod.GET)
+   public String updateForm(Model model) {
 
-		MemberVo member = new MemberVo();
+      MemberVo member = new MemberVo();
 
-		model.addAttribute("member", member);
+      model.addAttribute("member", member);
 
-		return "member/update";
-	}
+      return "member/update";
+   }
 
-	@RequestMapping(value = "/{m_id}", method = RequestMethod.PUT)
-	public String update(@Valid MemberVo member,
-			@RequestParam("m_name") String m_name,
-			@RequestParam("m_id") String m_id,
-			@RequestParam("m_password") String m_password,
-			@RequestParam("m_confirm") String m_confirm,
-			@RequestParam("phone1") String phone1, 
-			@RequestParam("phone2") String phone2, 
-			@RequestParam("phone3") String phone3,
-			@RequestParam("m_address") String m_address,
-			@RequestParam("m_owner") String m_owner,
-			@RequestParam("m_cardNo") String m_cardNo,
-			@RequestParam("m_cardCVC") String m_cardCVC
-			) {
-		
-		String m_phone = phone1 + phone3 + phone2;
-		
-		member.setM_phone(m_phone);
-		service.updateMember(member);
-		System.out.println(member+"컨");
-		return "redirect:/member/myPage/" + m_id;
-	}
-	
-	
-	/********************************************** 공지사항 ***********************************************************/
-	
+   @RequestMapping(value = "/member/{m_id}", method = RequestMethod.PUT)
+   public String update(@Valid MemberVo member,
+         @RequestParam("m_name") String m_name,
+         @RequestParam("m_id") String m_id,
+         @RequestParam("m_password") String m_password,
+         @RequestParam("m_confirm") String m_confirm,
+         @RequestParam("phone1") String phone1, 
+         @RequestParam("phone2") String phone2, 
+         @RequestParam("phone3") String phone3,
+         @RequestParam("m_address") String m_address,
+         @RequestParam("m_owner") String m_owner,
+         @RequestParam("m_cardNo") String m_cardNo,
+         @RequestParam("m_cardCVC") String m_cardCVC
+         ) {
+      
+      String m_phone = phone1 + phone3 + phone2;
+      
+      member.setM_phone(m_phone);
+      service.updateMember(member);
+      System.out.println(member+"컨");
+      return "redirect:/member/myPage/" + m_id;
+   }
+   
+   
+   /********************************************** 공지사항 ***********************************************************/
+   
 
-	@RequestMapping("/memberNotice")
-	public ModelAndView notice(
-			@RequestParam(value="n_type", required=false) String n_type, 
-			@RequestParam(value="nowpage", defaultValue="0") int page,
+   @RequestMapping("/member/memberNotice")
+   public ModelAndView notice(
+         @RequestParam(value="n_type", required=false) String n_type, 
+         @RequestParam(value="nowpage", defaultValue="0") int page,
             @RequestParam(value="word", required=false) String word, 
             @RequestParam(value="searchCondition", defaultValue="null", required=false) String searchCondition) {
-		ModelAndView mav = new ModelAndView();
-		
-		System.out.println("************************************************************************");
-		System.out.println("!!!!!!!!!!!!!!!memberNotice!!!!!!!!!!");
-		System.out.println(n_type + "  + " + page + "  + " + word +  "  + " + searchCondition);
-		System.out.println("************************************************************************");
-		
-		// 페이징	
-		List<NoticeBoardVo> getNoticeList = service.getNoticeList(n_type ,page, word, searchCondition);
-		int totalPage = service.getLastPage(n_type, word, searchCondition);
-		
-		// key 통일 - include 때문에
-		mav.addObject("n_type", n_type);
-		mav.addObject("nowpage", page);
-		mav.addObject("totalpage", totalPage);				
-		mav.addObject("noticelist", getNoticeList);
-		mav.addObject("word", word);
-		mav.addObject("titlecontent" ,searchCondition);
-		mav.setViewName("member/noticeMember");		
-		                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
-		return mav;
-	}
-	
-	@RequestMapping(value="/memberNoticeDetail", method = RequestMethod.GET)
-	public ModelAndView detail(@RequestParam("no") int no,
-							   @RequestParam("n_viewCnt") int n_viewCnt	) {
-		System.out.println("********************************************************************");
-		System.out.println("!!!!!!!!!!!!!!!memberNoticeDetail!!!!!!!!!!");
-		System.out.println("************************************************************************");		
-		ModelAndView mav = new ModelAndView();
-		n_viewCnt ++;
-		
-		NoticeBoardVo noticeBoardVo = new NoticeBoardVo();
-		noticeBoardVo.setN_no(no);
-		noticeBoardVo.setN_viewCnt(n_viewCnt);
-		
-		NoticeBoardVo noticeDetail = service.getNoticeBoardByNo(noticeBoardVo);
-		
-		mav.addObject("noticeDetail", noticeDetail);
-		mav.setViewName("member/noticeDetailMember");		
-		System.out.println("********************************************************************");
-		System.out.println("!!!!!!!!!!!!!!!"+noticeDetail+"!!!!!!!!!!");
-		System.out.println("************************************************************************");		
-		
-		return mav;
-	}	
-	
-	/**********************************************************************************************************************/
-	
-	
-	
-	
-	
-		
+      ModelAndView mav = new ModelAndView();
+      
+      System.out.println("************************************************************************");
+      System.out.println("!!!!!!!!!!!!!!!memberNotice!!!!!!!!!!");
+      System.out.println(n_type + "  + " + page + "  + " + word +  "  + " + searchCondition);
+      System.out.println("************************************************************************");
+      
+      // 페이징   
+      List<NoticeBoardVo> getNoticeList = service.getNoticeList(n_type ,page, word, searchCondition);
+      int totalPage = service.getLastPage(n_type, word, searchCondition);
+      
+      // key 통일 - include 때문에
+      mav.addObject("n_type", n_type);
+      mav.addObject("nowpage", page);
+      mav.addObject("totalpage", totalPage);            
+      mav.addObject("noticelist", getNoticeList);
+      mav.addObject("word", word);
+      mav.addObject("titlecontent" ,searchCondition);
+      mav.setViewName("member/noticeMember");      
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+      return mav;
+   }
+   
+   @RequestMapping(value="/member/memberNoticeDetail", method = RequestMethod.GET)
+   public ModelAndView detail(@RequestParam("no") int no,
+                        @RequestParam("n_viewCnt") int n_viewCnt   ) {
+      System.out.println("********************************************************************");
+      System.out.println("!!!!!!!!!!!!!!!memberNoticeDetail!!!!!!!!!!");
+      System.out.println("************************************************************************");      
+      ModelAndView mav = new ModelAndView();
+      n_viewCnt ++;
+      
+      NoticeBoardVo noticeBoardVo = new NoticeBoardVo();
+      noticeBoardVo.setN_no(no);
+      noticeBoardVo.setN_viewCnt(n_viewCnt);
+      
+      NoticeBoardVo noticeDetail = service.getNoticeBoardByNo(noticeBoardVo);
+      
+      mav.addObject("noticeDetail", noticeDetail);
+      mav.setViewName("member/noticeDetailMember");      
+      System.out.println("********************************************************************");
+      System.out.println("!!!!!!!!!!!!!!!"+noticeDetail+"!!!!!!!!!!");
+      System.out.println("************************************************************************");      
+      
+      return mav;
+   }   
+   
+   /**********************************************************************************************************************/
+   
+   
+   
+   
+   
+      
 }

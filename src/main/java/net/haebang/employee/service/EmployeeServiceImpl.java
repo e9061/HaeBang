@@ -23,6 +23,7 @@ import net.haebang.exception.AlreadyExistingMemberException;
 import net.haebang.exception.IdPasswordNotMatchingException;
 import net.haebang.exception.NoSuchIdException;
 import net.haebang.exception.NoSuchMemberException;
+import net.haebang.user.dao.SrvDao;
 import net.haebang.vo.CompanyVo;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
@@ -412,180 +413,260 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
 	// --------------------------------------------- 아래 박 진 화 ------------------------------------------------------
-		public void modifyEmployee(EmployeeVo employee) {
+	public void modifyEmployee(EmployeeVo employee) {
 
-		}
+	}
 
-		
-		public EmployeeVo authenticate(EmployeeVo employeeVo) {
-			System.out.println("authenticate");
-			EmployeeVo employeevo = employeeDao.selectById(employeeVo);
-			System.out.println(employeevo);
-			
-			
-			if (employeevo == null ) {
-				throw new IdPasswordNotMatchingException();
-			}
-			
-			return employeevo;
-		}
-		
-
+	
+	public EmployeeVo authenticate(EmployeeVo employeeVo) {
+		System.out.println("authenticate");
+		EmployeeVo employeevo = employeeDao.selectById(employeeVo);
+		System.out.println(employeevo);
 		
 		
-		@Override
-		public List<NoticeBoardVo> getMainnoticelist() {
-			List<NoticeBoardVo> mainNoticelist = employeeDao.getMainnoticelist();
-			return mainNoticelist;
-			
-		}
-
-		@Override
-		public EmployeeVo getIdByPhone(String name, String phone) {
-			
-			 Map<String, Object> map = new HashMap<String, Object>(); 
-			 
-			 System.out.println(name);
-			 System.out.println(phone);
-		
-		        map.put("name", name);
-		        map.put("phone", phone);	        
-			
-			EmployeeVo getIdByPhone = employeeDao.getIdByPhone(map);
-			
-			if (getIdByPhone == null ) {
-				throw new NoSuchMemberException();
-			}
-			
-			
-			return getIdByPhone;
-		}
-
-		@Override
-		public EmployeeVo getIdByBizNo(String name, String companyName, String bizNo) {
-			Map<String, Object> map = new HashMap<String, Object>(); 
-			
-			System.out.println(name);
-			System.out.println(companyName);
-			System.out.println(bizNo);
-			
-			map.put("name", name);
-		    map.put("companyName", companyName);
-		    map.put("bizNo", bizNo);
-			
-			EmployeeVo getIdByBizNo = employeeDao.getIdByBizNo(map);
-			
-			if (getIdByBizNo == null ) {
-				throw new NoSuchMemberException();
-			}
-			
-			return getIdByBizNo;
-		}
-
-		@Override
-		public EmployeeVo getIdbyId(EmployeeVo employeeVo) {
-			
-			EmployeeVo checkIdbyId  = employeeDao.getIdbyId(employeeVo);
-			
-			if(checkIdbyId == null) {
-				throw new NoSuchIdException();
-			}
-			
-			return checkIdbyId;
-		}
-
-		@Override
-		public void changePassword(EmployeeVo employeeVo) {
-			employeeDao.changePassword(employeeVo);
-			
-		}
-
-	/*******************************************공지사항***********************************************************/
-		private final int LINE_PER_PAGE = 10;
-		
-		@Override
-		public List<NoticeBoardVo> getNoticeList(String n_type, int page, String word, String searchCondition) {
-		int startPoint = page * LINE_PER_PAGE;		
-			
-	        Map<String, Object> map = new HashMap<String, Object>();
-	        
-	        map.put("n_type", n_type);
-	        map.put("startPoint", startPoint);
-	        map.put("row", LINE_PER_PAGE);
-	        map.put(searchCondition, word);
-	        
-	        List<NoticeBoardVo> noticeList = employeeDao.getNoticeList(map);
-	        System.out.println("서비스");
-	        System.out.println(noticeList);
-	        
-			return noticeList;
-		}
-
-		@Override
-		public int getLastPage(String n_type, String word, String searchCondition) {
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("n_type", n_type);
-			map.put(searchCondition, word);
-			
-			int lastPage =(int)((double)employeeDao.selectTotalCount(map)/LINE_PER_PAGE);
-			System.out.println(lastPage);
-			
-			System.out.println("Service lastPage : " +lastPage);
-			System.out.println("ServiceImpl - lastPage : "+lastPage);
-			return lastPage;
-		}
-
-		@Override
-		public NoticeBoardVo getNoticeBoardByNo(NoticeBoardVo noticeBoardVo) {
-			NoticeBoardVo getNoticeBoardByNo = employeeDao.getNoticeBoardByNo(noticeBoardVo);
-			return getNoticeBoardByNo;
+		if (employeevo == null ) {
+			throw new IdPasswordNotMatchingException();
 		}
 		
-		@Override
-		public void insertScheduleByOnetime(Map<String, Object> map) {
+		return employeevo;
+	}
+	
+
+	
+	
+	@Override
+	public List<NoticeBoardVo> getMainnoticelist() {
+		List<NoticeBoardVo> mainNoticelist = employeeDao.getMainnoticelist();
+		return mainNoticelist;
+		
+	}
+
+	@Override
+	public EmployeeVo getIdByPhone(String name, String phone) {
+		
+		 Map<String, Object> map = new HashMap<String, Object>(); 
+		 
+		 System.out.println(name);
+		 System.out.println(phone);
+	
+	        map.put("name", name);
+	        map.put("phone", phone);	        
+		
+		EmployeeVo getIdByPhone = employeeDao.getIdByPhone(map);
+		
+		if (getIdByPhone == null ) {
+			throw new NoSuchMemberException();
+		}
+		
+		
+		return getIdByPhone;
+	}
+
+	@Override
+	public EmployeeVo getIdByBizNo(String name, String companyName, String bizNo) {
+		Map<String, Object> map = new HashMap<String, Object>(); 
+		
+		System.out.println(name);
+		System.out.println(companyName);
+		System.out.println(bizNo);
+		
+		map.put("name", name);
+	    map.put("companyName", companyName);
+	    map.put("bizNo", bizNo);
+		
+		EmployeeVo getIdByBizNo = employeeDao.getIdByBizNo(map);
+		
+		if (getIdByBizNo == null ) {
+			throw new NoSuchMemberException();
+		}
+		
+		return getIdByBizNo;
+	}
+
+	@Override
+	public EmployeeVo getIdbyId(EmployeeVo employeeVo) {
+		
+		EmployeeVo checkIdbyId  = employeeDao.getIdbyId(employeeVo);
+		
+		if(checkIdbyId == null) {
+			throw new NoSuchIdException();
+		}
+		
+		return checkIdbyId;
+	}
+
+	@Override
+	public void changePassword(EmployeeVo employeeVo) {
+		employeeDao.changePassword(employeeVo);
+		
+	}
+
+/*******************************************공지사항***********************************************************/
+	private final int LINE_PER_PAGE = 10;
+	
+	@Override
+	public List<NoticeBoardVo> getNoticeList(String n_type, int page, String word, String searchCondition) {
+	int startPoint = page * LINE_PER_PAGE;		
+		
+        Map<String, Object> map = new HashMap<String, Object>();
+        
+        map.put("n_type", n_type);
+        map.put("startPoint", startPoint);
+        map.put("row", LINE_PER_PAGE);
+        map.put(searchCondition, word);
+        
+        List<NoticeBoardVo> noticeList = employeeDao.getNoticeList(map);
+        System.out.println("서비스");
+        System.out.println(noticeList);
+        
+		return noticeList;
+	}
+
+	@Override
+	public int getLastPage(String n_type, String word, String searchCondition) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("n_type", n_type);
+		map.put(searchCondition, word);
+		
+		int lastPage =(int)((double)employeeDao.selectTotalCount(map)/LINE_PER_PAGE);
+		System.out.println(lastPage);
+		
+		System.out.println("Service lastPage : " +lastPage);
+		System.out.println("ServiceImpl - lastPage : "+lastPage);
+		return lastPage;
+	}
+
+	@Override
+	public NoticeBoardVo getNoticeBoardByNo(NoticeBoardVo noticeBoardVo) {
+		NoticeBoardVo getNoticeBoardByNo = employeeDao.getNoticeBoardByNo(noticeBoardVo);
+		return getNoticeBoardByNo;
+	}
+	
+	@Override
+	public void insertScheduleByOnetime(Map<String, Object> map) {
+		
+		MemberVo registeredMember = employeeDao.selectUserByInfo(map);
+		System.out.println("***********************서비스:1회성 고객정보select 완료*******************************");
+		
+		System.out.println(registeredMember);
+		
+		if(registeredMember == null) {
+			System.out.println("***********************서비스:뉴멤버 1회성 insert메서드 실행전*******************************");
+			employeeDao.insertScdToNewMemberOnetime(map);
+		
+		
+		}else {
+		
+		map.put("m_no", registeredMember.getM_no());
+		System.out.println("***********************서비스:기존멤버 1회성 insert메서드 실행전*******************************");
+		
+		employeeDao.insertScdToRegisteredMemberOnetime(map);
 			
-			MemberVo registeredMember = employeeDao.selectUserByInfo(map);
-			System.out.println("***********************서비스:1회성 고객정보select 완료*******************************");
+		}	
+		
+	}
+
+	@Override
+	public void insertSchedule(Map<String, Object> map) {
+		
+		MemberVo registeredMember = employeeDao.selectUserByInfo(map);
+		System.out.println("***********************서비스:정기성 고객정보select 완료*******************************");
+		
+		if(registeredMember == null) {
+				
+			System.out.println("***********************서비스:뉴멤버 정기성 insert메서드실행전*******************************");
+			employeeDao.insertScdToNewMember(map);	
 			
-			System.out.println(registeredMember);
-			
-			if(registeredMember == null) {
-				System.out.println("***********************서비스:뉴멤버 1회성 insert메서드 실행전*******************************");
-				employeeDao.insertScdToNewMemberOnetime(map);
-			
-			
-			}else {
+		}else {
 			
 			map.put("m_no", registeredMember.getM_no());
-			System.out.println("***********************서비스:기존멤버 1회성 insert메서드 실행전*******************************");
+			System.out.println("***********************서비스:기존멤버 정기성 insert메서드실행전 *******************************");		
+			employeeDao.insertScdToRegisteredMember(map);
 			
-			employeeDao.insertScdToRegisteredMemberOnetime(map);
-				
-			}	
-			
-		}
-
+		}	
+		
+		
+	}
+	
+/***************************************************************************************************************/
+	
+	
+	
+	
+	/********************************* 스케쥴 서비스 임플 ****************************************************************/
+	// 스케쥴 전체
+	@Override
+	public List<HashMap<String, Object>> getScheduleList(int c_no) {
+		List<HashMap<String, Object>> getScheduleList = employeeDao.getScheduleList(c_no);
+		return getScheduleList;
+	}
+	// 스케쥴 디테일
+	@Override
+	public HashMap<String, Object> getScheduleByMONo(int mo_no) {
+		HashMap<String, Object> getScheduleByMONo = employeeDao.getScheduleByMONo(mo_no);
+		return getScheduleByMONo;
+	}
+	
+	// 스케쥴 삭제
 		@Override
-		public void insertSchedule(Map<String, Object> map) {
-			
-			MemberVo registeredMember = employeeDao.selectUserByInfo(map);
-			System.out.println("***********************서비스:정기성 고객정보select 완료*******************************");
-			
-			if(registeredMember == null) {
-					
-				System.out.println("***********************서비스:뉴멤버 정기성 insert메서드실행전*******************************");
-				employeeDao.insertScdToNewMember(map);	
-			}else {
-			
-				map.put("m_no", registeredMember.getM_no());
-				System.out.println("***********************서비스:기존멤버 정기성 insert메서드실행전 *******************************");		
-				employeeDao.insertScdToRegisteredMember(map);
-				
-			}	
-			
+		public void deleteSchedule(int mo_no) {
+			employeeDao.deleteSchedule(mo_no);
 			
 		}
 		
-	/***************************************************************************************************************/
+		@Override
+		public String getMtypebyMONo(int mo_no) {
+			String m_type = employeeDao.getMtypebyMONo(mo_no);
+			return m_type;
+		}
+
+	@Override
+	public HashMap<String, Object> getScheduleByMONoByHB(int mo_no) {
+		HashMap<String, Object> getScheduleByMONoByHB = employeeDao.getScheduleByMONoByHB(mo_no);
+		return getScheduleByMONoByHB;
+	}
+
+	@Override
+	public List<HashMap<String, Object>> getmyScheduleList(Map<String, Object> map) {
+		List<HashMap<String, Object>> getmyScheduleList = employeeDao.getmyScheduleList(map);
+		return getmyScheduleList;
+	}
+
+		
+		// 스케쥴 수정 - 수정 리스트 받아오기 - 해방
+		@Override
+		public HashMap<String, Object> getScheduleByOdNo(int mo_no) {
+			HashMap<String, Object> getScheduleByOdNo = employeeDao.getScheduleByOdNo(mo_no);
+			return getScheduleByOdNo;
+		}
+		// 스케쥴 수정 - 수정 리스트 받아오기 - 비해방
+		@Override
+		public HashMap<String, Object> getScheduleByOdNoTypeN(int mo_no) {
+			HashMap<String, Object> getScheduleByOdNo = employeeDao.getScheduleByOdNoTypeN(mo_no);
+			return getScheduleByOdNo;
+		}
+		// 스케쥴 수정 - 해당업체 전체 직원 검색
+		@Override
+		public List<HashMap<String, Object>> getEmployeeList(int e_no) {
+			List<HashMap<String, Object>> getEmployeeList = employeeDao.getEmployeeList(e_no);
+			return getEmployeeList;
+		}
+		
+		// 스케쥴 수정 - 업뎃 - 비해방
+		@Override
+		public void updateNoHaebangSch(HashMap<String, Object> map) {
+			employeeDao.updateNoHaebangSch(map);
+		}
+		// 스케쥴 수정 - 업뎃 - 해방
+		@Override
+		public void updateHaebangSch(HashMap<String, Object> map) {
+			employeeDao.updateHaebangSch(map);
+		}
+		 
+	/********************************* 스케쥴 서비스 임플 ****************************************************************/
+	
+	
+	
+	
 
 }

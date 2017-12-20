@@ -35,4 +35,11 @@ public interface AdminService {
 	void updateNotice(NoticeBoardVo noticeBoardVo);
 	void noticeDelete(int no);
 	
+	//스케쥴 관리 서비스
+	List<HashMap<String, Object>> getScheduleList(int page, String word, String searchSchedule, String startDate, String endDate);
+	int selectTotalCountSchedule(String word, String searchSchedule, String startDate, String endDate);
+	HashMap<String, Object> getScheduleByMONo(int mo_no);
+	String getMtypebyMONo(int mo_no);
+	HashMap<String, Object> getScheduleByMONoByHB(int mo_no);
+	
 }

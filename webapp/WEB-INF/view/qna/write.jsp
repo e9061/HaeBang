@@ -109,21 +109,11 @@ $(document).on("click", "#fileUpload", function(){
 									<th width="25%">내용</th>
 									<td><form:textarea rows="7" cols="10" class="form-control" path="q_content" /></td>
 								</tr>
-								<!-- <tr>
-									<td bgcolor="orange" width="70">첨부파일</td>
-									<td><input type="file" name="q_oriName"/></td>
-								</tr> -->
 							</table>
-							<div class="form-group">
-							<!-- 아이디 t_employee 테이블 e_id -->
 							
-							<!-- onclick="javascript:chkeck_id($(this).prev().val())" -->
-						<!-- <input id= "fileUpload1" type="file" style="width:50%;" name="fileQnA"/>
-							<label for="fileUpload1" class="pop_label_03">첨부 파일</label>
-							<img id="blah1" src="#" alt="" style="height: 10%; width: 10%" />
-
-							<div id="holder1"></div>
-						</div>	 -->
+							<div class="form-group">
+								 <input type="file" name="qnaFile">
+							</div>
 						<div align="center">
 							<input type="submit" value="등록" class="btn btn-theme"s/>
 						</div>

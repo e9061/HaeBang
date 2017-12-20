@@ -34,10 +34,10 @@ $("input[type='radio'][name='period-type']").change(function(){
 
 
 
-$("select[name=unit]").change(function(){	
+$("select[name=unit1]").change(function(){	
 
 	
-    var selected = $("#unit option:selected").val();
+    var selected = $("#unit1 option:selected").val();
     
     if(selected == "week") var opts = [
     	{name:"선택", val:""},
@@ -134,15 +134,16 @@ date_input2.datepicker({
 
     
     function inputAddress(address){
+		  
 		  $.ajax({		
-				url: "https://api2.sktelecom.com/tmap/geo/fullAddrGeo",
+				url: "http://apis.skplanetx.com/tmap/geo/fullAddrGeo",
 				type: "GET",
 				data: {	
 					version : 1,
 					fullAddr : address,
 					addressFlag : "F00",
 					format : "json",
-					appKey : "3a8e2503-7364-4259-9624-81dfdd0cb5ff"
+					appKey : "1d03f3c5-e620-375a-94d6-e359b011ec64"
 				},
 				success : function(result)
 				{
@@ -151,13 +152,30 @@ date_input2.datepicker({
 					{
 						document.getElementById('lon').value = result.coordinateInfo.coordinate[0].newLon;
 						document.getElementById('lat').value = result.coordinateInfo.coordinate[0].newLat;
+						document.getElementById('gu').value = result.coordinateInfo.coordinate[0].gu_gun;
 					}else
 					{
 						document.getElementById('lon').value = result.coordinateInfo.coordinate[0].lon;
 						document.getElementById('lat').value = result.coordinateInfo.coordinate[0].lat;
+						document.getElementById('gu').value = result.coordinateInfo.coordinate[0].gu_gun;
 					}
+					
 				},
-				
+				error: function(data){
+					var str = JSON.stringify(data.responseText);
+					var str1 = str.substring(str.lastIndexOf(",")+1);
+					var str2 = str.substring(0,str.lastIndexOf(","));
+					str1 = str1.substring(0, str1.length-1);
+					str2 = str2.substring(1, str2.length);
+					var str3 = str2.replace(/\\/gi,"")+str1.replace(/\\/gi,"");
+					var result = JSON.parse(str3);
+					
+					
+					document.getElementById('lon').value = result.coordinateInfo.coordinate[0].lon;
+					document.getElementById('lat').value = result.coordinateInfo.coordinate[0].lat;
+					document.getElementById('gu').value = result.coordinateInfo.coordinate[0].gu_gun;
+
+				}
 		  });
 	  }
     
@@ -288,6 +306,7 @@ date_input2.datepicker({
 						</div>
                         <input type="hidden" id="lon" name="lon" />
                         <input type="hidden" id="lat" name="lat" />
+                        <input type="hidden" id="gu" name="gu" />
                 </div>
                 
                 
@@ -297,15 +316,11 @@ date_input2.datepicker({
                         <select id="phone1"  class="form-control" name="phone1" style="width:25%; float:left">
 					<option value="">선택</option>
 					<option value="010">010</option>
-					<option value="011">011</option>
-					<option value="0130">0130</option>
+					<option value="011">011</option>					
 					<option value="016">016</option>
 					<option value="017">017</option>
 					<option value="018">018</option>
-					<option value="019">019</option>
-					<option value="0502">0502</option>
-					<option value="0505">0505</option>
-					<option value="0506">0506</option>
+					<option value="019">019</option>					
 			</select><span style="float:left;">&nbsp;&nbsp;-&nbsp;&nbsp;</span> 
 			<input type="tel"  class="form-control" id="phone2" name="phone2" MaxLength="4" style="width:25%; float:left"/>
 			<span style="float:left;">&nbsp;&nbsp;-&nbsp;&nbsp;</span> 
@@ -472,7 +487,7 @@ date_input2.datepicker({
              <div class="form-group">
                     <label for="new_bol_require" class="col-sm-2 control-label bg-danger">단위</label>
                     <div class="col-sm-4">
-                        <select class="form-control" id="unit" name="unit">
+                        <select class="form-control" id="unit1" name="unit1">
                         	<option value="">선택</option>
                             <option value="week">주단위 반복</option>
                             <option value="month">월단위 반복</option>                          

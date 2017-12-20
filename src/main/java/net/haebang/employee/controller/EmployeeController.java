@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,12 +40,13 @@ import net.haebang.exception.AlreadyExistingMemberException;
 import net.haebang.exception.IdPasswordNotMatchingException;
 import net.haebang.exception.NoSuchIdException;
 import net.haebang.exception.NoSuchMemberException;
+import net.haebang.qna.service.QnAService;
 import net.haebang.vo.CompanyVo;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.JoinEmployeeVo;
 import net.haebang.vo.NoticeBoardVo;
 import net.haebang.vo.OrderEmployeeVo;
-import net.haebang.vo.ScheduleVo;
+import net.haebang.vo.QnAVo;
 
 @Controller
 public class EmployeeController {
@@ -55,6 +56,11 @@ public class EmployeeController {
 
 	@Autowired
 	private EmployeeDao employeeDao;
+
+	
+	@Autowired
+	private QnAService service;
+	
 
 	// ---------------------------------- 창대 회원가입 --------------------------------------------------------------------
 
@@ -688,8 +694,7 @@ public class EmployeeController {
 	
 	// ********************************************************************************************
 
-		
-//  -------------------------------------- 진화 -------------------------------------------------
+	//  -------------------------------------- 진화 -------------------------------------------------
 	
 	@RequestMapping(value="/ceo", method=RequestMethod.GET)
 	public ModelAndView main(HttpSession session) {
@@ -1040,290 +1045,104 @@ public class EmployeeController {
 		return mav;
 	}	
 	
-	@RequestMapping(value="/ceo/scheduleList", method=RequestMethod.POST)
-	public @ResponseBody ScheduleVo calendarlistAjax (HttpServletRequest request, ModelAndView mav){
 		
-		ScheduleVo scheduleVo = new ScheduleVo(1, "주호네", "2017-11-25T15:00:00", "2017-11-25T15:30:00"); 
-		
-		System.out.println("컨트롤러 시작");	
-				
-		System.out.println(scheduleVo);
-		
-		return scheduleVo;
-	}
+/**********************************FAQ**************************************/
 	
 	
-	
-	public String mkOrderNo(String orderType, String orderDate, String orderStartHour, String orderStartMinute, String orderPhone3) {
-		
-		String year = orderDate.substring(0, 4);
-		String month= orderDate.substring(5, 7);
-		String day = orderDate.substring(8, 10);
-		
-		orderDate = year+month+day;		
-		
-		String orderNo=orderType+orderDate+orderStartHour+orderStartMinute+orderPhone3;
-		return orderNo;
-	}
-	
-	
-	
-	
-	@RequestMapping(value="/ceo/addSchedule", method=RequestMethod.POST)
-	public ModelAndView addschedule (
-			@RequestParam("name") String name,
-			@RequestParam("postcode") String postcode,
-			@RequestParam("address") String address,
-			@RequestParam("detailAddress") String detailAddress,
-			@RequestParam("phone1") String phone1,
-			@RequestParam("phone2") String phone2,
-			@RequestParam("phone3") String phone3,
-			@RequestParam("service1") String service,			
-			@RequestParam("period-type") String periodType,
-			@RequestParam(value="date1", defaultValue="null", required=false) String date1,
-			@RequestParam(value="startTimeHour1", defaultValue="null", required=false) String startTimeHour1,
-			@RequestParam(value="startTimeMinute1", defaultValue="null", required=false) String startTimeMinute1, 
-			@RequestParam(value="endTimeHour1", defaultValue="null", required=false) String endTimeHour1,
-			@RequestParam(value="endTimeMinute1", defaultValue="null", required=false) String endTimeMinute1,
-			@RequestParam(value="unit", defaultValue="null", required=false) String unit,
-			@RequestParam(value="cycle", defaultValue="null", required=false) String cycle1,
-			@RequestParam(value="totalCnt", defaultValue="null", required=false) String totalCnt1,
-			@RequestParam(value="date2", defaultValue="null", required=false) String date2,
-			@RequestParam(value="startTimeHour2", defaultValue="null", required=false) String startTimeHour2,
-			@RequestParam(value="startTimeMinute2", defaultValue="null", required=false) String startTimeMinute2, 
-			@RequestParam(value="endTimeHour2", defaultValue="null", required=false) String endTimeHour2,
-			@RequestParam(value="endTimeMinute2", defaultValue="null", required=false) String endTimeMinute2,
-			@RequestParam(value="comments", defaultValue="null", required=false) String comments,
-			@RequestParam(value="lon", defaultValue="null", required=false) String lon,
-			@RequestParam(value="lat", defaultValue="null", required=false) String lat,			
-			ModelAndView mav, HttpServletRequest request, HttpSession session) {
-		
-		EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
-		System.out.println(userVo);
-		System.out.println(userVo.getE_no());
-		String fullAddress = address+detailAddress;
-		String phone = phone1+phone2+phone3;
-		
-		System.out.println(name);
-		System.out.println(address);
-		System.out.println(detailAddress);
-		System.out.println(phone1);
-		System.out.println(phone2);
-		System.out.println(phone3);
-		System.out.println(service);
-		System.out.println(periodType);
-		System.out.println(date1);
-		System.out.println(startTimeHour1);
-		System.out.println(startTimeMinute1);
-		System.out.println(endTimeHour1);
-		System.out.println(endTimeMinute1);
-		System.out.println(unit);
-		System.out.println(cycle1);
-		System.out.println(totalCnt1);
-		System.out.println(date2);
-		System.out.println(startTimeHour2);
-		System.out.println(startTimeMinute2);
-		System.out.println(endTimeHour2);
-		System.out.println(endTimeMinute2);
-		System.out.println(comments);
-		System.out.println(lon);
-		System.out.println(lat);
-		
-		
-		
-			if(periodType.equals("onetime")) {
-			
-				System.out.println("***********************컨트롤러:1회성*******************************");
-				String startTime1 = date1+"T"+startTimeHour1+":"+startTimeMinute1+":00.000";
-				String endTime1 = date1+"T"+endTimeHour1+":"+endTimeMinute1+":00.000";
-				String orderNo = mkOrderNo("N", date1, startTimeHour1, startTimeMinute1, phone3);
-				
-				Map<String, Object> paramMap = new HashMap<String, Object>();
-				paramMap.put("name", name);
-				paramMap.put("address", fullAddress);
-				paramMap.put("phone", phone);
-				paramMap.put("service", service);
-				paramMap.put("startTime", startTime1);
-				paramMap.put("endTime", endTime1);
-				paramMap.put("e_no", userVo.getE_no());
-				paramMap.put("type", "N");
-				paramMap.put("orderNo", orderNo);
-				paramMap.put("unit", "i");							
-				paramMap.put("cnt", 1);				
-				paramMap.put("comments", comments);		
-				paramMap.put("lon", lon);
-				paramMap.put("lat", lat);
-				
-				System.out.println("************************컨트롤러:1회성 paramMap잘들어감******************************");
-				
-				employeeService.insertScheduleByOnetime(paramMap);
-				
-			}
-		
-		
-			if(periodType.equals("regular")) {
+	// FAQ 사업자
+	@RequestMapping(value = "/ceo/FE")
+	public ModelAndView selectFE(HttpServletRequest request) {
 
-				System.out.println("***********************컨트롤러:정기성*******************************");
-				String startTime2 = date2+"T"+startTimeHour2+":"+startTimeMinute2+":00.000";
-				String endTime2 = date2+"T"+endTimeHour2+":"+endTimeMinute2+":00.000";
-				String orderNo = mkOrderNo("N", date2, startTimeHour2, startTimeMinute2, phone3);
-						
-				int cycle = Integer.parseInt(cycle1);
-				int totalCnt = Integer.parseInt(totalCnt1);
-				
-				Map<String, Object> paramMap = new HashMap<String, Object>();
-				paramMap.put("name", name);
-				paramMap.put("address", fullAddress);
-				paramMap.put("phone", phone);
-				paramMap.put("service", service);				
-				paramMap.put("e_no", userVo.getE_no());
-				paramMap.put("type", "N");
-				paramMap.put("orderNo", orderNo);			
-				paramMap.put("comments", comments);
-				paramMap.put("cycle", cycle);
-				paramMap.put("total", totalCnt);
-				paramMap.put("lon", lon);
-				paramMap.put("lat", lat);
-				
-				System.out.println("***********************컨트롤러:정기성 ParamMap잘들어감*******************************");
-			
-				Map<String, Object> scheduleMap;
-				List<Map<String, Object>> scheduleList = new ArrayList<Map<String, Object>>();
-						
-			
-				String year = date2.substring(0, 4);
-				String month= date2.substring(5, 7);
-				String day = date2.substring(8, 10);
-						
-			
-				Calendar c = Calendar.getInstance();
-				c.set(Calendar.YEAR, Integer.parseInt(year));
-				c.set(Calendar.MONTH, Integer.parseInt(month)-1);
-				c.set(Calendar.DATE, Integer.parseInt(day));				
-				
-							
-				System.out.println("***********************컨트롤러:정기성 캘린더에 년/월/일쪼개서 넣음완료*******************************");
-				
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			
-				if(unit.equals("week")) {						
-					
-					paramMap.put("unit", "W");			
-					
-					for(int i=0; i<totalCnt; i++) {	
-						
-						if(i==0) {
-							System.out.println(i);
-							
-							scheduleMap =  new HashMap<String, Object>();
-							
-							scheduleMap.put("cnt", i+1);
-							scheduleMap.put("startTime", startTime2);
-							scheduleMap.put("endTime", endTime2);
-												
-							scheduleList.add(scheduleMap);	
-							System.out.println("1일때:"+scheduleList);
-							
-							
-						}else {
-							System.out.println(i);
-							scheduleMap =  new HashMap<String, Object>();
-							scheduleMap.put("cnt", i+1);
-							c.add(Calendar.DATE, cycle*7);
-						
-							
-							String startTimeCycle = sdf.format(c.getTime())+"T"+startTimeHour2+":"+startTimeMinute2+":000";
-							String endTimeCycle = sdf.format(c.getTime())+"T"+endTimeHour2+":"+endTimeMinute2+":000";
-
-							
-							scheduleMap.put("startTime", startTimeCycle);
-							scheduleMap.put("endTime", endTimeCycle);	
-						
-								
-							scheduleList.add(scheduleMap);
-							System.out.println(scheduleList);
-							
-						}
-					
-										
-					}					
-					
-					System.out.println("***********************컨트롤러:정기성 week for문잘들어감*******************************");
-				
-					paramMap.put("scheduleList", scheduleList);
-				
-					Set<String> keys = paramMap.keySet();
-					for(String key : keys) {
-						System.out.println(key + " : "+ paramMap.get(key));				
-					}
-					
-				
-				}
-			
-				if(unit.equals("month")) {
-				
-					paramMap.put("unit", "M");	
-				
-					for(int i=0; i<totalCnt; i++) {	
-						
-						if(i==0) {
-							System.out.println(i);
-							
-							scheduleMap =  new HashMap<String, Object>();
-							
-							scheduleMap.put("cnt", i+1);
-							scheduleMap.put("startTime", startTime2);
-							scheduleMap.put("endTime", endTime2);
-												
-							scheduleList.add(scheduleMap);	
-							System.out.println("1일때:"+scheduleList);
-							
-							
-						}else {
-							System.out.println(i);
-							scheduleMap =  new HashMap<String, Object>();
-							scheduleMap.put("cnt", i+1);
-							c.add(Calendar.MONTH, cycle);						
-							
-							String startTimeCycle = sdf.format(c.getTime())+"T"+startTimeHour2+":"+startTimeMinute2+":000";
-							String endTimeCycle = sdf.format(c.getTime())+"T"+endTimeHour2+":"+endTimeMinute2+":000";
-
-							
-							scheduleMap.put("startTime", startTimeCycle);
-							scheduleMap.put("endTime", endTimeCycle);	
-						
-								
-							scheduleList.add(scheduleMap);
-							System.out.println(scheduleList);
-							
-						}
-					
-										
-					}			
-				
-					System.out.println("***********************컨트롤러:정기성 month for문잘들어감*******************************");
-					
-					paramMap.put("scheduleList", scheduleList);
-					
-					Set<String> keys = paramMap.keySet();
-					for(String key : keys) {
-						System.out.println(key + " : "+ paramMap.get(key));				
-					}
-								
-				
-				}
-				
-			
-				employeeService.insertSchedule(paramMap);
-				System.out.println(paramMap);
-			}
-		
-			mav.setViewName("company_management/scheduleManagement");
-		
-			return mav;
+		// 현재 페이지 번호 저장 변수
+		int pageNo = 0;
+		if (request.getParameter("pageNo") != null) {
+			// 페이지 파라미터가 있는 경우 현재 페이지 번호를 설정
+			pageNo = Integer.parseInt(request.getParameter("pageNo"));
 		}
-		
-	
-	
-}
+		System.out.println(pageNo);
+		// 한페이지에 보여질 목록 수
+		int listSize = 5;
 
+		// 전체 게시글 카운트
+		int totalCount = service.selectAllBoard(pageNo).size();
+		System.out.println(totalCount);
+
+		// 마지막 페이지 구하기
+		int lastPage = (totalCount % listSize == 0) ? totalCount / listSize : totalCount / listSize + 1;
+
+		request.setAttribute("pageNo", pageNo);
+		request.setAttribute("lastPage", lastPage);
+
+		// ======================================================================
+		// 탭 관련 작업 추가 파트
+		// ======================================================================
+		// 목록에 보여질 탭 사이즈
+		int tabSize = 5;
+		// 현재 페이지에 해당하는 탭 위치
+		int currTab = (pageNo - 1) / tabSize + 1;
+		int beginPage = (currTab - 1) * tabSize + 1;
+		int endPage = (currTab * tabSize < lastPage) ? currTab * tabSize : lastPage;
+
+		request.setAttribute("beginPage", beginPage);
+		request.setAttribute("endPage", endPage);
+		// ======================================================================
+
+		// 해당 페이지의 게시글 목록
+		List<Integer> page = new ArrayList<>();
+		page.add((pageNo - 1) * listSize);
+		page.add(listSize);
+		// List<BoardQAVO> BoardList = service.selectPage(page);
+
+		Map<String, Object> boardQAMap = new HashMap<>();
+		boardQAMap.put("startPage", (pageNo - 1) * listSize);
+		boardQAMap.put("count", listSize);
+
+		ModelAndView mav = new ModelAndView();
+		List<QnAVo> list = service.selectAllBoard(pageNo);
+		System.out.println(list);
+		int totalPage = service.getLastPage();
+
+		mav.addObject("totalPage", totalPage);
+		mav.addObject("list", list);
+
+		return mav;
+
+	}
+	
+	@RequestMapping(value = "/FE/{q_no}", method = RequestMethod.GET)
+	public String selectFE(@PathVariable int q_no, Model model) throws IOException{
+		QnAVo QnA = service.selectOneBoard(q_no);
+		System.out.println(QnA.getQ_saveName());
+		
+		if( QnA.getQ_saveName() == null) {
+			model.addAttribute("image");
+		}else {
+			System.out.println(" 1111");
+			File file = new File("/home/ubuntu/HaeBangQnA/" + QnA.getQ_saveName());
+			FileInputStream fis = new FileInputStream(file);
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			int b;
+			byte[] buffer = new byte[1024];
+			while ((b = fis.read(buffer)) != -1) {
+				bos.write(buffer, 0, b);
+			}
+			byte[] fileBytes = bos.toByteArray();
+			fis.close();
+			bos.close();
+			
+			byte[] encoded = Base64.encodeBase64(fileBytes);
+			String encodedString = new String(encoded);
+			
+			model.addAttribute("image", encodedString);
+			
+		}
+		service.updateViewCnt(q_no);
+		/* QnAVo QnA = service.selectOneBoard(q_no); */
+
+		model.addAttribute("QnA", QnA);
+		System.out.println("2222");
+		return "employee/FEdetail";
+	}
+	
+
+}	
