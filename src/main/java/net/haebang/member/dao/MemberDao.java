@@ -1,5 +1,6 @@
 package net.haebang.member.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,4 +27,17 @@ public interface MemberDao {
     double selectTotalCount(Map<String, Object> map);
     NoticeBoardVo getNoticeBoardByNo(NoticeBoardVo noticeBoardVo);
 	/*************************************************************************************************/
+    
+    MemberVo getMyPageInfo(String m_id);
+    void changeMyInfo(Map<String,Object> map);
+    
+    /*************************************************************************************************/
+    List<HashMap<String, Object>> getReservListByMId(String m_id);
+	Map<String, Object> myReservDetail(Map<String, Object> map);
+	void cancleServiceByOdNo(String mo_orderNo);
+	// 일정 변경
+	void changeDate(Map<String, Object> map);
+	String getMoCallFlag(int mo_no);
+    
+    
 }

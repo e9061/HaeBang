@@ -1,167 +1,201 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    pageEncoding="UTF-8"%>
+<script src ="http://code.jquery.com/jquery-3.2.1.min.js"></script>
 <!DOCTYPE>
 <html>
-
 <head>
-<meta charset="utf-8">
-<title>Moderna - Bootstrap 3 flat corporate template</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="" />
-<!-- css -->
-<link href="resources/css/bootstrap.min.css" rel="stylesheet" />
-<link href="resources/css/fancybox/jquery.fancybox.css" rel="stylesheet">
-<link href="resources/css/jcarousel.css" rel="stylesheet" />
-<link href="resources/css/flexslider.css" rel="stylesheet" />
-<link href="resources/css/style.css" rel="stylesheet" />
-
-
-<!-- Theme skin -->
-<link href="resources/skins/default.css" rel="stylesheet" />
-
-<!-- =======================================================
-    Theme Name: Moderna
-    Theme URL: https://bootstrapmade.com/free-bootstrap-template-corporate-moderna/
-    Author: BootstrapMade
-    Author URL: https://bootstrapmade.com
-	======================================================= -->
-<style>
-.form-control {
-	clear: both;
-	width: 200px;
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<style type="text/css">
+.container1 {
+	padding:0 30px 0 50px;
+	position:relative;
 }
 </style>
+ 
 <script type="text/javascript">
+
+	function click_update(data){				// 패스워드 해야함
+		console.log(data);
+		if(data == "m_password"){
+			
+			var msg = "<input class='form-control' name='password' type='password' placeholder='기존 비밀번호를 입력해주세요.'/>"
+		}else if(daya == "m_phone"){
+			var msg = "<input class='form-control' type='text' id='newM_phone' placeholder='"+$('#m_phone').val()+"'/>"
+		}else{
+			var msg = "<input class='form-control' type='text' id='newM_address' placeholder='"+$('#m_phone').val()+"'/>"
+		}
+		var msg1 = "<a class='btn btn-info' id='"+data+"_btn' style='width: 70px; color:white'>수정 완료</a>"
+		$(document.getElementsByClassName(data)).next().html(msg);
+		$(document.getElementsByClassName(data)).next().next().html(msg1);
+		$(document.getElementsByClassName(data)).parent().next().html("");
+	};
+
+
+	function popupAddr(){
+		var popUrl = "${pageContext.request.contextPath}/member/myPage/popupAddr";
+		var popOption = "width=370, height=360, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
+		window.open(popUrl,"",popOption);
+		
+	};
+	
+	$(document).on("click", "#m_phone_btn", function(){
+		alert("버튼 눌림");
+		console.log($('#newM_phone').val());
+		location.href="${pageContext.request.contextPath}/member/changeMyInfo?m_phone="+$('#newM_phone').val();
+		
+	});
+	$(document).on("click", "#newAddress_btn", function(){		// 나중에 폼으로 만들어서 넘겨볼 것
+		alert("버튼 눌림");
+		console.log($('#m_address').val());
+		location.href="${pageContext.request.contextPath}/member/changeMyInfo?m_address="+$('#m_address').val() +" "+ $('#m_detail').val() + "&m_gu="+ $('#m_gu').val() + "&m_lon="+ $('#m_lon').val() + "&m_lat="+ $('#m_lat').val(); 
+	});
+	
+	/*
+	$(document).on("click", "#e_password",function(){
+		
+		if( $("#hidden").val() == $(this).parents().prev().children().val()){
+			
+			    var form = document.createElement("form");
+			    form.setAttribute("method", "POST");
+			    form.setAttribute("action", "${pageContext.request.contextPath}/ceo/info/changePassword");
+			        var hiddenField = document.createElement("input");
+			        hiddenField.setAttribute("type", "hidden");
+			        hiddenField.setAttribute("name", "next");
+			        hiddenField.setAttribute("value", "step");
+			        form.appendChild(hiddenField);
+			        document.body.appendChild(form);
+			        form.submit();
+			}
+		else{
+			alert("비밀번호가 일치하지 않아요. 다시 입력해주세요.");
+			return false;
+		}
+	});
+	 */
+	
+	
 	
 </script>
-</head>
+
+<style>
+
+div.bottom-article {
+		border-bottom: 1px solid #ccc;
+		border-top: 1px solid #ccc;
+}
+ 
+input {
+	 border:none;
+	 border-right:0px; 
+	 border-top:0px; 
+	 boder-left:0px; 
+	 boder-bottom:0px;
+}
+
+</style>
 
 <body>
-	<div id="wrapper">
-		<!-- start header -->
-		<header>
-			<jsp:include page="/WEB-INF/view/member_include/topmenu.jsp" />
-		</header>
-		<!-- end header -->
-		<div class="container">
-			<div class="row">
-				<div class="col-md-8 col-md-offset-2">
-					<h4>
-						"<strong>${ userVO.m_name }</strong>"님의 회원정보
-					</h4>
-					<section>
-						<div class="box box-info">
-
-							
-							<div class="box-body">
-								<div class="table-responsive">
-
-									<table id="member_table" class="table no-margin">
-										<tr>
-											<th>이름</th>
-											<td>${ memberVO.m_name }</td>
-										</tr>
-										<tr>
-											<th>아이디</th>
-											<td>${ memberVO.m_id }</td>
-										</tr>
-										<tr>
-											<th>비밀번호</th>
-											<td><input type="password" id="${ memberVO.m_password }" value ="${ memberVO.m_password }" readonly /></td>
-										</tr>
-										<tr>
-											<th>연락처</th>
-											<td>${ memberVO.m_phone }</td>
-										</tr>
-										<tr>
-											<th>주소</th>
-											<td>${ memberVO.m_address }</td>
-										</tr>
-										<tr>
-											<th>카드 명의자</th>
-											<td>${ memberVO.m_owner }</td>
-										</tr>
-										<tr>
-											<th>카드 번호</th>
-											<td>${ memberVO.m_cardNo }</td>
-										</tr>
-										<tr>
-											<th>카드 CVC</th>
-											<td>${ memberVO.m_cardCVC }</td>
-										</tr>
-									</table>
-									<div style="display:inline-block; align:center;" >
-									<form
-										action="${ pageContext.request.contextPath }/member/${ memberVO.m_id }"
-										method="get" style="float:left;">
-										<input type="submit" class="btn btn-theme" value="수정" />
-									</form>
-									
-									<form
-										action="${ pageContext.request.contextPath }/member/delete/${ memberVO.m_id }"
-										method="post" style="float:left; margin-left:10px;">
-										<input type="hidden" name="_method" value="delete"> <input
-											type="submit" value="회원탈퇴" class="btn btn-theme" />
-									</form>
-									</div>
-									<%-- <input type="button" class="btn btn-theme"
-										onclick="location.href='${ pageContext.request.contextPath }/board/list'"
-										value="목록" /> --%>
-
-									<!-- 댓글 -->
-
-									<%-- <div class="container">
-										<label for="content">comment</label>
-										<form name="commentInsertForm">
-											<div class="input-group">
-												<input type="hidden" name="rno" value="${ boardVO.no }" />
-												<input type="text" class="form-control" id="writer"
-													name="writer" placeholder="작성자를 입력하세요." /> <input
-													type="text" class="form-control" id="content"
-													name="content" placeholder="내용을 입력하세요." />
-												<button type="button" name="commentInsertBtn"
-													class="btn btn-default">등록</button>
-											</div>
-										</form>
-									</div> --%>
-									<div class="container">
-										<div class="commentList"></div>
-									</div>
-									<!-- /.table-responsive -->
-
+	<header>
+		<jsp:include page="../member_include/topmenu.jsp"></jsp:include>
+	</header>
+			<section id="content">
+				<div class="container1">
+					<div class="row">
+						<div class="col-lg-2">
+							<aside class="left-sidebar">
+								<div class="widget">
+									<h5 class="widgetheading">Information</h5>
+									<ul class="cat">
+	 									<li><i class="icon-angle-right"></i><a href="${ pageContext.request.contextPath }/member/myPage"><strong>My Info</strong></a></li>
+										<li><i class="icon-angle-right"></i><a href="${ pageContext.request.contextPath }/member/myReservation">My Reservation</a></li> 
+									</ul>
 								</div>
-							</div>
+							</aside>
 						</div>
-
-					</section>
+						<div class="col-lg-6">
+							<article>
+								<div class="post-heading">
+									<h3><a href="#"> ${ memberVO.m_name } 회원 님의 개인 정보</a></h3>
+								</div>
+								<div class="bottom-article"  style="margin-top: 5%">
+									<ul class="meta-post" >
+										<li style="width:40%"> &nbsp;&nbsp;아이디 </li>
+										<li style="width:50%"><input type="text" id="m_id" name="m_id" value="${getMyPage.m_id}" readonly="readonly"></li>					
+									</ul>
+								</div>
+								<div class="bottom-article">
+									<ul class="meta-post">
+										<li style="width:40%"> &nbsp;&nbsp;비밀번호 </li>
+										<li style="width:50%"><input type="password" id="m_password" name="m_password" value="${getMyPage.m_password}" readonly="readonly"></li>
+									</ul>
+									<a href="javascript:click_update('m_password');" class="pull-right"><img src="${pageContext.request.contextPath }/resources/img/noun_1060075_cc.png" style="width: 25px; height: auto;" /></a>
+										<input type="hidden" value="${memberVO.m_password }"/>
+								</div>
+								<div class="bottom-article">
+									<ul class="meta-post">
+										<li style="width:40%"> &nbsp;&nbsp;이름 </li>
+										<li style="width:50%"><input type="text" id="m_name" name="m_name" value="${getMyPage.m_name}" readonly="readonly" ></li>
+									</ul>
+								</div>
+								<div class="bottom-article">
+									<ul class="meta-post" style="width:60%">
+										<li style="width:15%" class="m_phone"> &nbsp;&nbsp;휴대전화 </li>
+										<li style="width:40%"><input type="text" id="m_phone" name="m_phone" value="${getMyPage.m_phone}" readonly="readonly"></li>
+										<li></li>
+									</ul>
+									<a href="javascript:click_update('m_phone');" class="pull-right abc">
+										<input type='image' src='${pageContext.request.contextPath }/resources/img/noun_1060075_cc.png' style="width: 25px; height: 25px;"> 
+									</a>
+								</div>
+							</article>
+							
+							<article>
+								<div class="post-heading">
+									<h4><a href="#"> 추가 기제 사항 </a></h4>
+								</div>
+								<div class="bottom-article">
+									<ul class="meta-post" style="width:95%">
+										<li style="width:15%"> &nbsp;&nbsp; 주 소</li>
+										<li style="width:65%" id="newAddr">
+											<input style="width:70%" type="text" id="m_address" value="${getMyPage.m_address}" readonly="readonly"/>
+											<input style="width:20%" type="text" id="m_detail"/>
+											<input type="hidden" id="m_lon"/>
+											<input type="hidden" id="m_lat"/>
+											<input type="hidden" id="m_gu"/>
+										</li>
+										<li></li>
+									</ul>
+									<a href="javascript:popupAddr();" class="pull-right abc">
+										<input type='image' src='${pageContext.request.contextPath }/resources/img/noun_1060075_cc.png' style="width: 25px; height: 25px;"> 
+									</a>
+								</div>
+								<div class="bottom-article">
+									<ul class="meta-post">
+										<li style="width:150px"> 카드 정보 </li>
+										<li style="width:200px" >${memberVO.m_cardNo }</li>
+										<li style="width:70px" >${memberVO.m_cardExp }</li>
+										<li style="width:50px" >${memberVO.m_cardCVC }</li>
+									</ul>
+									<a href="#" class="pull-right"><img src="${pageContext.request.contextPath }/resources/img/noun_1060075_cc.png" style="width: 25px; height: auto;" /></a>
+								</div>
+								<div class="bottom-article">
+									<ul class="meta-post">
+										<li style="width:40%"> &nbsp;&nbsp;해방가입일</li>
+										<li style="width:50%"><input type="text" id="m_joinDate" name="m_joinDate" value="${getMyPage.m_joinDate}" readonly="readonly"></li>
+									</ul>
+								</div>
+							</article>
+							
+						</div>
+					</div>
 				</div>
-			</div>
-		</div>
-	</div>
+				
+			</section>
 	<footer>
-		<jsp:include page="/WEB-INF/view/member_include/bottom.jsp" />
+		<jsp:include page="../member_include/bottom.jsp"></jsp:include>
 	</footer>
 
-	<a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
-	<!-- javascript
-    ================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="resources/js/jquery.js"></script>
-	<script src="resources/js/jquery.easing.1.3.js"></script>
-	<script src="resources/js/bootstrap.min.js"></script>
-	<script src="resources/js/jquery.fancybox.pack.js"></script>
-	<script src="resources/js/jquery.fancybox-media.js"></script>
-	<script src="resources/js/google-code-prettify/prettify.js"></script>
-	<script src="resources/js/portfolio/jquery.quicksand.js"></script>
-	<script src="resources/js/portfolio/setting.js"></script>
-	<script src="resources/js/jquery.flexslider.js"></script>
-	<script src="resources/js/animate.js"></script>
-	<script src="resources/js/custom.js"></script>
-
-	<script src="resources/contactform/contactform.js"></script>
-
 </body>
-
 </html>

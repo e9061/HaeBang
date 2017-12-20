@@ -110,7 +110,8 @@
 	<mvc:view-controller path="/ceo/schedule/PopUpScheduleAddr" view-name="company_management/PopUpScheduleAddr" />
 	<mvc:view-controller path="/ceo/schedule/PopUpScheduleDate" view-name="company_management/PopUpScheduleDate" />
 	<mvc:view-controller path="/ceo/schedule/PopUpScheduleEmp" view-name="company_management/PopUpScheduleEmp" />
-	
+	<mvc:view-controller path="/member/myPage/popupAddr" view-name="member/popupAddr" />
+	<mvc:view-controller path="/member/reserv/PopUpChangeDate" view-name="member/PopUpChangeDate" />
 
 </beans>
 

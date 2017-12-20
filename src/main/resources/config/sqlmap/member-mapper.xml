@@ -96,4 +96,70 @@
  		</select>
 
 	<!--******************************************************************************-->
+	<!-- myPage -->
+	<select id="getMyPageInfo" parameterType="String" resultType="memberVo">
+		select m_id, m_password, m_name, m_address, m_phone, m_cardNo, m_cardCVC, m_cardExp,date_format(m_joinDate, '%Y년 %m월 %d일') as m_joinDate
+		from t_member
+		where m_id = #{m_id}
+			and m_type = 'M'
+	</select>
+	
+	<!-- getMoCallFlag -->
+	<select id="getMoCallFlag" parameterType="Integer" resultType="String">
+		select mo_callFlag
+		from t_m_order
+		where mo_no = #{mo_no}
+	</select>
+	
+	<!-- myPage 수정 - 폰넘버, 주소 -->
+	<update id="changeMyInfo" parameterType="java.util.HashMap">
+		update t_member 
+		<if test='m_phone != null'> set	m_phone = #{m_phone} </if>	
+		<if test='m_address != null'> 
+			set	m_address = #{m_address} 
+			,m_lon = #{m_lon} 
+			,m_lat = #{m_lat} 
+			,m_gu = #{m_gu} 
+		</if>	
+		where m_id=#{m_id}
+	</update>
+	
+	<!-- 소비자 예약 정보   1단계 - t_member, t_m_order, t_service, t_e_order   -->
+	<select id="getReservListByMId" parameterType="String" resultType="java.util.HashMap">
+		select mo.mo_no, mo.mo_orderNo, date_format(mo.mo_startTime, '%Y-%m-%d %H:%i') as mo_startTime, date_format(mo.mo_endTime, '%Y-%m-%d %H:%i') as mo_endTime, mo.mo_memo,  mo.mo_cnt, mo.mo_total,  mo.mo_freqType, mo.mo_freqCycle, mo.mo_callFlag, mo.mo_callFlag as mo_callFlag2,
+		s_name, s.s_no
+		from ((select * from t_member where m_id = #{m_id})as m inner join t_m_order as mo on m.m_no = mo.m_no) inner join t_service as s on mo.s_no = s.s_no
+	</select>
+	
+	<!-- 소비자 예약 정보   2단계 디테일!!  - t_m_order, t_e_order, t_employee   -->
+	<select id="myReservDetail" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<if test='mo_callFlag.equals("ed")'>
+			select s.s_style, s.s_name, s.s_type, s.s_duration,
+					mo.mo_no ,mo.mo_orderNo, date_format(mo.mo_regDate, '%Y-%m-%d %H:%i') as mo_regDate, date_format(mo.mo_startTime, '%Y-%m-%d %H:%i') as mo_startTime, date_format(mo.mo_endTime, '%Y-%m-%d %H:%i') as mo_endTime, mo.mo_cnt, mo.mo_total, mo_star, mo.mo_starComment, mo.mo_freqType, mo.mo_freqCycle,
+					e.e_name, e.e_phone, e.e_saveName
+			from (((select * from t_m_order where mo_no = #{mo_no}) as mo inner join t_e_order as eo on mo.mo_no = eo.mo_no) inner join t_employee as e on eo.e_no = e.e_no )inner join t_service as s on mo.s_no = s.s_no
+		</if>
+		<if test='mo_callFlag.equals("ing")'>
+			select s.s_style, s.s_name, s.s_type, s.s_duration,
+					mo.mo_no ,mo.mo_orderNo, date_format(mo.mo_regDate, '%Y-%m-%d %H:%i') as mo_regDate, date_format(mo.mo_startTime, '%Y-%m-%d %H:%i') as mo_startTime, date_format(mo.mo_endTime, '%Y-%m-%d %H:%i') as mo_endTime, mo.mo_cnt, mo.mo_total, mo_star, mo.mo_starComment, mo.mo_freqType, mo.mo_freqCycle
+			from (select * from t_m_order where mo_no = #{mo_no}) as mo inner join t_service as s on mo.s_no = s.s_no
+		</if>
+	
+	</select>
+	
+	<!-- mo_orderNo에 해당하는 서비스들 취소 (삭제) -->
+	<delete id="cancleServiceByOdNo" parameterType="String">
+		delete from t_m_order where mo_orderNo = #{mo_orderNo}
+	</delete>
+	
+	
+	<!-- 일정 변경  -->
+	<update id="changeDate" parameterType="java.util.HashMap">
+		update t_m_order  
+		set	mo_startTime = #{mo_startTime}, mo_endTime = DATE_ADD(mo_startTime, INTERVAL ${s_duration} MINUTE)  
+		where mo_orderNo = #{mo_orderNo} and mo_freqType = #{mo_freqType}
+			<if test='mo_cnt != null'>and mo_cnt = #{mo_cnt}</if> 
+	</update>
+	
+		
 </mapper>

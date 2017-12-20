@@ -127,6 +127,50 @@ private final int LINE_PER_PAGE = 10;
 		return getNoticeBoardByNo;
 	}
 	/***********************************************************************************************************************/
+	// 소비자 myPage 정보 가져오기
+	@Override
+	public MemberVo getMyPageInfo(String m_id) {
+		MemberVo getMyPageInfo = dao.getMyPageInfo(m_id);
+		return getMyPageInfo;
+	}
+	// mypage 정보 수정
+	@Override
+	public void changeMyInfo(Map<String,Object> map) {
+		dao.changeMyInfo(map);
+		
+	}
+	
+	
+	// 소비자 예약 정보 받아오기
+	@Override
+	public List<HashMap<String, Object>> getReservListByMId(String m_id) {
+		List<HashMap<String, Object>> getReservListByMId = dao.getReservListByMId(m_id);
+		return getReservListByMId;
+	}
+	// 예약 정보 디테일 
+	@Override
+	public Map<String, Object> myReservDetail(Map<String, Object> map) {
+		Map<String, Object> myReservDetail = dao.myReservDetail(map);
+		return myReservDetail;
+	}
+	// 예약 취소
+	@Override
+	public void cancleServiceByOdNo(String mo_orderNo) {
+
+		dao.cancleServiceByOdNo(mo_orderNo);
+	}
+	//일정 변경
+	@Override
+	public void changeDate(Map<String, Object> map) {
+		dao.changeDate(map);
+		
+	}
+
+	@Override
+	public String getMoCallFlag(int mo_no) {
+		String getMoCallFlag = dao.getMoCallFlag(mo_no);
+		return getMoCallFlag;
+	}
 
 
 	
