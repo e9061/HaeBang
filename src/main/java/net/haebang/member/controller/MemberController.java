@@ -2,10 +2,13 @@ package net.haebang.member.controller;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,7 +20,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,20 +30,24 @@ import org.springframework.web.servlet.ModelAndView;
 import net.haebang.exception.NoMemberException;
 import net.haebang.member.dao.MemberDao;
 import net.haebang.member.service.MemberService;
+import net.haebang.user.service.SrvService;
 import net.haebang.vo.MemberVo;
 import net.haebang.vo.NoticeBoardVo;
+import net.haebang.vo.ServiceVo;
 
-@RequestMapping("/member")
 @Controller
 public class MemberController {
 
    @Autowired
-   MemberService service;
+   private MemberService service;
    
    @Autowired
-   MemberDao dao;
+   private MemberDao dao;
+   
+   @Autowired
+   private SrvService srvService;
 
-	@RequestMapping(value = "/join", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/join", method = RequestMethod.GET)
 	public String joinForm(Model model) {
 
 		MemberVo member = new MemberVo();
@@ -50,7 +56,7 @@ public class MemberController {
 		return "member/join";
 	}
 
-	@RequestMapping(value = "/join", method = RequestMethod.POST)
+	@RequestMapping(value = "/member/join", method = RequestMethod.POST)
 	public String join(@Valid MemberVo Member, 
 						@RequestParam("m_name") String m_name,
 						@RequestParam("m_id") String m_id,
@@ -70,7 +76,7 @@ public class MemberController {
 	}
 
    
-	@RequestMapping(value= "/myPage", method=RequestMethod.GET)
+	@RequestMapping(value = "/member/myPage", method=RequestMethod.GET)
 	public ModelAndView selectMyInfo(HttpServletRequest request, HttpServletResponse response) {
 		
 		System.out.println("!!!!!!!!!! selectMyInfo  !!!!!!!!!!!!!!!!!");
@@ -92,22 +98,22 @@ public class MemberController {
    
    
    
-	@RequestMapping(value = "/loginForm", method=RequestMethod.GET)
+	@RequestMapping(value = "/member/loginForm", method=RequestMethod.GET)
 	public String loginForm() {
 		return "member/login";
 	}
 	
-	@RequestMapping(value= "/bloginForm", method=RequestMethod.GET)
+	@RequestMapping(value = "/member/bloginForm", method=RequestMethod.GET)
 	public String bloginForm() {
 		return "member/blogin";
 	}
-	@RequestMapping(value= "/prevLoginForm", method=RequestMethod.GET)
+	@RequestMapping(value = "/member/prevLoginForm", method=RequestMethod.GET)
 	public String prevLoginForm() {
 		return "member/prevLogin";
 	}
    
    
-	@RequestMapping(value="/prevLogin", method=RequestMethod.POST)
+	@RequestMapping(value = "/member/prevLogin", method=RequestMethod.POST)
 	public String prevLogin(MemberVo member, HttpSession session, Model model, HttpServletRequest request) {
 		
 		String m_id = request.getParameter("m_id");
@@ -139,7 +145,7 @@ public class MemberController {
 		
 	}
    
-	@RequestMapping(value="/mainLogin", method=RequestMethod.POST)
+	@RequestMapping(value = "/member/mainLogin", method=RequestMethod.POST)
 	public String mainLogin(MemberVo member, HttpSession session, Model model, HttpServletRequest request) {
 		
 		String m_id = request.getParameter("m_id");
@@ -171,49 +177,34 @@ public class MemberController {
 		
 	}
 	
-   @RequestMapping(value="/member/modalLogin", method=RequestMethod.POST)
-   public @ResponseBody MemberVo modalLogin(HttpSession session, Model model, HttpServletRequest request) {
-	   
-	   String m_id = request.getParameter("signin-email");
-	   String m_password = request.getParameter("signin-password");
-	   
-	   MemberVo userVO = new MemberVo();
-	   userVO.setM_id(m_id);
-	   userVO.setM_password(m_password);
-	   
-	   try {
+	   @RequestMapping(value = "/member/modalLogin", method=RequestMethod.POST)
+	   public @ResponseBody MemberVo modalLogin(HttpSession session, HttpServletRequest request) {
 		   
-		   userVO = service.login(userVO);
-		 /*  String phone = userVO.getM_phone();
-		   int length = phone.length();
-		   String first = phone.substring(0,3);
-		   String second = "";
-		   String third = "";
-		   if(length==10) {
-			   second = phone.substring(3, 6);
-			   third = phone.substring(6, 10);
-		   } else {
-			   second = phone.substring(3, 7);
-			   third = phone.substring(7, 11);
+		   String m_id = request.getParameter("signin-email");
+		   String m_password = request.getParameter("signin-password");
+		   
+		   MemberVo userVO = new MemberVo();
+		   userVO.setM_id(m_id);
+		   userVO.setM_password(m_password);
+		   
+		   try {
+			   
+			   userVO = service.login(userVO);
+			   session.setAttribute("userVO", userVO);
+		   
+			   return userVO;
+			   
+		   } catch (NoMemberException e) {
+			   
+			   return null;
+			   
 		   }
-		   System.out.println(first+second+third);*/
-		   session.setAttribute("userVO", userVO);
-		   model.addAttribute("userVO",userVO);
-//		   model.addAttribute("first", first);
-//		   model.addAttribute("second", second);
-//		   model.addAttribute("third", third);
-		  
-		   return userVO;
 		   
-	   } catch (NoMemberException e) {
+		 
 		   
-		   model.addAttribute("ErrorMessage", "입력하신 회원 정보가 존재하지 않습니다.");
-		   return userVO;
 	   }
-	   
-   }
    
-   @RequestMapping(value="/blogin", method=RequestMethod.POST)
+   @RequestMapping(value = "/member/blogin", method=RequestMethod.POST)
 	public String blogin(MemberVo member, HttpSession session, Model model, HttpServletRequest request) {
 		
 		String m_password = request.getParameter("m_password");
@@ -246,7 +237,7 @@ public class MemberController {
 		
 	}
    
-   @RequestMapping(value="/logout")
+   @RequestMapping(value = "/member/logout")
    public String logout(HttpSession session, SessionStatus sessionStatus) {
       
       session.invalidate();
@@ -256,7 +247,7 @@ public class MemberController {
       return "redirect:/";
    }
    
-   @RequestMapping(value="/service")
+   @RequestMapping(value = "/member/service")
    public String service() {
       
       
@@ -264,7 +255,7 @@ public class MemberController {
       return "member/service";
    }
    
-   @RequestMapping(value = "/duplicate1", method = RequestMethod.POST)
+   @RequestMapping(value = "/member/duplicate1", method = RequestMethod.POST)
    public String duplicate1(HttpServletRequest req, Model model) {
       System.out.println(req.getParameter("m_id"));
       MemberVo memberVo = dao.selectById(req.getParameter("m_id"));
@@ -296,7 +287,7 @@ public class MemberController {
 
    }
    
-   @RequestMapping(value = "/{m_id}", method = RequestMethod.GET)
+/*   @RequestMapping(value = "/{m_id}", method = RequestMethod.GET)
    public String updateForm(Model model) {
 
       MemberVo member = new MemberVo();
@@ -304,9 +295,9 @@ public class MemberController {
       model.addAttribute("member", member);
 
       return "member/update";
-   }
+   }*/
 
-   @RequestMapping(value = "/{m_id}", method = RequestMethod.PUT)
+/*   @RequestMapping(value = "/{m_id}", method = RequestMethod.PUT)
    public String update(@Valid MemberVo member,
          @RequestParam("m_name") String m_name,
          @RequestParam("m_id") String m_id,
@@ -327,13 +318,13 @@ public class MemberController {
       service.updateMember(member);
       System.out.println(member+"컨");
       return "redirect:/member/myPage/" + m_id;
-   }
+   }*/
    
    
    /********************************************** 공지사항 ***********************************************************/
    
 
-   @RequestMapping("/memberNotice")
+   @RequestMapping("/member/memberNotice")
    public ModelAndView notice(
          @RequestParam(value="n_type", required=false) String n_type, 
          @RequestParam(value="nowpage", defaultValue="0") int page,
@@ -362,7 +353,7 @@ public class MemberController {
       return mav;
    }
    
-   @RequestMapping(value="/memberNoticeDetail", method = RequestMethod.GET)
+   @RequestMapping(value = "/member/memberNoticeDetail", method = RequestMethod.GET)
    public ModelAndView detail(@RequestParam("no") int no,
                         @RequestParam("n_viewCnt") int n_viewCnt   ) {
       System.out.println("********************************************************************");
@@ -390,7 +381,7 @@ public class MemberController {
    
    /************************************ 주호 myPage 수정 ***************************************************************************/
 	
-	@RequestMapping(value="/changeMyInfo", method=RequestMethod.GET)
+	@RequestMapping(value = "/member/changeMyInfo", method=RequestMethod.GET)
 	public String changeMyInfo (HttpServletRequest request) {
 		
 		System.out.println("!!!!!!!!!!!!!!!!!!!주호 myPage 수정 주호 myPage 수정 주호 myPage 수정 !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -424,14 +415,14 @@ public class MemberController {
 	
 	/**************************************** 주호 my reservation **************************************************************************/
 	
-	@RequestMapping(value= "/myReservation", method=RequestMethod.GET)
+	@RequestMapping(value = "/member/myReservation", method=RequestMethod.GET)
 	public String myReservation (HttpServletRequest request) {
 		
 		return "/member/myReservation";
 	}
 	
 	//접속 유저의 m_id로 예약리스트 받아오기
-	@RequestMapping(value= "/myReservation", method=RequestMethod.POST)
+	@RequestMapping(value = "/member/myReservation", method=RequestMethod.POST)
 	public @ResponseBody List<HashMap<String, Object>> myReservationList (HttpServletRequest request) {
 		System.out.println("!!!!!!!!!! myReservation  !!!!!!!!!!!!!!!!!");
 		
@@ -445,7 +436,7 @@ public class MemberController {
 		return getReservListByMNo;
 	}
 	
-	@RequestMapping(value="/myReservDetail", method=RequestMethod.POST)
+	@RequestMapping(value = "/member/myReservDetail", method=RequestMethod.POST)
 	public @ResponseBody Map<String, Object> myReservDetail(HttpServletRequest request) throws IOException {
 		
 		int mo_no = Integer.parseInt(request.getParameter("mo_no"));
@@ -504,7 +495,7 @@ public class MemberController {
 	}
 	
 	// service 취소 컨트롤러 - mo_orderNo에 해당하는 모든 서비스list 삭제
-	@RequestMapping(value="/cancleService", method=RequestMethod.GET)
+	@RequestMapping(value = "/member/cancleService", method=RequestMethod.GET)
 	public String cancleService(HttpServletRequest request) {
 		String mo_orderNo = request.getParameter("mo_orderNo");
 		service.cancleServiceByOdNo(mo_orderNo);
@@ -512,7 +503,7 @@ public class MemberController {
 	}
 	
 	// 일정 변경 (보장형 & 정기형 - 해당 스케쥴만)
-	@RequestMapping(value="/changeDate", method=RequestMethod.GET)
+	@RequestMapping(value = "/member/changeDate", method=RequestMethod.GET)
 	public String changeDate(HttpServletRequest request) {
 		
 		String mo_orderNo = request.getParameter("mo_orderNo");
@@ -650,6 +641,282 @@ public class MemberController {
 	/**************************************** 주호 my reservation **************************************************************************/
    
    
+	
+	
+	@RequestMapping(value = "/member/orderAddSchedule", method = RequestMethod.POST)
+	public ModelAndView addschedule(
+			@RequestParam("name") String name, 
+			@RequestParam("postcode") String postcode,
+			@RequestParam("address") String address, 
+			@RequestParam("detailAddress") String detailAddress,
+			@RequestParam("phone1") String phone1, 
+			@RequestParam("phone2") String phone2,
+			@RequestParam("phone3") String phone3, 
+			@RequestParam(value = "service1") String service,
+			@RequestParam(value = "date1") String date1,
+			@RequestParam(value = "startTimeHour1") String startTimeHour1,
+			@RequestParam(value = "startTimeMinute1") String startTimeMinute1,
+			@RequestParam(value = "comments", defaultValue = "null", required = false) String comment,
+			@RequestParam(value = "lon", defaultValue = "null", required = false) String m_lon,
+			@RequestParam(value = "lat", defaultValue = "null", required = false) String m_lat, 
+			@RequestParam(value = "m_gu", defaultValue = "null", required = false) String m_gu, 
+			@RequestParam(value = "card-company-list", defaultValue = "null", required = false) String cardCompany, 
+			@RequestParam(value = "cardNo1", defaultValue = "null", required = false) String cardNo1, 
+			@RequestParam(value = "cardNo2", defaultValue = "null", required = false) String cardNo2, 
+			@RequestParam(value = "cardNo3", defaultValue = "null", required = false) String cardNo3, 
+			@RequestParam(value = "cardNo4", defaultValue = "null", required = false) String cardNo4, 
+			@RequestParam(value = "card-holder", defaultValue = "null", required = false) String cardHolder, 
+			@RequestParam(value = "card-expiration-month", defaultValue = "null", required = false) String expMonth, 
+			@RequestParam(value = "card-expiration-year", defaultValue = "null", required = false) String expYear, 
+			@RequestParam(value = "cardCVC", defaultValue = "null", required = false) String cardCVC,
+			ModelAndView mav,
+			HttpServletRequest request, HttpSession session) {
+
+		String[] insect= (String[]) session.getAttribute("bugs");
+
+		String fullAddress = address + detailAddress;
+		String phone = phone1 + phone2 + phone3;
+		String cardNo=cardNo1+cardNo2+cardNo3+cardNo4;
+		String cardExp=expMonth+expYear;
+		String comments = "고객기피해충 :"+Arrays.toString(insect) +"\n고객메모 :"+ comment;
+		
+		int s_no = Integer.parseInt(service);
+		
+		ServiceVo selectedService = srvService.getServiceInfo(s_no);
+		
+		if (selectedService.getS_freqType().equals("I") || selectedService.getS_freqType().equals("i")) {
+	
+			Calendar cal = Calendar.getInstance();
+			int a = Integer.parseInt(startTimeHour1);
+			int b = Integer.parseInt(startTimeMinute1);
+			cal.set(Calendar.HOUR_OF_DAY, a);
+			cal.set(Calendar.MINUTE, b+selectedService.getS_duration());
+
+			int hour = cal.get(Calendar.HOUR);
+			int hourLength = (int)(Math.log10(hour)+1);
+			String endTimeHour1 = "";
+			
+			if(hourLength<2) {
+				
+				endTimeHour1 = "0"+String.valueOf(hour);
+				
+			}else {
+				
+				endTimeHour1 = String.valueOf(hour);
+				
+			}
+			
+			String endTimeMinute1 = String.valueOf(cal.get(Calendar.MINUTE));
+			
+			String startTime1 = date1 + "T" + startTimeHour1 + ":" + startTimeMinute1 + ":00.000";
+			String endTime1 = date1 + "T" + endTimeHour1 + ":" + endTimeMinute1 + ":00.000";			
+			
+			System.out.println(endTime1);
+			
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("name", name);
+			paramMap.put("address", fullAddress);
+			paramMap.put("phone", phone);
+			paramMap.put("service", s_no);
+			paramMap.put("orderNo_date", date1);
+			paramMap.put("orderNo_startHour", startTimeHour1);
+			paramMap.put("orderNo_startMinute", startTimeMinute1);
+			paramMap.put("startTime", startTime1);
+			paramMap.put("endTime", endTime1);				
+			paramMap.put("unit", selectedService.getS_freqType());
+			paramMap.put("cnt", 1);
+			paramMap.put("comments", comments);
+			paramMap.put("lon", m_lon);
+			paramMap.put("lat", m_lat);
+			paramMap.put("lat", m_gu);
+			paramMap.put("cardCo", cardCompany);
+			paramMap.put("cardNo", cardNo);
+			paramMap.put("cardHolder", cardHolder);
+			paramMap.put("cardExp", cardExp);
+			paramMap.put("cardCVC", cardCVC);
+
+			srvService.insertScheduleByOnetime(paramMap);
+
+		}
+
+		else { //정기성
+
+			
+			Calendar cal = Calendar.getInstance();
+			int a = Integer.parseInt(startTimeHour1);
+			int b = Integer.parseInt(startTimeMinute1);
+			cal.set(Calendar.HOUR_OF_DAY, a);
+			cal.set(Calendar.MINUTE, b+selectedService.getS_duration());
+
+			int hour = cal.get(Calendar.HOUR);
+			int hourLength = (int)(Math.log10(hour)+1);
+			String endTimeHour1 = "";
+			
+			if(hourLength<2) {
+				
+				endTimeHour1 = "0"+String.valueOf(hour);
+				
+			}else {
+				
+				endTimeHour1 = String.valueOf(hour);
+				
+			}
+			
+			String endTimeMinute1 = String.valueOf(cal.get(Calendar.MINUTE));
+			
+			String startTime1 = date1 + "T" + startTimeHour1 + ":" + startTimeMinute1 + ":00.000";
+			String endTime1 = date1 + "T" + endTimeHour1 + ":" + endTimeMinute1 + ":00.000";			
+			
+			System.out.println(endTime1);
+			
+			
+			int cycle = selectedService.getS_freqCycle();
+			int totalCnt = selectedService.getS_total();
+
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("name", name);
+			paramMap.put("address", fullAddress);
+			paramMap.put("phone", phone);
+			paramMap.put("service", s_no);			
+			paramMap.put("comments", comments);
+			paramMap.put("cycle", cycle);
+			paramMap.put("total", totalCnt);
+			paramMap.put("orderNo_date", date1);
+			paramMap.put("orderNo_startHour", startTimeHour1);
+			paramMap.put("orderNo_startMinute", startTimeMinute1);
+			paramMap.put("lon", m_lon);
+			paramMap.put("lat", m_lat);
+			paramMap.put("lat", m_gu);
+			paramMap.put("cardCo", cardCompany);
+			paramMap.put("cardNo", cardNo);
+			paramMap.put("cardHolder", cardHolder);
+			paramMap.put("cardExp", cardExp);
+			paramMap.put("cardCVC", cardCVC);
+
+
+			Map<String, Object> scheduleMap;
+			List<Map<String, Object>> scheduleList = new ArrayList<Map<String, Object>>();
+
+			String year = date1.substring(0, 4);
+			String month = date1.substring(5, 7);
+			String day = date1.substring(8, 10);
+
+			Calendar c = Calendar.getInstance();
+			c.set(Calendar.YEAR, Integer.parseInt(year));
+			c.set(Calendar.MONTH, Integer.parseInt(month) - 1);
+			c.set(Calendar.DATE, Integer.parseInt(day));
+
+
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+			if (selectedService.getS_freqType().equals("W") || selectedService.getS_freqType().equals("w")) {
+
+				paramMap.put("unit", selectedService.getS_freqType());
+
+				for (int i = 0; i < totalCnt; i++) {
+
+					if (i == 0) {
+						System.out.println(i);
+
+						scheduleMap = new HashMap<String, Object>();
+
+						scheduleMap.put("cnt", i + 1);
+						scheduleMap.put("startTime", startTime1);
+						scheduleMap.put("endTime", endTime1);
+
+						scheduleList.add(scheduleMap);
+						System.out.println("1일때:" + scheduleList);
+
+					} else {
+						
+						System.out.println(i);
+						scheduleMap = new HashMap<String, Object>();
+						scheduleMap.put("cnt", i + 1);
+						c.add(Calendar.DATE, cycle * 7);
+
+						String startTimeCycle = sdf.format(c.getTime()) + "T" + startTimeHour1 + ":" + startTimeMinute1
+								+ ":000";
+						String endTimeCycle = sdf.format(c.getTime()) + "T" + endTimeHour1 + ":" + endTimeMinute1
+								+ ":000";
+
+						scheduleMap.put("startTime", startTimeCycle);
+						scheduleMap.put("endTime", endTimeCycle);
+
+						scheduleList.add(scheduleMap);
+						System.out.println(scheduleList);
+
+					}
+
+				}
+
+
+				paramMap.put("scheduleList", scheduleList);
+
+				Set<String> keys = paramMap.keySet();
+				for (String key : keys) {
+					System.out.println(key + " : " + paramMap.get(key));
+				}
+
+			}
+
+			if (selectedService.getS_freqType().equals("M") || selectedService.getS_freqType().equals("m")) {
+			
+
+				paramMap.put("unit", selectedService.getS_freqType());
+
+				for (int i = 0; i < totalCnt; i++) {
+
+					if (i == 0) {
+						System.out.println(i);
+
+						scheduleMap = new HashMap<String, Object>();
+
+						scheduleMap.put("cnt", i + 1);
+						scheduleMap.put("startTime", startTime1);
+						scheduleMap.put("endTime", endTime1);
+
+						scheduleList.add(scheduleMap);
+						System.out.println("1일때:" + scheduleList);
+
+					} else {
+						System.out.println(i);
+						scheduleMap = new HashMap<String, Object>();
+						scheduleMap.put("cnt", i + 1);
+						c.add(Calendar.MONTH, cycle);
+
+						String startTimeCycle = sdf.format(c.getTime()) + "T" + startTimeHour1 + ":" + startTimeMinute1
+								+ ":000";
+						String endTimeCycle = sdf.format(c.getTime()) + "T" + endTimeHour1 + ":" + endTimeMinute1
+								+ ":000";
+
+						scheduleMap.put("startTime", startTimeCycle);
+						scheduleMap.put("endTime", endTimeCycle);
+
+						scheduleList.add(scheduleMap);
+						System.out.println(scheduleList);
+
+					}
+
+				}
+
+
+				paramMap.put("scheduleList", scheduleList);
+
+				Set<String> keys = paramMap.keySet();
+				for (String key : keys) {
+					System.out.println(key + " : " + paramMap.get(key));
+				}
+
+			}
+
+			srvService.insertSchedule(paramMap);
+			System.out.println(paramMap);
+		}
+
+		mav.setViewName("index");
+
+		return mav;
+	}
    
       
 }

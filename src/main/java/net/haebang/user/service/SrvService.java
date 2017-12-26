@@ -7,9 +7,12 @@ import net.haebang.vo.ServiceVo;
 
 public interface SrvService {
 
-	public List<ServiceVo> selectList(String con1, String con2, String con3);
+	public List<ServiceVo> selectList(String con1, String con2, int con3);
 	
 	void insertScheduleByOnetime(Map<String, Object> map);
 
 	void insertSchedule(Map<String, Object> map);
+	
+	ServiceVo getServiceInfo(int s_no);
+	
 }

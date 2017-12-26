@@ -19,11 +19,12 @@ public class SrvDaoImpl implements SrvDao {
 	private SqlSessionTemplate sqlSession;
 
 	
-	public List<ServiceVo> selectList(String con1, String con2, String con3){
+	public List<ServiceVo> selectList(String con1, String con2, int con3){
+		String con4 = String.valueOf(con3);
 		ServiceVo srv = new ServiceVo();
 		srv.setS_type(con1);
 		srv.setS_place(con2);
-		srv.setS_size(con3);
+		srv.setS_size(con4);
 		List<ServiceVo> srvList = sqlSession.selectList("net.haebang.user.dao.SrvDao.selectServiceList", srv);
 		return srvList;
 	}
@@ -35,17 +36,12 @@ public class SrvDaoImpl implements SrvDao {
 	public void insertScdToNewMemberOnetime(Map<String, Object> map) {
 		//새멤버 추가
 		//t_member에 새멤버 추가
-		
-			System.out.println("**********************dao 1회성 새멤버 잘들어옴********************************");
-			
 		sqlSession.insert("net.haebang.user.dao.SrvDao.insertScdToNewMember", map);
 		//M_no찾기
 		MemberVo registeredMember = sqlSession.selectOne("net.haebang.user.dao.SrvDao.selectUserByInfo", map);
-			System.out.println("**********************dao 1회성 새멤버 Mo_no찾기완료********************************");
 		map.put("m_no", registeredMember.getM_no());
 		//맵의 m_no로 t_m_order에 insert (고객정보로 select한 테이블에 insert)		
 		sqlSession.insert("net.haebang.user.dao.SrvDao.insertScdByMNoOnetime", map);
-			System.out.println("***********************dao:1회성 맵의 m_no로 t_m_order에 insert 완료*******************************");
 			
 		
 	}	
@@ -60,31 +56,28 @@ public class SrvDaoImpl implements SrvDao {
 	@Override
 	public void insertScdToRegisteredMemberOnetime(Map<String, Object> map) {
 		//기존멤버 추가
-		//맵의 m_no로 t_m_order에 insert(우다다다)
-			System.out.println("**********************dao 1회성 기존멤버 잘들어옴********************************");
+		//맵의 m_no로 t_m_order에 insert
+		sqlSession.update("net.haebang.user.dao.SrvDao.updateMemberInfo", map);
 		sqlSession.insert("net.haebang.user.dao.SrvDao.insertScdByMNoOnetime", map);
-		System.out.println("***********************dao:1회성 맵의 m_no로 t_m_order에 insert 완료*******************************");
 			
 	}
+	
 	@Transactional
 	@Override
 	public void insertScdToNewMember(Map<String, Object> map) {
 		//새멤버 추가
 		//t_member에 새멤버 추가
-			System.out.println("**********************dao 정기성 새멤버 잘들어옴********************************");
 		sqlSession.insert("net.haebang.user.dao.SrvDao.insertScdToNewMember", map);			
 		//M_no찾기
 		MemberVo registeredMember = sqlSession.selectOne("net.haebang.user.dao.SrvDao.selectUserByInfo", map);
-			System.out.println("**********************dao 정기성 새멤버 Mo_no찾기완료********************************");
-			System.out.println(registeredMember.getM_no());
-			map.put("m_no", registeredMember.getM_no());
-			Set<String> keys = map.keySet();
-			for(String key : keys) {
-				System.out.println(key + " : "+ map.get(key));				
-			}
+		System.out.println(registeredMember.getM_no());
+		map.put("m_no", registeredMember.getM_no());
+		Set<String> keys = map.keySet();
+		for(String key : keys) {
+			System.out.println(key + " : "+ map.get(key));				
+		}
 		//맵의 m_no로 t_m_order에 insert (고객정보로 select한 테이블에 insert)		
 		sqlSession.insert("net.haebang.user.dao.SrvDao.insertScdByMNo", map);
-			System.out.println("***********************dao:정기성 맵의 m_no로 t_m_order에 insert 완료*******************************");
 		
 	}
 	
@@ -92,21 +85,19 @@ public class SrvDaoImpl implements SrvDao {
 	
 	@Override
 	public void insertScdToRegisteredMember(Map<String, Object> map) {
-		//기존멤버 추가
-		//맵의 m_no로 t_m_order에 insert(우다다다)
-			System.out.println("**********************dao 정기성 기존멤버 잘들어옴********************************");
+	//기존멤버 추가
+	//맵의 m_no로 t_m_order에 insert
+		sqlSession.update("net.haebang.user.dao.SrvDao.updateMemberInfo", map);
 		sqlSession.insert("net.haebang.user.dao.SrvDao.insertScdByMNo", map);
-			System.out.println("***********************dao:정기성 맵의 m_no로 t_m_order에 insert 완료*******************************");
 	}
 
 
-	
-	
-	
-	
-	
-	
-	
-	
+
+	@Override
+	public ServiceVo getServiceInfo(int s_no) {
+		ServiceVo selectedService = sqlSession.selectOne("net.haebang.user.dao.SrvDao.getServiceInfo", s_no);
+		return selectedService;
+	}
+
 	
 }
