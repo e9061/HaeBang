@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.haebang.reply.dao.replyDao">
+
+	<resultMap type="replyVo" id="MapReplyVo">
+		<!-- <result column="reg_date" property="regDate"/> -->
+	</resultMap>
+	<sql id="selectAllr">
+		select r_no,r_content,r_writer,date_format( r_regDate, '%Y-%M-%d' ) as r_regDate
+		from t_reply
+	</sql>
+	 
+	<select id="selectAllreply" parameterType="int" resultMap="MapReplyVo">
+		<include refid="selectAllr"/>
+		where q_no = #{q_no}
+		order by r_no desc
+	</select>
+	
+	<insert id="insertReply" parameterType="replyVo">
+		insert into t_reply(r_no,q_no,r_content,r_writer)
+		values(r_no,#{q_no},#{r_content},#{r_writer})
+	</insert>
+	
+	<update id="updateReply" parameterType="replyVo">
+		update t_reply
+		set r_content=#{r_content}
+		where r_no = #{r_no}
+	</update>
+	
+	<delete id="deleteReply" parameterType="int">
+		delete from t_reply where r_no = #{r_no}
+	</delete>
+	
+</mapper>
