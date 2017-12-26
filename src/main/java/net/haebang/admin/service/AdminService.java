@@ -20,11 +20,11 @@ public interface AdminService {
 	List<MemberVo> memberSelected(MemberVo memberVo);
 	
 	// 업체 조회 서비스
-	List<HashMap<String, Object>> hbComList();
-	List<HashMap<String, Object>> nComList();
-	List<HashMap<String, Object>> searchHbComList(CompanyVo companyVo);
-	List<HashMap<String, Object>> searchNComList(CompanyVo companyVo);
-	
+		List<HashMap<String, Object>> hbComList(int page);
+		List<HashMap<String, Object>> nComList(int page);
+		List<HashMap<String, Object>> searchHbComList(CompanyVo companyVo);
+		List<HashMap<String, Object>> searchNComList(CompanyVo companyVo);
+		int getLastPage();
 	// 공지사항 서비스
 	List<NoticeBoardVo> getOwnerNoticeList(String n_type ,int page, String word, String searchCondition); 
 	int getLastPage(String n_type ,String word, String searchCondition);

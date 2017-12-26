@@ -1049,6 +1049,9 @@ public class EmployeeController {
 /**********************************FAQ**************************************/
 	
 	
+/**********************************FAQ**************************************/
+	
+	
 	// FAQ 사업자
 	@RequestMapping(value = "/ceo/FE")
 	public ModelAndView selectFE(HttpServletRequest request) {
@@ -1102,15 +1105,16 @@ public class EmployeeController {
 		System.out.println(list);
 		int totalPage = service.getLastPage();
 
+		mav.setViewName("employee/FE");
 		mav.addObject("totalPage", totalPage);
 		mav.addObject("list", list);
 
 		return mav;
 
 	}
-	
-	@RequestMapping(value = "/FE/{q_no}", method = RequestMethod.GET)
-	public String selectFE(@PathVariable int q_no, Model model) throws IOException{
+
+	@RequestMapping(value = "/ceo/FE/{q_no}", method = RequestMethod.GET)
+	public String selectFE1(@PathVariable int q_no, Model model) throws IOException{
 		QnAVo QnA = service.selectOneBoard(q_no);
 		System.out.println(QnA.getQ_saveName());
 		
@@ -1118,7 +1122,7 @@ public class EmployeeController {
 			model.addAttribute("image");
 		}else {
 			System.out.println(" 1111");
-			File file = new File("/home/ubuntu/HaeBangQnA/" + QnA.getQ_saveName());
+			File file = new File("C:/dev/HaeBangQnA/" + QnA.getQ_saveName());
 			FileInputStream fis = new FileInputStream(file);
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			int b;
