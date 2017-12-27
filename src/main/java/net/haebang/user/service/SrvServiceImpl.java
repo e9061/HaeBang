@@ -33,6 +33,19 @@ public class SrvServiceImpl implements SrvService{
 		
 		System.out.println(registeredMember);
 		
+			/////////////////////////////////////// 창대/////////////////////////////////////////////////////
+		int prevMonthOutCome = srvdao.selectPrevMonthOutCome();
+		map.put("prevMonthOutCome", prevMonthOutCome);
+		System.out.println("***********************전월 회사별 매출금액 중 최소금액 select 완료" + prevMonthOutCome
+				+ "*******************************");
+
+		int e_no_first = srvdao.selectNoOneEmployee(map);
+		map.put("e_no_first", e_no_first);
+		System.out.println(
+				"*********************별점,매출,위치 기준 1순위 select 완료" + e_no_first + "*******************************");
+		System.out.println("////v/////v////v/////v//////v//////v////v//////");
+		////////////////////////////////////////////////////////////////////////////////////////////
+		
 		if(registeredMember == null) {
 			System.out.println("***********************서비스:뉴멤버 1회성 insert메서드 실행전*******************************");
 			srvdao.insertScdToNewMemberOnetime(map);
@@ -47,6 +60,19 @@ public class SrvServiceImpl implements SrvService{
 			
 		}	
 		
+		////////////////////////////////////////// 창대//////////////////////////////////////////////////
+		System.out.println(map.get("orderNo"));
+		System.out.println(map.get("orderNo"));
+		List<Integer> list = srvdao.selectMoNoByOrderNo(map);
+		System.out.println(list.get(0));
+		map.put("mo_no", list.get(0));
+
+		srvdao.updateENoFirstbyMoNo(map);
+		System.out.println(map.get("mo_no"));
+		System.out.println(map.get("mo_no"));
+		srvdao.createEvent(map);
+		////////////////////////////////////////////////////////////////////////////////////////////
+
 	}
 	
 	
@@ -56,6 +82,21 @@ public class SrvServiceImpl implements SrvService{
 		MemberVo registeredMember = srvdao.selectUserByInfo(map);
 		System.out.println("***********************서비스:정기성 고객정보select 완료*******************************");
 		
+			
+		////////////////////////////// 창대/////////////////////////////////////////
+		int prevMonthOutCome = srvdao.selectPrevMonthOutCome();
+		map.put("prevMonthOutCome", prevMonthOutCome);
+		System.out.println("***********************전월 회사별 매출금액 중 최소금액 select 완료" + prevMonthOutCome
+				+ "*******************************");
+
+		int e_no_first = srvdao.selectNoOneEmployee(map);
+		map.put("e_no_first", e_no_first);
+		System.out.println(
+				"*********************별점,매출,위치 기준 1순위 select 완료" + e_no_first + "*******************************");
+		System.out.println("////o/////O////o/////O//////o//////O////o//////");
+		////////////////////////////////////////////////////////////////////////////////////////////
+
+
 		if(registeredMember == null) {
 				
 			System.out.println("***********************서비스:뉴멤버 정기성 insert메서드실행전*******************************");
@@ -68,6 +109,20 @@ public class SrvServiceImpl implements SrvService{
 			
 		}	
 		
+		////////////////////////////////////////////창대////////////////////////////////////////////////
+	      System.out.println(map.get("orderNo"));
+	      System.out.println(map.get("orderNo"));
+	      List<Integer> list = srvdao.selectMoNoByOrderNo(map);
+	      System.out.println(list.get(0));
+	      map.put("mo_no", list.get(0));
+	      // 업데이트 통해서 mo_no 첫번째에 넣어주기.
+	      srvdao.updateENoFirstbyMoNo(map);
+
+	      
+	      System.out.println(map.get("mo_no"));
+	      System.out.println(map.get("mo_no"));
+	      srvdao.createEvent(map);
+	      ////////////////////////////////////////////////////////////////////////////////////////////
 		
 	}
 	

@@ -38,8 +38,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Autowired
 	public EmployeeDao employeeDao;
 
-//	@Autowired
-//	public SrvDao srvdao;
+	@Autowired
+	public SrvDao srvdao;
 	
 	public void setEmployeeDao(EmployeeDao employeeDao) {
 		this.employeeDao = employeeDao;
@@ -379,9 +379,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		//2. update t_m_order set e_no_first=슝슝
 		//	refuseMoNo.Lon, refuseMoNo.lat, prevMonthOutCome, refuseMoNo.dateHourForNoOneEmployee
 		
-//		int prevMonthOutCome = srvdao.selectPrevMonthOutCome();
-//		map.put("prevMonthOutCome", prevMonthOutCome);
-//		System.out.println(prevMonthOutCome);
+		int prevMonthOutCome = srvdao.selectPrevMonthOutCome();
+		map.put("prevMonthOutCome", prevMonthOutCome);
+		System.out.println(prevMonthOutCome);
 
 		employeeDao.updateMOrderENoFirst(map);
 		System.out.println("굿  3단계");

@@ -190,7 +190,28 @@ public class QController {
 		System.out.println(lon);
 		System.out.println(lat);
 
+		
+		 //////////////////////////////////창대 수정//////////////////////////////////////////
+	      String years;
+	      String months;
+	      String days;
+	      String dateForNoOneEmployee;
+	      String dateHourForNoOneEmployee;
+
+	      
+	      /////////////////////////////////////////////////////////////////////////////////		
+
 		if (periodType.equals("onetime")) {
+
+			////////////////////////////////창대 수정/////////////////////////////////////////////////
+			years = date1.substring(0, 4);
+	          months = date1.substring(5, 7);
+	          days = date1.substring(8, 10);
+	          dateForNoOneEmployee = years+months+days;
+	          dateHourForNoOneEmployee = dateForNoOneEmployee+startTimeHour1;
+	          System.out.println(dateForNoOneEmployee);
+	          System.out.println(dateHourForNoOneEmployee);
+	        /////////////////////////////////////////////////////////////////////////////////
 
 			System.out.println("***********************컨트롤러:1회성*******************************");
 			String startTime1 = date1 + "T" + startTimeHour1 + ":" + startTimeMinute1 + ":00.000";
@@ -198,6 +219,12 @@ public class QController {
 			String orderNo = mkOrderNo("N", date1, startTimeHour1, startTimeMinute1, phone3);
 
 			Map<String, Object> paramMap = new HashMap<String, Object>();
+
+			 //////////////////////////////////창대 수정//////////////////////////////////////////
+	         paramMap.put("dateForNoOneEmployee", dateForNoOneEmployee);
+	         paramMap.put("dateHourForNoOneEmployee", dateHourForNoOneEmployee);
+	         //////////////////////////////////////////////////////////////////////////////////
+
 			paramMap.put("name", name);
 			paramMap.put("address", fullAddress);
 			paramMap.put("phone", phone);
@@ -221,6 +248,22 @@ public class QController {
 
 		if (periodType.equals("regular")) {
 
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+
+			//////////////////////////////////창대 수정//////////////////////////////////////////
+			
+	    	  	years = date2.substring(0, 4);
+	    	  	months = date2.substring(5, 7);
+	    	  	days = date2.substring(8, 10);
+	    	  	dateForNoOneEmployee = years+months+days;
+	    	  	dateHourForNoOneEmployee = dateForNoOneEmployee+startTimeHour2;
+	    	  
+	    	  	System.out.println(dateForNoOneEmployee);
+	    	  	System.out.println(dateHourForNoOneEmployee);
+	    	  	paramMap.put("dateForNoOneEmployee", dateForNoOneEmployee);
+	    	  	paramMap.put("dateHourForNoOneEmployee", dateHourForNoOneEmployee);
+	    	  //////////////////////////////////////////////////////////////////////////////////
+
 			System.out.println("***********************컨트롤러:정기성*******************************");
 			String startTime2 = date2 + "T" + startTimeHour2 + ":" + startTimeMinute2 + ":00.000";
 			String endTime2 = date2 + "T" + endTimeHour2 + ":" + endTimeMinute2 + ":00.000";
@@ -229,7 +272,6 @@ public class QController {
 			int cycle = Integer.parseInt(cycle1);
 			int totalCnt = Integer.parseInt(totalCnt1);
 
-			Map<String, Object> paramMap = new HashMap<String, Object>();
 			paramMap.put("name", name);
 			paramMap.put("address", fullAddress);
 			paramMap.put("phone", phone);

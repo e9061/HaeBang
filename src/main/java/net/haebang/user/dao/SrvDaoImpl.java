@@ -103,6 +103,42 @@ public class SrvDaoImpl implements SrvDao {
 	
 	
 	
+	@Override
+	public int selectNoOneEmployee(Map<String, Object> map) {
+	   
+		return sqlSession.selectOne("net.haebang.user.dao.SrvDao.selectNoOneEmployee", map);
+	}
+  @Override
+  public int selectPrevMonthOutCome() {
+	
+	if(sqlSession.selectOne("net.haebang.user.dao.SrvDao.selectPrevMonthOutCome") == null)
+	  {
+		  return 0;
+	  }
+	  
+	  return sqlSession.selectOne("net.haebang.user.dao.SrvDao.selectPrevMonthOutCome");
+  }
+
+  @Override
+	public void createEvent(Map<String, Object> map) {
+		sqlSession.update("net.haebang.user.dao.SrvDao.createEvent", map);
+		
+	}
+  
+  @Override
+	public List<Integer> selectMoNoByOrderNo(Map<String, Object> map) {
+		
+	   List<Integer> list = sqlSession.selectList("net.haebang.user.dao.SrvDao.selectMoNoByOrderNo", map);
+		
+		return list;
+	}
+  
+   
+  @Override
+	public void updateENoFirstbyMoNo(Map<String, Object> map) {
+	  sqlSession.update("net.haebang.user.dao.SrvDao.updateENoFirstbyMoNo", map);
+		
+	}	
 	
 	
 	
