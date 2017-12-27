@@ -1,5 +1,6 @@
 package net.haebang.member.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -103,6 +104,56 @@ public class MemberDaoImpl implements MemberDao{
 	/*******************************************************************************************************/
 	
 	
+	/*********************************** 소비자 예약정보 가져오기 **********************************************************/
+	@Override
+	public MemberVo getMyPageInfo(String m_id) {
+		MemberVo getMyPageInfo  = sqlSession.selectOne("net.haebang.member.dao.MemberDao.getMyPageInfo",m_id);
+		return getMyPageInfo;
+	}
+	@Override
+	public void changeMyInfo(Map<String,Object> map) {
+		sqlSession.update("net.haebang.member.dao.MemberDao.changeMyInfo",map);
+		
+	}
+	
+	
+	/*********************************** 소비자 예약정보 가져오기 **********************************************************/
+	@Override
+	public List<HashMap<String, Object>> getReservListByMId(String m_id) {
+		List<HashMap<String, Object>> getReservListByMId = sqlSession.selectList("net.haebang.member.dao.MemberDao.getReservListByMId", m_id);
+		return getReservListByMId;
+	}
+
+	@Override
+	public Map<String, Object> myReservDetail(Map<String, Object> map) {
+		Map<String, Object> myReservDetail = sqlSession.selectOne("net.haebang.member.dao.MemberDao.myReservDetail",map);
+		return myReservDetail;
+	}
+
+	// orderNo에 해당하는 서비스들 삭제(취소)
+	@Override
+	public void cancleServiceByOdNo(String mo_orderNo) {
+		sqlSession.delete("net.haebang.member.dao.MemberDao.cancleServiceByOdNo", mo_orderNo);
+	}
+
+	// 일정 변경
+	@Override
+	public void changeDate(Map<String, Object> map) {
+		sqlSession.update("net.haebang.member.dao.MemberDao.changeDate", map);
+	}
+
+	@Override
+	public String getMoCallFlag(int mo_no) {
+		String getMoCallFlag = sqlSession.selectOne("net.haebang.member.dao.MemberDao.getMoCallFlag", mo_no);
+		return getMoCallFlag;
+	}
+
+
+	
+	
+	
+	/*********************************** 소비자 예약정보 가져오기 **********************************************************/
+
 	
 	
 }

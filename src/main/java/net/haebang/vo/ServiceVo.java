@@ -2,20 +2,20 @@ package net.haebang.vo;
 
 import java.util.Arrays;
 
-/**
- * @author lvvvy
- *
- */
 public class ServiceVo {
 	private int s_no;
 	private String s_style;
 	private String s_name;
 	private	String s_size;
 	private int s_price;
-	private String s_detail;
+	private String s_detail;		
 	private String s_type;
 	private String s_place;
 	private int s_duration;
+	private String s_freqType;
+    private int s_freqCycle;
+    private int s_total;
+    
 	public int getS_no() {
 		return s_no;
 	}
@@ -69,6 +69,25 @@ public class ServiceVo {
 	}
 	public void setS_duration(int s_duration) {
 		this.s_duration = s_duration;
+	}
+	
+	public String getS_freqType() {
+		return s_freqType;
+	}
+	public void setS_freqType(String s_freqType) {
+		this.s_freqType = s_freqType;
+	}
+	public int getS_freqCycle() {
+		return s_freqCycle;
+	}
+	public void setS_freqCycle(int s_freqCycle) {
+		this.s_freqCycle = s_freqCycle;
+	}
+	public int getS_total() {
+		return s_total;
+	}
+	public void setS_total(int s_total) {
+		this.s_total = s_total;
 	}
 	@Override
 	public String toString() {

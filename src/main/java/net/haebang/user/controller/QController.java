@@ -24,7 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import net.haebang.user.bug.AnsweredData;
 import net.haebang.user.bug.Question;
-import net.haebang.user.service.SrvServiceImpl;
+import net.haebang.user.service.SrvService;
 import net.haebang.vo.ServiceVo;
 
 
@@ -33,7 +33,7 @@ public class QController {
 	
 	
 	@Autowired
-	SrvServiceImpl srvService;
+	SrvService srvService;
 	
 	
 	@RequestMapping(value="/", method = RequestMethod.GET)
@@ -105,14 +105,73 @@ public class QController {
 	}
 	
 	@RequestMapping(value="/abc", method=RequestMethod.POST)
-	public @ResponseBody List<ServiceVo> collect(HttpServletRequest request, HttpSession session) {
+	public @ResponseBody List<ServiceVo> collect
+						(@RequestParam(value = "selecttype", defaultValue = "null", required = false) String type,
+						@RequestParam(value = "selectinsect", defaultValue = "null", required = false) String[] insect,
+						@RequestParam(value = "selectplace", defaultValue = "null", required = false) String place,
+						@RequestParam(value = "selectsize", defaultValue = "null", required = false) int size,
+				HttpSession session) {
 		
-		String ans1 = request.getParameter("ans1");
-		String[] ans2 = request.getParameterValues("ans2"); 
-		String ans3 = request.getParameter("ans3");
-		String ans5 = request.getParameter("ans5");
-		System.out.println(ans1+ans2.toString()+ans3+ans5);
-		List<ServiceVo> result = srvService.selectList(ans1, ans3, ans5);
+	
+		if(type.equals("H")) {//해방일때
+						
+			if(place.equals("K")) {//가정일때
+							
+				if(size==31) {//40-50평대 더미 50평대로 넣기
+					
+					size = 41;			
+					
+				}else if(size > 50 && size <= 100) {//50평대이상 100평대이하 더미넣기
+					
+					size=91;
+										
+				}else if(size > 100){//100평이상-따로전화
+					size=101;
+					
+				}
+				
+				
+			}else {//영업장일때
+
+				if(size==1) {
+					size= 11;
+					
+				}else if(size > 50) {//50평이상-따로전화
+					size=51;
+					
+				}
+				
+			}
+			
+					
+		}else {//소독일때 (S)
+			
+			place="A";
+			
+			if(size < 50) {
+				size=41;
+				
+			}else if(size <= 70) {
+				size=61;
+				
+			}else if(size <=100) {
+				size=91;
+				
+			}else if(size <= 200) {
+				size=191;
+				
+			}else if(size <= 500) {
+				size=491;
+				
+			}else if(size > 500){//500이상 사이즈
+				size=501;
+			}
+				
+			
+		}
+		
+		List<ServiceVo> result = srvService.selectList(type, place, size);
+
 		ListIterator<ServiceVo> itr = result.listIterator();
 		if(!itr.hasNext())
 			System.out.println("has no element..");
@@ -121,308 +180,25 @@ public class QController {
 				System.out.println(itr.next().toString());
 			}
 		}
-		session.setAttribute("bugs", ans2);
+		
+		for(int i = 0; i< insect.length; i++) {
+			System.out.println(insect[i]);
+		}
+		
+		
+		session.setAttribute("bugs", insect);
 		session.setAttribute("srvDisplay", result);
 		return result;
 	}
 	
 	@RequestMapping(value="/bcd", method=RequestMethod.POST)
 	public @ResponseBody List<ServiceVo> serviceDisplay(HttpSession session){
+		System.out.println("/bcd 입성");
 		List<ServiceVo> list = (List<ServiceVo>)session.getAttribute("srvDisplay");
 		
+		System.out.println(list);
 		return list;
 	}
 	
-	@RequestMapping(value = "/member/addSchedule", method = RequestMethod.POST)
-	public ModelAndView addschedule(@RequestParam("name") String name, 
-			@RequestParam("postcode") String postcode,
-			@RequestParam("address") String address, @RequestParam("detailAddress") String detailAddress,
-			@RequestParam("phone1") String phone1, @RequestParam("phone2") String phone2,
-			@RequestParam("phone3") String phone3, @RequestParam("service1") String service,
-			@RequestParam("period-type") String periodType,
-			@RequestParam(value = "date1", defaultValue = "null", required = false) String date1,
-			@RequestParam(value = "startTimeHour1", defaultValue = "null", required = false) String startTimeHour1,
-			@RequestParam(value = "startTimeMinute1", defaultValue = "null", required = false) String startTimeMinute1,
-			@RequestParam(value = "endTimeHour1", defaultValue = "null", required = false) String endTimeHour1,
-			@RequestParam(value = "endTimeMinute1", defaultValue = "null", required = false) String endTimeMinute1,
-			@RequestParam(value = "unit", defaultValue = "null", required = false) String unit,
-			@RequestParam(value = "cycle", defaultValue = "null", required = false) String cycle1,
-			@RequestParam(value = "totalCnt", defaultValue = "null", required = false) String totalCnt1,
-			@RequestParam(value = "date2", defaultValue = "null", required = false) String date2,
-			@RequestParam(value = "startTimeHour2", defaultValue = "null", required = false) String startTimeHour2,
-			@RequestParam(value = "startTimeMinute2", defaultValue = "null", required = false) String startTimeMinute2,
-			@RequestParam(value = "endTimeHour2", defaultValue = "null", required = false) String endTimeHour2,
-			@RequestParam(value = "endTimeMinute2", defaultValue = "null", required = false) String endTimeMinute2,
-			@RequestParam(value = "comments", defaultValue = "null", required = false) String comments,
-			@RequestParam(value = "lon", defaultValue = "null", required = false) String lon,
-			@RequestParam(value = "lat", defaultValue = "null", required = false) String lat, ModelAndView mav,
-			HttpServletRequest request, HttpSession session) {
-
-		// EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
-		// System.out.println(userVo);
-		// System.out.println(userVo.getE_no());
-		String fullAddress = address + detailAddress;
-		String phone = phone1 + phone2 + phone3;
-
-		System.out.println(name+"뭐냐");
-		System.out.println("dd");
-		System.out.println(address);
-		System.out.println(detailAddress);
-		System.out.println(phone1);
-		System.out.println(phone2);
-		System.out.println(phone3);
-		System.out.println(service);
-		System.out.println(periodType);
-		System.out.println(date1);
-		System.out.println(startTimeHour1);
-		System.out.println(startTimeMinute1);
-		System.out.println(endTimeHour1);
-		System.out.println(endTimeMinute1);
-		System.out.println(unit);
-		System.out.println(cycle1);
-		System.out.println(totalCnt1);
-		System.out.println(date2);
-		System.out.println(startTimeHour2);
-		System.out.println(startTimeMinute2);
-		System.out.println(endTimeHour2);
-		System.out.println(endTimeMinute2);
-		System.out.println(comments);
-		System.out.println(lon);
-		System.out.println(lat);
-
-		
-		 //////////////////////////////////창대 수정//////////////////////////////////////////
-	      String years;
-	      String months;
-	      String days;
-	      String dateForNoOneEmployee;
-	      String dateHourForNoOneEmployee;
-
-	      
-	      /////////////////////////////////////////////////////////////////////////////////		
-
-		if (periodType.equals("onetime")) {
-
-			////////////////////////////////창대 수정/////////////////////////////////////////////////
-			years = date1.substring(0, 4);
-	          months = date1.substring(5, 7);
-	          days = date1.substring(8, 10);
-	          dateForNoOneEmployee = years+months+days;
-	          dateHourForNoOneEmployee = dateForNoOneEmployee+startTimeHour1;
-	          System.out.println(dateForNoOneEmployee);
-	          System.out.println(dateHourForNoOneEmployee);
-	        /////////////////////////////////////////////////////////////////////////////////
-
-			System.out.println("***********************컨트롤러:1회성*******************************");
-			String startTime1 = date1 + "T" + startTimeHour1 + ":" + startTimeMinute1 + ":00.000";
-			String endTime1 = date1 + "T" + endTimeHour1 + ":" + endTimeMinute1 + ":00.000";
-			String orderNo = mkOrderNo("N", date1, startTimeHour1, startTimeMinute1, phone3);
-
-			Map<String, Object> paramMap = new HashMap<String, Object>();
-
-			 //////////////////////////////////창대 수정//////////////////////////////////////////
-	         paramMap.put("dateForNoOneEmployee", dateForNoOneEmployee);
-	         paramMap.put("dateHourForNoOneEmployee", dateHourForNoOneEmployee);
-	         //////////////////////////////////////////////////////////////////////////////////
-
-			paramMap.put("name", name);
-			paramMap.put("address", fullAddress);
-			paramMap.put("phone", phone);
-			paramMap.put("service", service);
-			paramMap.put("startTime", startTime1);
-			paramMap.put("endTime", endTime1);
-			// paramMap.put("e_no", 90);
-			paramMap.put("type", "N");
-			paramMap.put("orderNo", orderNo);
-			paramMap.put("unit", "i");
-			paramMap.put("cnt", 1);
-			paramMap.put("comments", comments);
-			paramMap.put("lon", lon);
-			paramMap.put("lat", lat);
-
-			System.out.println("************************컨트롤러:1회성 paramMap잘들어감******************************");
-
-			srvService.insertScheduleByOnetime(paramMap);
-
-		}
-
-		if (periodType.equals("regular")) {
-
-			Map<String, Object> paramMap = new HashMap<String, Object>();
-
-			//////////////////////////////////창대 수정//////////////////////////////////////////
-			
-	    	  	years = date2.substring(0, 4);
-	    	  	months = date2.substring(5, 7);
-	    	  	days = date2.substring(8, 10);
-	    	  	dateForNoOneEmployee = years+months+days;
-	    	  	dateHourForNoOneEmployee = dateForNoOneEmployee+startTimeHour2;
-	    	  
-	    	  	System.out.println(dateForNoOneEmployee);
-	    	  	System.out.println(dateHourForNoOneEmployee);
-	    	  	paramMap.put("dateForNoOneEmployee", dateForNoOneEmployee);
-	    	  	paramMap.put("dateHourForNoOneEmployee", dateHourForNoOneEmployee);
-	    	  //////////////////////////////////////////////////////////////////////////////////
-
-			System.out.println("***********************컨트롤러:정기성*******************************");
-			String startTime2 = date2 + "T" + startTimeHour2 + ":" + startTimeMinute2 + ":00.000";
-			String endTime2 = date2 + "T" + endTimeHour2 + ":" + endTimeMinute2 + ":00.000";
-			String orderNo = mkOrderNo("N", date2, startTimeHour2, startTimeMinute2, phone3);
-
-			int cycle = Integer.parseInt(cycle1);
-			int totalCnt = Integer.parseInt(totalCnt1);
-
-			paramMap.put("name", name);
-			paramMap.put("address", fullAddress);
-			paramMap.put("phone", phone);
-			paramMap.put("service", service);
-			paramMap.put("type", "N");
-			paramMap.put("orderNo", orderNo);
-			paramMap.put("comments", comments);
-			paramMap.put("cycle", cycle);
-			paramMap.put("total", totalCnt);
-			paramMap.put("lon", lon);
-			paramMap.put("lat", lat);
-
-			System.out.println("***********************컨트롤러:정기성 ParamMap잘들어감*******************************");
-
-			Map<String, Object> scheduleMap;
-			List<Map<String, Object>> scheduleList = new ArrayList<Map<String, Object>>();
-
-			String year = date2.substring(0, 4);
-			String month = date2.substring(5, 7);
-			String day = date2.substring(8, 10);
-
-			Calendar c = Calendar.getInstance();
-			c.set(Calendar.YEAR, Integer.parseInt(year));
-			c.set(Calendar.MONTH, Integer.parseInt(month) - 1);
-			c.set(Calendar.DATE, Integer.parseInt(day));
-
-			System.out.println("***********************컨트롤러:정기성 캘린더에 년/월/일쪼개서 넣음완료*******************************");
-
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-			if (unit.equals("week")) {
-
-				paramMap.put("unit", "W");
-
-				for (int i = 0; i < totalCnt; i++) {
-
-					if (i == 0) {
-						System.out.println(i);
-
-						scheduleMap = new HashMap<String, Object>();
-
-						scheduleMap.put("cnt", i + 1);
-						scheduleMap.put("startTime", startTime2);
-						scheduleMap.put("endTime", endTime2);
-
-						scheduleList.add(scheduleMap);
-						System.out.println("1일때:" + scheduleList);
-
-					} else {
-						System.out.println(i);
-						scheduleMap = new HashMap<String, Object>();
-						scheduleMap.put("cnt", i + 1);
-						c.add(Calendar.DATE, cycle * 7);
-
-						String startTimeCycle = sdf.format(c.getTime()) + "T" + startTimeHour2 + ":" + startTimeMinute2
-								+ ":000";
-						String endTimeCycle = sdf.format(c.getTime()) + "T" + endTimeHour2 + ":" + endTimeMinute2
-								+ ":000";
-
-						scheduleMap.put("startTime", startTimeCycle);
-						scheduleMap.put("endTime", endTimeCycle);
-
-						scheduleList.add(scheduleMap);
-						System.out.println(scheduleList);
-
-					}
-
-				}
-
-				System.out.println("***********************컨트롤러:정기성 week for문잘들어감*******************************");
-
-				paramMap.put("scheduleList", scheduleList);
-
-				Set<String> keys = paramMap.keySet();
-				for (String key : keys) {
-					System.out.println(key + " : " + paramMap.get(key));
-				}
-
-			}
-
-			if (unit.equals("month")) {
-
-				paramMap.put("unit", "M");
-
-				for (int i = 0; i < totalCnt; i++) {
-
-					if (i == 0) {
-						System.out.println(i);
-
-						scheduleMap = new HashMap<String, Object>();
-
-						scheduleMap.put("cnt", i + 1);
-						scheduleMap.put("startTime", startTime2);
-						scheduleMap.put("endTime", endTime2);
-
-						scheduleList.add(scheduleMap);
-						System.out.println("1일때:" + scheduleList);
-
-					} else {
-						System.out.println(i);
-						scheduleMap = new HashMap<String, Object>();
-						scheduleMap.put("cnt", i + 1);
-						c.add(Calendar.MONTH, cycle);
-
-						String startTimeCycle = sdf.format(c.getTime()) + "T" + startTimeHour2 + ":" + startTimeMinute2
-								+ ":000";
-						String endTimeCycle = sdf.format(c.getTime()) + "T" + endTimeHour2 + ":" + endTimeMinute2
-								+ ":000";
-
-						scheduleMap.put("startTime", startTimeCycle);
-						scheduleMap.put("endTime", endTimeCycle);
-
-						scheduleList.add(scheduleMap);
-						System.out.println(scheduleList);
-
-					}
-
-				}
-
-				System.out.println("***********************컨트롤러:정기성 month for문잘들어감*******************************");
-
-				paramMap.put("scheduleList", scheduleList);
-
-				Set<String> keys = paramMap.keySet();
-				for (String key : keys) {
-					System.out.println(key + " : " + paramMap.get(key));
-				}
-
-			}
-
-			srvService.insertSchedule(paramMap);
-			System.out.println(paramMap);
-		}
-
-		mav.setViewName("index");
-
-		return mav;
-	}
-
-	public String mkOrderNo(String orderType, String orderDate, String orderStartHour, String orderStartMinute,
-			String orderPhone3) {
-
-		String year = orderDate.substring(0, 4);
-		String month = orderDate.substring(5, 7);
-		String day = orderDate.substring(8, 10);
-
-		orderDate = year + month + day;
-
-		String orderNo = orderType + orderDate + orderStartHour + orderStartMinute + orderPhone3;
-		return orderNo;
-	}
-
 
 }

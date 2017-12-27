@@ -134,19 +134,20 @@ date_input2.datepicker({
 
     
     function inputAddress(address){
-		  
+		  console.log("Address탐 " + address);
 		  $.ajax({		
-				url: "http://apis.skplanetx.com/tmap/geo/fullAddrGeo",
+			  	url: "https://api2.sktelecom.com/tmap/geo/fullAddrGeo",
 				type: "GET",
 				data: {	
 					version : 1,
 					fullAddr : address,
 					addressFlag : "F00",
 					format : "json",
-					appKey : "1d03f3c5-e620-375a-94d6-e359b011ec64"
+					appKey : "3a8e2503-7364-4259-9624-81dfdd0cb5ff"
 				},
 				success : function(result)
 				{
+					console.log(result);
 					
 					if(result.coordinateInfo.coordinate.length == '1')
 					{

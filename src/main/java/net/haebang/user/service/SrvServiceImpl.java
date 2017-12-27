@@ -16,7 +16,7 @@ public class SrvServiceImpl implements SrvService{
 	@Autowired
 	SrvDao srvdao;
 	
-	public List<ServiceVo> selectList(String con1, String con2, String con3) {
+	public List<ServiceVo> selectList(String con1, String con2, int con3) {
 		
 		List<ServiceVo> readyList = srvdao.selectList(con1, con2, con3);
 		return readyList;
@@ -24,55 +24,58 @@ public class SrvServiceImpl implements SrvService{
 	}
 	
 	
+	public String mkOrderNo(String orderType, String orderDate, String orderStartHour, String orderStartMinute,
+			String orderPhone3) {
+
+		String year = orderDate.substring(0, 4);
+		String month = orderDate.substring(5, 7);
+		String day = orderDate.substring(8, 10);
+
+		orderDate = year + month + day;
+
+		String orderNo = orderType + orderDate + orderStartHour + orderStartMinute + orderPhone3;
+		return orderNo;
+	}
+
+	
+	
 	
 	@Override
 	public void insertScheduleByOnetime(Map<String, Object> map) {
 		
 		MemberVo registeredMember = srvdao.selectUserByInfo(map);
-		System.out.println("***********************서비스:1회성 고객정보select 완료*******************************");
+		
 		
 		System.out.println(registeredMember);
+		String phone = (String)map.get("phone");
+		String phone3 = phone.substring(phone.length()-4, phone.length());
 		
-			/////////////////////////////////////// 창대/////////////////////////////////////////////////////
-		int prevMonthOutCome = srvdao.selectPrevMonthOutCome();
-		map.put("prevMonthOutCome", prevMonthOutCome);
-		System.out.println("***********************전월 회사별 매출금액 중 최소금액 select 완료" + prevMonthOutCome
-				+ "*******************************");
-
-		int e_no_first = srvdao.selectNoOneEmployee(map);
-		map.put("e_no_first", e_no_first);
-		System.out.println(
-				"*********************별점,매출,위치 기준 1순위 select 완료" + e_no_first + "*******************************");
-		System.out.println("////v/////v////v/////v//////v//////v////v//////");
-		////////////////////////////////////////////////////////////////////////////////////////////
+		String date1 = (String)map.get("orderNo_date");
+		String startTimeHour1 = (String)map.get("orderNo_startHour");
+		String startTimeMinute1 = (String)map.get("orderNo_startMinute");
+		
 		
 		if(registeredMember == null) {
-			System.out.println("***********************서비스:뉴멤버 1회성 insert메서드 실행전*******************************");
+			
+
+			String orderNo = mkOrderNo("B", date1, startTimeHour1, startTimeMinute1, phone3);
+			map.put("orderNo", orderNo);
+			map.put("type", "B");
 			srvdao.insertScdToNewMemberOnetime(map);
 		
 		
 		}else {
 		
-		map.put("m_no", registeredMember.getM_no());
-		System.out.println("***********************서비스:기존멤버 1회성 insert메서드 실행전*******************************");
 		
+			
+		map.put("m_no", registeredMember.getM_no());
+		String orderNo = mkOrderNo("M", date1, startTimeHour1, startTimeMinute1, phone3);
+		map.put("orderNo", orderNo);		
+		map.put("type", "M");
 		srvdao.insertScdToRegisteredMemberOnetime(map);
 			
 		}	
 		
-		////////////////////////////////////////// 창대//////////////////////////////////////////////////
-		System.out.println(map.get("orderNo"));
-		System.out.println(map.get("orderNo"));
-		List<Integer> list = srvdao.selectMoNoByOrderNo(map);
-		System.out.println(list.get(0));
-		map.put("mo_no", list.get(0));
-
-		srvdao.updateENoFirstbyMoNo(map);
-		System.out.println(map.get("mo_no"));
-		System.out.println(map.get("mo_no"));
-		srvdao.createEvent(map);
-		////////////////////////////////////////////////////////////////////////////////////////////
-
 	}
 	
 	
@@ -80,50 +83,43 @@ public class SrvServiceImpl implements SrvService{
 	public void insertSchedule(Map<String, Object> map) {
 		
 		MemberVo registeredMember = srvdao.selectUserByInfo(map);
-		System.out.println("***********************서비스:정기성 고객정보select 완료*******************************");
 		
-			
-		////////////////////////////// 창대/////////////////////////////////////////
-		int prevMonthOutCome = srvdao.selectPrevMonthOutCome();
-		map.put("prevMonthOutCome", prevMonthOutCome);
-		System.out.println("***********************전월 회사별 매출금액 중 최소금액 select 완료" + prevMonthOutCome
-				+ "*******************************");
-
-		int e_no_first = srvdao.selectNoOneEmployee(map);
-		map.put("e_no_first", e_no_first);
-		System.out.println(
-				"*********************별점,매출,위치 기준 1순위 select 완료" + e_no_first + "*******************************");
-		System.out.println("////o/////O////o/////O//////o//////O////o//////");
-		////////////////////////////////////////////////////////////////////////////////////////////
-
-
+		String phone = (String)map.get("phone");
+		String phone3 = phone.substring(phone.length()-4, phone.length());
+		
+		
+		String date1 = (String)map.get("orderNo_date");
+		String startTimeHour1 = (String)map.get("orderNo_startHour");
+		String startTimeMinute1 = (String)map.get("orderNo_startMinute");
+		
+		
 		if(registeredMember == null) {
 				
-			System.out.println("***********************서비스:뉴멤버 정기성 insert메서드실행전*******************************");
+			String orderNo = mkOrderNo("B", date1, startTimeHour1, startTimeMinute1, phone3);
+			map.put("orderNo", orderNo);		
+			map.put("type", "B");
 			srvdao.insertScdToNewMember(map);	
+		
 		}else {
+
 		
 			map.put("m_no", registeredMember.getM_no());
-			System.out.println("***********************서비스:기존멤버 정기성 insert메서드실행전 *******************************");		
+			String orderNo = mkOrderNo("M", date1, startTimeHour1, startTimeMinute1, phone3);
+			map.put("orderNo", orderNo);
+			map.put("type", "M");
 			srvdao.insertScdToRegisteredMember(map);
 			
 		}	
 		
-		////////////////////////////////////////////창대////////////////////////////////////////////////
-	      System.out.println(map.get("orderNo"));
-	      System.out.println(map.get("orderNo"));
-	      List<Integer> list = srvdao.selectMoNoByOrderNo(map);
-	      System.out.println(list.get(0));
-	      map.put("mo_no", list.get(0));
-	      // 업데이트 통해서 mo_no 첫번째에 넣어주기.
-	      srvdao.updateENoFirstbyMoNo(map);
-
-	      
-	      System.out.println(map.get("mo_no"));
-	      System.out.println(map.get("mo_no"));
-	      srvdao.createEvent(map);
-	      ////////////////////////////////////////////////////////////////////////////////////////////
 		
+	}
+
+
+
+	@Override
+	public ServiceVo getServiceInfo(int s_no) {
+		ServiceVo selectedService = srvdao.getServiceInfo(s_no);
+		return selectedService;
 	}
 	
 

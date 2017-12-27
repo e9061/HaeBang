@@ -9,6 +9,66 @@ public class ScheduleVo {
 	private boolean allDay=false;	
 	private String color;
 	
+	private String m_lon;				// 주호 추가 - 사업자 main 화면 calendar의 회원 위치 맵에 나타내려고 
+ 	private String m_lat;
+	private String m_name;
+	private int mo_no;
+	private String startDay;
+	private String e_name;
+	
+	
+	
+	
+	
+	
+	public int getMo_no() {
+		return mo_no;
+	}
+
+	public void setMo_no(int mo_no) {
+		this.mo_no = mo_no;
+	}
+
+	public String getE_name() {
+		return e_name;
+	}
+
+	public void setE_name(String e_name) {
+		this.e_name = e_name;
+	}
+
+	public String getStartDay() {
+		return startDay;
+	}
+
+	public void setStartDay(String startDay) {
+		this.startDay = startDay;
+	}
+
+	public String getM_lat() {
+		return m_lat;
+	}
+
+	public void setM_lat(String m_lat) {
+		this.m_lat = m_lat;
+	}
+
+	public String getM_name() {
+		return m_name;
+	}
+
+	public void setM_name(String m_name) {
+		this.m_name = m_name;
+	}
+
+	public String getM_lon() {
+		return m_lon;
+	}
+
+	public void setM_lon(String m_lon) {
+		this.m_lon = m_lon;
+	}
+
 	public ScheduleVo() {
 	}
 	

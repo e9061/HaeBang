@@ -95,7 +95,7 @@ window.onload = function() {
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">업체관리<b class=" icon-angle-down"></b></a>
 								<ul class="dropdown-menu">
-									<li><a href="typography.html">스케쥴관리</a></li>
+									<li><a href="${ pageContext.request.contextPath }/ceo/schedule">스케쥴관리</a></li>
 									<li><a href="pricingbox.html">리뷰관리</a></li>
 									<li><a href="pricingbox.html">직원관리</a></li>
 								</ul>

@@ -5,6 +5,7 @@
 <!DOCTYPE>
 <html>
 <head>
+<script src ="http://code.jquery.com/jquery-3.2.1.min.js"></script>
 <meta charset="utf-8">
 <title>해방 사장님 사이트</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,10 +20,17 @@
         font-size : 14px;
     }
     #calendar {
-        max-width : 900px;
+        max-width : 100%;
+        max-height : 100%;
         margin : 0 auto;
     }
-
+	
+	#calendar ul {
+		list-style:none;
+	}
+	
+	
+	
 </style>
 
 
@@ -41,17 +49,18 @@
 
 var map;
 var marker;
-var markerLayer;
-var curlonlat;  // 긴 형태 
+var markerLayer; 
+//var curlonlat;
+//var curlonlat = new Tmap.LonLat(127.027606, 37.49462).transform(PR_4326, PR_3857);
 var curlon;
 var curlat;
 var PR_3857;
 var PR_4326;
 var officeLocation = new Tmap.LonLat("${companyVo.c_lon}", "${companyVo.c_lat}").transform("EPSG:4326", "EPSG:3857");
-
+var curlonlat = new Tmap.LonLat("${companyVo.c_lon}", "${companyVo.c_lat}").transform("EPSG:4326", "EPSG:3857");
 
 function init() {
-	 map = new Tmap.Map({div:'map_div', width:"100%", height:"300px", animation:true}); 
+	 map = new Tmap.Map({div:'map_div', width:"100%", height:"420px", animation:true}); 
 	    // div : 지도가 생성될 div의 id값과 같은 값을 옵션으로 정의 합니다.
 	    // Tmap,Map 클래스에 대한 상세 사항은 "JavaScript" 하위메뉴인 "기본 기능" 페이지를 참조 해주세요. 
 		map.addControl(new Tmap.Control.KeyboardDefaults());
@@ -70,13 +79,15 @@ function init() {
 				
 				PR_3857 = new Tmap.Projection("EPSG:3857");  // Google Mercator 좌표계인 EPSG:3857
 				PR_4326 = new Tmap.Projection("EPSG:4326");  // WGS84 GEO 좌표계인 EPSG:4326        
-				curlonlat = new Tmap.LonLat(curlon, curlat).transform(PR_4326, PR_3857); // 짧은 lonlat을 긴 lonlat으로 바꾼다
+				curlonlat = new Tmap.LonLat(127.027606, 37.49462).transform(PR_4326, PR_3857); // 짧은 lonlat을 긴 lonlat으로 바꾼다
 				var cursize = new Tmap.Size(24, 38);
 				var curoffset = new Tmap.Pixel(-(cursize.w / 2), -(cursize.h));
 				var curicon = new Tmap.Icon('http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_h.png',cursize, curoffset);
 				
 				marker = new Tmap.Marker(curlonlat, curicon);
 				markerLayer.addMarker(marker);
+				
+				console.log("curlonlat"+curlonlat);
 				
 				var curpopup;
 				var curcontent ="<div>현재위치</div>";
@@ -105,76 +116,111 @@ function init() {
 		},
 		success: function(result){
 			/* ajax success function 시작 */
-			for(i=0;i<result.length;i++)
-				{
-					lon = result[i].m_lon;
-					lat = result[i].m_lat;
-					
-					var m_lonlat = new Tmap.LonLat(lon, lat).transform("EPSG:4326", "EPSG:3857");
-					 
-					var size = new Tmap.Size(24,38);
-					var offset = new Tmap.Pixel(-(size.w/2), -(size.h/2));
-					var icon = new Tmap.Icon('https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png', size, offset); 
-					     
-					marker = new Tmap.Marker(m_lonlat, icon);
-					markerLayer.addMarker(marker);
-				if(result[i].eo_status =="대기중")
-				{	popup = new Tmap.Popup("p1",
-									m_lonlat,
-			                        new Tmap.Size(150, 200),
-			                        "<div>고객명 : "+result[i].m_name+" 고객님</div>"+"<div><span>주소 : </span><span>"+result[i].m_address+"</span></div>"+"<div>담당 해방맨 : "+result[i].e_name+"</div>"+"<div>진행상태 : "+
-			                        result[i].eo_status+"</div>"+"<div><a class='btn btn-info1 start' style='width: 50px'>출발</a><input type='hidden' value='"+lon+"'/><input type='hidden' value='"+lat+"'/><input type='hidden' id='"+result[i].mo_no+"' value='"+result[i].mo_no+"'/></div>",
-			                        true);
-				
-				}else if(result[i].eo_status =="출동중")
-					{
-					popup = new Tmap.Popup("p1",
-	                        m_lonlat,
-	                        new Tmap.Size(150, 200),
-	                        "<div>고객명 : "+result[i].m_name+" 고객님</div>"+"<div><span>주소 : </span><span>"+result[i].m_address+"</span></div>"+"<div>담당 해방맨 : "+result[i].e_name+"</div>"+"<div>진행상태 : "+
-	                        result[i].eo_status+"</div>"+"<div><a class='btn btn-info1 try' style='width: 80px'>도전! 해방</a></div>",
-	                        true);
-					
-					}else if(result[i].eo_status =="해방중")
+			console.log("result length : "+result.length);
+			console.log("result[] : "+result[0]);
+			
+				for(i=0;i<result.length;i++){
+							lon = result[i].m_lon;
+							lat = result[i].m_lat;
+							
+							var m_lonlat = new Tmap.LonLat(lon, lat).transform("EPSG:4326", "EPSG:3857");
+							 
+							var size = new Tmap.Size(30,30);
+							var offset = new Tmap.Pixel(-(size.w/2), -(size.h/2));
+							if(i < 10){
+								if(result[i].eo_status=="대기중"){		// 대기중은 색 9가지
+									console.log("대기중 :" + i);
+									var icon = new Tmap.Icon('${pageContext.request.contextPath }/resources/img/map/ready/no'+(i+1)+'.png', size, offset); 		// 대기
+									var label = new Tmap.Label("<input type='hidden' name='label' value='" + result[i].mo_no + "'>");  
+								}else if(result[i].eo_status=="출동중"){		// 출동중	사장 입장에서는 여러개 (직원수만큼)
+									console.log("출동중 :" + i);
+									var icon = new Tmap.Icon('${pageContext.request.contextPath }/resources/img/map/start/no'+(i+1)+'.png', size, offset); 		// 충동
+									var label = new Tmap.Label("<input type='hidden' name='label' value='" + result[i].mo_no + "'>");  
+								}else if(result[i].eo_status=="해방중"){		// 색1가지 	사장 입장에서는 여러개
+									console.log("해방중 :" + i);
+									var icon = new Tmap.Icon('${pageContext.request.contextPath }/resources/img/map/ing/no'+(i+1)+'.png', size, offset); 		// 해방중
+									var label = new Tmap.Label("<input type='hidden' name='label' value='" + result[i].mo_no + "'>");  
+								}else {		// 완료
+									console.log("완료"+i);
+									var icon = new Tmap.Icon('${pageContext.request.contextPath }/resources/img/map/success/no'+(i+1)+'.png', size, offset); 		// 이게 그림
+									var label = new Tmap.Label("<input type='hidden' name='label' value='" + result[i].mo_no + "'>");  
+								}
+							}else{		// 10개 이상 경우
+									console.log("10개이상"+i);
+								var icon = new Tmap.Icon('http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_h.png', size, offset); 
+								var label = new Tmap.Label("<input type='hidden' name='label' value='" + result[i].mo_no + "'>");  
+							}
+							     
+							console.log("m_name!!" + result[i].m_name);
+							marker = new Tmap.Marker(m_lonlat, icon, label);
+							markerLayer.addMarker(marker);
+						if(result[i].eo_status =="대기중")
+						{	popup = new Tmap.Popup("p1",
+											m_lonlat,
+					                        new Tmap.Size(230, 150),
+					                        "<div><center>고객명 : <strong><input style='border:none' type='text' value='"+result[i].m_name+"'></strong></center></div><div><input type='hidden' value='"+result[i].m_lon+"'></div><div><input type='hidden' value='"+result[i].m_lat+"'></div><div><input type='hidden' value='"+result[i].mo_no+"'><srtong><center><font color='red'>대기 중</font></strong>인 스케쥴 입니다.</center><ul style='list-style:none'>담당 해방맨 : <strong><font color='blue'> "+ result[i].e_name +" </font></strong></ul></div><div><center><input type='button' class='start' value='출발'>&nbsp;&nbsp;&nbsp;<input type='button' class='btn-info2' value='정보보기'></center></div> <div><ul style='list-style:none'><strong><font color='blue'> 이동시 클릭 </font></strong> 해주세요.</ul></div>",
+					                        false);
+																		
+						}else if(result[i].eo_status =="출동중")
 						{
 						popup = new Tmap.Popup("p1",
-		                        m_lonlat,
-		                        new Tmap.Size(150, 200),
-		                        "<div>고객명 : "+result[i].m_name+" 고객님</div>"+"<div><span>주소 : </span><span>"+result[i].m_address+"</span></div>"+"<div>담당 해방맨 : "+result[i].e_name+"</div>"+"<div>진행상태 : "+
-		                        result[i].eo_status+"</div>"+"<div><a class='btn btn-info1 succeed' style='width: 80px'>해방 성공!</a></div>",
-		                        true);
+					                        m_lonlat,
+					                        new Tmap.Size(230, 150),
+					                        "<div><div id='status'><div><center>고객명 : <strong><input style='border:none' type='text' value='"+result[i].m_name+"'></strong></center></div><div><input type='hidden' value='"+result[i].m_lon+"'></div><div><input type='hidden' value='"+result[i].m_lat+"'></div><div><input type='hidden' value='"+result[i].mo_no+"'><srtong><center><font color='red'>이동 중</font></strong>인 스케쥴 입니다.</center><ul style='list-style:none'>담당 해방맨 : <strong><font color='blue'> "+ result[i].e_name +" </font></strong></ul></div><div><center><input id='"+ result[i].mo_no +"' type='button' class='arrive' value='시작'>&nbsp;&nbsp;&nbsp;<input type='button' class='btn-info2' value='정보보기'></center></div> <div><ul style='list-style:none'><strong><font color='blue'> 서비스 시작시 클릭 </font></strong> 해주세요.</ul></div></div></div>",
+					                        false);
 						
+						}else if(result[i].eo_status =="해방중")
+						{
+						popup = new Tmap.Popup("p1",
+			                        m_lonlat,
+			                        new Tmap.Size(230,150),
+			                        "<div><div id='status2'><div><center>고객명 : <strong><input style='border:none' type='text' value='"+result[i].m_name+"'></strong></center></div><div><input type='hidden' value='"+result[i].m_lon+"'></div><div><input type='hidden' value='"+result[i].m_lat+"'></div><div><input type='hidden' value='"+result[i].mo_no+"'><srtong><center><font color='red'>해방중</font></strong>인 스케쥴 입니다.</center><ul style='list-style:none'>담당 해방맨 : <strong><font color='blue'> "+ result[i].e_name +" </font></strong></ul></div><div><center><input id='"+ result[i].mo_no +"' type='button' class='conduct' value='GO!'>&nbsp;&nbsp;&nbsp;<input type='button' class='btn-info2' value='정보보기'></center></div> <div><ul style='list-style:none'><strong><font color='blue'> 완료시 버튼을</font></strong> 클릭 해주세요!</ul></div></div></div>",
+			                        false);
+						}else{
+							popup = new Tmap.Popup("p1",
+			                        m_lonlat,
+			                        new Tmap.Size(230,150),
+			                        "<div><div id='status3'><div><center>고객명 : <strong><input style='border:none' type='text' value='"+result[i].m_name+"'></strong></center></div><div><input type='hidden' value='"+result[i].m_lon+"'></div><div><input type='hidden' value='"+result[i].m_lat+"'></div><div><input type='hidden' value='"+result[i].mo_no+"'><srtong><center><font color='red'>해방 완료</font></strong> 스케쥴 입니다.</center><ul style='list-style:none'>담당 해방맨 : <strong><font color='blue'> "+ result[i].e_name +" </font></strong></ul></div><div><center><input id='"+ result[i].mo_no +"' type='button' class='btn-info2' value='정보보기'></center></div> <div><ul style='list-style:none'><strong>수고하셨습니다 <font color='red'>오늘도 해방 !</font></strong></ul></div></div></div>",
+			                        false);	
 						}
-				map.addPopup(popup);
-				popup.autoSize=true;//popup 사이즈 자동 조절	
-				popup.hide();
-
-				
-				marker.events.register("mouseover", popup, onMouseMarker);	
-				marker.events.register("mouseout", popup, onMouseMarker);	
-				popup.events.register("mouseover", popup, onMouseMarker);	
-				popup.events.register("mouseout", popup, onMouseMarker);	
-				
-				}
+						map.addPopup(popup);
+						popup.autoSize=true;//popup 사이즈 자동 조절	
+						popup.hide();
+		
+						
+						marker.events.register("mouseover", popup, onMouseMarker);	
+						marker.events.register("mouseout", popup, onMouseMarker);	
+						popup.events.register("mouseover", popup, onMouseMarker);	
+						popup.events.register("mouseout", popup, onMouseMarker);
+						
+					//	marker.events.register("click",  marker , onClick);	
+					//	popup.events.register("mouseout", popup, onMouseMarker);	
+					
+					}
 			
 			var lonlat1 = officeLocation;
 			 
-			var size1 = new Tmap.Size(24,38);
+			var size1 = new Tmap.Size(32,48);
 			var offset1 = new Tmap.Pixel(-(size1.w/2), -(size1.h/2)); 
-			var icon1 = new Tmap.Icon('${pageContext.request.contextPath }/resources/img/map/laboratory.png', size1); 
-			var label = new Tmap.Label("우리회사");     
-			marker1 = new Tmap.Markers(lonlat1, icon1, label);
+			var icon1 = new Tmap.Icon('${pageContext.request.contextPath }/resources/img/map/cleaning.png', size1); 
+			var label1 = new Tmap.Label("<input type='text' id='juhojuho' value='123'>");     
+			marker1 = new Tmap.Markers(lonlat1, icon1, label1);
 			markerLayer.addMarker(marker1);
 			/* marker1.popup.show(); */
 			
-			
+			marker1 = new Tmap.Markers(lonlat1, icon1, label);
+			markerLayer.addMarker(marker1);
+		 	console.log("setCenter" + curlonlat);
 			map.setCenter(curlonlat,11);
-			 
 			/* ajax success function 끝 */
+			
 		}
+		
+		
 	}); 
     
 }  
+
 
 function onMouseMarker (evt){
     if(evt.type == "mouseover"){
@@ -182,41 +228,186 @@ function onMouseMarker (evt){
     } else {
         this.hide();
     }
-}
+};
 
 
+// eo_status update 해주는 곳  -  대기중 -> 출동중
+$(document).on("click",".start",function(){				// 출발			-  eo_status 
+	if(confirm('추천 이동 경로입니다.')){
+		var mo_no = $(this).parents().prev().children().val();
+		
+		console.log("eo_status update" + mo_no);
+	//	getRoute(m_lon,m_lat,'고객님',mo_no);		// 루트 그리기
+		$.ajax({
+			type : "POST",
+			url : "${ pageContext.request.contextPath }/ceo/statusUpdate",
+			data: {
+				mo_no : mo_no,
+				eo_status : '출동중'
+			},
+			dataType:"json", 
+			success: function(result){
+					getRoute(result.m_lon, result.m_lat ,result.m_name ,result.mo_no, result.e_name);		// 루트 그리기
+			}
+			
+			
+		})
+		
+	//	location.href = "${ pageContext.request.contextPath }/ceo/statusUpdate?mo_no="+mo_no+"&eo_status=출동중";
+	}else{
+		alert('취소되었습니다.');
+	}
 
+});
 
+//eo_status update 해주는 곳  -  출동중 -> 해방중
+$(document).on("click",".arrive",function(){				// 서비스 시작		- eo_startTime. eo_status 
+	if(confirm('서비스를 진행 하시겠습니까?44')){
+		var mo_no = $(this).parents().prev().children().val();
+		
+		$.ajax({
+			type : "POST",
+			url : "${ pageContext.request.contextPath }/ceo/statusUpdate",
+			data: {
+				mo_no : mo_no,
+				eo_status : '해방중'
+			},
+			dataType:"json", 
+			success: function(result){
+					console.log(result + " 섭스진행 탐 ");
+				//	console.log($('#status').parents().html());
+					$('#status').parent().html("<div id='status2'><div><center>고객명 : <strong><input style='border:none' type='text' value='"+result.m_name+"'></strong></center></div><div><input type='hidden' value='"+result.m_lon+"'></div><div><input type='hidden' value='"+result.m_lat+"'></div><div><input type='hidden' value='"+result.mo_no+"'><srtong><center><font color='red'>해방중</font></strong>인 스케쥴 입니다.</center><ul style='list-style:none'>담당 해방맨 : <strong><font color='blue'> "+ result.e_name +" </font></strong></ul></div><div><center><input type='button' class='conduct' value='GO!'>&nbsp;&nbsp;&nbsp;<input type='button' class='btn-info2' value='정보보기'></center></div> <div><ul style='list-style:none'><strong><font color='blue'> 완료시 버튼을</font></strong> 클릭 해주세요!</ul></div></div>");
+					
+					console.log(result + " 섭스진행 탐2 ");
+			}
+		})
+		
+		console.log("섭스진행 !!!!!"+mo_no);
+		
+		
+		
+	}else{
+		alert('취소되었습니다.');
+	}
+});
 
-
- 
-
-
-
-
-$(document).on("click",".start",function(){
-	
-	getRoute($(this).next().val(), $(this).next().next().val(), $(this).parents().prev().prev().prev().prev().html());
+//eo_status update 해주는 곳  -  해방중 -> 해방완료
+$(document).on("click",".conduct",function(){				// 서비스 완료		- eo_endTime. eo_status 
+	var mo_no = $(this).parents().prev().children().val();
+	console.log("섭스완료!!!!"+mo_no);
 	
 	$.ajax({
-		url : "${ pageContext.request.contextPath }/ceo/updateEOrderStatus",
 		type : "POST",
-		data : {
-			mo_no : $(this).next().next().next().val(),
+		url : "${ pageContext.request.contextPath }/ceo/statusUpdate",
+		data: {
+			mo_no : mo_no,
+			eo_status : '해방완료'
 		},
-		success : changeStatus 
-	});
+		dataType:"json", 
+		
+		success: function(result){
+			//console.log($('#status2').parents().html());
+			$('#status2').parent().html("<div id='status3'><div><center>고객명 : <strong><input style='border:none' type='text' value='"+result.m_name+"'></strong></center></div><div><input type='hidden' value='"+result.m_lon+"'></div><div><input type='hidden' value='"+result.m_lat+"'></div><div><input type='hidden' value='"+result.mo_no+"'><srtong><center><font color='red'>해방 완료</font></strong> 스케쥴 입니다.</center><ul style='list-style:none'>담당 해방맨 : <strong><font color='blue'> "+ result.e_name +" </font></strong></ul></div><div><center><input type='button' class='btn-info2' value='정보보기'></center></div> <div><ul style='list-style:none'><strong>수고하셨습니다 <font color='red'>오늘도 해방 !</font></strong></ul></div></div>");
+			//				success: alert($('#status2').html("<strong>수고하셨습니다 <font color='red'>오늘도 해방 !</font></strong>"))
+		}
+		
+		
+	})
 	
-	function changeStatus(result){
-		console.log(result);
-		$(document.getElementById(result.mo_no)).parents().prev()[0].innerHTML ="진행상태 : "+result.eo_status;
-		$(document.getElementById(result.mo_no)).parents().children().first().html('도전! 해방');
-		$(document.getElementById(result.mo_no)).parents().children().first().attr('class','btn btn-info1 try');
+	
+	if(confirm('서비스를 마치셨습니까?')){
+	//	location.href = "${ pageContext.request.contextPath }/ceo/statusUpdate?mo_no="+mo_no+"&eo_status=해방완료";
+	}else{
+		alert('취소되었습니다.');
 	}
-})
+});	
 
-function getRoute(endLon, endLat, endName) {
+$(document).on("click",".btn-info2",function(){			// 해당 서비스 정보보기 - mo_no 로 정보 찾아서 팝업 띄우기
+	if(confirm('스케쥴 정보를 확인 하시겠습니까?')){
+		
+		var mo_no = $(this).parents().prev().children().val();
+		$.ajax({
+			type : "GET",
+			url: "${pageContext.request.contextPath}/ceo/getMemberInfoByMono",
+			dataType: "json",
+			data: {
+				mo_no : mo_no
+			},
+			success: function(data){			// 모달로 보이기
+				console.log("스케쥴 정보 입니다.");
+				console.log(data);
+				$('#det_mo_no').val(data.mo_no);
+				$('#det_mo_orderNo').val(data.mo_orderNo);
+				$('#det_mo_regDate').val(data.mo_regDate);
+				$('#det_mo_startTime').val(data.mo_startTime);
+				$('#det_mo_endTime').val(data.mo_endTime);
+				$('#det_s_name').val(data.s_name);
+				$('#det_s_duration').val(data.s_duration);
+				
+				if(data.s_type == 'h' || data.s_type == 'H'){
+					$('#det_s_type').val("해충 방역");
+				}else{
+					$('#det_s_type').val("소독");
+				}
+				console.log("정기/보장 : " + data.s_style);
+				
+				if(data.s_style == 'J' || data.s_style == 'j'){				// 정기형
+					$('#det_s_style').val("정기형");
+					$('#det_mo_total').val(data.mo_total);
+					$('#det_mo_cnt').val(data.mo_cnt);
+					$('#det_mo_freqCycle').val(data.mo_freqCycle);
+					if(data.mo_freqType == 'M' || data.mo_freqType == 'm'){
+						$('#det_mo_freqTitle').val("개월 마다");
+						$('#det_mo_freqType').val(data.mo_freqType);
+					}else{
+						$('#det_mo_freqTitle').val("주 마다");
+						$('#det_mo_freqType').val(data.mo_freqType);
+					}
+					$('#freq').show();
+					$('#cntNow').show();
+					$('#totalCnt').show();
+				}else{								// 보장형
+					$('#det_mo_freqType').val(data.mo_freqType);
+					$('#det_s_style').val("보장형");
+					$('#freq').hide();
+					$('#cntNow').hide();
+					$('#totalCnt').hide();
+				}
 
+				if(data.mo_memo != null){
+					$('#det_mo_memo').val(data.mo_memo);
+					$('#memo').show();
+				}else{
+					$('#memo').hide();
+				}
+					
+				console.log("해방맨 매칭 전 " + data.e_name)
+				if(data.e_name != null){
+					$('#det_e_name').val(data.e_name);
+				//	$('#haebangMan').html("<img src='data:image/jpeg;base64," + ${empPicture} + " style='width: 40px; height: auto;' />");
+					$('#det_e_phone').val(data.e_phone);
+					$('#phone').show();
+				}else{
+					$('#det_e_name').val("해방맨 매칭 중입니다.");
+					$('#phone').hide();
+				}
+				
+//				$('#myReservDetailModal').modal('show');		모달.. 왜안뜨는지 모르겟음...
+			}
+			
+		});
+		
+	}else{
+		alert('취소되었습니다.');
+	}
+	
+});
+ 
+ 
+function getRoute(endLon, endLat, m_name, mo_no, e_name) {
+		console.log("getRoute");
+	 	console.log(mo_no);
+		console.log(endLon + "/" + endLat + "/" + m_name + "/" + mo_no + "/" + e_name);
 		var startPoint = curlonlat;
 		var endPoint = new Tmap.LonLat(endLon, endLat).transform("EPSG:4326", "EPSG:3857");
 
@@ -251,31 +442,66 @@ function getRoute(endLon, endLat, endName) {
 			//벡터 도형(Feature)들이 트리거 된 후에 추가합니다.
 			map.addLayer(routeLayer);//map에 레이어를 추가합니다.
 			
+			console.log('여기까지 탑니다.');
+			
+			var m_lonlat = new Tmap.LonLat(endLon, endLat).transform("EPSG:4326", "EPSG:3857");
 			//경로 그리기 후 해당영역에 맞게 map을 줌 합니다.
 			function onDrawnFeatures(e){
 				map.zoomToExtent(this.getDataExtent());//지정된 영역으로 줌(Zoom)
-			}
-			function endLookFor(e){
-				alert("현재위치부터 "+endName+"의 집까지 소요시간 : "+time/60+"분");
-				this.destroy();
-			}
+			};
+			
+			alert("현재위치 부터111 "+m_name+"의 집까지 소요시간 : "+Math.ceil(time/60)+"분");
+			
+			function endLookFor(e){			// 팝업 창으로 보여주자
+				var popup;
+				popup = new Tmap.Popup("p1",
+				                        new Tmap.LonLat(endLon, endLat).transform("EPSG:4326", "EPSG:3857"),
+				                        new Tmap.Size(230, 150),
+				                        "<div><div id='status'><div><center>고객명 : <strong><input style='border:none' type='text' value='"+m_name+"'></strong></center></div><div><input type='hidden' value='"+endLon+"'></div><div><input type='hidden' value='"+endLat+"'></div><div><input type='hidden' value='"+mo_no+"'><srtong><center><font color='red'>이동 중</font></strong>인 스케쥴 입니다.</center><ul style='list-style:none'>담당 해방맨 : <strong><font color='blue'> "+ e_name +" </font></strong></ul></div><div><center><input type='button' class='arrive' value='시작'>&nbsp;&nbsp;&nbsp;<input type='button' class='btn-info2' value='정보보기'></center></div> <div><ul style='list-style:none'><strong><font color='blue'> 서비스 시작시 클릭 </font></strong> 해주세요.</ul></div></div></div>",
+					                     false);
+										// console.log($(this).parents().prev().children().val());
+				popup.autoSize=true;//popup 사이즈 자동 조절		                         
+				map.addPopup(popup);//map에 popup 추가
+				map.addPopup(popup); // 지도에 팝업 추가
+				popup.show(); // 팝업 보이기
+				
+				
+				popup.events.register("mouseover", popup, onMouseMarker);	
+				popup.events.register("mouseout", popup, onMouseMarker);
+				
+			/* 	if(confirm("해방 서비스를 11시작 하십니까?")){
+					this.destroy();
+				} */
+			};
+			
+			
+		function onMouseMarker (evt){
+			 if(evt.type == "mouseover"){
+		        this.show();
+			 }
+		//	 	else if(evt.type == "mouseout"){		// 숨겼다가 다시 팝업이 생길경우 html() 이 안먹음.. 이전 popup이 다시 뜸
+		//       	this.hide();
+		 //   }
+		    
+		};
 			
 			
 			
+		//	endLookFor();
 			
 		});
 
-	}
+	};
 
 
 //데이터 로드중 발생하는 이벤트 함수입니다.
 function onProgress(){
 	//alert("onComplete");
-}
+};
 //데이터 로드시 에러가 발생시 발생하는 이벤트 함수입니다.
 function onError(){
 	alert("onError");
-}
+};
 
 
 
@@ -327,7 +553,7 @@ s0.parentNode.insertBefore(s1,s0);
 		<header>
 			<jsp:include page="../employee_include/topmenu.jsp" />
 		</header>
-		
+		<jsp:include page="../company_main/scheduleInfoDetail.jsp"></jsp:include>					<!--  모달 -->
 		<jsp:include page="../employee_include/loginModal.jsp" />
 
  		<section id="inner-headline">
@@ -348,7 +574,14 @@ s0.parentNode.insertBefore(s1,s0);
 						<article> <c:if test="${ not empty userVo }">
 							<h4>Today's Schedule</h4>
 						<div id="map_div"></div>
-							
+						<ul style="margin-top: 2%">
+										<li style="width:70%">
+											<span class="fc-event-dot" style="background-color: rgb(68,193,195);"></span>&nbsp;&nbsp;<input style='border:none; width:20%' type="text" value="대기중">
+											<span class="fc-event-dot" style="background-color: rgb(255,153,153);"></span>&nbsp;&nbsp;<input style='border:none; width:20%' type="text" value="출동중">
+											<span class="fc-event-dot" style="background-color: rgb(178,255,102);"></span>&nbsp;&nbsp;<input style='border:none; width:20%' type="text" value="해방중">
+											<span class="fc-event-dot" style="background-color: rgb(224,224,224);"></span>&nbsp;&nbsp;<input style='border:none; width:20%' type="text" value="해방완료">
+										</li>
+									</ul>	
 						</c:if> </article>
 	
 						<c:choose>
@@ -435,6 +668,7 @@ s0.parentNode.insertBefore(s1,s0);
 	<c:otherwise>
 	
 	<article>
+
 					<h4>Quick Menu</h4>
 					<c:if test="${ empty userVo }">
 						<a href="#myModal" class="trigger-btn" data-toggle="modal"> <img
@@ -442,6 +676,8 @@ s0.parentNode.insertBefore(s1,s0);
 							width="160px" />
 						</a>
 					</c:if> <c:if test="${ not empty userVo }">
+					
+								
 						<a href="#"> <img
 							src="${ pageContext.request.contextPath }/resources/img/calculate.jpg"
 							width="160px" />
@@ -561,65 +797,6 @@ s0.parentNode.insertBefore(s1,s0);
 	
 	
 	
-					<article>
-					<div class="post-quote">
-						<div  class="post-heading">
-							<h3>
-								<a href="#">Nice example of quote post format below</a>
-							</h3>
-						</div>
-						<blockquote>
-							<i class="icon-quote-left"></i> Lorem ipsum dolor sit amet, ei
-							quod constituto qui. Summo labores expetendis ad quo, lorem
-							luptatum et vis. No qui vidisse signiferumque...
-						</blockquote>
-					</div>
-					<div class="bottom-article">
-						<ul class="meta-post">
-							<li><i class="icon-calendar"></i><a href="#"> Mar 23,
-									2013</a></li>
-							<li><i class="icon-user"></i><a href="#"> Admin</a></li>
-							<li><i class="icon-folder-open"></i><a href="#"> Blog</a></li>
-							<li><i class="icon-comments"></i><a href="#">4 Comments</a></li>
-						</ul>
-						<a href="#" class="pull-right">Continue reading <i
-							class="icon-angle-right"></i></a>
-					</div>
-					</article>
-					<article>
-					<div class="post-video">
-						<div class="post-heading">
-							<h3>
-								<a href="#">Amazing video post format here</a>
-							</h3>
-						</div>
-						<div class="video-container">
-							<iframe
-								src="http://player.vimeo.com/video/30585464?title=0&amp;byline=0">
-							</iframe>
-						</div>
-					</div>
-					<p>Qui ut ceteros comprehensam. Cu eos sale sanctus eligendi, id
-						ius elitr saperet, ocurreret pertinacia pri an. No mei nibh
-						consectetuer, semper laoreet perfecto ad qui, est rebum nulla
-						argumentum ei. Fierent adipisci iracundia est ei, usu timeam
-						persius ea. Usu ea justo malis, pri quando everti electram ei.</p>
-					<div class="bottom-article">
-						<ul class="meta-post">
-							<li><i class="icon-calendar"></i><a href="#"> Mar 23,
-									2013</a></li>
-							<li><i class="icon-user"></i><a href="#"> Admin</a></li>
-							<li><i class="icon-folder-open"></i><a href="#"> Blog</a></li>
-							<li><i class="icon-comments"></i><a href="#">4 Comments</a></li>
-						</ul>
-						<a href="#" class="pull-right">Continue reading <i
-							class="icon-angle-right"></i></a>
-					</div>
-					</article>
-					<div id="pagination">
-						<span class="all">Page 1 of 3</span> <span class="current">1</span>
-						<a href="#" class="inactive">2</a> <a href="#" class="inactive">3</a>
-					</div>
 				</div>
 				<div class="col-lg-4">
 					<aside class="right-sidebar">
@@ -656,21 +833,26 @@ s0.parentNode.insertBefore(s1,s0);
 	
 						</c:if>
 					</div>
-					<div class="widget">
-						<h5 class="widgetheading">해방 가이드</h5>
-						<div id='calendar'></div>
-					</div>
-					<div class="widget">
-						<h5 class="widgetheading">Popular tags</h5>
-						<ul class="tags">
-							<li><a href="#">Web design</a></li>
-							<li><a href="#">Trends</a></li>
-							<li><a href="#">Technology</a></li>
-							<li><a href="#">Internet</a></li>
-							<li><a href="#">Tutorial</a></li>
-							<li><a href="#">Development</a></li>
-						</ul>
-					</div>
+					<c:if test="${ not empty userVo }">
+						<div class="widget">
+							<h5 class="widgetheading">오늘의 스케쥴</h5>
+							<input type="hidden" id="scheduleOpen" value="${ userVo.e_type } ">
+							<div id='calendar'>
+								<div>
+									<ul style="margin-top: 2%">
+										<li style="width:80%">
+											<span class="fc-event-dot" style="background-color: rgb(68,193,195);"></span>&nbsp;&nbsp;<input style='border:none; width:40%' type="text" value="대기중">
+											<span class="fc-event-dot" style="background-color: rgb(255,153,153);"></span>&nbsp;&nbsp;<input style='border:none; width:40%' type="text" value="출동중">
+										</li>
+										<li style="width:80%">
+											<span class="fc-event-dot" style="background-color: rgb(178,255,102);"></span>&nbsp;&nbsp;<input style='border:none; width:40%' type="text" value="해방중">
+											<span class="fc-event-dot" style="background-color: rgb(224,224,224);"></span>&nbsp;&nbsp;<input style='border:none; width:40%' type="text" value="해방완료">
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</c:if>
 					</aside>
 				</div>
 			</div>
@@ -693,58 +875,106 @@ s0.parentNode.insertBefore(s1,s0);
 
 <script type="text/javascript">
 
-$(document).ready(function() {
-    $.ajax({    	
-    	
-    	type : "POST",
-    	url : "${ pageContext.request.contextPath }/ceo/scheduleList",
-    	dataType : "json",
-    	contentType : "application/x-www-form-urlencoded; charset=UTF-8",
-    	error : function(request, status, error){
-    		alert("code : "+request.status + "\r\nmessage : " + request.reponseText);	    		
-    	},
-    	success : function(data){
-    		alert("왔니?1");
-    		setCalendar(data);
-    		
-    	}
-    	
-    });
-    
-    
+$(document).ready(function(){
 	
+	if($('#scheduleOpen').val()) {			// 이게 뭐야
+	    $.ajax({    	
+	    	
+	    	type : "POST",
+	    	url : "${ pageContext.request.contextPath }/ceo/myScheduleList",
+	    	dataType : "json",
+	    	contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+	    	error : function(request, status, error){
+	    		alert("code : "+request.status + "\r\nmessage : " + request.reponseText);	    		
+	    	},
+	    	success : function(data){
+	    		setCalendar(data);
+	    		
+	    	}
+	    	
+	    });
+	    
+		
+		function setCalendar(data){
+	    	
+	    	  var jsonData = data;
 	
-	function setCalendar(data){
-    	
-    	  var date = new Date();
-    	  var d = date.getDate();
-    	  var m = date.getMonth();
-    	  var y = date.getFullYear();
-    	  var jsonData = data;
-
-    	  alert(jsonData);
-    	  
-    	 $("#calendar").fullCalendar({
-    		header: {
- 				left: 'prev,next today',
- 				center: 'title',
- 				right: 'agendaDay,month,agendaWeek,'
- 			},
-           editable : true,
-           events: [jsonData],
-           timeFormat: 'H(:mm)',
-           eventClick:function(event) {
-               if(event.title) {
-                   alert(event.title + "\n", "wicked", "width=700,height=600");
-                   return false;
-               }
-           }
-       });
-
+	    	  console.log(jsonData);
+	    	  
+	    	 $("#calendar").fullCalendar({
+	    		header: {
+	 				left: 'title',
+	 				right: 'listWeek'
+	 			},
+	           editable : false,
+	           events: jsonData,
+	           locale: 'ko',
+	           timeFormat: 'H(:mm)',
+	           eventClick:function(event) {
+	        	   
+	        	   console.log(event);
+	        	   console.log("m_lon 값 넘어옴 :"+event.m_lon);
+	        	   console.log("e_name 값 넘어옴 :"+event.e_name);
+	        	   console.log("mo_no 값 넘어옴 :"+event.mo_no);
+	        	   console.log("startDay 값 넘어옴 :"+event.startDay);
+	        	   
+	        	   var st_date = new Date().toISOString().substr(0, 10).replace('T', ' ');
+	        	   console.log(st_date);
+	        	   
+		        	 if(event.startDay == st_date){
+		        		 
+				        	   if(event.color == 'rgb(68,193,195)'){
+				        		   if(confirm("해당 스케쥴로 이동 하시겠습니까 ?")){
+					        		   console.log('대기중 클릭됨!');
+					        		   alert('대기중 클릭됨 -> 출동으로 변환!');
+						        	   getRoute(event.m_lon, event.m_lat, event.m_name, event.mo_no, event.e_name);				// 클릭 된 고객의 m_lon,m_lat,m_name 
+				        		   }
+				        	   }else if(event.color == "rgb(255,153,153)"){
+				        		   if(confirm("해방 진행 하시겠습니까?")){
+				        			   
+				        			   var mo_no = event.mo_no;
+					        		   console.log('출동중 클릭됨!');
+					        		   
+					        		   $('#'+mo_no).click();
+					        		   alert('출동중 클릭됨 -> 해방중으로 변환!');
+				        		   }
+				        	   }else if(event.color == "rgb(178,255,102)"){
+				        		   if(confirm("해방 진행 하시겠습니까?")){
+				        			   var mo_no = event.mo_no;
+				        			   $('#'+mo_no).click();
+					        		   console.log('해방중 클릭됨!');
+				        		   }
+				        	   }else{
+				        		   var mo_no = event.mo_no;
+			        			   $('#'+mo_no).click();
+				        		   alert("해당 스케쥴은 완료상태 입니다. ");
+				        	   }
+		        		
+		        		 
+		        	 }else{
+		        		 if(confirm("해당 스케쥴은 오늘 일정이 아닙니다. 이동경로를  확인 하시겠습니까 ?")){
+					        	   getRoute(event.m_lon, event.m_lat, event.m_name, event_mo_no, event.e_name );				// 클릭 된 고객의 m_lon,m_lat,m_name 
+		        			 
+		        	 	 }
+		           	 }
+	           }
+	        	 
+	        	 
+	       });
+	
+		};
+	 
 	}
- 
- });
-   
+
+	
+	
+	
+	
+	
+	
+	
+});
+
 
 
 </script>

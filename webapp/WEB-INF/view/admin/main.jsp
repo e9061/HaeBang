@@ -236,7 +236,7 @@ function MarkerPopup(marker, popup) {
 
 
 function init() {
-	 map = new Tmap.Map({div:'map_div', width:"100%", height:"300px", animation:true}); 
+	 map = new Tmap.Map({div:'map_div', width:"100%", height:"500px", animation:true}); 
 	    // div : 지도가 생성될 div의 id값과 같은 값을 옵션으로 정의 합니다.
 	    // Tmap,Map 클래스에 대한 상세 사항은 "JavaScript" 하위메뉴인 "기본 기능" 페이지를 참조 해주세요. 
 		map.addControl(new Tmap.Control.KeyboardDefaults());
@@ -366,7 +366,7 @@ window.onload = function() {
 
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-8">
+			<div class="col-lg-16">
 
 				<article>
 					<%-- <c:if test="${ not empty userVo }"> --%>

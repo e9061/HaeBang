@@ -66,9 +66,12 @@ public interface EmployeeService {
 	
 	/********************************스케쥴**************************************************************/
 	
+	// 주호 mono 로 회원정보 가져오기(t_member, t_m_order, t_e_order, t_employee, t_service)
+	Map<String, Object> getMemberInfoByMono(int mo_no);
 	
-	
-	
+	// update eo_status
+	void statusUpdate(Map<String, Object> map);
+	Map<String, Object> statusUpdateResult(Map<String, Object> map);
 	
 	
 

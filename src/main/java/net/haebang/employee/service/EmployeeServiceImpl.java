@@ -38,8 +38,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Autowired
 	public EmployeeDao employeeDao;
 
-	@Autowired
-	public SrvDao srvdao;
+//	@Autowired
+//	public SrvDao srvdao;
 	
 	public void setEmployeeDao(EmployeeDao employeeDao) {
 		this.employeeDao = employeeDao;
@@ -379,9 +379,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		//2. update t_m_order set e_no_first=슝슝
 		//	refuseMoNo.Lon, refuseMoNo.lat, prevMonthOutCome, refuseMoNo.dateHourForNoOneEmployee
 		
-		int prevMonthOutCome = srvdao.selectPrevMonthOutCome();
-		map.put("prevMonthOutCome", prevMonthOutCome);
-		System.out.println(prevMonthOutCome);
+//		int prevMonthOutCome = srvdao.selectPrevMonthOutCome();
+//		map.put("prevMonthOutCome", prevMonthOutCome);
+//		System.out.println(prevMonthOutCome);
 
 		employeeDao.updateMOrderENoFirst(map);
 		System.out.println("굿  3단계");
@@ -663,10 +663,24 @@ public class EmployeeServiceImpl implements EmployeeService {
 			employeeDao.updateHaebangSch(map);
 		}
 		 
-	/********************************* 스케쥴 서비스 임플 ****************************************************************/
-	
-	
-	
-	
+		/********************************* 스케쥴 서비스 임플 ****************************************************************/
+		
+		// 주호 mono 로 회원정보 가져오기(t_member, t_m_order, t_e_order, t_employee, t_service)
+		@Override
+		public Map<String, Object> getMemberInfoByMono(int mo_no) {
+			Map<String, Object> getMemberInfoByMono = employeeDao.getMemberInfoByMono(mo_no);
+			return getMemberInfoByMono;
+		}
 
+		@Override
+		public void statusUpdate(Map<String, Object> map) {
+			employeeDao.statusUpdate(map);
+		}
+		@Override
+		public Map<String, Object> statusUpdateResult(Map<String, Object> map) {
+			Map<String, Object> result = employeeDao.statusUpdateResult(map);
+			return result;
+		}
+	
+	
 }
