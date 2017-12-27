@@ -80,27 +80,27 @@ function init() {
 				PR_3857 = new Tmap.Projection("EPSG:3857");  // Google Mercator 좌표계인 EPSG:3857
 				PR_4326 = new Tmap.Projection("EPSG:4326");  // WGS84 GEO 좌표계인 EPSG:4326        
 				curlonlat = new Tmap.LonLat(127.027606, 37.49462).transform(PR_4326, PR_3857); // 짧은 lonlat을 긴 lonlat으로 바꾼다
-				var cursize = new Tmap.Size(24, 38);
+				var cursize = new Tmap.Size(52,62);
 				var curoffset = new Tmap.Pixel(-(cursize.w / 2), -(cursize.h));
-				var curicon = new Tmap.Icon('http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_h.png',cursize, curoffset);
+				var curicon = new Tmap.Icon('${pageContext.request.contextPath }/resources/img/map/cleaning.png',cursize, curoffset);
 				
 				marker = new Tmap.Marker(curlonlat, curicon);
 				markerLayer.addMarker(marker);
 				
 				console.log("curlonlat"+curlonlat);
 				
-				var curpopup;
+			/* 	var curpopup;
 				var curcontent ="<div>현재위치</div>";
 				curpopup = new Tmap.Popup("cp",curlonlat,new Tmap.Size(155,50),curcontent,onPopupClose);
 				curpopup.setBorder("1px solid #8d8d8d");//popup border 조절
 				curpopup.autoSize=true;//popup 사이즈 자동 조절	
 				map.addPopup(curpopup); // 지도에 팝업을 추가해 줍니다. 
-				curpopup.show(); // 팝업을 보여줍니다.
+				//curpopup.show(); // 팝업을 보여줍니다.
 				//팝업창을 닫을수 있는 이벤트 함수
 				function onPopupClose(){
 					select.unselectAll();
 				}
-				
+				 */
 			})
 		}
 		
