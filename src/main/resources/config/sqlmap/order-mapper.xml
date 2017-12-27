@@ -30,8 +30,8 @@
 	
 	
 	<insert id="insertScdByMNoOnetime" parameterType="java.util.HashMap">
-		insert into t_m_order(mo_orderNo, m_no, mo_startTime, mo_endTime, s_no, mo_cnt, mo_freqType, mo_memo, mo_callFlag) 
-		values(#{orderNo}, #{m_no}, #{startTime}, #{endTime}, #{service}, #{cnt}, #{unit}, #{comments}, 'ing')
+		insert into t_m_order(mo_orderNo, m_no, mo_startTime, mo_endTime, s_no, mo_cnt, mo_total, mo_freqType, mo_freqCycle, mo_memo, mo_callFlag) 
+		values(#{orderNo}, #{m_no}, #{startTime}, #{endTime}, #{service}, #{cnt}, #{total}, #{unit}, #{cycle}, #{comments}, 'ing')
 	</insert>
 	
 	
