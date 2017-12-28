@@ -969,8 +969,8 @@ s0.parentNode.insertBefore(s1,s0);
 				</div>
 			</div>
 		</div>
-
-		<footer>
+		
+		<footer >
 			<jsp:include page="../employee_include/bottom.jsp" />
 		</footer>
 	</div>
@@ -1134,3 +1134,4 @@ $(document).ready(function(){
     
   </script>
 </html>
+>>>>>>> bc0619cb7520044c77b076770972f1de1565ed84

@@ -38,8 +38,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Autowired
 	public EmployeeDao employeeDao;
 
-//	@Autowired
-//	public SrvDao srvdao;
+	@Autowired
+	public SrvDao srvdao;
 	
 	public void setEmployeeDao(EmployeeDao employeeDao) {
 		this.employeeDao = employeeDao;
@@ -305,111 +305,126 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	//***************************12/15 노창대***********************************************************
 
-	@Transactional
-	@Override
-	public List<HashMap<String, Object>> acceptMyCall(HashMap<String, Object> map) {
+		@Transactional
+		@Override
+		public List<HashMap<String, Object>> acceptMyCall(HashMap<String, Object> map) {
 
-		
-		//1단계 callFlag 종료 ed로 바꾸기
-		employeeDao.updateCallFlag(map);
-		
-		//2단계 t_e_order에 mo_no 넣어주기 위해 mo_no 여러개 있는 거 받아오기 by orderNo
-		List<HashMap<String,Object>> mo_noList = employeeDao.selectMoNoByOrderNo(map);
-		map.put("mo_noList", mo_noList);
-		
-		//3단계 t_e_order mo_no여러값 넣어주자
-		employeeDao.insertEOrder(map);
-		
+			
+			//1단계 callFlag 종료 ed로 바꾸기
+			employeeDao.updateCallFlag(map);
+			
+			//2단계 t_e_order에 mo_no 넣어주기 위해 mo_no 여러개 있는 거 받아오기 by orderNo
+			List<HashMap<String,Object>> mo_noList = employeeDao.selectMoNoByOrderNo(map);
+			map.put("mo_noList", mo_noList);
+			System.out.println(mo_noList);
+			System.out.println("accept 구현 2단계");
+			//3단계 t_e_order mo_no여러값 넣어주자
+			employeeDao.insertEOrder(map);
+			
 
-		//4단계 event drop
-		employeeDao.dropEvent(map);
+			//4단계 event drop
+			employeeDao.dropEvent(map);
 
-		//5단계 t_cancelCall에 남아있는 mo_no의 거절 e_no 지우기
-		employeeDao.deleteCancelCallByMoNo(map);
-		System.out.println(map.get("mo_no"));
-		System.out.println(map.get("mo_no"));
-		System.out.println(map.get("mo_no"));
-		System.out.println(map.get("mo_no"));
-		System.out.println(map.get("mo_no"));
-
-		
-		//6단계 남아있는 콜 보여주기
-		EmployeeVo userVo = (EmployeeVo) map.get("userVo");
-		System.out.println(userVo);
-		
-		List<HashMap<String,Object>> myCall = employeeDao.selectMyCall(userVo);
-		
-		
-		return myCall;
-	}
-	
-	@Transactional
-	@Override
-	public List<HashMap<String, Object>> refuseMyCall(HashMap<String, Object> map) {
-
-		
-		
-		//0. lon,lat, datefornoOneEmployee
-		EmployeeVo userVo = (EmployeeVo) map.get("userVo");
-		System.out.println(userVo);
-		
-		List<HashMap<String,Object>> myCall = employeeDao.selectMyCall(userVo);
-		System.out.println(myCall.size());
-		
-		for(int i=0;i<myCall.size();i++) {
-		
-			System.out.println(myCall.get(i).get("mo_no"));
+			//5단계 t_cancelCall에 남아있는 mo_no의 거절 e_no 지우기
+			employeeDao.deleteCancelCallByMoNo(map);
 			System.out.println(map.get("mo_no"));
+			System.out.println(map.get("mo_no"));
+			System.out.println(map.get("mo_no"));
+			System.out.println(map.get("mo_no"));
+			System.out.println(map.get("mo_no"));
+
+			
+			//6단계 남아있는 콜 보여주기
+			EmployeeVo userVo = (EmployeeVo) map.get("userVo");
+			System.out.println(userVo);
+			
+			List<HashMap<String,Object>> myCall = employeeDao.selectMyCall(userVo);
 			
 			
-			if((Integer)myCall.get(i).get("mo_no") == Integer.parseInt((String)map.get("mo_no")))
-			{
-				System.out.println("굿  1단계");
-				System.out.println(myCall.get(i)+"굿굿");
-				map.put("refuseMoNo", myCall.get(i));
-			}
-			
+			return myCall;
 		}
 		
-		//1. Insert into t_cancelCall(mo_no, e_no) values(클릭한 mo_no, 3번째 해쉬맵.e_no_first);
+		@Transactional
+		@Override
+		public List<HashMap<String, Object>> refuseMyCall(HashMap<String, Object> map) {
 
-		employeeDao.insertCancelCall(map);
-		System.out.println("굿  2단계");
-		
-		//2. update t_m_order set e_no_first=슝슝
-		//	refuseMoNo.Lon, refuseMoNo.lat, prevMonthOutCome, refuseMoNo.dateHourForNoOneEmployee
-		
-//		int prevMonthOutCome = srvdao.selectPrevMonthOutCome();
-//		map.put("prevMonthOutCome", prevMonthOutCome);
-//		System.out.println(prevMonthOutCome);
+			
+			
+			//0. lon,lat, datefornoOneEmployee
+			EmployeeVo userVo = (EmployeeVo) map.get("userVo");
+			System.out.println(userVo);
+			
+			List<HashMap<String,Object>> myCall = employeeDao.selectMyCall(userVo);
+			System.out.println(myCall.size());
+			
+			for(int i=0;i<myCall.size();i++) {
+			
+				System.out.println(myCall.get(i).get("mo_no"));
+				System.out.println(map.get("mo_no"));
+				
+				
+				if((Integer)myCall.get(i).get("mo_no") == Integer.parseInt((String)map.get("mo_no")))
+				{
+					System.out.println("굿  1단계");
+					System.out.println(myCall.get(i)+"굿굿");
+					System.out.println(myCall.get(i).get("m_lon"));
+					map.put("refuseMoNo", myCall.get(i));
+				}
+				
+			}
+			
 
-		employeeDao.updateMOrderENoFirst(map);
-		System.out.println("굿  3단계");
+			//1. Insert into t_cancelCall(mo_no, e_no) values(클릭한 mo_no, 3번째 해쉬맵.e_no_first);
 
-		//3. Drop event ${mo_orderNo}
-		employeeDao.dropEvent(map);
-		System.out.println("굿  0단계");
-		
-		//4. Create reCreateEvent ${mo_orderNo}
-		
-		employeeDao.reCreateEvent(map);
-		System.out.println("굿  4단계");
-		
-		
-		//5단계 남아있는 콜 다시 돌려줘서 보여주기
-		
-		List<HashMap<String,Object>> leftMyCall = employeeDao.selectMyCall(userVo);
-		
-		System.out.println("굿  5단계");
-		
-		return leftMyCall;
+			employeeDao.insertCancelCall(map);
+			System.out.println("굿  2단계");
+			
+			//2. update t_m_order set e_no_first=슝슝
+			//	refuseMoNo.Lon, refuseMoNo.lat, prevMonthOutCome, refuseMoNo.dateHourForNoOneEmployee
+			
+			int prevMonthOutCome = srvdao.selectPrevMonthOutCome();
+			map.put("prevMonthOutCome", prevMonthOutCome);
+			System.out.println(prevMonthOutCome);
 
-	}
-	
-	
-	
-	
-	//***************************12/15 노창대***********************************************************
+			
+			//3, 업데이트 전에 콘솔창에 순위표 받아보기
+			List<HashMap<String,Object>> validation =  employeeDao.selectNoOneEmployeeValidation(map);
+			System.out.println("순위표 확인할거에요");
+			System.out.println(validation);
+			
+			if(validation.size() ==0 || validation == null)
+			{
+				employeeDao.deleteCancelCallByMoNo(map);
+			}
+				
+			
+			employeeDao.updateMOrderENoFirst(map);
+			System.out.println("굿  3단계");
+
+			//3. Drop event ${mo_orderNo}
+			employeeDao.dropEvent(map);
+			System.out.println("굿  0단계");
+			
+			//4. Create reCreateEvent ${mo_orderNo}
+			
+			employeeDao.reCreateEvent(map);
+			System.out.println("굿  4단계");
+			
+			
+			//5단계 남아있는 콜 다시 돌려줘서 보여주기
+			
+			List<HashMap<String,Object>> leftMyCall = employeeDao.selectMyCall(userVo);
+			
+			System.out.println("굿  5단계");
+			
+			return leftMyCall;
+
+		}
+		
+		
+		
+		
+		//***************************12/15 노창대***********************************************************
 
 
 	// --------------------------------------------- 아래 박 진 화 ------------------------------------------------------

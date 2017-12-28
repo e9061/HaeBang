@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Moderna - Bootstrap 3 flat corporate template</title>
+<title>해방</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="description" content="" />
 <!-- css -->
@@ -27,20 +27,10 @@
     Author URL: https://bootstrapmade.com
 	======================================================= -->
 <Style>
-/* #price {
-		background-color : skyblue;
-		font : bold;
-		font-color : #000000;
-		border : 1px-solid-black;
-	} */
-	#sodok{
-	width : 600px;
+
+table, th, td {
+	text-align : center;
 }
-table { border:1px-solid-#000000; width:1000px; text-align : center;}
-table th {color:red; background-color:peachpuff; border:1px-solid-#000000; text-align : center;}
-table td {border : 1px-solid-#000000; text-align : center;}
-
-
 
 #hihihi{
 	align:center;
@@ -66,143 +56,306 @@ table td {border : 1px-solid-#000000; text-align : center;}
 		</div>
 		<section id="content">
 		
+		
+		
 		<div>
-		<table border="1" align="center">
+		<table class="table table-striped table-bordered table-hover"
+			style="width: 1120px;" align="center">
+			
 			<caption><h4>가정집</h4></caption>
+			<thead>
 			<tr>
-				<th>적용평수</th>
-				<th>6개월 보장형</th>
-				<th>1년 보장형</th>
-				<th>연계약 정기관리형 (연 4회 방문) (회당)</th>
-				<th>소요시간</th>
+				<th style="text-align:center;">적용평수</th>
+				<th style="text-align:center;">6개월 보장형</th>
+				<th style="text-align:center;">1년 보장형</th>
+				<th style="text-align:center;">정기관리형(3개월) (회당)</th>
+				<th style="text-align:center;">정기관리형(6개월) (회당)</th>
+				<th style="text-align:center;">정기관리형(12개월) (회당)</th>
+				<th style="text-align:center;">소요시간</th>
 			</tr>
+			</thead>
+			<tbody>
 			<tr>
-				<th>10평 이하</th>
+				<th style="text-align:center;">10평 이하</th>
 				<td>40,000원</td>
 				<td>70,000원</td>
+				<td>40,000원</td>
+				<td>35,000원</td>
 				<td>30,000원</td>
 				<td>30분</td>
 			</tr>
 			<tr>
-				<th>20평 이하</th>
+				<th style="text-align:center;">20평 이하</th>
 				<td>60,000원</td>
 				<td>100,000원</td>
+				<td>55,000원</td>
+				<td>50,000원</td>
 				<td>45,000원</td>
 				<td>30분</td>
 			</tr>
 			<tr>
-				<th>30평 이하</th>
+				<th style="text-align:center;">30평 이하</th>
 				<td>80,000원</td>
 				<td>130,000원</td>
+				<td>70,000원</td>
+				<td>65,000원</td>
 				<td>60,000원</td>
 				<td>30분</td>
 			</tr>
 			<tr>
-				<th>50평 이하</th>
+				<th style="text-align:center;">50평 이하</th>
 				<td>100,000원</td>
 				<td>160,000원</td>
+				<td>85,000원</td>
+				<td>80,000원</td>
 				<td>75,000원</td>
 				<td>60분</td>
 			</tr>
 			<tr>
-				<th>100평 이하</th>
+				<th style="text-align:center;">100평 이하</th>
 				<td>130,000원</td>
 				<td>230,000원</td>
+				<td>120,000원</td>
+				<td>110,000원</td>
 				<td>100,000원</td>
-				<td>120분</td>
+				<td>60분</td>
 			</tr>
 			<tr>
-				<th>101평 이상</th>
-				<td>200,000원</td>
-				<td>300,000원</td>
-				<td>150,000원</td>
-				<td>120분 ~</td>
+				<th style="text-align:center;">101평 이상</th>
+				<td colspan="6">별도견적문의(02-1515-1515): 해방맨과 상담후 맞춤견적을 제공해드립니다</td>
 			</tr>
+			</tbody> 
 		</table>
+		<div style="margin-left:300px;">* 정기형 서비스는 상담 or 방문시 개월단위로 선택하실 수 있습니다.</div>
+		<div style="margin-left:300px;">* 정기형 서비스는 1회무료 방문이 포함됩니다.</div>
+		
 		</div>
 		<br/>
-		
-		<div>
-		<table border="1" align="center">
-			<caption><h4>사무실, 영업장</h4></caption>
-			<tr>
-				<th>적용평수</th>
-				<th>2개월 보장형</th>
-				<th colspan="2">연계약 정기관리형 (연 방문 6회) (회당)</th>
-				<th>소요시간</th>
+		<hr size="5" width="80%"/>
+		<hr size="5" width="80%"/>
+		<table class="table table-striped table-bordered table-hover"
+			style="width: 1120px;" align="center" text-align="center">
+			<thead>
+			<tr style="text-align:center;">
+			<th colspan="3"  style="text-align:center;">관리기간</th>
+			<th style="text-align:center;">1월</th>
+			<th style="text-align:center;">2월</th>
+			<th style="text-align:center;">3월</th>
+			<th style="text-align:center;">4월</th>
+			<th style="text-align:center;">5월</th>
+			<th style="text-align:center;">6월</th>
+			<th style="text-align:center;">7월</th>
+			<th style="text-align:center;">8월</th>
+			<th style="text-align:center;">9월</th>
+			<th style="text-align:center;">10월</th>
+			<th style="text-align:center;">11월</th>
+			<th style="text-align:center;">12월</th>
 			</tr>
+			</thead>
+			<tbody>
+			<tr style="text-align:center;">
+			<th colspan="3" style="text-align:center;">6개월 보장형</th>
+			<th style="background-color:#86e57f; text-align:center;">퇴치</th>
+			<th colspan="5" style="background-color:#faed7d; text-align:center;">보장기간</th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			</tr>
+			<tr style="text-align:center;">
+			<th colspan="3" style="text-align:center;">1년 보장형</th>
+			<th style="background-color:#86e57f; text-align:center;">퇴치</th>
+			<th colspan="11" style="background-color:#faed7d; text-align:center;" >보장기간</th>
+			</tr>
+			<tr style="text-align:center;">
+			<th colspan="3" style="text-align:center;">12개월 - 3개월단위</th>
+			<th style="background-color:#faed7d; text-align:center;">1차</th>
+			<th style="text-align:center;"></th>
+			<th style="text-align:center;"></th>
+			<th style="background-color:#faed7d; text-align:center;">2차</th>
+			<th style="text-align:center;"></th>
+			<th style="text-align:center;"></th>
+			<th style="background-color:#faed7d; text-align:center;">3차</th>
+			<th style="text-align:center;"></th>
+			<th style="text-align:center;"></th>
+			<th style="background-color:#faed7d; text-align:center;">4차</th>
+			<th style="text-align:center;"></th>
+			<th style="text-align:center;"></th>
+			</tr>
+			
+			</tbody>
+			
+			
+			</table>
+		<br/>
+		<div style="border-top:5px solid skyblue; border-bottom:5px solid skyblue; align:center;"></div>
+		<br/>
+		<div>
+		<table class="table table-striped table-bordered table-hover"
+			style="width: 1120px;" align="center">
+			<caption><h4>사무실, 영업장</h4></caption>
+			<thead>
 			<tr>
-				<th>20평 이하</th>
+				<th style="text-align:center;">적용평수</th>
+				<th style="text-align:center;">2개월 보장형</th>
+				<th colspan="2" style="text-align:center;">연계약 정기관리형(1년) (회당)</th>
+				<th style="text-align:center;">소요시간</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr>
+				<th style="text-align:center;">20평 이하</th>
 				<td>60,000원</td>
 				<td colspan="2">45,000원</td>
 				<td>30분</td>
 			</tr>
 			<tr>
-				<th>30평 이하</th>
+				<th style="text-align:center;">30평 이하</th>
 				<td>80,000원</td>
 				<td colspan="2">60,000원</td>
 				<td>30분</td>
 			</tr>
 			<tr>
-				<th>40평 이하</th>
+				<th style="text-align:center;">40평 이하</th>
 				<td>90,000원</td>
 				<td colspan="2">75,000원</td>
-				<td>30분</td>
+				<td>60분</td>
 			</tr>
 			<tr>
-				<th>50평 이하</th>
+				<th style="text-align:center;">50평 이하</th>
 				<td>100,000원</td>
 				<td colspan="2">85,000원</td>
 				<td>60분</td>
 			</tr>
 			<tr>
-				<th>51평 이상</th>
-				<td>별도 견적</td>
-				<td colspan="2">150,000원</td>
-				<td>120분</td>
+				<th style="text-align:center;">51평 이상</th>
+				<td colspan="4">별도견적문의(02-1515-1515): 해방맨과 상담후 맞춤견적을 제공해드립니다.</td>
 			</tr>
+			</tbody>
 		</table>
-		</div>
+		<div style="margin-left:300px;">* 정기형 서비스는 상담 or 방문시 개월단위로 선택하실 수 있습니다.</div>
+		<div style="margin-left:300px;">* 정기형 서비스는 1회무료 방문이 포함됩니다.
+		</div><br/>
+		<hr size="5" width="80%"/>
+		<hr size="5" width="80%"/>
+		<table class="table table-striped table-bordered table-hover"
+			style="width: 1120px;" align="center" text-align="center">
+			<thead>
+			<tr style="text-align:center;">
+			<th colspan="3"  style="text-align:center;">관리기간</th>
+			<th style="text-align:center;">1월</th>
+			<th style="text-align:center;">2월</th>
+			<th style="text-align:center;">3월</th>
+			<th style="text-align:center;">4월</th>
+			<th style="text-align:center;">5월</th>
+			<th style="text-align:center;">6월</th>
+			<th style="text-align:center;">7월</th>
+			<th style="text-align:center;">8월</th>
+			<th style="text-align:center;">9월</th>
+			<th style="text-align:center;">10월</th>
+			<th style="text-align:center;">11월</th>
+			<th style="text-align:center;">12월</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr style="text-align:center;">
+			<th colspan="3" style="text-align:center;">2개월 보장형</th>
+			<th style="background-color:#86e57f; text-align:center;">퇴치</th>
+			<th style="background-color:#faed7d; text-align:center;">보장</th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			</tr>
+			<tr style="text-align:center;">
+			<th colspan="3" style="text-align:center;">1년 정기형 - 2개월</th>
+			<th style="background-color:#faed7d; text-align:center;">1차</th>
+			<th style="text-align:center;"></th>
+			<th style="background-color:#faed7d; text-align:center;">2차</th>
+			<th style="text-align:center;"></th>
+			<th style="background-color:#faed7d; text-align:center;">3차</th>
+			<th style="text-align:center;"></th>
+			<th style="background-color:#faed7d; text-align:center;">4차</th>
+			<th style="text-align:center;"></th>
+			<th style="background-color:#faed7d; text-align:center;">5차</th>
+			<th style="text-align:center;"></th>
+			<th style="background-color:#faed7d; text-align:center;">6차</th>
+			<th style="text-align:center;"></th>
+			</tr>
+			<tr style="text-align:center;">
+			<th colspan="3" style="text-align:center;">1년 정기형 - 1개월</th>
+			<th style="background-color:#faed7d; text-align:center;">1차</th>
+			<th style="background-color:#faed7d; text-align:center;">2차</th>
+			<th style="background-color:#faed7d; text-align:center;">3차</th>
+			<th style="background-color:#faed7d; text-align:center;">4차</th>
+			<th style="background-color:#faed7d; text-align:center;">5차</th>
+			<th style="background-color:#faed7d; text-align:center;">6차</th>
+			<th style="background-color:#faed7d; text-align:center;">7차</th>
+			<th style="background-color:#faed7d; text-align:center;">8차</th>
+			<th style="background-color:#faed7d; text-align:center;">9차</th>
+			<th style="background-color:#faed7d; text-align:center;">10차</th>
+			<th style="background-color:#faed7d; text-align:center;">11차</th>
+			<th style="background-color:#faed7d; text-align:center;">12차</th>
+			</tr>
+			
+			</tbody>
+			
+			
+			</table>
+		
+		<div style="border-top:5px solid skyblue; border-bottom:5px solid skyblue; align:center;"></div>
 		<br/>
-		<div id="sodok">
-		<table border="1" align="center">
+		<div>
+		<table class="table table-striped table-bordered table-hover"
+			style="width: 1120px;" align="center">
 			<caption><h4>의무, 공간소독</h4></caption>
+			<thead>
 			<tr>
-				<th>적용평수</th>
-				<th>1회 가격</th>
-				<th>소요 시간</th>
+				<th style="text-align:center;">적용평수</th>
+				<th style="text-align:center;">1회 가격</th>
+				<th style="text-align:center;">소요 시간</th>
 			</tr>
+			</thead>
+			<tbody>
 			<tr>
-				<th>50평 이하</th>
+				<th style="text-align:center;">50평 이하</th>
 				<td>70,000원</td>
-				<td>30분</td>
-			</tr>
-			<tr>
-				<th>70평 이하</th>
-				<td>80,000원</td>
-				<td>30분</td>
-			</tr>
-			<tr>
-				<th>100평 이하</th>
-				<td>90,000원</td>
 				<td>60분</td>
 			</tr>
 			<tr>
-				<th>200평 이하</th>
+				<th style="text-align:center;">70평 이하</th>
+				<td>80,000원</td>
+				<td>60분</td>
+			</tr>
+			<tr>
+				<th style="text-align:center;">100평 이하</th>
+				<td>90,000원</td>
+				<td>90분</td>
+			</tr>
+			<tr>
+				<th style="text-align:center;">200평 이하</th>
 				<td>110,000원</td>
 				<td>120분</td>
 			</tr>
 			<tr>
-				<th>500평 이하</th>
+				<th style="text-align:center;">500평 이하</th>
 				<td>120,000원</td>
-				<td>120분 ~</td>
+				<td>120분</td>
 			</tr>
 			<tr>
-				<th>501평 이상</th>
-				<td>별도 견적</td>
-				<td>120분 ~</td>
+				<th style="text-align:center;">501평 이상</th>
+				<td colspan="2">별도견적문의(02-1515-1515): 해방맨과 상담후 맞춤견적을 제공해드립니다.</td>
 				
 			</tr>
+			</tbody>
 		</table>
 	</div>
 

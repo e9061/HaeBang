@@ -84,7 +84,7 @@ $(document).on("click", "#fileUpload", function(){
 							<span>사업자 FAQ 작성</span>
 						</h2>
 						<form:form commandName="QnAVO" method="post" enctype="multipart/form-data">
-							<table border="1" width="80%">
+							<table border="1" class="table table-striped table-bordered table-hover" style="width: 1120px;">
 								<tr>
 									<th width="25%">제목</th>
 									<td><form:input path="q_title" class="form-control"/></td>

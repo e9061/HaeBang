@@ -12,7 +12,7 @@ import net.haebang.vo.NoticeBoardVo;
 public interface MemberDao {
 
 	List<MemberVo> selectAll();
-	void insert(MemberVo Member);
+	int insert(MemberVo Member) throws Exception;
 	MemberVo selectOne(String m_id);
 	void logout(HttpSession session);
 	MemberVo login(MemberVo member);
@@ -20,6 +20,7 @@ public interface MemberDao {
 	MemberVo blogin(MemberVo member);
 	MemberVo mainLogin(MemberVo member);
 	void updateMember(MemberVo member);
+	MemberVo loginModal(MemberVo member);
 	
 	
 	/******************************** 공지사항 *************************************************/
@@ -38,6 +39,7 @@ public interface MemberDao {
 	// 일정 변경
 	void changeDate(Map<String, Object> map);
 	String getMoCallFlag(int mo_no);
-    
+	/*************************************************************************************************/
+	int approval_member(MemberVo member) throws Exception;
     
 }

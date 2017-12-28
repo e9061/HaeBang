@@ -7,7 +7,7 @@ function openPop(){
     
     var pop_title = "popupOpener" ;
      
-    window.open("", pop_title,"left=900, top=430, width=550, height=300, toolbar=no, scrollbars=no, status=no, resizable=no") ;
+    window.open("", pop_title,"left=650, top=460, width=300, height=300, toolbar=no, scrollbars=no, status=no, resizable=no") ;
      
 	var frmData = document.formData ;
     frmData.target = pop_title ;
@@ -80,10 +80,15 @@ window.onload = function() {
 <link
 	href="${ pageContext.request.contextPath }/resources/skins/default.css"
 	rel="stylesheet" />
+	
+	
 <c:if test="${ not empty userVo }">
 <form name=formData method="post">
 	<input id="userVo" name="e_no" type="hidden" value="${userVo.e_no}" />
 </form></c:if>
+
+
+
 			<div class="navbar navbar-default navbar-static-top">
 				<div class="container">
 					<div class="navbar-header">
@@ -125,7 +130,7 @@ window.onload = function() {
 								<a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">고객센터<b class=" icon-angle-down"></b></a>
 								<ul class="dropdown-menu">
 									<li><a href="${ pageContext.request.contextPath }/ceo/ceoNotice?n_type=o">공지사항</a></li>
-									<li><a href="components.html">자주묻는질문</a></li>
+									<li><a href="${ pageContext.request.contextPath }/ceo/FE">자주묻는질문</a></li>
 									<li><a href="pricingbox.html">서비스약관</a></li>
 								</ul>
 							</li>

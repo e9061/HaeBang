@@ -10,7 +10,7 @@
 	</resultMap>
 	
 	<sql id="selectAll">
-		select  m_name, m_no, m_id, m_password, m_phone, m_address, m_owner, m_cardNo, m_cardCVC, m_joinDate
+		select  *
 		from t_member		
 	</sql>
 	
@@ -33,6 +33,7 @@
 		select m_id from t_member where m_id = #{m_id}
 	</select>
 		
+		
 	
 	<!-- 로그인 -->
     <select id="login" parameterType="memberVO" resultType="memberVO">
@@ -42,8 +43,8 @@
   	</select>
 	
 	<insert id="insertMember" parameterType="MemberVO">
-		insert into t_member(m_name, m_id, m_password, m_phone, m_type)
-		values(#{m_name}, #{m_id},#{m_password},#{m_phone},m_type)
+		insert into t_member(m_no, m_name, m_id, m_password, m_phone, m_type, m_approval_status, m_approval_key)
+		values(m_no, #{m_name}, #{m_id},#{m_password},#{m_phone},m_type, 'false', #{m_approval_key})
 	</insert>
 	
 	<select id="blogin" parameterType="memberVO" resultType="memberVO">
@@ -58,7 +59,15 @@
 		where m_id = #{m_id}
 	</update>
 	
+	<!-- 이메일 중복 검사 -->	
+	<select id="check_email" parameterType="String" resultType="int">
+		select count(*) from t_member where m_id = #{m_id}
+	</select>
 	
+	<!-- 이메일 인증 -->
+	<update id="approval_member" parameterType="memberVO">
+		update t_member set m_approval_status = 'true' where m_id = #{m_id} and m_approval_key = #{m_approval_key}
+	</update>
 	
 	<!--*********************************공지사항 **************************************-->
 	<select id="getNoticeList" parameterType="java.util.Map" resultType="noticeBoardVo">

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>해방</title>
 </head>
 <style type="text/css">
 .container1 {
@@ -153,7 +153,7 @@ input {
 							
 							<article>
 								<div class="post-heading">
-									<h4><a href="#"> 추가 기제 사항 </a></h4>
+									<h4><a href="#"> 추가 기재 사항 </a></h4>
 								</div>
 								<div class="bottom-article">
 									<ul class="meta-post" style="width:95%">

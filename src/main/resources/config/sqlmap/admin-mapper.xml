@@ -34,43 +34,66 @@
  	</select>
  	
  	
+ 	<!-- 리뉴얼 리스트 -->
+ 	<select id="selectHB" resultType="Map" parameterType="java.util.Map">
+ 		select c.c_no, c.c_name, e.e_name ,  c.c_address, c.c_phone, c.c_code, date_format(c.c_regDate,'%Y-%m-%d') as c_regDate, c.c_bizNo, c.c_empCnt
+       from t_company c, t_employee e
+       where 
+          c.c_code is not NULL
+          AND
+          e.e_type = 'O'
+          order by c_no
+		limit #{startPoint}, #{row}
+ 	</select>
+ 	
+ 	<select id="selectN" resultType="Map" parameterType="java.util.Map">
+      select  c.c_no, e.e_name, c.c_name, c.c_address, c.c_phone, date_format(c_signDate, '%Y-%m-%d') as c_signDate, c.c_bizNo, c.c_empCnt
+       from t_company c, t_employee e
+       where 
+          c.c_code is NULL
+          AND
+          e.e_type = 'O'
+          order by c.c_no
+		limit #{startPoint}, #{row}
+    </select>
+ 	
+ 	
+ 	
+ 	
  	<!-- 해방업체리스트 전체 조회 -->  
- 	<select id="selectHbCompanyList" resultType="hashMap">
- 		select  c.c_name, e.e_name ,  c.c_address, c.c_phone, c.c_code, date_format(c.c_regDate,'%Y-%m-%d') as c_regDate, c.c_bizNo, c.c_empCnt
- 		from t_company c, t_employee e
- 		where 
- 			c.c_code is not NULL
- 			AND 
- 			c.c_no = e.c_no
- 			AND
- 			e.e_type = 'O'
- 	</select>
- 	<!-- 일반업체리스트 전체 조회 -->
- 	<select id="selectNCompanyList" resultType="hashMap">
- 		select  e.e_name, c.c_name, c.c_address, c.c_phone, date_format(c_signDate, '%Y-%m-%d') as c_signDate, c.c_bizNo, c.c_empCnt
- 		from t_company c, t_employee e
- 		where 
- 			c.c_code is NULL
- 			AND 
- 			c.c_no = e.c_no
- 			AND
- 			e.e_type = 'O'
- 	</select>
+    <select id="selectHbCompanyList" resultType="hashMap">
+       select c.c_no, c.c_name, e.e_name ,  c.c_address, c.c_phone, c.c_code, date_format(c.c_regDate,'%Y-%m-%d') as c_regDate, c.c_bizNo, c.c_empCnt
+       from t_company c, t_employee e
+       where 
+          c.c_code is not NULL
+          AND
+          e.e_type = 'O' AND e.c_no = c.c_no
+          order by c_no
+    </select>
+    <!-- 일반업체리스트 전체 조회 -->
+    <select id="selectNCompanyList" resultType="hashMap">
+      select  c.c_no, e.e_name, c.c_name, c.c_address, c.c_phone, date_format(c_signDate, '%Y-%m-%d') as c_signDate, c.c_bizNo, c.c_empCnt
+       from t_company c, t_employee e
+       where 
+          c.c_code is NULL
+          AND
+          e.e_type = 'O' AND e.c_no = c.c_no
+          order by c.c_no
+    </select>
   	<!-- 해방업체리스트 조건 검색 -->
  	<select id="searchHbCompanyList" resultType="hashMap" parameterType="companyVo">
  		select  c.c_name, e.e_name ,  c.c_address, c.c_phone, c.c_code, date_format(c.c_regDate,'%Y-%m-%d') as c_regDate, c.c_bizNo, c.c_empCnt
  		from t_company c, t_employee e
  		where
  			c_code is not NULL
- 			AND 
- 			c.c_no = e.c_no
  			AND
- 			e.e_type = 'O'
+ 			e.e_type = 'O' AND e.c_no = c.c_no
  			AND
  			<if test="c_name != null" >c_name like CONCAT('%',#{c_name},'%')</if>
  			<if test="c_address != null" >c_address like CONCAT('%',#{c_address},'%')</if>
  			<if test="c_bizNo != null" >c_bizNo = #{c_bizNo}</if>
  			<if test="c_code != null" >c_code = #{c_code}</if>
+ 			order by c.c_no
  	</select>
  	<!-- 일반업체리스트 조건 검색 -->
  	<select id="searchNCompanyList" resultType="hashMap" parameterType="companyVo">
@@ -78,15 +101,17 @@
  		from t_company c, t_employee e
  		where
  			c_code is NULL
- 			AND 
- 			c.c_no = e.c_no
  			AND
- 			e.e_type = 'O'
+ 			e.e_type = 'O' AND e.c_no = c.c_no
  			AND
  			<if test="c_name != null" >c_name like CONCAT('%',#{c_name},'%')</if>
  			<if test="c_address != null" >c_address like CONCAT('%',#{c_address},'%')</if>
  			<if test="c_bizNo != null" >c_bizNo = #{c_bizNo}</if>
  	</select>
+ 
+ 	<select id="selectTotal" parameterType="java.util.Map" resultType="Integer">
+		select count(*) from t_company
+	</select>
  
  	
  	<!-- 사업자 공지사항 리스트 조회   -->

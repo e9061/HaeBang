@@ -26,200 +26,206 @@ public class EmployeeDaoImpl implements EmployeeDao{
 	
 
 	// ------------------------------------------- 창대 -------------------------------------
-	@Override
-	public CompanyVo selectByNo(int c_no) {
-		CompanyVo companyVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectByNo", c_no);
-		return companyVo;
-	}
-	
-	@Override
-	public List<EmployeeVo> selectByCNo(int c_no) {
+		@Override
+		public CompanyVo selectByNo(int c_no) {
+			CompanyVo companyVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectByNo", c_no);
+			return companyVo;
+		}
 		
-		List<EmployeeVo> employeeVoList = sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectByCNo", c_no);
-		return employeeVoList;
+		@Override
+		public List<EmployeeVo> selectByCNo(int c_no) {
+			
+			List<EmployeeVo> employeeVoList = sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectByCNo", c_no);
+			return employeeVoList;
+			
+		}
 		
-	}
-	
-	
-	
-	
-	
-	
-	@Override
-	public CompanyVo selectByCode(String c_code) {
-		CompanyVo companyVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectByCode", c_code);
-		return companyVo;
-	}
-	
-	@Override
-	public CompanyVo selectByBizNo1(String c_bizNo) {
-		CompanyVo companyVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectByBizNo1", c_bizNo);
-		return companyVo;
-	}
-	
-	@Override
-	public CompanyVo selectByBizNo2(CompanyVo companyVo) {
-		CompanyVo confirmVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectByBizNo2", companyVo);
-		return confirmVo;
-	}
-	
-	
-	
-	@Override
-	public EmployeeVo selectById(String e_id) {
-		EmployeeVo employeeVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectById", e_id);
-		return employeeVo;
-	}
-	@Override
-	public void insertCompany(JoinEmployeeVo joinEmployeeVo) {
-		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertCompany", joinEmployeeVo);
-	}
-	@Override
-	public void insertEmployeeAnd(JoinEmployeeVo joinEmployeeVo) {
-		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertEmployeeAnd", joinEmployeeVo);
-	}
-	@Override
-	public void insertEmployee(JoinEmployeeVo joinEmployeeVo) {
-		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertEmployee", joinEmployeeVo);
-	}
+		
+		
+		
+		
+		
+		@Override
+		public CompanyVo selectByCode(String c_code) {
+			CompanyVo companyVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectByCode", c_code);
+			return companyVo;
+		}
+		
+		@Override
+		public CompanyVo selectByBizNo1(String c_bizNo) {
+			CompanyVo companyVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectByBizNo1", c_bizNo);
+			return companyVo;
+		}
+		
+		@Override
+		public CompanyVo selectByBizNo2(CompanyVo companyVo) {
+			CompanyVo confirmVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectByBizNo2", companyVo);
+			return confirmVo;
+		}
+		
+		
+		
+		@Override
+		public EmployeeVo selectById(String e_id) {
+			EmployeeVo employeeVo = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectById", e_id);
+			return employeeVo;
+		}
+		@Override
+		public void insertCompany(JoinEmployeeVo joinEmployeeVo) {
+			sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertCompany", joinEmployeeVo);
+		}
+		@Override
+		public void insertEmployeeAnd(JoinEmployeeVo joinEmployeeVo) {
+			sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertEmployeeAnd", joinEmployeeVo);
+		}
+		@Override
+		public void insertEmployee(JoinEmployeeVo joinEmployeeVo) {
+			sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertEmployee", joinEmployeeVo);
+		}
 
-	
-	@Override
-	public void updateEoC(HashMap<String, String> updateMap) {
-		sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateEmployeeOr", updateMap);
 		
-	}
-	
-	@Override
-	public void updateEmployeeCntP(JoinEmployeeVo joinEmployeeVo) {
-		sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateEmployeeCntP", joinEmployeeVo);
+		@Override
+		public void updateEoC(HashMap<String, String> updateMap) {
+			sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateEmployeeOr", updateMap);
+			
+		}
 		
-	}
-	@Override
-	public void updateEmployeeCntM(EmployeeVo employeeVo) {
-		sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateEmployeeCntM", employeeVo);
+		@Override
+		public void updateEmployeeCntP(JoinEmployeeVo joinEmployeeVo) {
+			sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateEmployeeCntP", joinEmployeeVo);
+			
+		}
+		@Override
+		public void updateEmployeeCntM(EmployeeVo employeeVo) {
+			sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateEmployeeCntM", employeeVo);
+			
+		}
 		
-	}
-	
-	
-	
-	@Override
-	public void deleteEmployeeByNo(int e_no) {
-		sqlSession.delete("net.haebang.employee.dao.EmployeeDao.deleteEmployeeByNo", e_no);
 		
-	}
-	
-	@Override
-	public void updateCompanyBizNo(CompanyVo companyVo) {
-		sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateCompanyBizNo", companyVo);
 		
-	}
-	
-	
-	@Override
-	public void updateEmpPicture(EmployeeVo employeeVo) {
-		sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateEmpPicture", employeeVo);
+		@Override
+		public void deleteEmployeeByNo(int e_no) {
+			sqlSession.delete("net.haebang.employee.dao.EmployeeDao.deleteEmployeeByNo", e_no);
+			
+		}
 		
-	}
-	
+		@Override
+		public void updateCompanyBizNo(CompanyVo companyVo) {
+			sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateCompanyBizNo", companyVo);
+			
+		}
+		
+		
+		@Override
+		public void updateEmpPicture(EmployeeVo employeeVo) {
+			sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateEmpPicture", employeeVo);
+			
+		}
+		
 
-	//	------------------------------------ 창대 11/25일 작업  ----------------------------------------------
+		//	------------------------------------ 창대 11/25일 작업  ----------------------------------------------
 
-	@Override
-	public void updateCompanyAddress(CompanyVo companyVo) {
-		sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateCompanyAddress", companyVo);
+		@Override
+		public void updateCompanyAddress(CompanyVo companyVo) {
+			sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateCompanyAddress", companyVo);
+			
+			
+		}
 		
 		
-	}
-	
-	
-	//	------------------------------------ 창대 11/25일 작업 종료! ----------------------------------------------
-	
-	//	------------------------------------ 창대 11/29일 작업(지도 주문관련)  ----------------------------------------------
-	@Override
-	public List<HashMap<String, Object>> selectAllmap(List<EmployeeVo> list) {	
-		List<HashMap<String, Object>> mapList = sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectAllmap", list); 
-	
-		return mapList;
-	}
-	
-	@Override
-	public void updateEOrderStatus(OrderEmployeeVo orderEmployeeVo) {
-		sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateEOrderStatus", orderEmployeeVo);
+		//	------------------------------------ 창대 11/25일 작업 종료! ----------------------------------------------
 		
-	}
-	
-	@Override
-	public OrderEmployeeVo selectEOrderByMoNo(OrderEmployeeVo orderEmployeeVo) {
-		OrderEmployeeVo newOne = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectEOrderByMoNo", orderEmployeeVo); 
-		return newOne;
-	}
-	
-	
-	//	------------------------------------ 창대 12/15,16,17일 콜 주문 가져오기  ----------------------------------------------
-	
-	@Override
-	public List<HashMap<String, Object>> selectMyCall(EmployeeVo userVo) {
-		List<HashMap<String, Object>> myCall = sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectMyCall", userVo);
+		//	------------------------------------ 창대 11/29일 작업(지도 주문관련)  ----------------------------------------------
+		@Override
+		public List<HashMap<String, Object>> selectAllmap(List<EmployeeVo> list) {	
+			List<HashMap<String, Object>> mapList = sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectAllmap", list); 
 		
-		return myCall;
-	}
-	
-	@Override
-	public void dropEvent(HashMap<String, Object> map) {
-		sqlSession.update("net.haebang.employee.dao.EmployeeDao.dropEvent", map);
+			return mapList;
+		}
 		
-	}
+		@Override
+		public void updateEOrderStatus(OrderEmployeeVo orderEmployeeVo) {
+			sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateEOrderStatus", orderEmployeeVo);
+			
+		}
+		
+		@Override
+		public OrderEmployeeVo selectEOrderByMoNo(OrderEmployeeVo orderEmployeeVo) {
+			OrderEmployeeVo newOne = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.selectEOrderByMoNo", orderEmployeeVo); 
+			return newOne;
+		}
+		
+		
+		//	------------------------------------ 창대 12/15,16,17일 콜 주문 가져오기  ----------------------------------------------
+		
+		@Override
+		public List<HashMap<String, Object>> selectMyCall(EmployeeVo userVo) {
+			List<HashMap<String, Object>> myCall = sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectMyCall", userVo);
+			
+			return myCall;
+		}
+		
+		@Override
+		public void dropEvent(HashMap<String, Object> map) {
+			sqlSession.update("net.haebang.employee.dao.EmployeeDao.dropEvent", map);
+			
+		}
 
-	@Override
-	public void updateCallFlag(HashMap<String, Object> map) {
-		sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateCallFlag", map);
+		@Override
+		public void updateCallFlag(HashMap<String, Object> map) {
+			sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateCallFlag", map);
+			
+		}
 		
-	}
-	
-	@Override
-	public List<HashMap<String, Object>> selectMoNoByOrderNo(HashMap<String, Object> map) {
-		List<HashMap<String, Object>> mo_noList = 
-				sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectMoNoByOrderNo", map);
-		return mo_noList;
-	}
-	
-	@Override
-	public void insertEOrder(HashMap<String, Object> map) {
-		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertEOrder", map);
-	}
-	
-	@Override
-	public void deleteCancelCallByMoNo(HashMap<String, Object> map) {
-		sqlSession.delete("net.haebang.employee.dao.EmployeeDao.deleteCancelCallByMoNo", map);
+		@Override
+		public List<HashMap<String, Object>> selectMoNoByOrderNo(HashMap<String, Object> map) {
+			List<HashMap<String, Object>> mo_noList = 
+					sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectMoNoByOrderNo", map);
+			return mo_noList;
+		}
 		
-	}
-	
-	@Override
-	public void insertCancelCall(HashMap<String, Object> map) {
-		sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertCancelCall", map);
+		@Override
+		public void insertEOrder(HashMap<String, Object> map) {
+			sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertEOrder", map);
+		}
 		
-	}
-	
-	@Override
-	public void updateMOrderENoFirst(HashMap<String, Object> map) {
-		sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateMOrderENoFirst", map);
-	}
-	
-	@Override
-	public void reCreateEvent(HashMap<String, Object> map) {
-		sqlSession.update("net.haebang.employee.dao.EmployeeDao.reCreateEvent", map);
-	}
-	
-	@Override
-	public List<HashMap<String, Object>> selectAllStartTimes(String mo_orderNo) {
+		@Override
+		public void deleteCancelCallByMoNo(HashMap<String, Object> map) {
+			sqlSession.delete("net.haebang.employee.dao.EmployeeDao.deleteCancelCallByMoNo", map);
+			
+		}
 		
-		List<HashMap<String,Object>> myStartTimes = sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectAllStartTimes",mo_orderNo);
+		@Override
+		public void insertCancelCall(HashMap<String, Object> map) {
+			sqlSession.insert("net.haebang.employee.dao.EmployeeDao.insertCancelCall", map);
+			
+		}
 		
-		return myStartTimes;
-	}
-	
-	//  ----------------------------------------------------------------------------------------------------------------------
+		@Override
+		public void updateMOrderENoFirst(HashMap<String, Object> map) {
+			sqlSession.update("net.haebang.employee.dao.EmployeeDao.updateMOrderENoFirst", map);
+		}
+		
+		@Override
+		public void reCreateEvent(HashMap<String, Object> map) {
+			sqlSession.update("net.haebang.employee.dao.EmployeeDao.reCreateEvent", map);
+		}
+		
+		@Override
+		public List<HashMap<String, Object>> selectAllStartTimes(String mo_orderNo) {
+			
+			List<HashMap<String,Object>> myStartTimes = sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectAllStartTimes",mo_orderNo);
+			
+			return myStartTimes;
+		}
+		
+		
+		@Override
+		public List<HashMap<String, Object>> selectNoOneEmployeeValidation(HashMap<String, Object> map) {
+			List<HashMap<String,Object>> validation = sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectNoOneEmployeeValidation",map);
+			return validation;
+		}
+		//  ----------------------------------------------------------------------------------------------------------------------
 
 	
 	// -------------------------------------- 진화 ------------------------------------------
@@ -502,4 +508,3 @@ public class EmployeeDaoImpl implements EmployeeDao{
 	
 	
 }	
-	

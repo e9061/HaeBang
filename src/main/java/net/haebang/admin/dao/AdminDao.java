@@ -17,12 +17,13 @@ public interface AdminDao {
 	List<MemberVo> memberSelected(MemberVo memberVo);
 	
 	// 업체 조회 dao
-	List<HashMap<String, Object>> hbComList();
-	List<HashMap<String, Object>> nComList();
-	
-	List<HashMap<String, Object>> searchHbComList(CompanyVo companyVo);
-	List<HashMap<String, Object>> searchNComList(CompanyVo companyVo);
+		List<HashMap<String, Object>> hbComList(Map<String, Object> map);
+		List<HashMap<String, Object>> nComList(Map<String, Object> map);
+		
+		List<HashMap<String, Object>> searchHbComList(CompanyVo companyVo);
+		List<HashMap<String, Object>> searchNComList(CompanyVo companyVo);
 
+		double selectTotal(Map<String, Object> map);
 	
 	// 공지사항 dao
 	List<NoticeBoardVo> getOwnerNoticeList(Map<String, Object> map);

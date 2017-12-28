@@ -596,107 +596,107 @@ public class EmployeeController {
 	
 	// ******************************** 창대 12/14(콜 팝업창) ********************************
 	
-	@RequestMapping(value= "/ceo/selectAllCall", method=RequestMethod.POST)
-	public String selectAllCall(HttpServletRequest request, HttpSession session, Model model) {
-		EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+		@RequestMapping(value= "/ceo/selectAllCall", method=RequestMethod.POST)
+		public String selectAllCall(HttpServletRequest request, HttpSession session, Model model) {
+			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+			
+			List<HashMap<String,Object>> myCall = employeeDao.selectMyCall(userVo);
+			
+			System.out.println(myCall);
+			
+			System.out.println(userVo.getE_name());
+			int count = myCall.size();
+			model.addAttribute("count", count);
+			model.addAttribute("employeeVo", userVo);
+			model.addAttribute("myCall", myCall);
+			
+			return "employee/callIndex";
+		}
+		// ******************************** 창대 12/14 -********************************
 		
-		List<HashMap<String,Object>> myCall = employeeDao.selectMyCall(userVo);
+		@RequestMapping(value= "/ceo/selectAllCallAjax", method=RequestMethod.POST)
+		public @ResponseBody List<HashMap<String, Object>> selectAllCallAjax(HttpSession session){
+			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+			
+			List<HashMap<String,Object>> myCall = employeeDao.selectMyCall(userVo);
 		
-		System.out.println(myCall);
+			return myCall;
+		}
 		
-		System.out.println(userVo.getE_name());
-		int count = myCall.size();
-		model.addAttribute("count", count);
-		model.addAttribute("employeeVo", userVo);
-		model.addAttribute("myCall", myCall);
+		@RequestMapping(value= "/ceo/acceptMyCall", method=RequestMethod.POST)
+		public @ResponseBody List<HashMap<String, Object>> acceptMyCall(HttpServletRequest request, HttpSession session){
+			
+			
+			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+			
+			String orderNo = request.getParameter("mo_orderNo");
+			String mo_no = request.getParameter("mo_no");
+			
+			System.out.println(orderNo);
+			System.out.println(orderNo);
+			System.out.println(mo_no);
+			System.out.println(mo_no);
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("userVo", userVo);
+			map.put("orderNo",orderNo);
+			map.put("mo_no",mo_no);
+			System.out.println("********************");
+			
+			List<HashMap<String,Object>> myCall = employeeService.acceptMyCall(map);
+			
+			
+			return myCall;
+		}
 		
-		return "employee/callIndex";
-	}
-	// ******************************** 창대 12/14 -********************************
-	
-	@RequestMapping(value= "/ceo/selectAllCallAjax", method=RequestMethod.POST)
-	public @ResponseBody List<HashMap<String, Object>> selectAllCallAjax(HttpSession session){
-		EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
-		
-		List<HashMap<String,Object>> myCall = employeeDao.selectMyCall(userVo);
-	
-		return myCall;
-	}
-	
-	@RequestMapping(value= "/ceo/acceptMyCall", method=RequestMethod.POST)
-	public @ResponseBody List<HashMap<String, Object>> acceptMyCall(HttpServletRequest request, HttpSession session){
-		
-		
-		EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
-		
-		String orderNo = request.getParameter("mo_orderNo");
-		String mo_no = request.getParameter("mo_no");
-		
-		System.out.println(orderNo);
-		System.out.println(orderNo);
-		System.out.println(mo_no);
-		System.out.println(mo_no);
-		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("userVo", userVo);
-		map.put("orderNo",orderNo);
-		map.put("mo_no",mo_no);
-		System.out.println("********************");
-		
-		List<HashMap<String,Object>> myCall = employeeService.acceptMyCall(map);
-		
-		
-		return myCall;
-	}
-	
-	@RequestMapping(value="/ceo/refuseMyCall", method=RequestMethod.POST)
-	public @ResponseBody List<HashMap<String,Object>> refuseMyCall(HttpServletRequest request, HttpSession session){
-		
-		//1. Insert into t_cancelCall(mo_no, e_no) values(클릭한 mo_no, 3번째 해쉬맵.e_no_first);
+		@RequestMapping(value="/ceo/refuseMyCall", method=RequestMethod.POST)
+		public @ResponseBody List<HashMap<String,Object>> refuseMyCall(HttpServletRequest request, HttpSession session){
+			
+			//1. Insert into t_cancelCall(mo_no, e_no) values(클릭한 mo_no, 3번째 해쉬맵.e_no_first);
 
-		//2. update t_m_order set e_no_first=슝슝
-		//	Lon,lat, prevMonthOutCome, dateHourForNoOneEmployee
+			//2. update t_m_order set e_no_first=슝슝
+			//	Lon,lat, prevMonthOutCome, dateHourForNoOneEmployee
 
-		//3. Drop event ${mo_orderNo}
-		//4. Create event ${mo_orderNo}
-		//5. selectMyCall() 돌려서 돌려주기.
-		
-		String mo_no = request.getParameter("mo_no");
-		String mo_orderNo = request.getParameter("mo_orderNo");
-		
-		HashMap<String, Object> map = new HashMap<String, Object>(); 
-		map.put("mo_no", mo_no);
-		map.put("mo_orderNo",mo_orderNo);
-		
-		EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
-		map.put("userVo", userVo);
-		
-		
-		List<HashMap<String,Object>> myCall = employeeService.refuseMyCall(map);
+			//3. Drop event ${mo_orderNo}
+			//4. Create event ${mo_orderNo}
+			//5. selectMyCall() 돌려서 돌려주기.
+			
+			String mo_no = request.getParameter("mo_no");
+			String orderNo = request.getParameter("mo_orderNo");
+			
+			HashMap<String, Object> map = new HashMap<String, Object>(); 
+			map.put("mo_no", mo_no);
+			map.put("orderNo",orderNo);
+			
+			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+			map.put("userVo", userVo);
+			
+			
+			List<HashMap<String,Object>> myCall = employeeService.refuseMyCall(map);
 
-		return myCall;
-		
-		
-	}
-	
-	
-	
-	@RequestMapping(value= "/ceo/selectAllStartTimes", method=RequestMethod.POST)
-	public @ResponseBody List<HashMap<String, Object>> selectAllStartTimes(HttpServletRequest request, HttpSession session){
-		
-		String mo_orderNo = request.getParameter("mo_orderNo");
+			return myCall;
+			
+			
+		}
 		
 		
 		
-		List<HashMap<String,Object>> myCall = employeeDao.selectAllStartTimes(mo_orderNo);
-	
-		return myCall;
-	}
-	
-	
-	
-	
-	// ********************************************************************************************
+		@RequestMapping(value= "/ceo/selectAllStartTimes", method=RequestMethod.POST)
+		public @ResponseBody List<HashMap<String, Object>> selectAllStartTimes(HttpServletRequest request, HttpSession session){
+			
+			String mo_orderNo = request.getParameter("mo_orderNo");
+			
+			
+			
+			List<HashMap<String,Object>> myCall = employeeDao.selectAllStartTimes(mo_orderNo);
+		
+			return myCall;
+		}
+		
+		
+		
+		
+		// ********************************************************************************************
 
 	//  -------------------------------------- 진화 -------------------------------------------------
 	
@@ -1054,99 +1054,100 @@ public class EmployeeController {
 	
 	
 	// FAQ 사업자
-	@RequestMapping(value = "/ceo/FE")
-	public ModelAndView selectFE(HttpServletRequest request) {
+		@RequestMapping(value = "/ceo/FE")
+		public ModelAndView selectFE(HttpServletRequest request) {
 
-		// 현재 페이지 번호 저장 변수
-		int pageNo = 0;
-		if (request.getParameter("pageNo") != null) {
-			// 페이지 파라미터가 있는 경우 현재 페이지 번호를 설정
-			pageNo = Integer.parseInt(request.getParameter("pageNo"));
-		}
-		System.out.println(pageNo);
-		// 한페이지에 보여질 목록 수
-		int listSize = 5;
-
-		// 전체 게시글 카운트
-		int totalCount = service.selectAllBoard(pageNo).size();
-		System.out.println(totalCount);
-
-		// 마지막 페이지 구하기
-		int lastPage = (totalCount % listSize == 0) ? totalCount / listSize : totalCount / listSize + 1;
-
-		request.setAttribute("pageNo", pageNo);
-		request.setAttribute("lastPage", lastPage);
-
-		// ======================================================================
-		// 탭 관련 작업 추가 파트
-		// ======================================================================
-		// 목록에 보여질 탭 사이즈
-		int tabSize = 5;
-		// 현재 페이지에 해당하는 탭 위치
-		int currTab = (pageNo - 1) / tabSize + 1;
-		int beginPage = (currTab - 1) * tabSize + 1;
-		int endPage = (currTab * tabSize < lastPage) ? currTab * tabSize : lastPage;
-
-		request.setAttribute("beginPage", beginPage);
-		request.setAttribute("endPage", endPage);
-		// ======================================================================
-
-		// 해당 페이지의 게시글 목록
-		List<Integer> page = new ArrayList<>();
-		page.add((pageNo - 1) * listSize);
-		page.add(listSize);
-		// List<BoardQAVO> BoardList = service.selectPage(page);
-
-		Map<String, Object> boardQAMap = new HashMap<>();
-		boardQAMap.put("startPage", (pageNo - 1) * listSize);
-		boardQAMap.put("count", listSize);
-
-		ModelAndView mav = new ModelAndView();
-		List<QnAVo> list = service.selectAllBoard(pageNo);
-		System.out.println(list);
-		int totalPage = service.getLastPage();
-
-		mav.addObject("totalPage", totalPage);
-		mav.addObject("list", list);
-
-		return mav;
-
-	}
-	
-	@RequestMapping(value = "/FE/{q_no}", method = RequestMethod.GET)
-	public String selectFE(@PathVariable int q_no, Model model) throws IOException{
-		QnAVo QnA = service.selectOneBoard(q_no);
-		System.out.println(QnA.getQ_saveName());
-		
-		if( QnA.getQ_saveName() == null) {
-			model.addAttribute("image");
-		}else {
-			System.out.println(" 1111");
-			File file = new File("/home/ubuntu/HaeBangQnA/" + QnA.getQ_saveName());
-			FileInputStream fis = new FileInputStream(file);
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			int b;
-			byte[] buffer = new byte[1024];
-			while ((b = fis.read(buffer)) != -1) {
-				bos.write(buffer, 0, b);
+			// 현재 페이지 번호 저장 변수
+			int pageNo = 0;
+			if (request.getParameter("pageNo") != null) {
+				// 페이지 파라미터가 있는 경우 현재 페이지 번호를 설정
+				pageNo = Integer.parseInt(request.getParameter("pageNo"));
 			}
-			byte[] fileBytes = bos.toByteArray();
-			fis.close();
-			bos.close();
-			
-			byte[] encoded = Base64.encodeBase64(fileBytes);
-			String encodedString = new String(encoded);
-			
-			model.addAttribute("image", encodedString);
-			
-		}
-		service.updateViewCnt(q_no);
-		/* QnAVo QnA = service.selectOneBoard(q_no); */
+			System.out.println(pageNo);
+			// 한페이지에 보여질 목록 수
+			int listSize = 5;
 
-		model.addAttribute("QnA", QnA);
-		System.out.println("2222");
-		return "employee/FEdetail";
-	}
+			// 전체 게시글 카운트
+			int totalCount = service.selectFE(pageNo).size();
+			System.out.println(totalCount);
+
+			// 마지막 페이지 구하기
+			int lastPage = (totalCount % listSize == 0) ? totalCount / listSize : totalCount / listSize + 1;
+
+			request.setAttribute("pageNo", pageNo);
+			request.setAttribute("lastPage", lastPage);
+
+			// ======================================================================
+			// 탭 관련 작업 추가 파트
+			// ======================================================================
+			// 목록에 보여질 탭 사이즈
+			int tabSize = 5;
+			// 현재 페이지에 해당하는 탭 위치
+			int currTab = (pageNo - 1) / tabSize + 1;
+			int beginPage = (currTab - 1) * tabSize + 1;
+			int endPage = (currTab * tabSize < lastPage) ? currTab * tabSize : lastPage;
+
+			request.setAttribute("beginPage", beginPage);
+			request.setAttribute("endPage", endPage);
+			// ======================================================================
+
+			// 해당 페이지의 게시글 목록
+			List<Integer> page = new ArrayList<>();
+			page.add((pageNo - 1) * listSize);
+			page.add(listSize);
+			// List<BoardQAVO> BoardList = service.selectPage(page);
+
+			Map<String, Object> boardQAMap = new HashMap<>();
+			boardQAMap.put("startPage", (pageNo - 1) * listSize);
+			boardQAMap.put("count", listSize);
+
+			ModelAndView mav = new ModelAndView();
+			List<QnAVo> list = service.selectFE(pageNo);
+			System.out.println(list);
+			int totalPage = service.getLastPage();
+
+			mav.setViewName("employee/FE");
+			mav.addObject("totalPage", totalPage);
+			mav.addObject("list", list);
+
+			return mav;
+
+		}
+
+		@RequestMapping(value = "/ceo/FE/{q_no}", method = RequestMethod.GET)
+		public String selectFE1(@PathVariable int q_no, Model model) throws IOException{
+			QnAVo QnA = service.selectOneBoard(q_no);
+			System.out.println(QnA.getQ_saveName());
+			
+			if( QnA.getQ_saveName() == null) {
+				model.addAttribute("image");
+			}else {
+				System.out.println(" 1111");
+				File file = new File("C:/dev/HaeBangQnA/" + QnA.getQ_saveName());
+				FileInputStream fis = new FileInputStream(file);
+				ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				int b;
+				byte[] buffer = new byte[1024];
+				while ((b = fis.read(buffer)) != -1) {
+					bos.write(buffer, 0, b);
+				}
+				byte[] fileBytes = bos.toByteArray();
+				fis.close();
+				bos.close();
+				
+				byte[] encoded = Base64.encodeBase64(fileBytes);
+				String encodedString = new String(encoded);
+				
+				model.addAttribute("image", encodedString);
+				
+			}
+			service.updateViewCnt(q_no);
+			/* QnAVo QnA = service.selectOneBoard(q_no); */
+
+			model.addAttribute("QnA", QnA);
+			System.out.println("2222");
+			return "employee/FEdetail";
+		}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////// 주호 ///////////////////////////////////////////////
@@ -1222,4 +1223,4 @@ public class EmployeeController {
 	
 	
 
-}	
+}

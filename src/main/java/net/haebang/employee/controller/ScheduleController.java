@@ -374,8 +374,8 @@ public class ScheduleController {
 				scheduleByMONo.put("startTime", startTime);
 				
 				String endDateTime = (String)scheduleByMONo.get("mo_endTime");
-				String endDate = startDateTime.substring(0, 10);
-				String endTime = startDateTime.substring(11, 16);
+				String endDate = endDateTime.substring(0, 10);
+				String endTime = endDateTime.substring(11, 16);
 				
 				scheduleByMONo.put("endDate", endDate);
 				scheduleByMONo.put("endTime", endTime);
@@ -477,8 +477,8 @@ public class ScheduleController {
 			scheduleByMONo.put("startTime", startTime);
 			
 			String endDateTime = (String)scheduleByMONo.get("mo_endTime");
-			String endDate = startDateTime.substring(0, 10);
-			String endTime = startDateTime.substring(11, 16);
+			String endDate = endDateTime.substring(0, 10);
+			String endTime = endDateTime.substring(11, 16);
 			
 			scheduleByMONo.put("endDate", endDate);
 			scheduleByMONo.put("endTime", endTime);

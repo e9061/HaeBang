@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.haebang.vo.MemberVo;
 import net.haebang.vo.NoticeBoardVo;
@@ -26,11 +27,23 @@ public class MemberDaoImpl implements MemberDao{
 		
 		return list;
 	}
-
+	
+	
+	
 	@Override
-	public void insert(MemberVo Member) {
+	public MemberVo loginModal(MemberVo member) {
+		MemberVo resultVO = sqlSession.selectOne("net.haebang.member.dao.MemberDao.login", member);
+		return resultVO;
+	}
+	
+	
+	
+
+	@Transactional
+	@Override
+	public int insert(MemberVo Member) throws Exception{
 		
-		sqlSession.insert("net.haebang.member.dao.MemberDao.insertMember",Member);
+		return sqlSession.insert("net.haebang.member.dao.MemberDao.insertMember",Member);
 		
 	}
 
@@ -154,6 +167,14 @@ public class MemberDaoImpl implements MemberDao{
 	
 	/*********************************** 소비자 예약정보 가져오기 **********************************************************/
 
+	
+	@Transactional
+	@Override
+	public int approval_member(MemberVo member) throws Exception {
+		int a = sqlSession.update("net.haebang.member.dao.MemberDao.approval_member", member);
+		System.out.println(a);
+		return a;
+	}
 	
 	
 }

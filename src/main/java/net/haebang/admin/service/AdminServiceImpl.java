@@ -43,48 +43,63 @@ public class AdminServiceImpl implements AdminService{
 	
 	
 	// 업체
-	@Override
-	public List<HashMap<String, Object>> hbComList() {
-		
-		CompanyVo companyVo = new CompanyVo();
-		EmployeeVo employeeVo = new EmployeeVo();
-		HashMap<String, Object> map = new HashMap<String, Object>(); 
-		map.put("companyVo", companyVo);
-		map.put("employeeVo", employeeVo);
-		
-		List<HashMap<String, Object>> hbComList = new ArrayList<HashMap<String, Object>>();
-		hbComList.add(map);
-		
-		hbComList = dao.hbComList();
-		return hbComList;
-	}
+		@Override
+		public List<HashMap<String, Object>> hbComList(int page) {
+			
+			int startPoint = page * LINE_PER_PAGE;
 
-	@Override
-	public List<HashMap<String, Object>> nComList() {
-		
-		CompanyVo companyVo = new CompanyVo();
-		EmployeeVo employeeVo = new EmployeeVo();
-		HashMap<String, Object> map = new HashMap<String, Object>(); 
-		map.put("companyVo", companyVo);
-		map.put("employeeVo", employeeVo);
-		List<HashMap<String, Object>> nComList = new ArrayList<HashMap<String, Object>>();
-		nComList.add(map);
-		
-		nComList = dao.nComList();
-		return nComList;
-	}
+			HashMap<String, Object> map = new HashMap<String, Object>(); 
+
+			map.put("startPoint", startPoint);
+			map.put("row", LINE_PER_PAGE);
+
+			System.out.println(map);
+			//
+			CompanyVo companyVo = new CompanyVo();
+			EmployeeVo employeeVo = new EmployeeVo();
+			map.put("companyVo", companyVo);
+			map.put("employeeVo", employeeVo);
+			
+			List<HashMap<String, Object>> hbComList = new ArrayList<HashMap<String, Object>>();
+			hbComList.add(map);
+			
+			hbComList = dao.hbComList(map);
+			return hbComList;
+		}
+
+		@Override
+		public List<HashMap<String, Object>> nComList(int page) {
+			
+			int startPoint = page * LINE_PER_PAGE;
+
+			HashMap<String, Object> map = new HashMap<String, Object>(); 
+
+			map.put("startPoint", startPoint);
+			map.put("row", LINE_PER_PAGE);
+			
+			
+			CompanyVo companyVo = new CompanyVo();
+			EmployeeVo employeeVo = new EmployeeVo();
+			map.put("companyVo", companyVo);
+			map.put("employeeVo", employeeVo);
+			List<HashMap<String, Object>> nComList = new ArrayList<HashMap<String, Object>>();
+			nComList.add(map);
+			
+			nComList = dao.nComList(map);
+			return nComList;
+		}
 	
 	
-	@Override
-	public List<HashMap<String, Object>> searchHbComList(CompanyVo companyVo) {
-		List<HashMap<String, Object>> searchComList = dao.searchHbComList(companyVo);
-		return searchComList;
-	}
-	@Override
-	public List<HashMap<String, Object>> searchNComList(CompanyVo companyVo) {
-		List<HashMap<String, Object>> searchNComList = dao.searchNComList(companyVo);
-		return searchNComList;
-	}
+		@Override
+		public List<HashMap<String, Object>> searchHbComList(CompanyVo companyVo) {
+			List<HashMap<String, Object>> searchComList = dao.searchHbComList(companyVo);
+			return searchComList;
+		}
+		@Override
+		public List<HashMap<String, Object>> searchNComList(CompanyVo companyVo) {
+			List<HashMap<String, Object>> searchNComList = dao.searchNComList(companyVo);
+			return searchNComList;
+		}
 
 
 	
@@ -148,7 +163,14 @@ public class AdminServiceImpl implements AdminService{
 	public void noticeDelete(int no) {
 		dao.noticeDelete(no);
 	}
-	
+	@Override
+	public int getLastPage() {
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		int lastPage = (int) ((double) dao.selectTotal(map) / LINE_PER_PAGE);
+
+		return lastPage;
+	}
 
 	@Override
 	public List<HashMap<String, Object>> getScheduleList(int page, String word, String searchSchedule, String startDate,

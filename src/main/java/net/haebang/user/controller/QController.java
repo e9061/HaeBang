@@ -250,6 +250,26 @@ public class QController {
 		int totalCnt = selectedService.getS_total();
 		String freqType = selectedService.getS_freqType();
 
+		
+		
+		 ////////////////////////////////창대 수정/////////////////////////////////////////////////
+	      String years = date1.substring(0, 4);
+	      String months = date1.substring(5, 7);
+	      String days = date1.substring(8, 10);
+	      String dateForNoOneEmployee = years+months+days;
+	      String dateHourForNoOneEmployee = dateForNoOneEmployee+startTimeHour1;
+	      String dateHourMinuteForNoOneEmployee = date1 + " " + startTimeHour1 + ":" + startTimeMinute1 + ":00";
+	      System.out.println(dateForNoOneEmployee);
+	      System.out.println(dateHourForNoOneEmployee);
+	      System.out.println(dateHourMinuteForNoOneEmployee);
+	      System.out.println("창대검사중");
+	      /////////////////////////////////////////////////////////////////////////////////
+		
+		
+		
+		
+		
+		
 		if (selectedService.getS_freqType().equals("I") || selectedService.getS_freqType().equals("i")) {
 	
 			Calendar cal = Calendar.getInstance();
@@ -293,6 +313,13 @@ public class QController {
 			System.out.println(endTime1);
 			
 			Map<String, Object> paramMap = new HashMap<String, Object>();
+			
+			 //////////////////////////////////창대 수정//////////////////////////////////////////
+	         paramMap.put("dateForNoOneEmployee", dateForNoOneEmployee);
+	         paramMap.put("dateHourForNoOneEmployee", dateHourForNoOneEmployee);
+	         paramMap.put("dateHourMinuteForNoOneEmployee", dateHourMinuteForNoOneEmployee);
+	         //////////////////////////////////////////////////////////////////////////////////
+	         
 			paramMap.put("name", name);
 			paramMap.put("address", fullAddress);
 			paramMap.put("phone", phone);
@@ -363,6 +390,13 @@ public class QController {
 			
 	
 			Map<String, Object> paramMap = new HashMap<String, Object>();
+			
+			 //////////////////////////////////창대 수정//////////////////////////////////////////
+	         paramMap.put("dateForNoOneEmployee", dateForNoOneEmployee);
+	         paramMap.put("dateHourForNoOneEmployee", dateHourForNoOneEmployee);
+	         paramMap.put("dateHourMinuteForNoOneEmployee", dateHourMinuteForNoOneEmployee);
+	         //////////////////////////////////////////////////////////////////////////////////
+	         
 			paramMap.put("name", name);
 			paramMap.put("address", fullAddress);
 			paramMap.put("phone", phone);

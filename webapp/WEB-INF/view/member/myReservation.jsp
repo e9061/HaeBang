@@ -5,7 +5,7 @@
 <head>
 <script src ="http://code.jquery.com/jquery-3.2.1.min.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>해방</title>
 <style type="text/css">
 .container1 {
 	padding:0 30px 0 50px;
