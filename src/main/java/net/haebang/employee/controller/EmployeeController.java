@@ -568,7 +568,9 @@ public class EmployeeController {
 		
 		
 		
-		
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println(mapList);
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		return mapList;
 	}
 	
@@ -581,11 +583,13 @@ public class EmployeeController {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String datetime = sdf.format(cal.getTime());
 		System.out.println("--> " + datetime);
-		orderEmployeeVo.setEo_startTime(datetime);
-		employeeDao.updateEOrderStatus(orderEmployeeVo);
 		
-		OrderEmployeeVo newOne = employeeDao.selectEOrderByMoNo(orderEmployeeVo);
-		System.out.println(newOne.getEo_status());
+		
+		orderEmployeeVo.setEo_startTime(datetime);
+		employeeDao.updateEOrderStatus(orderEmployeeVo);							// 업데이트 부분 꼭 주석 풀것.
+		
+		OrderEmployeeVo newOne = employeeDao.selectEOrderByMoNo(orderEmployeeVo);			
+		System.out.println(newOne.getEo_status());		// 대기중 -> 출동중 바뀌어서 출동중 나옴
 		
 		return newOne;
 	}
@@ -1147,6 +1151,79 @@ public class EmployeeController {
 		System.out.println("2222");
 		return "employee/FEdetail";
 	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////// 주호 ///////////////////////////////////////////////
+	
+	@RequestMapping(value="/ceo/getMemberInfoByMono" , method=RequestMethod.GET)
+	public @ResponseBody Map<String,Object> getMemberInfoByMono(HttpServletRequest request) {
+		
+		int mo_no = Integer.parseInt(request.getParameter("mo_no"));
+		
+		Map<String,Object> map = new HashMap<>();
+		
+		map = employeeService.getMemberInfoByMono(mo_no);
+		System.out.println(map);
+		return map;
+	}
+	
+	// eo_status, e_startTime, endTime 업뎃
+	@RequestMapping(value="/ceo/statusUpdate" , method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> statusUpdate (HttpServletRequest request) {
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println("!!!!!!!!!!!!! 스테이터스 업데이트 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		
+		int mo_no = Integer.parseInt(request.getParameter("mo_no"));
+		String eo_status = request.getParameter("eo_status");
+		System.out.println("eo_status : " + eo_status);
+		
+		Map<String,Object> map = new HashMap<>();
+		map.put("mo_no", mo_no);
+		map.put("eo_status", eo_status);
+		
+		Calendar calendar = Calendar.getInstance();
+		java.util.Date date = calendar.getTime();
+		String now = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date));
+		
+		System.out.println("now 값 : "+ now);
+		
+		if(eo_status.equals("해방중")) {
+			
+			System.out.println("해방중 탔어요1!");
+			
+			String eo_startTime = now;
+			map.put("eo_startTime", eo_startTime);
+		}else if(eo_status.equals("해방완료")){
+			
+			System.out.println("완료  탔어요1!");
+			String eo_endTime = now;
+			map.put("eo_endTime", eo_endTime);
+		}
+		
+		
+		System.out.println("업뎃 전" + map);
+		
+		employeeService.statusUpdate(map);
+		
+		System.out.println(map);
+		System.out.println("!!!!!!!!!!!업뎃 완료!!!!!!!!!!!!!!!!!!!!!!!!!");
+		Map<String,Object> result = employeeService.statusUpdateResult(map);
+		
+		System.out.println(result);
+		
+		return result;
+	}
+	
+	
+	
+	
+	
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	
+	
+	
 	
 
 }	

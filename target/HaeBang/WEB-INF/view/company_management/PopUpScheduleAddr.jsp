@@ -57,7 +57,7 @@ function c_execDaumPostcode() {
 }
 
 
-function inputAddress(address){
+function changeAddr(address){
 	  $.ajax({		
 			url: "https://api2.sktelecom.com/tmap/geo/fullAddrGeo",
 			type: "GET",
@@ -82,20 +82,20 @@ function inputAddress(address){
 					document.getElementById('m_lat').value = result.coordinateInfo.coordinate[0].newLat;
 					document.getElementById('m_gu').value = result.coordinateInfo.coordinate[0].gu_gun;
 				}
+				
+				
+				opener.$('#mod_m_address').val($('#address').val());
+				opener.$('#mod_m_lon').val($('#m_lon').val());
+				opener.$('#mod_m_lat').val($('#m_lat').val());
+				opener.$('#mod_m_gu').val($('#m_gu').val());
+				window.close();
+				
+				
 			},
 			
 	  });
 }
 
-	function changeAddr(){
-		alert($('#m_lon').val());
-		alert($('#m_gu').val());
-		opener.$('#mod_m_address').val($('#address').val());
-		opener.$('#mod_m_lon').val($('#m_lon').val());
-		opener.$('#mod_m_lat').val($('#m_lat').val());
-		opener.$('#mod_m_gu').val($('#m_gu').val());
-		window.close();
-	}
 	
 </script>
 
@@ -116,7 +116,9 @@ function inputAddress(address){
                         <input type="hidden" id="m_gu"/>
        </div>
        			<div style="padding-left:25%">
-                  <input type="button" class="btn btn-default" value="변경" onclick="changeAddr()">
+       				<a href="javascript:changeAddr($('#address').val());" class="pull-right abc">
+						<input type="button" class="btn btn-default" value="변경">
+                 	</a>
                   <input type="button" class="btn btn-default"  value="닫기" onclick="window.close()">
        			</div>
        

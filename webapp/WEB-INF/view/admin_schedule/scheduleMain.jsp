@@ -156,8 +156,6 @@ $(document).ready(function(){
           
     });
     
-    
-   
 
     
   
@@ -265,7 +263,6 @@ option:focus{
 				</tr>
 			</table>
 		</div>
-
 
 
 

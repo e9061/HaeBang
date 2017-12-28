@@ -30,7 +30,7 @@
                         <li><a href="#">Press release</a></li>
                         <li><a href="#">Terms and conditions</a></li>
                         <li><a href="#">Privacy policy</a></li>
-                        <li><a href="${ pageContext.request.contextPath }/admin/main">임시관리자페이지</a></li>
+                        <li><a href="${ pageContext.request.contextPath }/admin">임시관리자페이지</a></li>
                         <li><a href="${ pageContext.request.contextPath }/ceo">사장님 사이트</a></li>
                      </ul>
                   </div>

@@ -153,18 +153,24 @@
 	<!-- 지도 -->
 	
 	<select id="selectAllmap" resultType="hashMap">
-select t_m_order.mo_no, t_m_order.mo_orderNo, t_m_order.mo_startTime, t_e_order.eo_status, t_e_order.e_no, t_employee.e_name, t_member.m_name, t_member.m_address, t_member.m_lon, t_member.m_lat
+		select t_m_order.mo_no, t_m_order.mo_orderNo, t_m_order.mo_startTime, t_e_order.eo_status, t_e_order.e_no, t_employee.e_name, t_member.m_name, t_member.m_address, t_member.m_lon, t_member.m_lat
         from (((t_m_order inner join (select * from t_e_order where
-         	<foreach collection="list" item="employeeVo" separator="or">
-         e_no =#{employeeVo.e_no}       
+       	<foreach collection="list" item="employeeVo" separator="or">
+        	 e_no =#{employeeVo.e_no}       
          </foreach>     
          ) as t_e_order on t_m_order.mo_no = t_e_order.mo_no)
-        inner join t_member on t_m_order.m_no = t_member.m_no) inner join t_employee on t_employee.e_no = t_e_order.e_no) where date_format(t_m_order.mo_startTime, '%Y-%m-%d') = date_format(now(),'%Y-%m-%d');
-
+        inner join t_member on t_m_order.m_no = t_member.m_no) inner join t_employee on t_employee.e_no = t_e_order.e_no) 
+        where date_format(t_m_order.mo_startTime, '%Y-%m-%d') = date_format(now(),'%Y-%m-%d')  
+        order by mo_startTime asc;
 	</select>
 	
 	<update id="updateEOrderStatus" parameterType="orderEmployeeVo">
-		update t_e_order set eo_status = '출동중', eo_startTime = #{eo_startTime} where mo_no = #{mo_no}
+		update t_e_order
+		 set eo_startTime = #{eo_startTime}
+		 <if test='eo_status.equals("대기중")'>, eo_status = '출동중' </if> 
+		 <if test='eo_status.equals("출동중")'>, eo_status = '해방중' </if> 
+		 <if test='eo_status.equals("해방중")'>, eo_status = '해방완료'</if> 
+		  where mo_no = #{mo_no}
 	</update>
 	
 	<select id="selectEOrderByMoNo" parameterType="orderEmployeeVo" resultType="orderEmployeeVo">
@@ -463,8 +469,11 @@ END
 	</delete>
 	
 
-	 <select id="getmyScheduleList" parameterType="java.util.Map" resultType="hashMap">
-		select date_format(mo_startTime, '%Y-%m-%dT%H:%i:%s') as mo_startTime, date_format(mo_endTime, '%Y-%m-%dT%H:%i:%s') as mo_endTime, m_address ,e_name,  t_m_order.mo_no
+	 <select id="getmyScheduleList" parameterType="java.util.Map" resultType="java.util.Map">
+		select date_format(mo_startTime, '%Y-%m-%dT%H:%i:%s') as mo_startTime, date_format(mo_endTime, '%Y-%m-%dT%H:%i:%s') as mo_endTime, t_m_order.mo_no
+			 , m_address, m_name, m_lon, m_lat
+			 , eo_status
+			 , e_name 
 		from ((( select * from t_employee where t_employee.c_no = #{c_no} and t_employee.e_no= #{e_no}) as e inner join t_e_order on e.e_no = t_e_order.e_no) inner join t_m_order on t_e_order.mo_no = t_m_order.mo_no) inner join t_member on t_m_order.m_no = t_member.m_no;
 			
 	</select>
@@ -510,6 +519,30 @@ END
 	</update>
 
  	<!-- *************************** 이주호 스케쥴  ************************************* -->
+ 	
+ 	<!-- 주호 mono 로 회원정보 가져오기(t_member, t_m_order, t_e_order, t_employee, t_service) -->
+ 	
+ 	
+ 	<select id="getMemberInfoByMono" parameterType="integer" resultType="java.util.HashMap">
+ 		select m_type, t_member.m_no, m_lon, m_lat, m_gu, m_name, m_address, m_phone, date_format(mo_startTime, '%Y-%m-%d %H:%i') as mo_startTime, date_format(mo_endTime, '%Y-%m-%d %H:%i') as mo_endTime, mo_orderNo, t_m_order.mo_no, mo_freqType, mo_freqCycle, mo_cnt, mo_total, e_name, e_phone, t_employee.e_no, t_service.s_no, t_service.s_name, t_service.s_style
+		from ((((select * from t_m_order where mo_no = #{mo_no} ) as t_m_order inner join t_member on t_m_order.m_no = t_member.m_no) inner join t_e_order on t_m_order.mo_no = t_e_order.mo_no) inner join t_employee on t_e_order.e_no = t_employee.e_no) inner join t_service on t_m_order.s_no = t_service.s_no;
+ 	</select>
+ 	
+ 	
+ 	<update id="statusUpdate" parameterType="java.util.HashMap">
+ 		update t_e_order set eo_status = #{eo_status} 
+ 							<if test='eo_startTime!= null'>, eo_startTime = #{eo_startTime}</if>  
+ 							<if test='eo_endTime!= null'>, eo_endTime = #{eo_endTime}</if> 
+		where mo_no = #{mo_no}			 
+ 	</update>
+ 	
+ 	
+ 	<select id="statusUpdateReturn" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+ 		 select t_m_order.mo_no, m_name, m_lon, m_lat, e_name
+		from (((select * from t_m_order where mo_no = #{mo_no} ) as t_m_order inner join t_member on t_m_order.m_no = t_member.m_no) inner join t_e_order on t_m_order.mo_no = t_e_order.mo_no) inner join t_employee on t_e_order.e_no = t_employee.e_no
+ 	</select>
+ 	
+ 	
  	
 </mapper>
 

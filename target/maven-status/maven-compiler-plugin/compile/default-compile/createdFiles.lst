@@ -1,3 +1,4 @@
+net/haebang/admin/controller/ScheduleAdminController.class
 net/haebang/reply/controller/ReplyController.class
 net/haebang/vo/OrderMemberVo.class
 net/haebang/admin/service/AdminServiceImpl.class

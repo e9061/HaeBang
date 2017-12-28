@@ -32,6 +32,7 @@
 /home/ubuntu/HaeBang/src/main/java/net/haebang/user/bug/Question.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/admin/service/AdminServiceImpl.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/vo/CompanyVo.java
+/home/ubuntu/HaeBang/src/main/java/net/haebang/admin/controller/ScheduleAdminController.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/vo/QnAVo.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/admin/controller/MBManageController.java
 /home/ubuntu/HaeBang/src/main/java/net/haebang/user/service/SrvService.java

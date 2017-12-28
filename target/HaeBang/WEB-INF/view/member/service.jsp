@@ -126,13 +126,13 @@ table, th, td {
 			</tr>
 			</tbody> 
 		</table>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<div style="margin-left:300px;">* 정기형 서비스는 상담 or 방문시 개월단위로 선택하실 수 있습니다.</div><br/>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<div style="margin-left:300px;">* 정기형 서비스는 상담 or 방문시 개월단위로 선택하실 수 있습니다.</div>
 		<div style="margin-left:300px;">* 정기형 서비스는 1회무료 방문이 포함됩니다.</div>
 		
 		</div>
 		<br/>
+		<hr size="5" width="80%"/>
+		<hr size="5" width="80%"/>
 		<table class="table table-striped table-bordered table-hover"
 			style="width: 1120px;" align="center" text-align="center">
 			<thead>
@@ -190,7 +190,8 @@ table, th, td {
 			
 			</table>
 		<br/>
-		
+		<div style="border-top:5px solid skyblue; border-bottom:5px solid skyblue; align:center;"></div>
+		<br/>
 		<div>
 		<table class="table table-striped table-bordered table-hover"
 			style="width: 1120px;" align="center">
@@ -234,11 +235,11 @@ table, th, td {
 			</tr>
 			</tbody>
 		</table>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<div style="margin-left:300px;">* 정기형 서비스는 상담 or 방문시 개월단위로 선택하실 수 있습니다.</div><br/>
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<div style="margin-left:300px;">* 정기형 서비스는 상담 or 방문시 개월단위로 선택하실 수 있습니다.</div>
 		<div style="margin-left:300px;">* 정기형 서비스는 1회무료 방문이 포함됩니다.
 		</div><br/>
+		<hr size="5" width="80%"/>
+		<hr size="5" width="80%"/>
 		<table class="table table-striped table-bordered table-hover"
 			style="width: 1120px;" align="center" text-align="center">
 			<thead>
@@ -310,7 +311,7 @@ table, th, td {
 			
 			</table>
 		
-		
+		<div style="border-top:5px solid skyblue; border-bottom:5px solid skyblue; align:center;"></div>
 		<br/>
 		<div>
 		<table class="table table-striped table-bordered table-hover"

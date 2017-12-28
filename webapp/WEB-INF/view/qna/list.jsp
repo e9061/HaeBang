@@ -133,7 +133,7 @@ td {
 				</c:choose>
 
 				<!--해당하는 페이지로 갈 수 있는 버튼 -->
-				<c:forEach var="i" begin="0" end="${lastPage-1}">
+				<c:forEach var="i" begin="0" end="${lastPage}">
 					<li><a
 						href="${ pageContext.request.contextPath }/qna/list?pageNo=${i}">${i+1}</a></li>
 					<%-- 					<li><a href="${ pageContext.request.contextPath }/list/&pageNo=${i}&searchCondition=${ titlecontent }&word=${ word }">${i+1}</a></li> --%>

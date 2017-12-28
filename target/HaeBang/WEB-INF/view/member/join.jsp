@@ -162,7 +162,7 @@ function checkPasswordPattern(str) {
 			return false;
 		}
 		
-		alert("회원가입이 완료되었습니다. 메인화면으로 이동합니다.");
+		alert("인증 이메일이 발송되었습니다. 이메일 인증을 해주시면 서비스를 이용하실 수 있습니다.");
 		return true;
 	}
 	
@@ -232,14 +232,10 @@ function checkPasswordPattern(str) {
 						<option value="">선택</option>
 						<option value="010">010</option>
 						<option value="011">011</option>
-						<option value="0130">0130</option>
 						<option value="016">016</option>
 						<option value="017">017</option>
 						<option value="018">018</option>
 						<option value="019">019</option>
-						<option value="0502">0502</option>
-						<option value="0505">0505</option>
-						<option value="0506">0506</option>
 					</select>
 					<input style="width:15%; float:center; display: inline;" path="phone2" id="phone2" name="phone2" class="form-control"
 						placeholder="전화번호를 입력해 주세요." />

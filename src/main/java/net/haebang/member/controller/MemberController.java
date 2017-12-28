@@ -1,6 +1,7 @@
 package net.haebang.member.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import net.haebang.exception.NoMemberException;
 import net.haebang.member.dao.MemberDao;
@@ -58,13 +61,13 @@ public class MemberController {
 						@RequestParam("m_confirm") String m_confirm,
 						@RequestParam("phone1") String phone1, 
 						@RequestParam("phone2") String phone2, 
-						@RequestParam("phone3") String phone3) {
+						@RequestParam("phone3") String phone3, RedirectAttributes rttr,HttpServletResponse response) throws Exception{
 		
 		String m_phone = phone1 + phone2 + phone3;
 		
 		Member.setM_phone(m_phone);
 		
-		service.insertMember(Member);
+		rttr.addFlashAttribute(service.insertMember(Member, response));
 
 		return "redirect:/";
 	}
@@ -108,7 +111,8 @@ public class MemberController {
    
    
 	@RequestMapping(value="/prevLogin", method=RequestMethod.POST)
-	public String prevLogin(MemberVo member, HttpSession session, Model model, HttpServletRequest request) {
+	public String prevLogin(MemberVo member, HttpSession session, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		response.setContentType("text/html;charset=utf-8");
 		
 		String m_id = request.getParameter("m_id");
 		String m_password = request.getParameter("m_password");
@@ -121,10 +125,9 @@ public class MemberController {
 		
 		try {
 		
-		userVO = service.login(member);
+		userVO = service.login(member, response);
 		
 		
-				
 		session.setAttribute("userVO", userVO);
 		model.addAttribute("userVO",userVO);
 		
@@ -140,7 +143,8 @@ public class MemberController {
 	}
    
 	@RequestMapping(value="/mainLogin", method=RequestMethod.POST)
-	public String mainLogin(MemberVo member, HttpSession session, Model model, HttpServletRequest request) {
+	public String mainLogin(MemberVo member, HttpSession session, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+		response.setContentType("text/html;charset=utf-8");
 		
 		String m_id = request.getParameter("m_id");
 		String m_password = request.getParameter("m_password");
@@ -150,17 +154,13 @@ public class MemberController {
 		userVO.setM_id(m_id);
 		userVO.setM_password(m_password);
 		userVO.setM_name(m_name);
-		
 		try {
 		
-		userVO = service.login(member);
-		
-		
-				
+		userVO = service.mainLogin(member, response);
 		session.setAttribute("userVO", userVO);
 		model.addAttribute("userVO",userVO);
 		
-		return "redirect:/";
+		return "index";
 		
 		} catch (NoMemberException e) {
 			
@@ -169,9 +169,9 @@ public class MemberController {
 		
 		}
 		
-	}
+	}                     
 	
-   @RequestMapping(value="/member/modalLogin", method=RequestMethod.POST)
+   /*@RequestMapping(value="/member/modalLogin", method=RequestMethod.POST)
    public @ResponseBody MemberVo modalLogin(HttpSession session, Model model, HttpServletRequest request) {
 	   
 	   String m_id = request.getParameter("signin-email");
@@ -183,8 +183,8 @@ public class MemberController {
 	   
 	   try {
 		   
-		   userVO = service.login(userVO);
-		 /*  String phone = userVO.getM_phone();
+		   userVO = service.login(userVO, response);
+		   String phone = userVO.getM_phone();
 		   int length = phone.length();
 		   String first = phone.substring(0,3);
 		   String second = "";
@@ -196,7 +196,7 @@ public class MemberController {
 			   second = phone.substring(3, 7);
 			   third = phone.substring(7, 11);
 		   }
-		   System.out.println(first+second+third);*/
+		   System.out.println(first+second+third);
 		   session.setAttribute("userVO", userVO);
 		   model.addAttribute("userVO",userVO);
 //		   model.addAttribute("first", first);
@@ -211,7 +211,7 @@ public class MemberController {
 		   return userVO;
 	   }
 	   
-   }
+   }*/
    
    @RequestMapping(value="/blogin", method=RequestMethod.POST)
 	public String blogin(MemberVo member, HttpSession session, Model model, HttpServletRequest request) {
@@ -649,7 +649,19 @@ public class MemberController {
 	
 	/**************************************** 주호 my reservation **************************************************************************/
    
-   
+	// 회원 인증
+		@RequestMapping(value = "/approval_member", method = RequestMethod.POST)
+		public String approval_member(@ModelAttribute MemberVo member, HttpServletResponse response) throws Exception{
+			service.approval_member(member, response);
+			
+			PrintWriter out = response.getWriter();
+			
+			out.println("<script>");
+			out.println("alert('인증이 완료되었습니다.');");
+			out.println("</script>");
+			
+			return "/";
+		}
    
       
 }

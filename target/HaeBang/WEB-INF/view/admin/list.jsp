@@ -72,7 +72,9 @@ td {
 			<h2 align="center">게시물 목록</h2>
 			<hr width="100%" />
 			<br>
-			<table border="1" width="100%">
+			<table class="table table-striped table-bordered table-hover"
+			style="width: 1120px;" align="center">
+				<thead>
 				<tr>
 					<th width="7%">번호</th>
 					<th>제목</th>
@@ -80,21 +82,30 @@ td {
 					<th width="7%">조회수</th>
 					<th width="20%">등록일</th>
 				</tr>
-				<c:forEach items="${ list }" var="list" varStatus="loop">
-					<tr <c:if test="${ loop.count mod 2 eq 0 }"  >class="even"</c:if>>
-						<td>${ list.q_no }</td>
-						<td>
-							<%-- <a onclick="doAction('${ board.no }')"> --%> <a
-							href="${ pageContext.request.contextPath }/admin/detail/${ list.q_no }">
-								<c:out value="${ list.q_title }" />
-						</a>
-						</td>
-						<td>${ list.q_writer }</td>
-						<td>${ list.q_viewCnt }</td>
-						<td>${ list.q_regDate }</td>
-					</tr>
-				</c:forEach>
-
+				</thead>
+				<tbody>
+				<c:choose>
+					<c:when test="${ list.size() > 0 }">
+						<c:forEach items="${ list }" var="list" varStatus="loop">
+							<tr>
+								<td>${ list.q_no }</td>
+								<td><a
+									href="${ pageContext.request.contextPath }/admin/detail/${ list.q_no }">
+										<c:out value="${ list.q_title }" />
+								</a></td>
+								<td>${ list.q_writer }</td>
+								<td>${ list.q_viewCnt }</td>
+								<td>${ list.q_regDate }</td>
+							</tr>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<tr>
+							<td colspan="5">등록된 QnA가 없습니다.</td>
+						</tr>
+					</c:otherwise>
+				</c:choose>
+				</tbody>
 
 			</table>
 			<br />
@@ -118,7 +129,7 @@ td {
 					</c:choose>
 
 					<!--해당하는 페이지로 갈 수 있는 버튼 -->
-					<c:forEach var="i" begin="0" end="${lastPage-1}">
+					<c:forEach var="i" begin="0" end="${lastPage}">
 						<li><a
 							href="${ pageContext.request.contextPath }/admin/list?pageNo=${i}">${i+1}</a></li>
 						<%-- 					<li><a href="${ pageContext.request.contextPath }/list/&pageNo=${i}&searchCondition=${ titlecontent }&word=${ word }">${i+1}</a></li> --%>

@@ -39,7 +39,13 @@ function pagination(nowpage, searchSchedule, word, startDate, endDate){
 	    	    		mo_no : no
 	    	    	},
 	    	    	success : function(data){
-	    	    		var data = JSON.parse(data);     
+	    	    		var data = JSON.parse(data);  
+	    	    		
+           	    		// detail 컨트롤러 넘기기 위해 넣음  by 주호
+       	    			$('#m_type').val(data.m_type);		
+       	    			$('#mo_no').val(data.mo_no);	
+	    	    		
+	    	    		
 	    	    		if(data.m_type=="N"){ //해방통하지 않고 신청한 경우
 	    	    			
 	    	    			$('#m_name').text(data.m_name);
@@ -149,6 +155,196 @@ function pagination(nowpage, searchSchedule, word, startDate, endDate){
 		    }
 		});
 	
+	 
+		$('#modify_btn').click(function(){
+			var mo_no = $('#mo_no').val();
+			var m_type = $('#m_type').val();
+			
+			$.ajax({    	
+		    	
+		    	type : "GET",
+		    	url : "${ pageContext.request.contextPath }/ceo/sceduleModify",
+		     	data : {
+		     		mo_no : mo_no,
+		     		m_type : m_type
+		    	},
+		    	dataType : "json",
+		    	contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+		    	error : function(request, status, error){
+		    		alert("code : "+request.status + "\r\nmessage : " + request.reponseText);	    		
+		    	},
+		    	success : function(data){
+					console.log(data);
+					console.log(data.s_style);
+					console.log(data.mo_freqCycle);
+					console.log(data.mo_cnt);
+					
+					/*  해방, 비해방 공통사항들 	*/
+					$('#mod_m_type').val(data.m_type);
+					
+					$('#mod_m_name').val(data.m_name);
+					$('#mod_m_no').val(data.m_no);
+					$('#mod_m_address').val(data.m_address);
+					$('#mod_m_lon').val(data.m_lon);
+					$('#mod_m_lat').val(data.m_lat);
+					$('#mod_m_gu').val(data.m_gu);
+					$('#mod_m_phone').val(data.m_phone);
+					
+					$('#mod_mo_no').val(data.mo_no);
+
+					$('#mod_e_name').val(data.e_name);
+					$('#mod_e_phone').val(data.e_phone);
+					$('#mod_e_no').val(data.e_no);
+					$('#mod_mo_orderNo').val(data.mo_orderNo);
+					
+					
+					$('#mod_date').val(data.mod_date);
+					$('#mod_startTime').val(data.mod_startTime);
+					$('#mod_endTime').val(data.mod_endTime);
+					
+					
+					
+					/* 차이점들 */
+                 if(data.m_type=="N"){ //해방통하지 않고 신청한 경우( 직접 등록한 경우 )
+                      $('#mod_eo_memo').val(data.eo_memo);
+                      $('#mod_mo_svcName').val(data.mo_svcName);
+
+                      
+                      
+					$('#searchAddress').show();
+		//			$('input[class*=each]').attr("readonly",false);	
+					$('input[class*=noHaebang]').show();
+                    $('input[class*=haebang]').hide();
+						
+                    
+                    // 정기형   서비스
+                    if(data.mo_freqType=="W" || data.mo_freqType=="w" || data.mo_freqType=="M" || data.mo_freqType=="m"){
+                    
+                    	 $('#mod_type4').show();
+                    	 
+                        $('#mod_periodType').val("정기형");
+                        if(data.mo_freqType=="W" || data.mo_freqType=="w"){
+	                        $('#mod_mo_freqType').val("주 단위");
+	                        $('#mod_mo_freqCycle').val(data.mo_freqCycle+" 주 1 회 시행");
+                        }else{
+	                        $('#mod_mo_freqType').val("월 단위");
+	                        $('#mod_mo_freqCycle').val(data.mo_freqCycle+" 개월 1회");
+                        }
+                        
+                        $('#mod_mo_total').val(data.mo_total);
+                        $('#mod_mo_cnt').val(data.mo_cnt);
+     
+                    // 1회용 서비스    
+                    }else{
+                       
+                    	$('#mod_type4').hide();
+                    	$('#mod_periodType').val("1회형");
+                    }
+                    
+                    
+                 }else { //해방 통해서 신청한 경우
+                    
+                	 $('#mod_mo_memo').val(data.mo_memo);
+ 					 $('#mod_s_name').val(data.s_name);
+ 					 $('#mod_s_no').val(data.s_no);
+ 					 $('#mod_s_style').val(data.s_style);
+ 					
+ 			//		$('input[class*=each]').attr("readonly",true);	// 수정 불가
+					$('#searchAddress').hide();						// 주소지 검색 버튼 숨기기
+					$('#detailAddress').hide();
+					
+                    $('#mod_mo_cnt').val(data.mo_cnt);
+					
+				   	$('input[class*=noHaebang]').hide();
+                    $('input[class*=haebang]').show();
+ 					 
+ 					
+                     if(data.s_style=="j"){//정기형
+                        
+                        
+                    	
+			//		    $('#mod_type4').hide();
+					    $('#mod_type4').show();
+             //           $('#freq').show();
+                    	 
+                        $('#mod_mo_total').val(data.mo_total);
+                            
+                        $('#mod_periodType').val("정기형");
+                        if(data.mo_freqType=="W" || data.mo_freqType=="w"){
+	                        $('#mod_mo_freqType').val("주 단위");
+	                        $('#mod_mo_freqCycle').val(data.mo_freqCycle+" 주 1 회 시행");
+                        }else{
+	                        $('#mod_mo_freqType').val("월 단위");
+	                        $('#mod_mo_freqCycle').val(data.mo_freqCycle+" 개월 1회");
+                        } 
+                        
+          
+                        
+                    }else{//보장형
+                    	
+                    	
+                        $('#mod_type4').hide();
+                 //       $('#mod_type4').show();
+                 //       $('#freq').hide();
+                        
+                        $('#mod_period-type').val("보장형");
+                    }
+                     
+                 }
+					
+		    		$("#scheduleDetailModal").modal('hide');
+		    		$("#scheduleModifyModal").modal('show');
+		    		
+		    		
+					
+		    	}
+		    	
+		    });
+			
+			
+		});
+	 
+		
+
+		// 담당 직원 변경
+		$('#mod_e_name').change(function(){
+			var index = $("#mod_e_name option").index($("#mod_e_name option:selected"));
+			$(this).append("selected",true);
+			$("#mod_e_phone option:eq("+index+")").attr("selected", "selected");
+			$("#mod_e_phone").attr("disabled", "disabled");
+
+		});
+		
+		// 주소지 변경 버튼
+		$('#searchAddress').click(function(){
+			
+			var popUrl = "${pageContext.request.contextPath}/ceo/schedule/PopUpScheduleAddr";
+			var popOption = "width=370, height=360, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
+			window.open(popUrl,"addrPopUp",popOption);
+
+		});
+		
+		// 날짜 변경
+		$('#changeDate').click(function(){
+			
+			var popUrl = "${pageContext.request.contextPath}/ceo/schedule/PopUpScheduleDate";
+			var popOption = "width=370, height=360, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
+			window.open(popUrl,"addrPopUp",popOption);
+
+		});
+		// 직원 변경
+		$('#changeEmp').click(function(){
+			
+			var popUrl = "${pageContext.request.contextPath}/ceo/schedule/PopUpScheduleEmp";
+			var popOption = "width=370, height=360, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
+			window.open(popUrl,"empPopUp",popOption);
+
+		});
+		
+		
+	 
+	 
+	 
 }); 
 
 
@@ -163,6 +359,7 @@ function pagination(nowpage, searchSchedule, word, startDate, endDate){
 
 </head>
 <body>
+<jsp:include page="./scheduleModify.jsp"></jsp:include>	
 <jsp:include page="./scheduleDetail.jsp" />
  <table id="scheduleTable" class="table table-striped table-bordered table-hover" style="width: 1120px;">
       <tr>

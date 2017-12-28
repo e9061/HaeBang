@@ -104,15 +104,45 @@ public class ScheduleController {
 		map.put("e_no", userVo.getE_no());
 		
 		List<HashMap<String, Object>> scheduleList = employeeService.getmyScheduleList(map);
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println(scheduleList);		// mo_startTime=2017-12-21T15:28:10			// 2017-12-22
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		
 		
 		
 		List<ScheduleVo> scVo1 = new ArrayList<>();
 		
 		for(int i=0; i<scheduleList.size(); i++) {
-			ScheduleVo sc = new ScheduleVo((int) scheduleList.get(i).get("mo_no") , (String) scheduleList.get(i).get("m_address"), (scheduleList.get(i).get("mo_startTime")).toString(), (scheduleList.get(i).get("mo_endTime")).toString(), "rgb(68,193,195)");
+			
+			int mo_no = (int) scheduleList.get(i).get("mo_no");
+			
+			ScheduleVo sc = new ScheduleVo((int) scheduleList.get(i).get("mo_no") , (String) scheduleList.get(i).get("m_address"), (scheduleList.get(i).get("mo_startTime")).toString(), (scheduleList.get(i).get("mo_endTime")).toString());
+			
+			if(scheduleList.get(i).get("eo_status").equals("대기중")) {			// 대기중 	- 에메랄드색
+				sc.setColor("rgb(68,193,195)");
+			}else if(scheduleList.get(i).get("eo_status").equals("출동중")) {	// 출동중 	- 핑크색
+				sc.setColor("rgb(255,153,153)");
+			}else if(scheduleList.get(i).get("eo_status").equals("해방중")) {	// 해방중 	- 녹색
+				sc.setColor("rgb(178,255,102)");
+			}else {																// 해방 완료	- 회색
+				sc.setColor("rgb(224,224,224)");									
+			}
+			
+			sc.setM_lon( (String) scheduleList.get(i).get("m_lon"));
+			sc.setM_lat( (String) scheduleList.get(i).get("m_lat"));
+			sc.setM_name( (String) scheduleList.get(i).get("m_name"));
+			sc.setE_name( (String) scheduleList.get(i).get("e_name"));
+			sc.setMo_no(mo_no);
+			
+			String startDay = (String)scheduleList.get(i).get("mo_startTime");			// 스케쥴 년/월/일 
+			startDay = startDay.substring(0,10);
+			sc.setStartDay(startDay);
+			
 			
 			scVo1.add(sc);
+			
 		}
+										// 고객 m_lon,m_lat, m_name  정보가 같이 넘어가야함
 		
 		return scVo1;
 		
