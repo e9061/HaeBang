@@ -37,11 +37,12 @@
                      <li class="active"><a href="${ pageContext.request.contextPath }/">Home</a></li>
                      <li><a href="#">신청</a></li>
                      <li><a href="${ pageContext.request.contextPath }/member/service">서비스목록</a></li>
+                     <li><a href="${ pageContext.request.contextPath }/qna/FM">FAQ</a></li>
 
                   <c:choose> 
                      <c:when test="${ empty userVO }">
                         <li><a href="${ pageContext.request.contextPath }/member/join">회원가입</a></li> 
-                          <li><a href="${ pageContext.request.contextPath }/member/loginForm">로그인</a></li>
+                          <li><a href="${ pageContext.request.contextPath }/member/prevLoginForm">로그인</a></li>
                         <li><a href="${ pageContext.request.contextPath }/member/memberNotice?n_type=m">공지사항</a></li>
                            </c:when>   
                      <c:otherwise>

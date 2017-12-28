@@ -8,30 +8,57 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>admin`s HaeBang - companyManagement </title>
 <script>
-   $(document).ready(function(){
-	  // 해방업체 ajax
-      $("#hcList_btn").click(function(){
-         
-          $.ajax({         
-               url: "${ pageContext.request.contextPath }/admin/hbCompanyManage",
-               type: "GET",
-               success: function(data) {
-                  getHbCompanyList(data); 
-               }
-            });
-      });
+function hcListGo(pageNum){
+	  $.ajax({         
+        url: "${ pageContext.request.contextPath }/admin/hbCompanyManage?pageNum=" + pageNum,
+        type: "GET",
+        success: function(data) {
+        	 $("#cList").html(data); 
+           $('#codeInsert').css('display','none');
+        }
+     });
 	  
-	  // 일반업체 ajax
-      $("#cList_btn").click(function(){
-         
-          $.ajax({         
-               url: "${ pageContext.request.contextPath }/admin/nCompanyManage",
-               type: "GET",
-               success: function(data) {
-            	   getHbCompanyList(data); 
-               }         
-            });
-      });
+}
+function nListGo(pageNum){
+	  $.ajax({         
+        url: "${ pageContext.request.contextPath }/admin/nCompanyManage?pageNum=" + pageNum,
+        type: "GET",
+        success: function(data) {
+        	 $("#cList").html(data); 
+           $('#codeInsert').css('display','block');
+        }
+     });
+	  
+}
+
+
+   $(document).ready(function(){
+		
+	   $("#allCheck").change(function(){
+		if(this.checked){
+			$(".check").prop("checked",true);
+		} else{
+			$(".check").prop("checked",false);			
+		}
+	   });
+	   
+	   $("#comcom").click(function(){
+		   
+		   if(confirm("선택하신 업체에 코드를 부여하시겠습니까?")){
+			   
+			   $(this).parent().click();
+		   } else {
+				return false;			   
+		   }
+			   alert("선택하신 회사에 코드"+"${ list.c_no }${ list.c_phone }"+"를 부여하였습니다.");
+		   
+	   });
+	   
+	   
+	   
+	   
+	   
+	 
       
       
       
@@ -51,103 +78,103 @@
 						content	: $("#searchContent").val()			
 					},
 					success: function(data){
-						getHbCompanyList(data);
+						//getHbCompanyList(data);
+						 $("#cList").html(data); 
+				           $('#codeInsert').css('display','none');
 					}  
 				 });
 				 
 			}
 	  });
 	  
-       function getHbCompanyList(data){
-             var list = JSON.parse(data); 
-             var output = "";
-             
-            output += " <table style='width:80%;'>";
-            output +=	"<tr>";
-         		output +=	"<td width='5%'><h4> <strong> 업체명  </strong></h4></td>";
-           		output +=	"<td width='5%'><h4> <strong> 사업자명  </strong></h4></td>";
-           		output +=	"<td width='10%'><h4><strong> 주소  </strong></h4></td>";
-           		output +=	"<td width='5%'><h4> <strong> 전화번호  </strong></h4></td>";
-           		output +=	"<td width='5%'><h4> <strong> 사업자번호  </strong></h4></td>";
-           		output +=	"<td width='5%'><h4> <strong> 등록일  </strong></h4></td>";
-           		output +=	"<td width='5%'><h4> <strong> 업체코드  </strong></h4></td>";
-           		output +=	"<td width='5%'><h4> <strong> 직원 </strong></h4></td>";
-           		output +=	"<td width='5%'><h4> <strong> 평점  </strong></h4></td>";
-			output +=	"</tr>";
-				
-			
-			 for (var i = 0; i < list.length; i++) { 
-					
-					 output += "<tr>"
-					 output += "	<td>" +  list[i].c_name + "</td>" ;
-				 
-					if(list[i].e_name == null){
-							output += "	<td> - </td>";  				 
-					}else{
-							output += "	<td>" +  list[i].e_name+"</td>";  				 
-					}
-					 output += "	<td>" +  list[i].c_address+"</td>";  				 
-					 output += "	<td>" +  list[i].c_phone+"</td>";  				 
-					 output += "	<td>" +  list[i].c_bizNo+"</td>";  
-					 
-					if(list[i].c_regDate == null){
-							output += "	<td>" +  list[i].c_signDate+"</td>";  				 
-					}else{
-							output += "	<td>" +  list[i].c_regDate+"</td>";  				 
-					}
-					
-					if(list[i].c_code == null){
-							output += "	<td> - </td>";  				 
-					}else{
-							output += "	<td>" +  list[i].c_code+"</td>";  				 
-					}
-					
-					if(list[i].c_empCnt == 0){
-						output += "	<td> - </td>";  				 
-					}else{
-						output += "	<td>" +  list[i].c_empCnt+"</td>";  				 
-					}
-					 output += "</tr>"
-					 
-			 }
-			
-            	 output += "</table>";
-                 $("#cList").html(output); 
-       }
+      
    });
    
+   /* function confir(){
+	   
+	   window.onload = function(){
+		   
+		   var input_value = confirm("선택한 업체에 코드를 부여하시겠습니까?");
+		   var input_type = typeof(input_value);
+		   
+		   document.body.innerHTML = input_type;
+		   alert("부여하였습니다.");
+		   
+	   }
+	   
+   } */
+   
+  /*  function getHbCompanyList(data){
+       var list = JSON.parse(data); 
+       var output = "";
+       
+      output += " <table style='width:80%;'>";
+      output +=   "<tr>";
+         output +=   "<td width='5%'><h4> <strong> 업체명  </strong></h4></td>";
+           output +=   "<td width='5%'><h4> <strong> 사업자명  </strong></h4></td>";
+           output +=   "<td width='10%'><h4><strong> 주소  </strong></h4></td>";
+           output +=   "<td width='5%'><h4> <strong> 전화번호  </strong></h4></td>";
+           output +=   "<td width='5%'><h4> <strong> 사업자번호  </strong></h4></td>";
+           output +=   "<td width='5%'><h4> <strong> 등록일  </strong></h4></td>";
+           output +=   "<td width='5%'><h4> <strong> 업체코드  </strong></h4></td>";
+           output +=   "<td width='5%'><h4> <strong> 직원 </strong></h4></td>";
+           output +=   "<td width='5%'><h4> <strong> 평점  </strong></h4></td>";
+   output +=   "</tr>";
+      
+   
+    for (var i = 0; i < list.length; i++) { 
+         
+          output += "<tr>"
+          output += "   <td>" +  list[i].c_name + "</td>" ;
+       
+         if(list[i].e_name == null){
+               output += "   <td> - </td>";               
+         }else{
+               output += "   <td>" +  list[i].e_name+"</td>";               
+         }
+          output += "   <td>" +  list[i].c_address+"</td>";               
+          output += "   <td>" +  list[i].c_phone+"</td>";               
+          output += "   <td>" +  list[i].c_bizNo+"</td>";  
+          
+         if(list[i].c_regDate == null){
+               output += "   <td>" +  list[i].c_signDate+"</td>";               
+         }else{
+               output += "   <td>" +  list[i].c_regDate+"</td>";               
+         }
+         
+         if(list[i].c_code == null){
+               output += "   <td> - </td>";               
+         }else{
+               output += "   <td>" +  list[i].c_code+"</td>";               
+         }
+         
+         if(list[i].c_empCnt == 0){
+            output += "   <td> - </td>";               
+         }else{
+            output += "   <td>" +  list[i].c_empCnt+"</td>";               
+         }
+          output += "</tr>"
+          
+    }
+   
+          output += "</table>";
+           $("#cList").html(output); 
+ } */
+
    
 
 </script>
 
-<style type="text/css">
-
-table {
-	border:1px solid black;
-	height:50px;
-	text-align: center;
-}
-tr {
-	border : 1px solid black;
-	height:30px;
-}
-td{
-	border : 1px solid black;
-}
-strong{
-	vertical-align: middle;
-}
-
-</style>
 
 </head>
 <body>
 	<header>
 		<jsp:include page="../admin_include/topmenu.jsp"/>
 	</header>
-
+	
 	<section>
 	<div align="center" style="padding-right: 4px;">
+	<form action="${ pageContext.request.contextPath }/admin/updateCode" method=post>
 		<h1> <span>업체 관리</span></h1>
 		<br/>
 		<br/>
@@ -167,18 +194,24 @@ strong{
       	<input type="button" id="searchBtn" value="조건 검색" class="btn btn-theme"/>
       	
       	<span style="margin-right: 40px;"></span>
-      	<input type="button" id="hcList_btn" value="해방업체 조회" class="btn btn-theme"/>
+      	<input type="button" id="hcList_btn" onclick="hcListGo(0)" value="해방업체 조회" class="btn btn-theme"/>
       	<span style="margin-right: 5px"></span>
-      	<input type="button" id="cList_btn" value="일반업체 조회" class="btn btn-theme"/>
+      	<input type="button" id="cList_btn" onclick="nListGo(0)"value="일반업체 조회" class="btn btn-theme"/>
       	
 		<br/>
 		<br/>
 		<br/>
 		<br/>
 		
-			<table id="cList"  style="width:80%">
-			</table>
+			<div id="cList"  style="width:80%">
+			</div>
 			
+			
+			<br/>
+						<div align="center" id = "codeInsert">
+				<input type="submit" class="btn btn-theme" id="comcom" value="code 생성">
+			</div>
+			</form>
 		<br/>
 		<br/>
 		<br/>
@@ -193,4 +226,21 @@ strong{
 	</footer>
 	
 </body>
+<script>
+$(document).ready(function(){
+	$.ajax({         
+        url: "${ pageContext.request.contextPath }/admin/hbCompanyManage?pageNum=0",
+        type: "GET",
+        success: function(data) {
+        	   $("#cList").html(data);  
+           $('#codeInsert').css('display','none');
+        }
+     });
+
+	
+	
+})
+
+
+</script>
 </html>

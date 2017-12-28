@@ -48,6 +48,18 @@ window.onload = function() {
 
 
 </script>
+<style>
+
+ .navbar .nav > li > a {
+ 
+  font-size:15px !important;
+
+}
+
+
+</style>
+
+
 <link
 	href="${ pageContext.request.contextPath }/resources/css/bootstrap.min.css"
 	rel="stylesheet" />
@@ -85,7 +97,7 @@ window.onload = function() {
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-						<a class="navbar-brand" href="${ pageContext.request.contextPath }/ceo"><span>H</span>AEBANG CEO SITE</a>
+						<a class="navbar-brand" href="${ pageContext.request.contextPath }/ceo"><span>해방</span> 사장님 사이트</a>
 					</div>
 					<div class="navbar-collapse collapse ">
 						<ul class="nav navbar-nav">
@@ -118,7 +130,7 @@ window.onload = function() {
 								<a href="#" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false">고객센터<b class=" icon-angle-down"></b></a>
 								<ul class="dropdown-menu">
 									<li><a href="${ pageContext.request.contextPath }/ceo/ceoNotice?n_type=o">공지사항</a></li>
-									<li><a href="components.html">자주묻는질문</a></li>
+									<li><a href="${ pageContext.request.contextPath }/ceo/FE">자주묻는질문</a></li>
 									<li><a href="pricingbox.html">서비스약관</a></li>
 								</ul>
 							</li>

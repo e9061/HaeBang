@@ -5,7 +5,9 @@
 <!DOCTYPE>
 <html>
 <head>
-<script src ="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+<link rel="stylesheet"
+	href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
 <meta charset="utf-8">
 <title>해방 사장님 사이트</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,35 +15,73 @@
 
 
 <style type="text/css">
-    body {
-        margin :40px 10px;
-        padding : 0;
-        font-family : "Lucida Grande", Helvetica, Arial, Verdana,sans-serif;
-        font-size : 14px;
-    }
-    #calendar {
-        max-width : 100%;
-        max-height : 100%;
-        margin : 0 auto;
-    }
-	
-	#calendar ul {
-		list-style:none;
-	}
-	
-	
-	
+body {
+	margin: 40px 10px;
+	padding: 0;
+	font-family: "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
+	font-size: 14px;
+}
+
+
+
+#calendar {
+	max-width: 100%;
+	max-height: 100%;
+	margin: 0 auto;
+}
+
+#calendar ul {
+	list-style: none;
+}
+
+.menubar a:link {
+	color: white;
+	text-decoration: none;
+}
+
+.menubar a:visited {
+	color: white;
+	text-decoration: none;
+}
+
+.menubar a:hover {
+	color: yellow;
+	text-decoration: none;
+}
+
+table.noticetable td {
+	padding: 10px;
+	font-size: 15px;
+	border-bottom: 1px solid #ccc;
+}
+
+table.noticetable a:link {
+	color: black;
+	text-decoration: none;
+}
+
+table.noticetable a:visited {
+	color: black;
+	text-decoration: none;
+}
+
+table.noticetable a:hover {
+	color: black;
+	text-decoration: none;
+}
 </style>
 
 
 
 
 
-<script src="${ pageContext.request.contextPath }/resources/js/jquery.js"></script>
-	<script
-		src="${ pageContext.request.contextPath }/resources/js/jquery.easing.1.3.js"></script>
+<script
+	src="${ pageContext.request.contextPath }/resources/js/jquery.js"></script>
+<script
+	src="${ pageContext.request.contextPath }/resources/js/jquery.easing.1.3.js"></script>
 
- <script src="https://api2.sktelecom.com/tmap/js?version=1&format=javascript&appKey=3a8e2503-7364-4259-9624-81dfdd0cb5ff"></script>
+<script
+	src="https://api2.sktelecom.com/tmap/js?version=1&format=javascript&appKey=3a8e2503-7364-4259-9624-81dfdd0cb5ff"></script>
 
 <!--Tmap api-->
 
@@ -531,19 +571,23 @@ s0.parentNode.insertBefore(s1,s0);
 <!--End of Tawk.to Script-->
 
 <style type="text/css">
-
-
 .btn-info1:hover {
-  color : #000000;
-  border: 1px solid #000000;
+	color: #000000;
+	border: 1px solid #000000;
 }
+
 .btn-info1 {
-  color : #000000;
-  border: 0.5px thin #000000;
+	color: #000000;
+	border: 0.5px thin #000000;
 }
 
-
-
+.menubar {
+	float: left;
+	margin-top: 30px;
+	font-size: 20px;
+	margin-left: 100px;
+	margin-right: 100px;
+}
 </style>
 
 
@@ -553,216 +597,238 @@ s0.parentNode.insertBefore(s1,s0);
 		<header>
 			<jsp:include page="../employee_include/topmenu.jsp" />
 		</header>
-		<jsp:include page="../company_main/scheduleInfoDetail.jsp"></jsp:include>					<!--  모달 -->
+		<jsp:include page="../company_main/scheduleInfoDetail.jsp"></jsp:include>
+		<!--  모달 -->
 		<jsp:include page="../employee_include/loginModal.jsp" />
 
- 		<section id="inner-headline">
-			<div class="container">
-				<div class="row" >
-				<div width="100%" height="300px">
-					<div class="col-lg-12">
-						<br /> <br /> <br />
+
+
+		<div class="wrap main">
+
+			<!-- 롤링 메인 배너 + 로그인 -->
+			<div class="main_rolling">
+
+				<div class="owl-carousel">
+					<div class="item">
+						<div class="bg_in bg_cover" style="width: 100%;">
+							<div class="align">
+								<img
+									src="${pageContext.request.contextPath}/resources/img/companyMain.jpg"
+									style="width: 100%;" />
+							</div>
+						</div>
+					</div>
+
+					<!--       <div class="item">
+                <div class="bg_in bg_cover" style="background:url('https://image.goodchoice.kr/images/newad/roll_bg_01.png') 0 0 no-repeat;">
+                    <div class="align">
+                        <img src="https://image.goodchoice.kr/images/newad/roll_txt_01.png" alt="이용자 수, 제휴점 수, 만족도 1위! 왜 여기어때는 선택이 아닌 필수여야 하는가. 마케팅! 어디서부터, 어떻게 시작할지 막막하신가요? 왜 '여기어때' 를 선택해야 하는지 자세히 알려드립니다." />
+                        <a href="/service/ciYeogi" style="top:203px;width:124px"><span>자세히 보기</span></a>
+                    </div>
+                </div>
+            </div> -->
+
+				</div>
+			</div>
+		</div>
+
+
+		<section id="inner-headline">
+			<!-- <div class="container"> -->
+			<div class="row">
+				<div
+					style="text-align: center; width: 100%; height: 80px; background-color: #1b7fb5; display: table;">
+					<div style="display: inline-block; vertical-align: middle;">
+
+						<div class="menubar">
+							<c:if test="${ empty userVo }">
+								<a href="#myModal" data-toggle="modal"> <i
+									class="fa fa-calculator" aria-hidden="true"
+									style="padding-right: 10px;"></i> 정산관리
+								</a>
+							</c:if>
+							<c:if test="${ not empty userVo }">
+								<a href="#"> <i class="fa fa-calculator" aria-hidden="true"
+									style="padding-right: 10px;"></i> 정산관리
+								</a>
+							</c:if>
+						</div>
+
+
+						<div class="menubar">
+							<c:if test="${ empty userVo }">
+								<a href="#myModal" data-toggle="modal"> <i
+									class="fa fa-calendar-check-o" aria-hidden="true"
+									style="padding-right: 10px;"></i> 스케쥴관리
+								</a>
+							</c:if>
+							<c:if test="${ not empty userVo }">
+								<a href="${ pageContext.request.contextPath }/ceo/schedule">
+									<i class="fa fa-calendar-check-o" aria-hidden="true"
+									style="padding-right: 10px;"></i> 스케쥴관리
+								</a>
+							</c:if>
+						</div>
+
+						<div class="menubar">
+							<c:if test="${ empty userVo }">
+								<a href="#myModal" data-toggle="modal"> <i
+									class="fa fa-line-chart" aria-hidden="true"
+									style="padding-right: 10px;"></i> 종합통계
+								</a>
+							</c:if>
+							<c:if test="${ not empty userVo }">
+								<a href="#"> <i class="fa fa-line-chart" aria-hidden="true"
+									style="padding-right: 10px;"></i> 종합통계
+								</a>
+							</c:if>
+						</div>
+
+						<div class="menubar">
+							<c:if test="${ empty userVo }">
+								<a href="#myModal" data-toggle="modal"> <i
+									class="fa fa-search-plus" aria-hidden="true"
+									style="padding-right: 10px;"></i> 예약상세보기
+								</a>
+							</c:if>
+							<c:if test="${ not empty userVo }">
+								<a href="#"> <i class="fa fa-search-plus" aria-hidden="true"
+									style="padding-right: 10px;"></i> 예약상세보기
+								</a>
+							</c:if>
+						</div>
+
 					</div>
 				</div>
 			</div>
 		</section>
-		
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-8">
-	
-						<article> <c:if test="${ not empty userVo }">
-							<h4>Today's Schedule</h4>
-						<div id="map_div"></div>
-						<ul style="margin-top: 2%">
-										<li style="width:70%">
-											<span class="fc-event-dot" style="background-color: rgb(68,193,195);"></span>&nbsp;&nbsp;<input style='border:none; width:20%' type="text" value="대기중">
-											<span class="fc-event-dot" style="background-color: rgb(255,153,153);"></span>&nbsp;&nbsp;<input style='border:none; width:20%' type="text" value="출동중">
-											<span class="fc-event-dot" style="background-color: rgb(178,255,102);"></span>&nbsp;&nbsp;<input style='border:none; width:20%' type="text" value="해방중">
-											<span class="fc-event-dot" style="background-color: rgb(224,224,224);"></span>&nbsp;&nbsp;<input style='border:none; width:20%' type="text" value="해방완료">
-										</li>
-									</ul>	
-						</c:if> </article>
-	
-						<c:choose>
-						<c:when test="${ empty userVo }">
-						
-												
-						<article>
-	
-						<h4>
-							<strong>공지사항</strong>
-						</h4>
-						<br/>				
-	
-	
-	
-					<table style="width: 800px;">
-						
-	
-						<tbody>
-							<c:forEach items="${ mainNoticelist }" var="board" varStatus="loop">
-								<tr>
-									<td><a href="javascript:doAction(${ board.n_no }, ${ board.n_viewCnt })"> 
-									<c:out value="${ board.n_title }" />
-									</a></td>
-									<td>${ board.n_regDate }</td>
-								</tr>
-							</c:forEach>
-	
-							<c:if test="${ count eq 0 }">
-								<tr>
-									<td colspan="6" align="center">게시글이 없습니다.</td>
-								</tr>
-							</c:if>
-						</tbody>
-					</table>
-					</article>
-					<br/> <br/>
-	
-					<article>
-					<h4>Quick Menu</h4>
-					<c:if test="${ empty userVo }">
-						<a href="#myModal" class="trigger-btn" data-toggle="modal"> <img
-							src="${ pageContext.request.contextPath }/resources/img/calculate.jpg"
-							width="160px" />
-						</a>
-					</c:if> <c:if test="${ not empty userVo }">
-						<a href="#"> <img
-							src="${ pageContext.request.contextPath }/resources/img/calculate.jpg"
-							width="160px" />
-						</a>
-					</c:if> &nbsp;&nbsp;&nbsp; <c:if test="${ empty userVo }">
-						<a href="#myModal" class="trigger-btn" data-toggle="modal"> <img
-							src="${ pageContext.request.contextPath }/resources/img/schedule.jpg"
-							width="160px" />
-						</a>
-					</c:if> <c:if test="${ not empty userVo }">
-						<a href="#"> <img
-							src="${ pageContext.request.contextPath }/resources/img/schedule.jpg"
-							width="160px" />
-						</a>
-					</c:if> &nbsp;&nbsp;&nbsp; <c:if test="${ empty userVo }">
-						<a href="#myModal" class="trigger-btn" data-toggle="modal"> <img
-							src="${ pageContext.request.contextPath }/resources/img/statistics.jpg"
-							width="180px" />
-						</a>
-					</c:if> <c:if test="${ not empty userVo }">
-						<a href="#"> <img
-							src="${ pageContext.request.contextPath }/resources/img/statistics.jpg"
-							width="180px" />
-						</a>
-					</c:if> &nbsp;&nbsp;&nbsp; <c:if test="${ empty userVo }">
-						<a href="#myModal" class="trigger-btn" data-toggle="modal"> <img
-							src="${ pageContext.request.contextPath }/resources/img/revdetail.jpg"
-							width="160px" />
-						</a>
-					</c:if> <c:if test="${ not empty userVo }">
-						<a href="#"> <img
-							src="${ pageContext.request.contextPath }/resources/img/revdetail.jpg"
-							width="160px" />
-						</a>
-					</c:if> </article>
-	
-	</c:when>
-	<c:otherwise>
-	
-	<article>
 
-					<h4>Quick Menu</h4>
-					<c:if test="${ empty userVo }">
-						<a href="#myModal" class="trigger-btn" data-toggle="modal"> <img
-							src="${ pageContext.request.contextPath }/resources/img/calculate.jpg"
-							width="160px" />
-						</a>
-					</c:if> <c:if test="${ not empty userVo }">
-					
-								
-						<a href="#"> <img
-							src="${ pageContext.request.contextPath }/resources/img/calculate.jpg"
-							width="160px" />
-						</a>
-					</c:if> &nbsp;&nbsp;&nbsp; <c:if test="${ empty userVo }">
-						<a href="#myModal" class="trigger-btn" data-toggle="modal"> <img
-							src="${ pageContext.request.contextPath }/resources/img/schedule.jpg"
-							width="160px" />
-						</a>
-					</c:if> <c:if test="${ not empty userVo }">
-						<a href="#"> <img
-							src="${ pageContext.request.contextPath }/resources/img/schedule.jpg"
-							width="160px" />
-						</a>
-					</c:if> &nbsp;&nbsp;&nbsp; <c:if test="${ empty userVo }">
-						<a href="#myModal" class="trigger-btn" data-toggle="modal"> <img
-							src="${ pageContext.request.contextPath }/resources/img/statistics.jpg"
-							width="180px" />
-						</a>
-					</c:if> <c:if test="${ not empty userVo }">
-						<a href="#"> <img
-							src="${ pageContext.request.contextPath }/resources/img/statistics.jpg"
-							width="180px" />
-						</a>
-					</c:if> &nbsp;&nbsp;&nbsp; <c:if test="${ empty userVo }">
-						<a href="#myModal" class="trigger-btn" data-toggle="modal"> <img
-							src="${ pageContext.request.contextPath }/resources/img/revdetail.jpg"
-							width="160px" />
-						</a>
-					</c:if> <c:if test="${ not empty userVo }">
-						<a href="#"> <img
-							src="${ pageContext.request.contextPath }/resources/img/revdetail.jpg"
-							width="160px" />
-						</a>
-					</c:if> </article>
-					
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8">
+
 					<article>
-	
-						<h4>
-							<strong>공지사항</strong>
-						</h4>
-						<br/>				
-	
-	
-	
-					<table style="width: 800px;">
-						
-	
-						<tbody>
-							<c:forEach items="${ mainNoticelist }" var="board" varStatus="loop">
-								<tr>
-									<td><a href="javascript:doAction(${ board.n_no }, ${ board.n_viewCnt })"> 
-									<c:out value="${ board.n_title }" />
-									</a></td>
-									<td>${ board.n_regDate }</td>
-								</tr>
-							</c:forEach>
-	
-							<c:if test="${ count eq 0 }">
-								<tr>
-									<td colspan="6" align="center">게시글이 없습니다.</td>
-								</tr>
-							</c:if>
-						</tbody>
-					</table>
+						<c:if test="${ not empty userVo }">
+							<h4>Today's Schedule</h4>
+							<div id="map_div"></div>
+							<ul style="margin-top: 2%">
+								<li style="width: 70%"><span class="fc-event-dot"
+									style="background-color: rgb(68, 193, 195);"></span>&nbsp;&nbsp;<input
+									style='border: none; width: 20%' type="text" value="대기중">
+									<span class="fc-event-dot"
+									style="background-color: rgb(255, 153, 153);"></span>&nbsp;&nbsp;<input
+									style='border: none; width: 20%' type="text" value="출동중">
+									<span class="fc-event-dot"
+									style="background-color: rgb(178, 255, 102);"></span>&nbsp;&nbsp;<input
+									style='border: none; width: 20%' type="text" value="해방중">
+									<span class="fc-event-dot"
+									style="background-color: rgb(224, 224, 224);"></span>&nbsp;&nbsp;<input
+									style='border: none; width: 20%' type="text" value="해방완료">
+								</li>
+							</ul>
+						</c:if>
 					</article>
-					<br/> <br/>
-	
-	
-	</c:otherwise>
-						</c:choose>
-	
+
+					<c:choose>
+						<c:when test="${ empty userVo }">
+
+
+							<article>
+
+								<h4>
+									<strong>공지사항</strong>
+								</h4>
+								<br />
+
+
+
+								<table class="noticetable" style="width: 680px;">
+
+
+									<tbody>
+										<c:forEach items="${ mainNoticelist }" var="board"
+											varStatus="loop">
+											<tr>
+												<td><a
+													href="javascript:doAction(${ board.n_no }, ${ board.n_viewCnt })">
+														<c:out value="${ board.n_title }" />
+												</a></td>
+												<td style="width: 15%;">${ board.n_regDate }</td>
+											</tr>
+										</c:forEach>
+
+										<c:if test="${ count eq 0 }">
+											<tr>
+												<td colspan="6" align="center">게시글이 없습니다.</td>
+											</tr>
+										</c:if>
+									</tbody>
+								</table>
+							</article>
+							<br />
+							<br />
+
+
+
+						</c:when>
+						<c:otherwise>
+
+
+							<h4>
+								<strong>공지사항</strong>
+							</h4>
+							<br />
+
+
+
+							<table class="noticetable" style="width: 800px;">
+
+
+								<tbody>
+									<c:forEach items="${ mainNoticelist }" var="board"
+										varStatus="loop">
+										<tr>
+											<td><a
+												href="javascript:doAction(${ board.n_no }, ${ board.n_viewCnt })">
+													<c:out value="${ board.n_title }" />
+											</a></td>
+											<td style="width: 15%;">${ board.n_regDate }</td>
+										</tr>
+									</c:forEach>
+
+									<c:if test="${ count eq 0 }">
+										<tr>
+											<td colspan="6" align="center">게시글이 없습니다.</td>
+										</tr>
+									</c:if>
+								</tbody>
+							</table>
+							</article>
+							<br />
+							<br />
+
+
+						</c:otherwise>
+					</c:choose>
+					
+					<br />
+					<br />
+					
+
 					<article>
-					<div class="post-slider">
-						<div class="post-heading">
-							<h4>Tips</h4>
-							<h3>
-								<a href="#">우리 업체 필증 발급, 정확하게 하고있나요?</a>
-							</h3>
-						</div>
-						<!-- start flexslider -->
-						<img
-							src="${ pageContext.request.contextPath }/resources/img/pestcontrol.jpg"
-							alt="" width="700px" height="300px" />
-						<%-- <ul class="slides">
+					<div style="width:700px;">
+						<div class="post-slider">
+							<div class="post-heading">
+								<h4>Tips</h4>
+								<h3>
+									<a href="#">우리 업체 필증 발급, 정확하게 하고있나요?</a>
+								</h3>
+							</div>
+							<!-- start flexslider -->
+							<img
+								src="${ pageContext.request.contextPath }/resources/img/pestcontrol.jpg"
+								alt="" width="700px" height="300px" />
+							<%-- <ul class="slides">
 											<li>
 												<img src="${ pageContext.request.contextPath }/resources/img/pestcontrol.jpg" alt="" width="700px" height="300px" />
 											</li>
@@ -774,104 +840,158 @@ s0.parentNode.insertBefore(s1,s0);
 											</li>
 										</ul>
 									</div> --%>
-						<!-- end flexslider -->
-					</div>
-					<p>소독필증은 대상시설물 교부용1부,보건소신고용1부,회사보관용1부 총3부를 작성하여 소독실시후 소독회사는 반드시
-						소독실시 대상시설물에 1부를 교부하고, 시설물 소재지 관할 보건소에 소독신고서와 같이 1부를 제출하고 나머지 1부는
-						소독회사에서 보관합니다.</p>
-					<div class="bottom-article">
-						<ul class="meta-post">
-							<li><i class="icon-calendar"></i><a href="#"> Mar 23,
-									2013</a></li>
-							<li><i class="icon-user"></i><a href="#"> Admin</a></li>
-							<li><i class="icon-folder-open"></i><a href="#"> Blog</a></li>
-							<li><i class="icon-comments"></i><a href="#">4 Comments</a></li>
-						</ul>
-						<a href="#" class="pull-right">Continue reading <i
-							class="icon-angle-right"></i></a>
-					</div>
+							<!-- end flexslider -->
+						</div>
+						<p>소독필증은 대상시설물 교부용1부,보건소신고용1부,회사보관용1부 총3부를 작성하여 소독실시후 소독회사는
+							반드시 소독실시 대상시설물에 1부를 교부하고, 시설물 소재지 관할 보건소에 소독신고서와 같이 1부를 제출하고 나머지
+							1부는 소독회사에서 보관합니다.</p>
+						<div class="bottom-article">
+							<ul class="meta-post">
+								<li><i class="icon-calendar"></i><a href="#"> 2018년 1월 2일,
+										</a></li>
+								<li><i class="icon-user"></i><a href="#"> 관리자</a></li>
+								<li><i class="icon-folder-open"></i><a href="#"> Tips</a></li>
+								<li><i class="icon-comments"></i><a href="#">댓글 4개</a></li>
+							</ul>
+							<a href="#" class="pull-right">더보기 <i
+								class="icon-angle-right"></i></a>
+						</div>
+						</div>
 					</article>
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 				</div>
 				<div class="col-lg-4">
 					<aside class="right-sidebar">
-					<div class="widget">
-						<h4>Login</h4>
-						<c:if test="${ empty userVo }">
-							<form:form name="lform"	action="${ pageContext.request.contextPath }/ceo"
-								commandName="employeeVo" onsubmit="return checkForm()"
-								method="post"> 
-					Username&nbsp;<form:input class="form-control" placeholder="아이디"
-									type="text" size="20" name="e_id" id="e_id" path="e_id" />
-								<br />
-					
-					Password&nbsp;<form:input class="form-control" placeholder="비밀번호"
-									type="password" size="20" name="e_password" id="e_password"
-									path="e_password" />
-								<span style="color: red;">${errorMessage }</span>
-								<br />						
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<span style="font-size:small; text-align:right;"><a href="${ pageContext.request.contextPath }/ceo/forgotmyid">아이디</a> / <a href="${ pageContext.request.contextPath }/ceo/forgotmypassword">비밀번호</a>가 기억나지 않아요!</span><br/>
-								 <br/>
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<input type="submit" class="btn btn-theme" id="login_btn"
-									value="로그인">&nbsp;
-										
-							<a href="${ pageContext.request.contextPath }/ceo/register/join"><input class="btn btn-theme" type="button" id="register_btn" value="회원가입"></a>
-							</form:form>
-						</c:if>
-						<c:if test="${ not empty userVo }">
-			${ userVo.e_name }&nbsp; ${ userVo.e_type }님 환영합니다. <br />
-			
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<a href="${ pageContext.request.contextPath }/logout">로그아웃</a>
-	
-						</c:if>
-					</div>
-					<c:if test="${ not empty userVo }">
 						<div class="widget">
-							<h5 class="widgetheading">오늘의 스케쥴</h5>
-							<input type="hidden" id="scheduleOpen" value="${ userVo.e_type } ">
-							<div id='calendar'>
-								<div>
-									<ul style="margin-top: 2%">
-										<li style="width:80%">
-											<span class="fc-event-dot" style="background-color: rgb(68,193,195);"></span>&nbsp;&nbsp;<input style='border:none; width:40%' type="text" value="대기중">
-											<span class="fc-event-dot" style="background-color: rgb(255,153,153);"></span>&nbsp;&nbsp;<input style='border:none; width:40%' type="text" value="출동중">
-										</li>
-										<li style="width:80%">
-											<span class="fc-event-dot" style="background-color: rgb(178,255,102);"></span>&nbsp;&nbsp;<input style='border:none; width:40%' type="text" value="해방중">
-											<span class="fc-event-dot" style="background-color: rgb(224,224,224);"></span>&nbsp;&nbsp;<input style='border:none; width:40%' type="text" value="해방완료">
-										</li>
-									</ul>
+							<c:if test="${ empty userVo }">
+								<div style="margin-top: 30px; margin-bottom: 40px;">
+									<h4>CEO Login</h4>
+								</div>
+								<form:form name="lform"
+									action="${ pageContext.request.contextPath }/ceo"
+									commandName="employeeVo" onsubmit="return checkForm()"
+									method="post">
+
+									<form:input class="form-control" placeholder="아이디" type="text"
+										size="20" name="e_id" id="e_id" path="e_id"
+										style="margin-bottom:10px; height:45px;" />
+
+
+									<form:input class="form-control" placeholder="비밀번호"
+										type="password" size="20" name="e_password" id="e_password"
+										path="e_password" style="margin-bottom:10px; height:45px;" />
+									<span style="color: red;">${errorMessage }</span>
+
+
+								<div align="center" style="margin-top:20px;">
+									<span style="font-size: small; text-align: right;"><a
+										href="${ pageContext.request.contextPath }/ceo/forgotmyid">아이디</a>
+										/ <a
+										href="${ pageContext.request.contextPath }/ceo/forgotmypassword">비밀번호</a> 찾기</span> | 
+										<a href="${ pageContext.request.contextPath }/ceo/register/join">회원가입</a>
+										<br/>
+								</div>
+
+									<input type="submit" class="btn btn-theme"
+										style="margin-top: 10px; width: 320px; background-color: #019ad2; height: 60px; font-size: large;"
+										id="login_btn" value="로그인">&nbsp;										
+							
+								</form:form>
+
+								
+
+							</c:if>
+							<c:if test="${ not empty userVo }">
+			${ userVo.e_name }&nbsp; ${ userVo.e_type }님 환영합니다. <br />
+
+								<div align="right">
+									<a href="${ pageContext.request.contextPath }/logout">로그아웃</a>
+								</div>
+							</c:if>
+						</div>
+						
+
+						<c:if test="${ not empty userVo }">
+							<div class="widget">
+								<h5 class="widgetheading">오늘의 스케쥴</h5>
+								<input type="hidden" id="scheduleOpen"
+									value="${ userVo.e_type } ">
+								<div id='calendar'>
+									<div>
+										<ul style="margin-top: 2%">
+											<li style="width: 80%"><span class="fc-event-dot"
+												style="background-color: rgb(68, 193, 195);"></span>&nbsp;&nbsp;<input
+												style='border: none; width: 40%' type="text" value="대기중">
+												<span class="fc-event-dot"
+												style="background-color: rgb(255, 153, 153);"></span>&nbsp;&nbsp;<input
+												style='border: none; width: 40%' type="text" value="출동중">
+											</li>
+											<li style="width: 80%"><span class="fc-event-dot"
+												style="background-color: rgb(178, 255, 102);"></span>&nbsp;&nbsp;<input
+												style='border: none; width: 40%' type="text" value="해방중">
+												<span class="fc-event-dot"
+												style="background-color: rgb(224, 224, 224);"></span>&nbsp;&nbsp;<input
+												style='border: none; width: 40%' type="text" value="해방완료">
+											</li>
+										</ul>
+									</div>
 								</div>
 							</div>
+						</c:if>
+						
+						
+						
+												
+						<br/>
+						<br/>
+						<br/>
+						
+						<div class="widget">
+						<input type="button" class="btn btn-theme"
+										style="margin-top: 10px; width: 320px; box-shadow: 4px 4px 10px 0px rgba(0,0,0,0.75); border: 1px solid darkgray; background-color: white; height: 40px; color: #3B3B3B; font-size: normal;"
+										 value="1:1문의하기 >">
+						<input type="button" class="btn btn-theme"
+										style="margin-top: 10px; width: 320px; box-shadow: 4px 3px 10px 0px rgba(0,0,0,0.75); border: 1px solid darkgray; background-color: white; height: 40px; color: #3B3B3B;  font-size: normal;"
+										 value="자주묻는질문">
+						
 						</div>
-					</c:if>
+						
+						
+						
+						
+						
 					</aside>
 				</div>
 			</div>
 		</div>
-	
-	<footer> 
-		<jsp:include page="../employee_include/bottom.jsp" />
-	</footer>
+
+		<footer>
+			<jsp:include page="../employee_include/bottom.jsp" />
+		</footer>
 	</div>
 	<a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
 </body>
 
-<link href="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/fullcalendar.css" rel="stylesheet"/>
-<link href="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/fullcalendar.print.css" rel="stylesheet" media="print"/>
+<link
+	href="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/fullcalendar.css"
+	rel="stylesheet" />
+<link
+	href="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/fullcalendar.print.css"
+	rel="stylesheet" media="print" />
 
-<script type="text/javascript" src="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/lib/moment.min.js"></script>
-<script type="text/javascript" src="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/lib/jquery.min.js"></script>
-<script type="text/javascript" src="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/fullcalendar.js"></script>
-<script type="text/javascript" src="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/locale-all.js"></script>
+<script type="text/javascript"
+	src="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/lib/moment.min.js"></script>
+<script type="text/javascript"
+	src="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/lib/jquery.min.js"></script>
+<script type="text/javascript"
+	src="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/fullcalendar.js"></script>
+<script type="text/javascript"
+	src="${ pageContext.request.contextPath }/resources/fullcalendar-3.7.0/locale-all.js"></script>
 
 <script type="text/javascript">
 
@@ -904,8 +1024,9 @@ $(document).ready(function(){
 	    	 $("#calendar").fullCalendar({
 	    		header: {
 	 				left: 'title',
-	 				right: 'listWeek'
+	 				right: 'month,listWeek'	 				
 	 			},
+	 			defaultView: 'listWeek',
 	           editable : false,
 	           events: jsonData,
 	           locale: 'ko',
@@ -1013,3 +1134,4 @@ $(document).ready(function(){
     
   </script>
 </html>
+>>>>>>> bc0619cb7520044c77b076770972f1de1565ed84

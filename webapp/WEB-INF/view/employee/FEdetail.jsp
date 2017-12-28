@@ -30,13 +30,13 @@
 	
 	function modify(){
 		
-		location.href = "${ pageContext.request.contextPath }/qna/${ QnAList.q_no }";
+		location.href = "${ pageContext.request.contextPath }/admin/${ QnAList.q_no }";
 		
 	}
 	
 	function GotoList(){
 		
-		location.href = "${ pageContext.request.contextPath }/qna/FM";
+		location.href = "${ pageContext.request.contextPath }/employee/FE";
 	}
 	
 </script>
@@ -45,20 +45,18 @@
 <body>
 	<div id="wrapper">
 		<!-- start header -->
-		<header> <jsp:include
-			page="/WEB-INF/view/member_include/topmenu.jsp" /> </header>
+		<header> <jsp:include page="../employee_include/topmenu.jsp" />
+		</header>
 		<!-- end header -->
-		<div class="container">
-     	<div align="center">
-			<hr>
-			<h2>
-				<strong>
-					QnA 상세정보
-				</strong>
-			</h2>
-			<hr>
-		</div>
-	</div>	
+		<%-- <div class="container">
+			<div class="row">
+					<ul >
+						<li><i class="fa fa-home"></i><i
+							class="icon-angle-right"></i></li>
+						<li>${ QnA.q_no }. ${ QnA.q_title }<i class="icon-angle-right"></i></li>
+					</ul>
+			</div>
+		</div> --%>
 		<section id="content">
 		<div class="container" style="margin: auto;">
   	
@@ -99,10 +97,9 @@
 				<input type="button" value="목록" onclick="GotoList()"
 			class="btn btn-theme"  />
 			</div>
-					
-					
+		</section>
 		<footer> <jsp:include
-			page="/WEB-INF/view/member_include/bottom.jsp" /> </footer>
+			page="/WEB-INF/view/employee_include/bottom.jsp" /> </footer>
 	</div>
 	<a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
 	<!-- javascript

@@ -153,7 +153,7 @@ input {
 							
 							<article>
 								<div class="post-heading">
-									<h4><a href="#"> 추가 기제 사항 </a></h4>
+									<h4><a href="#"> 추가 기재 사항 </a></h4>
 								</div>
 								<div class="bottom-article">
 									<ul class="meta-post" style="width:95%">

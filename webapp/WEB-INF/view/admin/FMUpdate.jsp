@@ -119,7 +119,7 @@ div {
 							<span>FAQ 수정</span>
 						</h2>
 						<form:form commandName="QnA" method="PUT" >
-							<table border="1" width="80%">
+							<table border="1" class="table table-striped table-bordered table-hover" style="width: 1120px;">
 								<tr>
 									<th width="25%">제목</th>
 									<td><form:input path="q_title" class="form-control" value="" default="${ QnA.q_title }" /></td>

@@ -49,22 +49,56 @@
 		<header> <jsp:include
 			page="/WEB-INF/view/member_include/topmenu.jsp" /> </header>
 		<!-- end header -->
-		<section id="inner-headline">
 		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<ul class="breadcrumb">
-						<li><a href="#"><i class="fa fa-home"></i></a><i
-							class="icon-angle-right"></i></li>
-						<li><a href="#">상세 게시판</a><i class="icon-angle-right"></i></li>
-						<li class="active">Typography</li>
-					</ul>
-				</div>
-			</div>
+     	<div align="center">
+			<hr>
+			<h2>
+				<strong>
+					QnA 상세정보
+				</strong>
+			</h2>
+			<hr>
 		</div>
-		</section>
+	</div>		
 		<section id="content">
-		<div class="container">
+		
+		<div class="container" style="margin: auto;">
+  	
+   <table class="table table-striped table-bordered table-hover" style="width: 1120px;">       
+         <tr>
+            <th style="width:10%; height:10%; text-align:center;">제목</th>
+            <td><c:out value="${ QnA.q_title }"/></td>
+         </tr>
+         <tr>
+            <th style="width:10%; height:10%; text-align:center;">작성자</th>
+            <td><c:out value="${ QnA.q_writer }"/></td>
+         </tr>
+         
+         <tr>
+            <th style="text-align:center;">내용</th>
+            <td style="width: 95%; height: 300px; font-size:16px;">
+            <c:out value="${ QnA.q_content }"/></td>
+         </tr>  
+         <tr>
+            <th style="width:10%; height:10%; text-align:center;">첨부파일</th>
+            <td>
+           <c:if test="${QnA.q_saveName ne null }">
+						<label>파일</label> <img src="data:image/jpeg;base64,${image}"
+							style="width: auto; height: auto;" />
+					</c:if>         
+            </td>
+         </tr>
+         <tr>
+            <th style="width:10%; height:10%; text-align:center;">등록일</th>
+            <td>${ QnA.q_regDate }</td>
+         </tr>
+					<tr>
+						<th style="width:10%; height:10%; text-align:center;">댓글</th>
+					<td><div class="commentList"></div></td>
+					</tr>
+      </table>
+		
+		<%-- <div class="container">
 			<div class="row">
 				<div class="box-body">
 					
@@ -101,10 +135,10 @@
 				<div class="container"
 					style="border-top: 1px solid lightgray; border-bottom: 1px solid lightgray; background-color: #F6F6F6; border-left: 1px solid lightgray; border-right: 1px solid lightgray; border-inner: 1px solid lightgray;">
 					<div class="commentList"></div>
-				</div>
+				</div> --%>
 
 
-
+		
 			</div>
 		</div>
 		<a href="${ pageContext.request.contextPath }/qna/${ QnA.q_no }"

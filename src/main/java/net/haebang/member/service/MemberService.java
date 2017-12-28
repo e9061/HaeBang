@@ -4,20 +4,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import net.haebang.vo.MemberVo;
 import net.haebang.vo.NoticeBoardVo;
+import net.haebang.vo.QnAVo;
 
 public interface MemberService {
 
 	List<MemberVo> selectAllMember();
-	void insertMember(MemberVo QnA);
+	int insertMember(MemberVo QnA, HttpServletResponse response) throws Exception;
 	MemberVo selectOneMember(String m_id);
 	void logout(HttpSession session);
-	MemberVo login(MemberVo member);
+	MemberVo login(MemberVo member, HttpServletResponse response) throws Exception;
 	MemberVo blogin(MemberVo member);
-	MemberVo mainLogin(MemberVo member);
+	MemberVo mainLogin(MemberVo member, HttpServletResponse response) throws Exception;
 	void updateMember(MemberVo member);
 	
 	
@@ -42,6 +46,10 @@ public interface MemberService {
 	String getMoCallFlag(int mo_no);
 	
 	/*************************  my reservation  ************************************/
+	
+	String create_key() throws Exception;
+	void send_mail(MemberVo member) throws Exception;
+	void approval_member(MemberVo member, HttpServletResponse response) throws Exception;
 	
 	
 }

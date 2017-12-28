@@ -67,93 +67,111 @@ td {
 		<header> <jsp:include
 			page="/WEB-INF/view/member_include/topmenu.jsp" /> </header>
 		<section>
-		<div class="container">
-			<hr width="100%" />
-			<h2 align="center">게시물 목록</h2>
-			<hr width="100%" />
-			<br>
-			<table border="1" width="100%">
+		<div align="center">
+			<hr>
+			<h2>
+				<strong> 소비자 QnA </strong>
+			</h2>
+			<hr>
+		</div>
+
+		<table class="table table-striped table-bordered table-hover"
+			style="width: 1120px;" align="center">
+			<thead>
 				<tr>
 					<th width="7%">번호</th>
 					<th>제목</th>
-					<th width="16%">글쓴이</th>
+					<th width="10%">작성자</th>
 					<th width="7%">조회수</th>
-					<th width="20%">등록일</th>
+					<th width="15%">등록일</th>
 				</tr>
-				<c:forEach items="${ list }" var="list" varStatus="loop">
-					<tr <c:if test="${ loop.count mod 2 eq 0 }"  >class="even"</c:if>>
-						<td>${ list.q_no }</td>
-						<td>
-							<%-- <a onclick="doAction('${ board.no }')"> --%> <a
-							href="${ pageContext.request.contextPath }/qna/detail/${ list.q_no }">
-								<c:out value="${ list.q_title }" />
-						</a>
-						</td>
-						<td>${ list.q_writer }</td>
-						<td>${ list.q_viewCnt }</td>
-						<td>${ list.q_regDate }</td>
-					</tr>
+			</thead>
+
+			<tbody>
+				<c:choose>
+					<c:when test="${ list.size() > 0 }">
+						<c:forEach items="${ list }" var="list" varStatus="loop">
+							<tr>
+								<td>${ list.q_no }</td>
+								<td><a
+									href="${ pageContext.request.contextPath }/qna/detail/${ list.q_no }">
+										<c:out value="${ list.q_title }" />
+								</a></td>
+								<td>${ list.q_writer }</td>
+								<td>${ list.q_viewCnt }</td>
+								<td>${ list.q_regDate }</td>
+							</tr>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<tr>
+							<td colspan="5">등록된 QnA가 없습니다.</td>
+						</tr>
+					</c:otherwise>
+				</c:choose>
+			</tbody>
+		</table>
+
+		 <br />
+		<div align="center">
+			<ul class="pagination">
+				<li><a
+					href="${ pageContext.request.contextPath }/qna/list?pageNo=0">처음</a></li>
+				<%-- 				<li><a href="${ pageContext.request.contextPath }/list/&pageNo=0&searchCondition=${ titlecontent }&word=${ word }">처음</a></li>
+ --%>
+				<!--현재 페이지가 0보다 작아질 경우 이전 버튼을 disabled하는 조건문 -->
+				<c:choose>
+					<c:when test="${pageNo <= 0}">
+						<li class="disabled"><a href="#">이전</a></li>
+					</c:when>
+
+					<c:otherwise>
+						<li><a
+							href="${ pageContext.request.contextPath }/qna/list?pageNo=${pageNo -1}">이전</a></li>
+						<%-- 							href="${ pageContext.request.contextPath }/list/&pageNo=${pageNo -1}&searchCondition=${ titlecontent }&word=${ word }">이전</a></li> --%>
+					</c:otherwise>
+				</c:choose>
+
+				<!--해당하는 페이지로 갈 수 있는 버튼 -->
+				<c:forEach var="i" begin="0" end="${lastPage}">
+					<li><a
+						href="${ pageContext.request.contextPath }/qna/list?pageNo=${i}">${i+1}</a></li>
+					<%-- 					<li><a href="${ pageContext.request.contextPath }/list/&pageNo=${i}&searchCondition=${ titlecontent }&word=${ word }">${i+1}</a></li> --%>
 				</c:forEach>
 
+				<!--현재 페이지가 totalpage보다 커질 경우 다음 버튼을 disabled하는 조건문 -->
+				<c:choose>
+					<c:when test="${pageNo >= endPage-1}">
+						<li class="disabled"><a href="#">다음</a></li>
+					</c:when>
 
-			</table>
-			<br />
-			<div align="center">
-				<ul class="pagination">
-					<li><a
-						href="${ pageContext.request.contextPath }/qna/list?pageNo=0">처음</a></li>
-					<%-- 				<li><a href="${ pageContext.request.contextPath }/list/&pageNo=0&searchCondition=${ titlecontent }&word=${ word }">처음</a></li>
- --%>
-					<!--현재 페이지가 0보다 작아질 경우 이전 버튼을 disabled하는 조건문 -->
-					<c:choose>
-						<c:when test="${pageNo <= 0}">
-							<li class="disabled"><a href="#">이전</a></li>
-						</c:when>
-
-						<c:otherwise>
-							<li><a
-								href="${ pageContext.request.contextPath }/qna/list?pageNo=${pageNo -1}">이전</a></li>
-							<%-- 							href="${ pageContext.request.contextPath }/list/&pageNo=${pageNo -1}&searchCondition=${ titlecontent }&word=${ word }">이전</a></li> --%>
-						</c:otherwise>
-					</c:choose>
-
-					<!--해당하는 페이지로 갈 수 있는 버튼 -->
-					<c:forEach var="i" begin="0" end="${lastPage-1}">
+					<c:otherwise>
 						<li><a
-							href="${ pageContext.request.contextPath }/qna/list?pageNo=${i}">${i+1}</a></li>
-						<%-- 					<li><a href="${ pageContext.request.contextPath }/list/&pageNo=${i}&searchCondition=${ titlecontent }&word=${ word }">${i+1}</a></li> --%>
-					</c:forEach>
+							href="${ pageContext.request.contextPath }/qna/list?pageNo=${pageNo+1}">다음</a></li>
+						<%-- 							href="${ pageContext.request.contextPath }/list/&pageNo=${pageNo+1}&searchCondition=${ titlecontent }&word=${ word }">다음</a></li> --%>
+					</c:otherwise>
+				</c:choose>
 
-					<!--현재 페이지가 totalpage보다 커질 경우 다음 버튼을 disabled하는 조건문 -->
-					<c:choose>
-						<c:when test="${pageNo >= endPage-1}">
-							<li class="disabled"><a href="#">다음</a></li>
-						</c:when>
-
-						<c:otherwise>
-							<li><a
-								href="${ pageContext.request.contextPath }/qna/list?pageNo=${pageNo+1}">다음</a></li>
-							<%-- 							href="${ pageContext.request.contextPath }/list/&pageNo=${pageNo+1}&searchCondition=${ titlecontent }&word=${ word }">다음</a></li> --%>
-						</c:otherwise>
-					</c:choose>
-
-					<li><a
-						href="${ pageContext.request.contextPath }/qna/list?pageNo=${lastPage-1}">마지막</a></li>
-					<%-- 				<li><a href="${ pageContext.request.contextPath }/list/&pageNo=${totalpage}&searchCondition=${ titlecontent }&word=${ word }">마지막</a></li> --%>
-				</ul>
-			</div>
-			<br /> <br />
-			<c:if test="${ not empty userVO }">
+				<li><a
+					href="${ pageContext.request.contextPath }/qna/list?pageNo=${lastPage-1}">마지막</a></li>
+				<%-- 				<li><a href="${ pageContext.request.contextPath }/list/&pageNo=${totalpage}&searchCondition=${ titlecontent }&word=${ word }">마지막</a></li> --%>
+			</ul>
+		</div>
+		<br />
+		<br />
+		<c:if test="${ not empty userVO }">
 			<div align="center">
 				<input type="button" value="새글등록" onclick="doAction()"
-					class="btn btn-theme"  />
-					</div>
-			</c:if>
-		</div>
-		</section>
-		<br /> <br /> <br />
-		<footer> <jsp:include
-			page="/WEB-INF/view/member_include/bottom.jsp" /> </footer>
+					class="btn btn-theme" />
+			</div>
+		</c:if>
+	</div>
+	</section>
+	<br />
+	<br />
+	<br />
+	<footer> <jsp:include
+		page="/WEB-INF/view/member_include/bottom.jsp" /> </footer>
 	</div>
 	<a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
 	<!-- javascript

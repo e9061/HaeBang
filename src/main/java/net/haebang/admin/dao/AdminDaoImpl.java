@@ -41,29 +41,30 @@ public class AdminDaoImpl implements AdminDao {
 	
 	
 	// 업체
-	@Override
-	public List<HashMap<String, Object>> hbComList() {
-		List<HashMap<String, Object>> hbComList = sqlSession.selectList("net.haebang.admin.dao.AdminDao.selectHbCompanyList");
-		return hbComList;
-	}
+		@Override
+		public List<HashMap<String, Object>> hbComList(Map<String, Object> map) {
+			List<HashMap<String, Object>> hbComList = sqlSession.selectList("net.haebang.admin.dao.AdminDao.selectHbCompanyList", map);
+			return hbComList;
+		}
 
-	@Override
-	public List<HashMap<String, Object>> nComList() {
-		List<HashMap<String, Object>> nComList = sqlSession.selectList("net.haebang.admin.dao.AdminDao.selectNCompanyList");
-		return nComList;
-	}
+		@Override
+		public List<HashMap<String, Object>> nComList(Map<String, Object> map) {
+			List<HashMap<String, Object>> nComList = sqlSession.selectList("net.haebang.admin.dao.AdminDao.selectNCompanyList", map);
 
-	@Override
-	public List<HashMap<String, Object>> searchHbComList(CompanyVo companyVo) {
-		List<HashMap<String, Object>> searchHbComList = sqlSession.selectList("net.haebang.admin.dao.AdminDao.searchHbCompanyList", companyVo);
-		return searchHbComList;
-	}
-	
-	@Override
-	public List<HashMap<String, Object>> searchNComList(CompanyVo companyVo) {
-		List<HashMap<String, Object>> searchNComList = sqlSession.selectList("net.haebang.admin.dao.AdminDao.searchNCompanyList", companyVo);
-		return searchNComList;
-	}
+			return nComList;
+		}
+
+		@Override
+		public List<HashMap<String, Object>> searchHbComList(CompanyVo companyVo) {
+			List<HashMap<String, Object>> searchHbComList = sqlSession.selectList("net.haebang.admin.dao.AdminDao.searchHbCompanyList", companyVo);
+			return searchHbComList;
+		}
+		
+		@Override
+		public List<HashMap<String, Object>> searchNComList(CompanyVo companyVo) {
+			List<HashMap<String, Object>> searchNComList = sqlSession.selectList("net.haebang.admin.dao.AdminDao.searchNCompanyList", companyVo);
+			return searchNComList;
+		}
 
 	
 	// 공지사항
@@ -81,7 +82,11 @@ public class AdminDaoImpl implements AdminDao {
 		int totalPage = sqlSession.selectOne("net.haebang.admin.dao.AdminDao.selectTotalCount",map); 
 		return totalPage;
 	}
-
+	@Override
+	public double selectTotal(Map<String, Object> map) {
+		int totalPage = sqlSession.selectOne("net.haebang.admin.dao.AdminDao.selectTotal", map);
+		return totalPage;
+	}
 	@Override
 	public NoticeBoardVo getNoticeBoardByNo(NoticeBoardVo noticeBoardVo) {
 		sqlSession.update("net.haebang.admin.dao.AdminDao.updateViewCnt",noticeBoardVo);
@@ -163,6 +168,28 @@ public class AdminDaoImpl implements AdminDao {
 	HashMap<String, Object> getScheduleByMONoByHB = sqlSession.selectOne("net.haebang.admin.dao.AdminDao.getScheduleByMONoByHB", mo_no);
 	System.out.println(getScheduleByMONoByHB);
 	return getScheduleByMONoByHB;
+	}
+
+	
+	// 관리자 로그인
+	@Override
+	public MemberVo loginAdmin(Map<String, Object> map) {
+		MemberVo loginAdmin = sqlSession.selectOne("net.haebang.admin.dao.AdminDao.loginAdmin",map);
+		return loginAdmin;
+	}
+
+	// 메인 전체 정보
+	@Override
+	public List<Map<String, Object>> getMainInfo() {
+		List<Map<String, Object>> mainInfo = sqlSession.selectList("net.haebang.admin.dao.AdminDao.getMainInfo");
+		return mainInfo;
+	}
+	
+	// 조건검색 - 오늘기준 서비스 진행 될 구별 정보 가져오기
+	@Override
+	public List<Map<String, Object>> searchGuInfo(Map<String, Object> map) {
+		List<Map<String, Object>> guInfo = sqlSession.selectList("net.haebang.admin.dao.AdminDao.searchGuInfo", map);
+		return guInfo;
 	}
 
 	

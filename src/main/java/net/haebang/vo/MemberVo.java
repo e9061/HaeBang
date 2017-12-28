@@ -22,7 +22,10 @@ public class MemberVo {
 	private String m_lat;
 	private String m_gu;
 	
-	
+	private String m_confirm;
+
+	private String m_approval_status;
+	private String m_approval_key;
 
 	
 	public MemberVo(){
@@ -144,7 +147,21 @@ public class MemberVo {
 	public void setM_type(String m_type) {
 		this.m_type = m_type;
 	}
-	
+	public String getM_approval_status() {
+		return m_approval_status;
+	}
+
+	public void setM_approval_status(String m_approval_status) {
+		this.m_approval_status = m_approval_status;
+	}
+
+	public String getM_approval_key() {
+		return m_approval_key;
+	}
+
+	public void setM_approval_key(String m_approval_key) {
+		this.m_approval_key = m_approval_key;
+	}
 	
 	
 	

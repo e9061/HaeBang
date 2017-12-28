@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import net.haebang.admin.dao.AdminDao;
+import net.haebang.exception.NoMemberException;
 import net.haebang.vo.CompanyVo;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.MemberVo;
@@ -42,48 +43,63 @@ public class AdminServiceImpl implements AdminService{
 	
 	
 	// 업체
-	@Override
-	public List<HashMap<String, Object>> hbComList() {
-		
-		CompanyVo companyVo = new CompanyVo();
-		EmployeeVo employeeVo = new EmployeeVo();
-		HashMap<String, Object> map = new HashMap<String, Object>(); 
-		map.put("companyVo", companyVo);
-		map.put("employeeVo", employeeVo);
-		
-		List<HashMap<String, Object>> hbComList = new ArrayList<HashMap<String, Object>>();
-		hbComList.add(map);
-		
-		hbComList = dao.hbComList();
-		return hbComList;
-	}
+		@Override
+		public List<HashMap<String, Object>> hbComList(int page) {
+			
+			int startPoint = page * LINE_PER_PAGE;
 
-	@Override
-	public List<HashMap<String, Object>> nComList() {
-		
-		CompanyVo companyVo = new CompanyVo();
-		EmployeeVo employeeVo = new EmployeeVo();
-		HashMap<String, Object> map = new HashMap<String, Object>(); 
-		map.put("companyVo", companyVo);
-		map.put("employeeVo", employeeVo);
-		List<HashMap<String, Object>> nComList = new ArrayList<HashMap<String, Object>>();
-		nComList.add(map);
-		
-		nComList = dao.nComList();
-		return nComList;
-	}
+			HashMap<String, Object> map = new HashMap<String, Object>(); 
+
+			map.put("startPoint", startPoint);
+			map.put("row", LINE_PER_PAGE);
+
+			System.out.println(map);
+			//
+			CompanyVo companyVo = new CompanyVo();
+			EmployeeVo employeeVo = new EmployeeVo();
+			map.put("companyVo", companyVo);
+			map.put("employeeVo", employeeVo);
+			
+			List<HashMap<String, Object>> hbComList = new ArrayList<HashMap<String, Object>>();
+			hbComList.add(map);
+			
+			hbComList = dao.hbComList(map);
+			return hbComList;
+		}
+
+		@Override
+		public List<HashMap<String, Object>> nComList(int page) {
+			
+			int startPoint = page * LINE_PER_PAGE;
+
+			HashMap<String, Object> map = new HashMap<String, Object>(); 
+
+			map.put("startPoint", startPoint);
+			map.put("row", LINE_PER_PAGE);
+			
+			
+			CompanyVo companyVo = new CompanyVo();
+			EmployeeVo employeeVo = new EmployeeVo();
+			map.put("companyVo", companyVo);
+			map.put("employeeVo", employeeVo);
+			List<HashMap<String, Object>> nComList = new ArrayList<HashMap<String, Object>>();
+			nComList.add(map);
+			
+			nComList = dao.nComList(map);
+			return nComList;
+		}
 	
 	
-	@Override
-	public List<HashMap<String, Object>> searchHbComList(CompanyVo companyVo) {
-		List<HashMap<String, Object>> searchComList = dao.searchHbComList(companyVo);
-		return searchComList;
-	}
-	@Override
-	public List<HashMap<String, Object>> searchNComList(CompanyVo companyVo) {
-		List<HashMap<String, Object>> searchNComList = dao.searchNComList(companyVo);
-		return searchNComList;
-	}
+		@Override
+		public List<HashMap<String, Object>> searchHbComList(CompanyVo companyVo) {
+			List<HashMap<String, Object>> searchComList = dao.searchHbComList(companyVo);
+			return searchComList;
+		}
+		@Override
+		public List<HashMap<String, Object>> searchNComList(CompanyVo companyVo) {
+			List<HashMap<String, Object>> searchNComList = dao.searchNComList(companyVo);
+			return searchNComList;
+		}
 
 
 	
@@ -147,7 +163,14 @@ public class AdminServiceImpl implements AdminService{
 	public void noticeDelete(int no) {
 		dao.noticeDelete(no);
 	}
-	
+	@Override
+	public int getLastPage() {
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		int lastPage = (int) ((double) dao.selectTotal(map) / LINE_PER_PAGE);
+
+		return lastPage;
+	}
 
 	@Override
 	public List<HashMap<String, Object>> getScheduleList(int page, String word, String searchSchedule, String startDate,
@@ -208,5 +231,34 @@ public class AdminServiceImpl implements AdminService{
 	HashMap<String, Object> getScheduleByMONoByHB = dao.getScheduleByMONoByHB(mo_no);
 	return getScheduleByMONoByHB;
 	}
+
+	
+	// 관리자 로그인
+	@Override
+	public MemberVo loginAdmin(Map<String, Object> map) {
+		MemberVo loginAdmin = dao.loginAdmin(map);
+		
+		if (loginAdmin == null) {
+			System.out.println("익셉션 탐");
+			throw new NoMemberException();
+		}
+		
+		return loginAdmin;
+	}
+
+	// 메인 전체 정보
+	@Override
+	public List<Map<String, Object>> getMainInfo() {
+		List<Map<String, Object>> mainInfo = dao.getMainInfo();
+		return mainInfo;
+	}
+	
+	// 조건검색 - 오늘기준 서비스 진행 될 구별 정보 가져오기
+	@Override
+	public List<Map<String, Object>> searchGuInfo(Map<String, Object> map) {
+		List<Map<String, Object>> guInfo = dao.searchGuInfo(map);
+		return guInfo;
+	}
+
 
 }

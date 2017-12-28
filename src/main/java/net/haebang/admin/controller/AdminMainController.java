@@ -1,6 +1,8 @@
 package net.haebang.admin.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import net.haebang.admin.dao.AdminDao;
 import net.haebang.admin.service.AdminService;
+import net.haebang.exception.NoMemberException;
+import net.haebang.vo.EmployeeVo;
+import net.haebang.vo.MemberVo;
 import net.haebang.vo.NoticeBoardVo;
 
 /**
@@ -38,16 +43,25 @@ public class AdminMainController {
 	AdminService adminService;
 
 	@RequestMapping("/admin")
-	public String main() {
-		System.out.println("main컨트롤러");
-		return "admin/main";
+	public String main(HttpSession session) {
+		
+		System.out.println("메인화면 컨트롤러");
+		
+		MemberVo adminVo = (MemberVo)session.getAttribute("adminVo");
+		if(adminVo == null) {
+			return "redirect:/admin/login";
+		}else {
+			return "admin/main";
+		}
+		
 	}
 
 	// ------------------------------------ 창대 12/2일 작업(지도 주문관련)----------------------------------------------
 
 	@RequestMapping(value = "/admin/selectAllmap", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody List<HashMap<String, Object>> selectAllmap(HttpSession session, Model model) {
-
+		
+		System.out.println("지도탐");
 		List<HashMap<String, Object>> mapList = new ArrayList<HashMap<String, Object>>();
 
 		mapList = adminDao.selectAllmap();
@@ -331,6 +345,88 @@ public class AdminMainController {
 			
 		}
 		
+		
 	}
 	
+	// ***************************  창대  ***************************
+		@RequestMapping(value= "/admin/login", method=RequestMethod.GET)
+		public String adminLogin(HttpSession session) {
+			//userVo 중에
+			MemberVo memberVo = (MemberVo)session.getAttribute("userVO");
+			EmployeeVo employeeVo = (EmployeeVo)session.getAttribute("userVo");
+			if(employeeVo != null) {
+				return "redirect:/ceo";
+			}else if(memberVo !=null) {
+				if(memberVo.getM_type() !="A") {
+				return "redirect:/";
+				}
+			}
+			return "admin/loginForm";
+		}
+		
+
+		@RequestMapping(value= "/admin/login", method=RequestMethod.POST)
+		public String adminLogin(HttpServletRequest request, HttpSession session, Model model) {
+			
+			String m_id = request.getParameter("m_id");
+			String m_password = request.getParameter("m_password");
+			Map<String,Object> map = new HashMap<>();
+			
+			map.put("m_id", m_id);
+			map.put("m_password", m_password);
+			
+			
+			try {
+				MemberVo adminVo = adminService.loginAdmin(map);
+				
+				System.out.println("관리자 로그인 성공");
+				session.setAttribute("adminVo", adminVo);
+				
+				return "redirect:/admin";
+				
+			} catch (NoMemberException e) {
+				System.out.println("익셉션 노맴버 탐");
+				model.addAttribute("ErrorMessage","입력하신 회원 정보가 존재하지 않습니다.");
+				return "admin/loginForm";
+			}
+		}
+		// *********************************************************************************
+		
+		
+		// 메인 전체 정보 - 오늘 기준
+		@RequestMapping(value="/admin/mainInfo", method=RequestMethod.POST)
+		public @ResponseBody List<Map<String, Object>> mainInfo (HttpServletRequest request){
+			
+			List<Map<String, Object>> mainInfo = adminService.getMainInfo();
+			
+			return mainInfo;
+		}
+		
+		
+		// 조건검색 - 오늘기준 서비스 진행 될 구별 정보 가져오기 ( eo_status - 대기중/출동중/해방중/해방완료 로 갯수 표현 )
+		@RequestMapping(value="/admin/searchGuInfo", method=RequestMethod.POST)
+		public @ResponseBody List<Map<String, Object>> searchGuInfo(HttpServletRequest request){
+			
+			System.out.println("조건검색 커틀홀러 탐");
+			String m_gu = request.getParameter("m_gu");
+			String eo_status = request.getParameter("eo_status");
+			
+	/*		Calendar calendar = Calendar.getInstance();
+			java.util.Date date = calendar.getTime();
+			String today = (new SimpleDateFormat("yyyy-MM-dd").format(date));*/			// 쿼리문으로 해결
+			
+			Map<String, Object> map = new HashMap<>();
+			map.put("m_gu", m_gu);
+			map.put("eo_status", eo_status);
+	//		map.put("today", today);
+			
+			System.out.println(map);
+			
+			List<Map<String, Object>> guInfo = adminService.searchGuInfo(map);
+			
+			System.out.println(guInfo);
+			return guInfo;
+		}
+		
+		
 }

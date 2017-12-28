@@ -30,7 +30,7 @@
 	
 	function modify(){
 		
-		location.href = "${ pageContext.request.contextPath }/admin/FM/${ QnAList.q_no }";
+		location.href = "${ pageContext.request.contextPath }/admin/${ QnAList.q_no }";
 		
 	}
 	
@@ -48,79 +48,59 @@
 		<header> <jsp:include
 			page="/WEB-INF/view/admin_include/topmenu.jsp" /> </header>
 		<!-- end header -->
-		<section id="inner-headline">
 		<div class="container">
-			<div class="row">
-				<div class="col-lg-12">
-					<ul class="breadcrumb">
-						<li><a href="#"><i class="fa fa-home"></i></a><i
-							class="icon-angle-right"></i></li>
-						<li><a href="#">상세 게시판</a><i class="icon-angle-right"></i></li>
-						<li class="active">Typography</li>
-					</ul>
-				</div>
-			</div>
+     	<div align="center">
+			<hr>
+			<h2>
+				<strong>
+					QnA 상세정보
+				</strong>
+			</h2>
+			<hr>
 		</div>
-		</section>
+	</div>	
 		<section id="content">
-		<div class="container">
-			<div class="row">
-				<div class="box-body">
-					<%-- <h3>${ QnAVO.q_no }번 게시물</h3>
-						<hr/>
-						<h4>${ QnAVO.q_title }</h4>
-						<hr/>
-						<h4>${ QnAVO.q_writer }</h4>
-						<hr/>
-						<h4>${ QnAVO.q_content }</h4>
-						<hr/>
-						<h4>${ QnAVO.q_viewCnt }</h4>
-						<hr/>
-						<h4>${ QnAVO.q_regDate }</h4>
-						<hr/> --%>
-					<div class="form-group">
-						<label>번호</label> <input type="text" style="width: 800px;"
-							name="q_no" class="form-control" value="${ QnA.q_no }"
-							readonly="readonly">
-					</div>
-					<div class="form-group">
-						<label>제목</label> <input type="text" style="width: 800px;"
-							name="q_title" class="form-control" value="${ QnA.q_title }"
-							readonly="readonly">
-					</div>
-					<div class="form-group">
-						<label>작성자</label> <input type="text" style="width: 800px;"
-							name="q_writer" class="form-control" value="${ QnA.q_writer }"
-							readonly="readonly">
-					</div>
-					<div class="form-group">
-						<label>내용</label>
-						<textarea style="width: 800px; height: 500px;" name="q_content"
-							class="form-control" readonly="readonly">${ QnA.q_content }</textarea>
-					</div>
-					<c:if test="${QnA.q_saveName ne null }">
-						<div class="form-group" style="width: 50%;">
-							<label>파일</label> <img src="data:image/jpeg;base64,${image}"
-								style="width: 100px; height: auto;" />
-						</div>
-					</c:if>
-				</div>
-				<!-- 
-					<div class="container">
-						<div class="commentList"></div>
-					</div> -->
-
+		<div class="container" style="margin: auto;">
+  	
+   <table class="table table-striped table-bordered table-hover" style="width: 1120px;">       
+         <tr>
+            <th style="width:10%; height:10%; text-align:center;">제목</th>
+            <td><c:out value="${ QnA.q_title }"/></td>
+         </tr>
+         <tr>
+            <th style="width:10%; height:10%; text-align:center;">작성자</th>
+            <td><c:out value="${ QnA.q_writer }"/></td>
+         </tr>
+         
+         <tr>
+            <th style="text-align:center;">내용</th>
+            <td style="width: 95%; height: 300px; font-size:16px;">
+            <c:out value="${ QnA.q_content }"/></td>
+         </tr>  
+         <tr>
+            <th style="width:10%; height:10%; text-align:center;">첨부파일</th>
+            <td>
+           <c:if test="${QnA.q_saveName ne null }">
+						<label>파일</label> <img src="data:image/jpeg;base64,${image}"
+							style="width: auto; height: auto;" />
+					</c:if>         
+            </td>
+         </tr>
+         <tr>
+            <th style="width:10%; height:10%; text-align:center;">등록일</th>
+            <td>${ QnA.q_regDate }</td>
+         </tr>
+         </table>
+		<%-- <a href="${ pageContext.request.contextPath }/qna/${ QnA.q_no }" class="btn btn-theme" >수정</a> --%>
+		<%-- <c:if test=${ QnA.q_writer } eq ${ userVO.m_name }>
+					</c:if> --%> 
+					
+					<div align="center">
+				<input type="button" value="목록" onclick="GotoList()"
+			class="btn btn-theme"  />
 			</div>
-		</div>
-		<div align="center">
-			<a href="${ pageContext.request.contextPath }/admin/M/${ QnA.q_no }"
-				class="btn btn-theme">수정</a>
-			<%-- <c:if test=${ QnA.q_writer } eq ${ userVO.m_name }>
-					</c:if> --%>
-			<input type="button" value="목록" onclick="GotoList()"
-				class="btn btn-theme" align="middle" />
-		</div>
-		</section>
+					
+					
 		<footer> <jsp:include
 			page="/WEB-INF/view/admin_include/bottom.jsp" /> </footer>
 	</div>
