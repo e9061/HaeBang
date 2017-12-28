@@ -8,7 +8,7 @@
 
 <head>
 <meta charset="utf-8">
-<title>Moderna - Bootstrap 3 flat corporate template</title>
+<title>해방</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="description" content="" />
 
@@ -192,9 +192,9 @@ function checkPasswordPattern(str) {
 	<div class="container">
 
 		<div class="row">
-			<div class="col-md-8 col-md-offset-2">
+			<div class="col-md-8 col-md-offset-2" style="    margin-left: 0px;">
 				<h4>
-					해방에 가입하시는데는, 개인정보가 필요하지 않습니다</strong>
+					<strong>해방에 가입하시는데는, 개인정보가 필요하지 않습니다</strong>
 				</h4>
 				<form:form action="join" method="post" role="form" name="jForm"
 					commandName="member" onsubmit="return checkcheck()" >

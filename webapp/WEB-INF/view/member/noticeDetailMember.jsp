@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>소비자 공지사항 디테일</title>
+<title>해방</title>
 </head>
 <body>
 	<header>
