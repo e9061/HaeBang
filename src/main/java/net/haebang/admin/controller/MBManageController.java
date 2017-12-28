@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,9 +30,14 @@ public class MBManageController {
 	private AdminService service;
 	
 	@RequestMapping(value="/admin/mbManage")
-	public String mbManage(){
-		System.out.println("MBManageController");
-		return "admin/mbManage";
+	public String mbManage(HttpSession session){
+		MemberVo adminVo = (MemberVo)session.getAttribute("adminVo");
+		if(adminVo == null) {
+			return "redirect:/admin/login";
+		}else {
+			return "admin/mbManage";
+		}
+		
 	}
 
 	// 해방회원 조회

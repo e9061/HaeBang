@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import net.haebang.employee.service.EmployeeService;
+import net.haebang.vo.MemberVo;
 import net.haebang.vo.ScheduleModifyVo;
 
 /**
@@ -32,6 +34,20 @@ public class ScheduleAdminController {
 	
 	@Autowired
 	private EmployeeService employeeService;
+	
+	
+	
+	@RequestMapping("/schedule")
+	public String schedule(HttpSession session) {
+		
+		MemberVo adminVo = (MemberVo)session.getAttribute("adminVo");
+		if(adminVo == null) {
+			return "redirect:/admin/login";
+		}else {
+			return "admin_schedule/scheduleMain";
+		}
+	}
+	
 	
 	
 /**************************************** 스케쥴 수정 *********************************************/

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import net.haebang.admin.dao.AdminDao;
+import net.haebang.exception.NoMemberException;
 import net.haebang.vo.CompanyVo;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.MemberVo;
@@ -230,5 +231,34 @@ public class AdminServiceImpl implements AdminService{
 	HashMap<String, Object> getScheduleByMONoByHB = dao.getScheduleByMONoByHB(mo_no);
 	return getScheduleByMONoByHB;
 	}
+
+	
+	// 관리자 로그인
+	@Override
+	public MemberVo loginAdmin(Map<String, Object> map) {
+		MemberVo loginAdmin = dao.loginAdmin(map);
+		
+		if (loginAdmin == null) {
+			System.out.println("익셉션 탐");
+			throw new NoMemberException();
+		}
+		
+		return loginAdmin;
+	}
+
+	// 메인 전체 정보
+	@Override
+	public List<Map<String, Object>> getMainInfo() {
+		List<Map<String, Object>> mainInfo = dao.getMainInfo();
+		return mainInfo;
+	}
+	
+	// 조건검색 - 오늘기준 서비스 진행 될 구별 정보 가져오기
+	@Override
+	public List<Map<String, Object>> searchGuInfo(Map<String, Object> map) {
+		List<Map<String, Object>> guInfo = dao.searchGuInfo(map);
+		return guInfo;
+	}
+
 
 }

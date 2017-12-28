@@ -171,6 +171,28 @@ public class AdminDaoImpl implements AdminDao {
 	}
 
 	
+	// 관리자 로그인
+	@Override
+	public MemberVo loginAdmin(Map<String, Object> map) {
+		MemberVo loginAdmin = sqlSession.selectOne("net.haebang.admin.dao.AdminDao.loginAdmin",map);
+		return loginAdmin;
+	}
+
+	// 메인 전체 정보
+	@Override
+	public List<Map<String, Object>> getMainInfo() {
+		List<Map<String, Object>> mainInfo = sqlSession.selectList("net.haebang.admin.dao.AdminDao.getMainInfo");
+		return mainInfo;
+	}
+	
+	// 조건검색 - 오늘기준 서비스 진행 될 구별 정보 가져오기
+	@Override
+	public List<Map<String, Object>> searchGuInfo(Map<String, Object> map) {
+		List<Map<String, Object>> guInfo = sqlSession.selectList("net.haebang.admin.dao.AdminDao.searchGuInfo", map);
+		return guInfo;
+	}
+
+	
 	
 
 }

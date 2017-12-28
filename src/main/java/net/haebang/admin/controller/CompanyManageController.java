@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import net.haebang.admin.service.AdminService;
 import net.haebang.vo.CompanyVo;
 import net.haebang.vo.EmployeeVo;
+import net.haebang.vo.MemberVo;
 
 /**
  * 	해방업체, 일반업체 관리 컨트롤러
@@ -33,9 +35,14 @@ public class CompanyManageController {
 	private AdminService service;
 	
 	@RequestMapping(value="/admin/companyManage")
-	public String companyManage(){
-		System.out.println("CompanyManageController");
-		return "admin/companyManage";
+	public String companyManage(HttpSession session){
+		
+		MemberVo adminVo = (MemberVo)session.getAttribute("adminVo");
+		if(adminVo == null) {
+			return "redirect:/admin/login";
+		}else {
+			return "admin/companyManage";
+		}
 	}
 	
 
