@@ -27,6 +27,17 @@ public class MemberDaoImpl implements MemberDao{
 		
 		return list;
 	}
+	
+	
+	
+	@Override
+	public MemberVo loginModal(MemberVo member) {
+		MemberVo resultVO = sqlSession.selectOne("net.haebang.member.dao.MemberDao.login", member);
+		return resultVO;
+	}
+	
+	
+	
 
 	@Transactional
 	@Override

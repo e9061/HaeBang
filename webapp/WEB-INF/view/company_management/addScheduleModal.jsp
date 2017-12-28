@@ -360,7 +360,7 @@ date_input2.datepicker({
                     <div class="col-sm-10">
                      
                      	<div class="input-group date" id="datepicker1">
-  					<input class="form-controll" id="date1" name="date1" placeholder="MM-DD-YYYY" type="text"/>
+  					<input class="form-control" id="date1" name="date1" placeholder="MM-DD-YYYY" type="text"/>
   					<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 						</div>
                               

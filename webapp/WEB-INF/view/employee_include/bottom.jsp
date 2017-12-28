@@ -32,7 +32,7 @@
 							<p>
 
 								<i class="icon-phone"></i> (02) 453-7190 - (010) 2273-9023 <br>
-								<i class="icon-envelope-alt"></i> shook88@haebang.org
+								<i class="icon-envelope-alt"></i> HaeBang@haebang.org
 							</p>
 						</div>
 					</div>
@@ -48,8 +48,7 @@
 								<li
 									style="text-align: left; border-bottom: 1px solid #eeeeee; height: 53px;">
 									<a href="#"
-									style="padding: 15px 0; display: block; color: #000;">서비스 소개
-										</a>
+									style="padding: 15px 0; display: block; color: #000;">서비스 소개</a>
 								</li>
 								<li
 									style="text-align: left; border-bottom: 1px solid #eeeeee; height: 53px;">

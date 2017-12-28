@@ -750,7 +750,7 @@ s0.parentNode.insertBefore(s1,s0);
 
 
 
-								<table class="noticetable" style="width: 680px;">
+								<table class="noticetable" style="width: 700px;">
 
 
 									<tbody>
@@ -789,7 +789,7 @@ s0.parentNode.insertBefore(s1,s0);
 
 
 
-							<table class="noticetable" style="width: 800px;">
+							<table class="noticetable" style="width: 700px;">
 
 
 								<tbody>

@@ -280,6 +280,18 @@ private final int LINE_PER_PAGE = 10;
 			out.close();
 		}
 	}
+	
+	
+	@Override
+	public MemberVo loginModal(MemberVo member) {
+		MemberVo mem = dao.loginModal(member);
+
+		if (mem == null) {
+			throw new NoMemberException();
+		}
+
+		return mem;
+	}
 
 	
 }

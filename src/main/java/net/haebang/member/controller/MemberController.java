@@ -173,7 +173,38 @@ response.setContentType("text/html;charset=utf-8");
 		
 		}
 		
-	}                     
+	}               
+	
+	
+	
+	   @RequestMapping(value = "/member/modalLogin", method=RequestMethod.POST)
+	   public @ResponseBody MemberVo modalLogin(HttpSession session, HttpServletRequest request) {
+		   
+		   String m_id = request.getParameter("signin-email");
+		   String m_password = request.getParameter("signin-password");
+		   
+		   MemberVo userVO = new MemberVo();
+		   userVO.setM_id(m_id);
+		   userVO.setM_password(m_password);
+		   
+		   try {
+			   
+			   userVO = service.loginModal(userVO);
+			   session.setAttribute("userVO", userVO);
+		   
+			   return userVO;
+			   
+		   } catch (NoMemberException e) {
+			   
+			   return null;
+			   
+		   }
+		   
+		 
+		   
+	   }
+	
+	
 	
    
    @RequestMapping(value = "/member/blogin", method=RequestMethod.POST)

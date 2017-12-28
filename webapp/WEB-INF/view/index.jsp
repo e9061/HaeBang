@@ -1405,7 +1405,8 @@ header .navbar {
 														</div>
 													</div>
 												</div>
-												<fieldset>
+												
+													<fieldset style="border:0px !important; margin: 0 2px; padding: .35em .625em .75em;">
 													<div>
 														<label for="card-company">카드사 선택</label>
 													</div>
@@ -1422,7 +1423,8 @@ header .navbar {
 													</div>
 												</fieldset>
 
-												<fieldset>
+												<fieldset style="border:0px !important; margin: 0 2px; padding: .35em .625em .75em;">
+
 													<div>
 														<label for="card-number">카드번호</label>
 													</div>
@@ -1439,14 +1441,15 @@ header .navbar {
 														style="width: 80px; margin-bottom: 20px; float: left;"
 														class="cardinput" maxlength="4" />
 												</fieldset>
-												<fieldset>
+												<fieldset style="border:0px !important; margin: 0 2px; padding: .35em .625em .75em;">
+
 													<div>
 														<label for="card-holder">카드 소지자 영문성함</label>
 													</div>
 													<input type="text" name="card-holder" id="card-holder"
 														style="width: 150px; margin-bottom: 20px; display: inline-block; height: 34px; padding: 6px 12px; font-size: 14px; line-height: 1.428571429; color: #555; background-color: #fff; background-image: none; border: 1px solid #ccc; border-radius: 4px; box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075); transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;" />
 												</fieldset>
-												<fieldset class="fieldset-expiration">
+												<fieldset style="border:0px !important; margin: 0 2px; padding: .35em .625em .75em;" class="fieldset-expiration">
 													<div>
 														<label for="card-expiration-month">유효기간</label>
 													</div>
@@ -1488,7 +1491,7 @@ header .navbar {
 														</select>
 													</div>
 												</fieldset>
-												<fieldset class="fieldset-ccv">
+												<fieldset style="border:0px !important; margin: 0 2px; padding: .35em .625em .75em;" class="fieldset-ccv">
 													<div>
 														<label for="card-ccv">CVC</label>
 													</div>
@@ -2069,3 +2072,6 @@ header .navbar {
 
 
 </html>
+
+
+

@@ -20,6 +20,7 @@ public interface MemberDao {
 	MemberVo blogin(MemberVo member);
 	MemberVo mainLogin(MemberVo member);
 	void updateMember(MemberVo member);
+	MemberVo loginModal(MemberVo member);
 	
 	
 	/******************************** 공지사항 *************************************************/

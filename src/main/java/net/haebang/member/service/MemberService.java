@@ -20,6 +20,7 @@ public interface MemberService {
 	MemberVo selectOneMember(String m_id);
 	void logout(HttpSession session);
 	MemberVo login(MemberVo member, HttpServletResponse response) throws Exception;
+	MemberVo loginModal(MemberVo member);
 	MemberVo blogin(MemberVo member);
 	MemberVo mainLogin(MemberVo member, HttpServletResponse response) throws Exception;
 	void updateMember(MemberVo member);

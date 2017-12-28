@@ -278,9 +278,13 @@ public class QController {
 			cal.set(Calendar.HOUR_OF_DAY, a);
 			cal.set(Calendar.MINUTE, b+selectedService.getS_duration());
 
-			int hour = cal.get(Calendar.HOUR);
+			int hour = cal.get(Calendar.HOUR_OF_DAY);
 			int hourLength = (int)(Math.log10(hour)+1);
 			String endTimeHour1 = "";
+			
+			int minute = cal.get(Calendar.MINUTE);
+			int minuteLength = (int)(Math.log10(minute)+1);
+			String endTimeMinute1 = "";
 			
 			if(hourLength<2) {
 				
@@ -292,7 +296,16 @@ public class QController {
 				
 			}
 			
-			String endTimeMinute1 = String.valueOf(cal.get(Calendar.MINUTE));
+			if(minuteLength<2) {
+				
+				endTimeMinute1 = "0"+String.valueOf(minute);
+				
+			}else {
+				
+				endTimeMinute1 = String.valueOf(minute);
+				
+			}			
+			
 			
 			String startTime1 = date1 + "T" + startTimeHour1 + ":" + startTimeMinute1 + ":00.000";
 			String endTime1 = date1 + "T" + endTimeHour1 + ":" + endTimeMinute1 + ":00.000";			
@@ -343,9 +356,13 @@ public class QController {
 			cal.set(Calendar.HOUR_OF_DAY, a);
 			cal.set(Calendar.MINUTE, b+selectedService.getS_duration());
 
-			int hour = cal.get(Calendar.HOUR);
+			int hour = cal.get(Calendar.HOUR_OF_DAY);
 			int hourLength = (int)(Math.log10(hour)+1);
 			String endTimeHour1 = "";
+			
+			int minute = cal.get(Calendar.MINUTE);
+			int minuteLength = (int)(Math.log10(minute)+1);
+			String endTimeMinute1 = "";
 			
 			if(hourLength<2) {
 				
@@ -357,13 +374,19 @@ public class QController {
 				
 			}
 			
-			String endTimeMinute1 = String.valueOf(cal.get(Calendar.MINUTE));
+			if(minuteLength<2) {
+				
+				endTimeMinute1 = "0"+String.valueOf(minute);
+				
+			}else {
+				
+				endTimeMinute1 = String.valueOf(minute);
+				
+			}
+			
 			
 			String startTime1 = date1 + "T" + startTimeHour1 + ":" + startTimeMinute1 + ":00.000";
 			String endTime1 = date1 + "T" + endTimeHour1 + ":" + endTimeMinute1 + ":00.000";			
-			
-			System.out.println(endTime1);
-			
 			
 	
 			Map<String, Object> paramMap = new HashMap<String, Object>();
