@@ -10,7 +10,7 @@
 	</resultMap>
 	
 	<sql id="selectAll">
-		select q_no,q_title,q_writer,q_content,q_viewCnt,date_format( q_regDate, '%Y-%M-%d' ) as q_regDate, q_oriName, q_saveName
+		select q_no,q_title,q_writer,q_content,q_viewCnt,date_format( q_regDate, '%Y-%c-%d' ) as q_regDate, q_oriName, q_saveName
 		from t_qna		
 	</sql>
 	

@@ -16,7 +16,7 @@ public class SrvServiceImpl implements SrvService{
 	@Autowired
 	SrvDao srvdao;
 	
-	public List<ServiceVo> selectList(String con1, String con2, String con3) {
+	public List<ServiceVo> selectList(String con1, String con2, int con3) {
 		
 		List<ServiceVo> readyList = srvdao.selectList(con1, con2, con3);
 		return readyList;
@@ -24,25 +24,54 @@ public class SrvServiceImpl implements SrvService{
 	}
 	
 	
+	public String mkOrderNo(String orderType, String orderDate, String orderStartHour, String orderStartMinute,
+			String orderPhone3) {
+
+		String year = orderDate.substring(0, 4);
+		String month = orderDate.substring(5, 7);
+		String day = orderDate.substring(8, 10);
+
+		orderDate = year + month + day;
+
+		String orderNo = orderType + orderDate + orderStartHour + orderStartMinute + orderPhone3;
+		return orderNo;
+	}
+
+	
+	
 	
 	@Override
 	public void insertScheduleByOnetime(Map<String, Object> map) {
 		
 		MemberVo registeredMember = srvdao.selectUserByInfo(map);
-		System.out.println("***********************서비스:1회성 고객정보select 완료*******************************");
+		
 		
 		System.out.println(registeredMember);
+		String phone = (String)map.get("phone");
+		String phone3 = phone.substring(phone.length()-4, phone.length());
+		
+		String date1 = (String)map.get("orderNo_date");
+		String startTimeHour1 = (String)map.get("orderNo_startHour");
+		String startTimeMinute1 = (String)map.get("orderNo_startMinute");
+		
 		
 		if(registeredMember == null) {
-			System.out.println("***********************서비스:뉴멤버 1회성 insert메서드 실행전*******************************");
+			
+
+			String orderNo = mkOrderNo("B", date1, startTimeHour1, startTimeMinute1, phone3);
+			map.put("orderNo", orderNo);
+			map.put("type", "B");
 			srvdao.insertScdToNewMemberOnetime(map);
 		
 		
 		}else {
 		
-		map.put("m_no", registeredMember.getM_no());
-		System.out.println("***********************서비스:기존멤버 1회성 insert메서드 실행전*******************************");
 		
+			
+		map.put("m_no", registeredMember.getM_no());
+		String orderNo = mkOrderNo("M", date1, startTimeHour1, startTimeMinute1, phone3);
+		map.put("orderNo", orderNo);		
+		map.put("type", "M");
 		srvdao.insertScdToRegisteredMemberOnetime(map);
 			
 		}	
@@ -54,21 +83,43 @@ public class SrvServiceImpl implements SrvService{
 	public void insertSchedule(Map<String, Object> map) {
 		
 		MemberVo registeredMember = srvdao.selectUserByInfo(map);
-		System.out.println("***********************서비스:정기성 고객정보select 완료*******************************");
+		
+		String phone = (String)map.get("phone");
+		String phone3 = phone.substring(phone.length()-4, phone.length());
+		
+		
+		String date1 = (String)map.get("orderNo_date");
+		String startTimeHour1 = (String)map.get("orderNo_startHour");
+		String startTimeMinute1 = (String)map.get("orderNo_startMinute");
+		
 		
 		if(registeredMember == null) {
 				
-			System.out.println("***********************서비스:뉴멤버 정기성 insert메서드실행전*******************************");
+			String orderNo = mkOrderNo("B", date1, startTimeHour1, startTimeMinute1, phone3);
+			map.put("orderNo", orderNo);		
+			map.put("type", "B");
 			srvdao.insertScdToNewMember(map);	
+		
 		}else {
+
 		
 			map.put("m_no", registeredMember.getM_no());
-			System.out.println("***********************서비스:기존멤버 정기성 insert메서드실행전 *******************************");		
+			String orderNo = mkOrderNo("M", date1, startTimeHour1, startTimeMinute1, phone3);
+			map.put("orderNo", orderNo);
+			map.put("type", "M");
 			srvdao.insertScdToRegisteredMember(map);
 			
 		}	
 		
 		
+	}
+
+
+
+	@Override
+	public ServiceVo getServiceInfo(int s_no) {
+		ServiceVo selectedService = srvdao.getServiceInfo(s_no);
+		return selectedService;
 	}
 	
 

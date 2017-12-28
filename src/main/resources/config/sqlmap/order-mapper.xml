@@ -15,8 +15,13 @@
 	
 	
 	 <insert id="insertScdToNewMember" parameterType="java.util.HashMap">
-		insert into t_member(m_name, m_address, m_phone, m_type, m_lon, m_lat) values(#{name}, #{address}, #{phone}, #{type}, #{lon}, #{lat})
+		insert into t_member(m_name, m_address, m_phone, m_type, m_lon, m_lat, m_gu, m_cardCo, m_cardNo, m_cardHolder, m_cardExp, m_cardCVC) 
+		values(#{name}, #{address}, #{phone}, #{type}, #{lon}, #{lat}, #{gu}, #{cardCo}, #{cardNo}, #{cardHolder}, #{cardExp}, #{cardCVC})
 	</insert>
+	
+	<update id="updateMemberInfo" parameterType="java.util.HashMap">
+		update t_member set m_name=#{name}, m_address=#{address}, m_lon=#{lon}, m_lat=#{lat}, m_gu=#{gu}, m_cardCo=#{cardCo}, m_cardNo=#{cardNo}, m_cardHolder=#{cardHolder}, m_cardExp=#{cardExp}, m_cardCVC=#{cardCVC} where m_phone = #{phone};
+	</update>
 	
 	
 	<select id="selectUserByInfo" parameterType="java.util.HashMap" resultType="memberVo">
@@ -25,19 +30,22 @@
 	
 	
 	<insert id="insertScdByMNoOnetime" parameterType="java.util.HashMap">
-		insert into t_m_order(mo_orderNo, m_no, mo_startTime, mo_endTime, s_no, mo_cnt, mo_freqType) 
-		values(#{orderNo}, #{m_no}, #{startTime}, #{endTime}, #{service}, #{cnt}, #{unit})
+		insert into t_m_order(mo_orderNo, m_no, mo_startTime, mo_endTime, s_no, mo_cnt, mo_total, mo_freqType, mo_freqCycle, mo_memo, mo_callFlag) 
+		values(#{orderNo}, #{m_no}, #{startTime}, #{endTime}, #{service}, #{cnt}, #{total}, #{unit}, #{cycle}, #{comments}, 'ing')
 	</insert>
 	
 	
 	<insert id="insertScdByMNo" parameterType="java.util.HashMap">
-		insert into t_m_order(mo_orderNo, m_no, mo_startTime, mo_endTime, s_no, mo_cnt, mo_total, mo_freqType, mo_freqCycle) values
+		insert into t_m_order(mo_orderNo, m_no, mo_startTime, mo_endTime, s_no, mo_cnt, mo_total, mo_freqType, mo_freqCycle, mo_memo, mo_callFlag) values
 		<foreach collection="scheduleList" item="item" separator=",">
-		(#{orderNo}, #{m_no}, #{item.startTime}, #{item.endTime}, #{service}, #{item.cnt}, #{total}, #{unit}, #{cycle})
+		(#{orderNo}, #{m_no}, #{item.startTime}, #{item.endTime}, #{service}, #{item.cnt}, #{total}, #{unit}, #{cycle}, #{comments}, 'ing')
 		</foreach>
 	</insert>
 	
 	
+	<select id="getServiceInfo" parameterType="Integer" resultType="serviceVo">
+		select * from t_service where s_no = #{s_no}
+	</select>
 	
 	
 	

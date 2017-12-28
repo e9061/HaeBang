@@ -101,7 +101,7 @@ td {
 					</c:when>
 					<c:otherwise>
 						<tr>
-							<td colspan="5">등록된 QnA가 없습니다.</td>
+							<td colspan="5">등록된 FAQ가 없습니다.</td>
 						</tr>
 					</c:otherwise>
 				</c:choose>

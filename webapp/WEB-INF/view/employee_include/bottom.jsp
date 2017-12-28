@@ -32,24 +32,24 @@
 						<div class="widget">
 							<h5 class="widgetheading">Pages</h5>
 							<ul class="link-list">
-								<li><a href="${ pageContext.request.contextPath }">해방 소비자 사이트</a></li>
+								<li><a href="${ pageContext.request.contextPath }">해방 사이트</a></li>
 								<li><a href="${ pageContext.request.contextPath }/admin/main">해방 관리자 사이트</a></li>
-								<li><a href="#">Privacy policy</a></li>
-								<li><a href="#">Career center</a></li>
-								<li><a href="#">Contact us</a></li>																
+								<li><a href="#">개인정보취급방침</a></li>
+								<li><a href="#">채용정보</a></li>
+								<li><a href="#">고객센터</a></li>																
 							</ul>
 						</div>
 					</div>
 					<div class="col-lg-3">
 						<div class="widget">
-							<h5 class="widgetheading">Latest posts</h5>
+							<!-- <h5 class="widgetheading">Latest posts</h5>
 							<ul class="link-list">
 								<li><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a></li>
 								<li><a href="#">Pellentesque et pulvinar enim. Quisque at tempor ligula</a></li>
 								<li><a href="#">Natus error sit voluptatem accusantium doloremque</a></li>
-							</ul>
+							</ul> -->
 						</div>
-					</div>
+					</div> 
 					<div class="col-lg-3">
 						<div class="widget">
 							<h5 class="widgetheading">Flickr photostream</h5>

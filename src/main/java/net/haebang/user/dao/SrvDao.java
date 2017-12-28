@@ -9,7 +9,7 @@ import net.haebang.vo.ServiceVo;
 public interface SrvDao {
 	
 	// 답변에 대한 서비스 표시
-	public List<ServiceVo> selectList(String con1, String con2, String con3);
+	public List<ServiceVo> selectList(String con1, String con2, int con3);
 	
 	MemberVo selectUserByInfo(Map<String, Object> map);
 
@@ -23,4 +23,7 @@ public interface SrvDao {
 
 
 	void insertScdToRegisteredMember(Map<String, Object> map);
+	
+	ServiceVo getServiceInfo(int s_no);
+	
 }

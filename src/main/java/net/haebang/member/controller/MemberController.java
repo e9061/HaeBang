@@ -3,10 +3,13 @@ package net.haebang.member.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,20 +33,22 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import net.haebang.exception.NoMemberException;
 import net.haebang.member.dao.MemberDao;
 import net.haebang.member.service.MemberService;
+import net.haebang.user.service.SrvService;
 import net.haebang.vo.MemberVo;
 import net.haebang.vo.NoticeBoardVo;
+import net.haebang.vo.ServiceVo;
 
-@RequestMapping("/member")
 @Controller
 public class MemberController {
 
    @Autowired
-   MemberService service;
+   private MemberService service;
    
    @Autowired
-   MemberDao dao;
+   private MemberDao dao;
+   
 
-	@RequestMapping(value = "/join", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/join", method = RequestMethod.GET)
 	public String joinForm(Model model) {
 
 		MemberVo member = new MemberVo();
@@ -53,7 +57,7 @@ public class MemberController {
 		return "member/join";
 	}
 
-	@RequestMapping(value = "/join", method = RequestMethod.POST)
+	@RequestMapping(value = "/member/join", method = RequestMethod.POST)
 	public String join(@Valid MemberVo Member, 
 						@RequestParam("m_name") String m_name,
 						@RequestParam("m_id") String m_id,
@@ -73,7 +77,7 @@ public class MemberController {
 	}
 
    
-	@RequestMapping(value= "/myPage", method=RequestMethod.GET)
+	@RequestMapping(value = "/member/myPage", method=RequestMethod.GET)
 	public ModelAndView selectMyInfo(HttpServletRequest request, HttpServletResponse response) {
 		
 		System.out.println("!!!!!!!!!! selectMyInfo  !!!!!!!!!!!!!!!!!");
@@ -95,24 +99,24 @@ public class MemberController {
    
    
    
-	@RequestMapping(value = "/loginForm", method=RequestMethod.GET)
+	@RequestMapping(value = "/member/loginForm", method=RequestMethod.GET)
 	public String loginForm() {
 		return "member/login";
 	}
 	
-	@RequestMapping(value= "/bloginForm", method=RequestMethod.GET)
+	@RequestMapping(value = "/member/bloginForm", method=RequestMethod.GET)
 	public String bloginForm() {
 		return "member/blogin";
 	}
-	@RequestMapping(value= "/prevLoginForm", method=RequestMethod.GET)
+	@RequestMapping(value = "/member/prevLoginForm", method=RequestMethod.GET)
 	public String prevLoginForm() {
 		return "member/prevLogin";
 	}
    
    
-	@RequestMapping(value="/prevLogin", method=RequestMethod.POST)
+	@RequestMapping(value = "/member/prevLogin", method=RequestMethod.POST)
 	public String prevLogin(MemberVo member, HttpSession session, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		response.setContentType("text/html;charset=utf-8");
+response.setContentType("text/html;charset=utf-8");
 		
 		String m_id = request.getParameter("m_id");
 		String m_password = request.getParameter("m_password");
@@ -142,9 +146,9 @@ public class MemberController {
 		
 	}
    
-	@RequestMapping(value="/mainLogin", method=RequestMethod.POST)
+	@RequestMapping(value = "/member/mainLogin", method=RequestMethod.POST)
 	public String mainLogin(MemberVo member, HttpSession session, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
-		response.setContentType("text/html;charset=utf-8");
+response.setContentType("text/html;charset=utf-8");
 		
 		String m_id = request.getParameter("m_id");
 		String m_password = request.getParameter("m_password");
@@ -171,49 +175,8 @@ public class MemberController {
 		
 	}                     
 	
-   /*@RequestMapping(value="/member/modalLogin", method=RequestMethod.POST)
-   public @ResponseBody MemberVo modalLogin(HttpSession session, Model model, HttpServletRequest request) {
-	   
-	   String m_id = request.getParameter("signin-email");
-	   String m_password = request.getParameter("signin-password");
-	   
-	   MemberVo userVO = new MemberVo();
-	   userVO.setM_id(m_id);
-	   userVO.setM_password(m_password);
-	   
-	   try {
-		   
-		   userVO = service.login(userVO, response);
-		   String phone = userVO.getM_phone();
-		   int length = phone.length();
-		   String first = phone.substring(0,3);
-		   String second = "";
-		   String third = "";
-		   if(length==10) {
-			   second = phone.substring(3, 6);
-			   third = phone.substring(6, 10);
-		   } else {
-			   second = phone.substring(3, 7);
-			   third = phone.substring(7, 11);
-		   }
-		   System.out.println(first+second+third);
-		   session.setAttribute("userVO", userVO);
-		   model.addAttribute("userVO",userVO);
-//		   model.addAttribute("first", first);
-//		   model.addAttribute("second", second);
-//		   model.addAttribute("third", third);
-		  
-		   return userVO;
-		   
-	   } catch (NoMemberException e) {
-		   
-		   model.addAttribute("ErrorMessage", "입력하신 회원 정보가 존재하지 않습니다.");
-		   return userVO;
-	   }
-	   
-   }*/
    
-   @RequestMapping(value="/blogin", method=RequestMethod.POST)
+   @RequestMapping(value = "/member/blogin", method=RequestMethod.POST)
 	public String blogin(MemberVo member, HttpSession session, Model model, HttpServletRequest request) {
 		
 		String m_password = request.getParameter("m_password");
@@ -246,7 +209,7 @@ public class MemberController {
 		
 	}
    
-   @RequestMapping(value="/logout")
+   @RequestMapping(value = "/member/logout")
    public String logout(HttpSession session, SessionStatus sessionStatus) {
       
       session.invalidate();
@@ -256,7 +219,7 @@ public class MemberController {
       return "redirect:/";
    }
    
-   @RequestMapping(value="/service")
+   @RequestMapping(value = "/member/service")
    public String service() {
       
       
@@ -264,7 +227,7 @@ public class MemberController {
       return "member/service";
    }
    
-   @RequestMapping(value = "/duplicate1", method = RequestMethod.POST)
+   @RequestMapping(value = "/member/duplicate1", method = RequestMethod.POST)
    public String duplicate1(HttpServletRequest req, Model model) {
       System.out.println(req.getParameter("m_id"));
       MemberVo memberVo = dao.selectById(req.getParameter("m_id"));
@@ -296,7 +259,7 @@ public class MemberController {
 
    }
    
-   @RequestMapping(value = "/{m_id}", method = RequestMethod.GET)
+/*   @RequestMapping(value = "/{m_id}", method = RequestMethod.GET)
    public String updateForm(Model model) {
 
       MemberVo member = new MemberVo();
@@ -304,9 +267,9 @@ public class MemberController {
       model.addAttribute("member", member);
 
       return "member/update";
-   }
+   }*/
 
-   @RequestMapping(value = "/{m_id}", method = RequestMethod.PUT)
+/*   @RequestMapping(value = "/{m_id}", method = RequestMethod.PUT)
    public String update(@Valid MemberVo member,
          @RequestParam("m_name") String m_name,
          @RequestParam("m_id") String m_id,
@@ -327,13 +290,13 @@ public class MemberController {
       service.updateMember(member);
       System.out.println(member+"컨");
       return "redirect:/member/myPage/" + m_id;
-   }
+   }*/
    
    
    /********************************************** 공지사항 ***********************************************************/
    
 
-   @RequestMapping("/memberNotice")
+   @RequestMapping("/member/memberNotice")
    public ModelAndView notice(
          @RequestParam(value="n_type", required=false) String n_type, 
          @RequestParam(value="nowpage", defaultValue="0") int page,
@@ -362,7 +325,7 @@ public class MemberController {
       return mav;
    }
    
-   @RequestMapping(value="/memberNoticeDetail", method = RequestMethod.GET)
+   @RequestMapping(value = "/member/memberNoticeDetail", method = RequestMethod.GET)
    public ModelAndView detail(@RequestParam("no") int no,
                         @RequestParam("n_viewCnt") int n_viewCnt   ) {
       System.out.println("********************************************************************");
@@ -390,7 +353,7 @@ public class MemberController {
    
    /************************************ 주호 myPage 수정 ***************************************************************************/
 	
-	@RequestMapping(value="/changeMyInfo", method=RequestMethod.GET)
+	@RequestMapping(value = "/member/changeMyInfo", method=RequestMethod.GET)
 	public String changeMyInfo (HttpServletRequest request) {
 		
 		System.out.println("!!!!!!!!!!!!!!!!!!!주호 myPage 수정 주호 myPage 수정 주호 myPage 수정 !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -424,14 +387,14 @@ public class MemberController {
 	
 	/**************************************** 주호 my reservation **************************************************************************/
 	
-	@RequestMapping(value= "/myReservation", method=RequestMethod.GET)
+	@RequestMapping(value = "/member/myReservation", method=RequestMethod.GET)
 	public String myReservation (HttpServletRequest request) {
 		
 		return "/member/myReservation";
 	}
 	
 	//접속 유저의 m_id로 예약리스트 받아오기
-	@RequestMapping(value= "/myReservation", method=RequestMethod.POST)
+	@RequestMapping(value = "/member/myReservation", method=RequestMethod.POST)
 	public @ResponseBody List<HashMap<String, Object>> myReservationList (HttpServletRequest request) {
 		System.out.println("!!!!!!!!!! myReservation  !!!!!!!!!!!!!!!!!");
 		
@@ -445,7 +408,7 @@ public class MemberController {
 		return getReservListByMNo;
 	}
 	
-	@RequestMapping(value="/myReservDetail", method=RequestMethod.POST)
+	@RequestMapping(value = "/member/myReservDetail", method=RequestMethod.POST)
 	public @ResponseBody Map<String, Object> myReservDetail(HttpServletRequest request) throws IOException {
 		
 		int mo_no = Integer.parseInt(request.getParameter("mo_no"));
@@ -504,7 +467,7 @@ public class MemberController {
 	}
 	
 	// service 취소 컨트롤러 - mo_orderNo에 해당하는 모든 서비스list 삭제
-	@RequestMapping(value="/cancleService", method=RequestMethod.GET)
+	@RequestMapping(value = "/member/cancleService", method=RequestMethod.GET)
 	public String cancleService(HttpServletRequest request) {
 		String mo_orderNo = request.getParameter("mo_orderNo");
 		service.cancleServiceByOdNo(mo_orderNo);
@@ -512,7 +475,7 @@ public class MemberController {
 	}
 	
 	// 일정 변경 (보장형 & 정기형 - 해당 스케쥴만)
-	@RequestMapping(value="/changeDate", method=RequestMethod.GET)
+	@RequestMapping(value = "/member/changeDate", method=RequestMethod.GET)
 	public String changeDate(HttpServletRequest request) {
 		
 		String mo_orderNo = request.getParameter("mo_orderNo");
@@ -650,7 +613,7 @@ public class MemberController {
 	/**************************************** 주호 my reservation **************************************************************************/
    
 	// 회원 인증
-		@RequestMapping(value = "/approval_member", method = RequestMethod.POST)
+		@RequestMapping(value = "/member/approval_member", method = RequestMethod.POST)
 		public String approval_member(@ModelAttribute MemberVo member, HttpServletResponse response) throws Exception{
 			service.approval_member(member, response);
 			

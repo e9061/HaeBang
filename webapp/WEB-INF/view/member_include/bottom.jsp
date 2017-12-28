@@ -106,5 +106,5 @@
    <script src="${ pageContext.request.contextPath }/resources/js/custom.js"></script>
    <script src="${ pageContext.request.contextPath }/resources/js/step.question.js?v=2"></script>
    <script src="${ pageContext.request.contextPath }/resources/js/jquery-bootstrap-modal-steps.js"></script>
-   <script src="${ pageContext.request.contextPath }/resources/js/step.service.js?v=2"></script>
+   <script src="${ pageContext.request.contextPath }/resources/js/step.service.js?v=3"></script>
    <script src="${ pageContext.request.contextPath }/resources/js/jquery.form.js"></script>

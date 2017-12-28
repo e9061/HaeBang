@@ -233,7 +233,7 @@ private final int LINE_PER_PAGE = 10;
 		msg += member.getM_name() + "님 회원가입을 환영합니다.</h3>";
 		msg += "<div style='font-size: 130%'>";
 		msg += "하단의 인증 버튼 클릭 시 정상적으로 회원가입이 완료됩니다.</div><br/>";
-		msg += "<form method='POST' action='http://13.124.126.84/member/approval_member'>";
+		msg += "<form method='POST' action='http://13.125.88.226/member/approval_member'>";
 		msg += "<input type='hidden' name='m_id' value='" + member.getM_id() + "'>";
 		msg += "<input type='hidden' name='m_approval_key' value='" + member.getM_approval_key() + "'>";
 		msg += "<input type='submit' value='인증'></form><br/></div>";
@@ -275,7 +275,7 @@ private final int LINE_PER_PAGE = 10;
 		}  else { // 이메일 인증을 성공하였을 경우
 			out.println("<script>");
 			out.println("alert('인증이 완료되었습니다. 로그인 후 이용하세요.');");
-			out.println("location.href='http://13.124.126.84/'");
+			out.println("location.href='http://13.125.88.226/'");
 			out.println("</script>");
 			out.close();
 		}

@@ -1,35 +1,77 @@
-/**
- * 정현
- */
+
 
 $(document).ready(function(){
+	
 $('#myModal').modalSteps({
-		
-		
+	
 		callbacks: {
 					'1' : function(){ 
 						$('.modal-footer').show();
 						barDisplay();
+						
+						
+						
 					},
 					'2' : function(){
 						$('.modal-footer').show();
 						
 						barDisplay();
+						
+						
+						if($("input[name='selecttype']:checked").val() == null)
+	                        $(".modal-footer").find('.js-btn-step[data-orientation=next]').attr("disabled", "disabled");
+	                     
+	                     $("input[name='selecttype']").on('change', function(){
+	                        $(".modal-footer").find('.js-btn-step[data-orientation=next]').removeAttr("disabled");
+	                     })
+						
+						
 					},
 					'3' : function(){ 
 						$('.modal-footer').show();
 						
 						barDisplay();
+						
+						
+						if($("input[name='selectinsect']:checked").val() == null)
+	                        $(".modal-footer").find('.js-btn-step[data-orientation=next]').attr("disabled", "disabled");
+	                     
+	                     $("input[name='selectinsect']").on('change', function(){
+	                        $(".modal-footer").find('.js-btn-step[data-orientation=next]').removeAttr("disabled");
+	                     })
+						
+						
+						
 					},
 					'4' : function(){ 
 						$('.modal-footer').show();
 					
 						barDisplay();
+						
+						
+						if($("input[name='selectplace']:checked").val() == null)
+	                        $(".modal-footer").find('.js-btn-step[data-orientation=next]').attr("disabled", "disabled");
+	                     
+	                     $("input[name='selectplace']").on('change', function(){
+	                        $(".modal-footer").find('.js-btn-step[data-orientation=next]').removeAttr("disabled");
+	                     })
+						
+						
 					},
 					'5' : function(){
 						$('.modal-footer').show();
 						
 						barDisplay();
+						
+						
+						if($("input[name='selectsize']:checked").val() == null)
+	                        $(".modal-footer").find('.js-btn-step[data-orientation=next]').attr("disabled", "disabled");
+	                     
+	                     $("input[name='selectsize']").on('change', function(){
+	                        $(".modal-footer").find('.js-btn-step[data-orientation=next]').removeAttr("disabled");
+	                     })
+						
+						
 					},
 			
 					'6' : function(){
@@ -37,43 +79,191 @@ $('#myModal').modalSteps({
 
 										barDisplay();
 										
+										var insects = new Array();
+										$('input[name="selectinsect"]:checked').each(function() {
+										   insects.push($(this).next().children().text());
+										});
+										
+										console.log(insects);
+										
+										jQuery.ajaxSettings.traditional = true;
+
+										
 										$.ajax({
 											url : "/abc",
 											type : "POST",
 											data : {
-												"ans1" : $('input[name="radio-1"]:checked').val(),
-												"ans2" : $('input[name="check-1"]:checked').val(),
-												"ans3" : $('input[name="radio-2"]:checked').val(),
-												"ans5" : $('input[name="radio-4"]:checked').val(),
+												"selecttype" : $('input[name="selecttype"]:checked').val(),												
+												"selectinsect" : insects,
+												"selectplace" : $('input[name="selectplace"]:checked').val(),
+												"selectsize" : $('input[name="selectsize"]:checked').val()											
 											},
 										});
 									},
 					'7' : function(){
 						$('.modal-footer').show();
-						
+							
 						barDisplay();
 					},
+					
 					'8' : function(){
-						$(".modal-footer").hide();
+						$('.modal-footer').show();
 						
 						barDisplay();
+						
 						$.ajax({
 							url : "/bcd",
 							type : "POST",
 							success : srvDisplay,
 						})
+						
+						
+						
+						
 					},
 					'9' : function(){
+						$(".modal-footer").show();
+						
+						barDisplay();
+						
+					},
+					'10' : function(){
 						$('.modal-footer').show();
 					
 						barDisplay();
-					},
+				
+					},					
+					'11' : function(){
+						$('.modal-footer').hide();
+					
+						barDisplay();
+						
+						
+						var type=$("input[type='radio'][name='selecttype']:checked").next().text();
+						$('#final_type').text(type);
+						
+						var insect=[];
+						$("input[type='checkbox'][name='selectinsect']:checked").each(function(index, item){
+					         insect[index] = $(item).next().text();
+				        });
+						
+						$('#final_insect').text(insect);
+						
+						var place=$("input[type='radio'][name='selectplace']:checked").next().text();
+						$('#final_place').text(place);
+						
+						
+						var size=$("input[type='radio'][name='selectsize']:checked").next().text();
+						
+						if(size=="기타"){
+							
+							size=$("input[type='radio'][name='selectsize']:checked").next().next().val();
+							$('#final_size').text(size+"평");
+							
+							
+						}else{
+							
+							$('#final_size').text(size);
+							
+						}
+						
+						
+						
+						
+						
+						
+						var name=document.getElementById("name").value;
+						$('#final_name').text(name);
+						
+						var postcode=document.getElementById("postcode").value;
+						$('#final_postcode').text(postcode);
+						
+						var address=document.getElementById("address").value;
+						$('#final_address').text(address);
+						
+						var detailAddress=document.getElementById("detailAddress").value;
+						$('#final_detailAddress').text(detailAddress);
+						
+						var phone1=$("#phone1 option:selected").val();
+						$('#final_phone1').text(phone1);
+						
+						var phone2=document.getElementById("phone2").value;
+						$('#final_phone2').text(phone2);
+						
+						var phone3=document.getElementById("phone3").value;
+						$('#final_phone3').text(phone3);
+						
+						
+						
+						var service=$("input[type='radio'][name='service1']:checked").parent().next().children().text();
+						$('#final_service').text(service);
+						
+						var explanation=$("input[type='radio'][name='service1']:checked").parent().next().next().children().text();
+						$('#final_explanation').text(explanation);
+						
+						var price=$("input[type='radio'][name='service1']:checked").parent().next().next().next().children().text();
+						$('#final_price').text(price);
+						
+						var date=document.getElementById("date1").value;
+						$('#final_date').text(date);
+						
+						var timeHour=$("#startTimeHour1 option:selected").val();
+						$('#final_timeHour').text(timeHour);
+						
+						var timeMinute=$("#startTimeMinute1 option:selected").val();
+						$('#final_timeMinute').text(timeMinute);
+						
+						var memo=document.getElementById("comments").value;
+						$('#final_memo').text(memo);
+						
+						
+						
+						var cardCo=$("#card-company-list option:selected").text();
+						$('#final_cardCo').text(cardCo);
+						
+						var cardNo1=document.getElementById("cardNo1").value;
+						$('#final_cardNo1').text(cardNo1);
+						
+						var cardNo2=document.getElementById("cardNo2").value;
+						$('#final_cardNo2').text(cardNo2);
+						
+						var cardNo3=document.getElementById("cardNo3").value;
+						$('#final_cardNo3').text(cardNo3);
+						
+						var cardNo4=document.getElementById("cardNo4").value;
+						$('#final_cardNo4').text(cardNo4);
+						
+						var cardName=document.getElementById("card-holder").value;
+						$('#final_cardName').text(cardName);
+						
+						var expMonth=$("#card-expiration-month option:selected").val();
+						$('#final_expMonth').text(expMonth);
+						
+						var expYear=$("#card-expiration-year option:selected").val();
+						$('#final_expYear').text(expYear);
+						
+						var cvc=document.getElementById("card-ccv").value;
+						$('#final_cvc').text(cvc);
+						
 					}
-			})
+					}
+			});
+			
+			
+			
+
+
+	
+			
 	
 	
 	$('#insertMOrder').submit(function(){
-	      
+		
+		if(!confirm("해방하시겠습니까?")){
+			return false;					
+		}
+		
+			      
 		var s = document.sform;
 
 		if (isNull(s.name, '고객 이름을 입력해 주세요')) {
@@ -193,23 +383,24 @@ $('#myModal').modalSteps({
 			}
 		}
 		
-		
-		
+	
 		
 		
 		
 		
 	      $(this).ajaxSubmit({
-				            	url : "/member/addSchedule",
+				            	url : "/member/orderAddSchedule",
 								type : "POST",
 								success : function(){
-									console.log('m_order 저장하러가기');
-									$('button[data-step="8"]').click();
+									alert("해방 신청이 완료되었습니다. 상세 내역은 마이페이지에서 확인하실 수 있습니다.");
+									$('#myModal').modal('toggle');
+									window.location.href="/";
 								}
 	            			});
 	      
 	      	return false;
 		  });
+
 
 	
 		$('#cd-form').submit(function(){
@@ -224,6 +415,7 @@ $('#myModal').modalSteps({
 				return false;
 			}
 			
+			
 			$(this).ajaxSubmit({
 						url : "/member/modalLogin",
 						type : "POST",
@@ -232,16 +424,24 @@ $('#myModal').modalSteps({
 									"signin-password" : $('#signin-password').val()
 							   },
 						success : function(data){
+							
+								if(data==""){
+									alert("회원 정보가 존재하지 않습니다");	
+									window.location.href="#myModal";
+									
+								}else{
+														
 													var result = JSON.parse(data);
 													var phone = result.m_phone;
 													var name = result.m_name;
 													console.log(phone);
 													var first = phone.substr(0,3);
 													console.log(first);
+													var second = "";
 													if(phone.length == 10){
-														var second = phone.substr(3,3);
+														second = phone.substr(3,3);
 														console.log(second);
-														var third = phone.substr(6,4);
+														third = phone.substr(6,4);
 														console.log(third);
 													} else {
 														second = phone.substr(3,4);
@@ -251,20 +451,18 @@ $('#myModal').modalSteps({
 													}
 													$('input#name').val(name);
 													$('select option[value="'+first+'"]').selected();
-													$('input#phone2').val(second);
-													$('input#phone3').val(third);
+													$('#phone2').val(second);
+													$('#phone3').val(third);	
 													
-													alert("success");
+													alert(name+"님 환영합니다");
 													
 													$('button[data-step="6"]').click();
 													$('.modal-footer').show();
-												},	
+												}
+										},	
 							  });
 			return false;
 		});
-			
-			
-		
 			
 			$('#bLogin').click(function(){
 				$('button[data-step="6"]').click();
@@ -275,69 +473,125 @@ $('#myModal').modalSteps({
 				console.log('is it disappeared?');
 				location.reload();
 			});
-})
+			
+			
+		
+});
+
+
+
+
 
 function srvDisplay(data){
 	
 		var result = JSON.parse(data);
-		console.log(result);
+		//console.log(result);
 		var reg = [];
 		var any = [];
-		console.log(result[0].s_style);
+		var one = [];
+		//console.log(result[0].s_style);
 		result.forEach(function(item){
-			if(item.s_style == "j")
+			if(item.s_style == "J"){
 				reg.push(item);
-			else
+			}else if(item.s_style == "B"){
 				any.push(item);
-		});
-		
-		console.log(reg);
-		console.log(any);
-		$("input[type='radio'][name='period-type']").change(function(){
-			
-			
-			
-			if(this.value == "onetime") {
-				
-				var output="";
-				$('#type1').show();
-				any.forEach(function(item){
-					output += "<li class='item-list'><input type='radio'" +
-					"name='service1' value='";
-					output += item.s_no;
-					output +="' id='";
-					output += item.s_no;
-					output += "'><span class='radio-body'><label for='";
-					output += item.s_no;
-					output += "'>";
-					output += item.s_name;
-					output += "</label></span></li>"
-				});
-				$('div#type1 div div ul').html(output);
-				$('#type2').hide();
-				
-				
-			} else if (this.value == "regular") {
-				var output="";
-				$('#type2').show();
-				reg.forEach(function(item){
-					output += "<li class='item-list'><input type='radio'" +
-					"name='service1' value='";
-					output += item.s_no;
-					output +="' id='";
-					output += item.s_no;
-					output += "'><span class='radio-body'><label for='";
-					output += item.s_no;
-					output += "'>";
-					output += item.s_name;
-					output += "</label></span></li>"
-				});
-				$('div#type2 div div ul').html(output);
-				$('#type1').hide();
+			}else{
+				one.push(item);
 			}
+				
 		});
 	
+	
+		console.log(reg);
+		console.log(any);
+		console.log(one);
+		
+		
+		
+		var output="";
+		
+		if(one.length!=0){
+		
+			
+			
+			
+			output += "<br/><div align='center'><h3>[해방 1회성 서비스]</h3></div><br/>"
+				output += "<table class='type09'><thead><tr><th style='width:5%;'></th><th style='width:30%;'>서비스</th><th>내용</th><th style='width:15%;'>총가격</th></tr></thead><tbody>"
+						
+				for (var i = 0; i < one.length; i++) {
+					
+					if(one[i].s_price==1){
+						
+					output += "<tr>"
+			        output += "<td><input type='radio' name='service1' value='"+one[i].s_no+"' id='"+one[i].s_no+"'></td>" ;
+			        output += "<td class='center'><label for='"+one[i].s_no+"'>"+one[i].s_name+"</label></td>" ;
+			        output += "<td><label for='"+one[i].s_no+"'>"+one[i].s_detail+"</label></td>";                                   
+			        output += "<td class='center'><label for='"+one[i].s_no+"'>"+"해방맞춤견적"+"</label></td></tr>";
+						
+						
+						
+					}else{
+					
+					output += "<tr>"
+	                output += "<td><input type='radio' name='service1' value='"+one[i].s_no+"' id='"+one[i].s_no+"'></td>" ;
+	                output += "<td class='center'><label for='"+one[i].s_no+"'>"+one[i].s_name+"</label></td>" ;
+	                output += "<td><label for='"+one[i].s_no+"'>"+one[i].s_detail+"</label></td>";                                   
+	                output += "<td class='center'><label for='"+one[i].s_no+"'>"+numberWithCommas(one[i].s_price)+"원"+"</label></td></tr>";                               
+					
+					}
+	            }
+			output += "</tbody></table><br/><br/>"
+			}
+		
+		
+		if(any.length!=0){
+			
+			output += "<br/><div align='center'><h3>[해방 보장형 서비스]</h3></div><br/>"
+				output += "<table class='type09'><thead><tr><th style='width:5%;'></th><th style='width:30%;'>서비스</th><th>내용</th><th style='width:15%;'>총가격</th></tr></thead><tbody>"
+							
+				for (var i = 0; i < any.length; i++) {
+					output += "<tr>"
+	                output += "<td><input type='radio' name='service1' value='"+any[i].s_no+"' id='"+any[i].s_no+"'></td>" ;
+	                output += "<td class='center'><label for='"+any[i].s_no+"'>"+any[i].s_name+"</label></td>" ;
+	                output += "<td><label for='"+any[i].s_no+"'>"+any[i].s_detail+"</label></td>";                                   
+	                output += "<td class='center'><label for='"+any[i].s_no+"'>"+numberWithCommas(any[i].s_price)+"원"+"</label></td></tr>";                               
+	      
+	            }
+			output += "</tbody></table><br/><br/>"
+
+		}		
+		
+		
+		
+		if(reg.length!=0){
+			
+			output += "<br/><div align='center'><h3>[해방 정기형 서비스]</h3></div><br/>"
+				output += "<table class='type09'><thead><tr><th style='width:5%;'></th><th style='width:30%;'>서비스</th><th>내용</th><th style='width:15%;'>가격(회당)</th></tr></thead><tbody>"
+							
+				for (var i = 0; i < reg.length; i++) {
+					output += "<tr>"
+	                output += "<td><input type='radio' name='service1' value='"+reg[i].s_no+"' id='"+reg[i].s_no+"'></td>" ;
+	                output += "<td class='center'><label for='"+reg[i].s_no+"'>"+reg[i].s_name+"</label></td>" ;
+	                output += "<td><label for='"+reg[i].s_no+"'>"+reg[i].s_detail+"</label></td>";                                   
+	                output += "<td class='center'><label for='"+reg[i].s_no+"'>"+numberWithCommas(reg[i].s_price)+"원"+"</label></td></tr>";                               
+	      
+	            }
+			output += "</tbody></table>"
+			output += "<div align='right'><span style='color:red;'>*정기형은 1회 무료방문 서비스가 포함됩니다.</span></div>"
+
+		}		
+			
+		
+		$('#recomendedService').html(output);
+		
+	
 }
+
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 
 function barDisplay(){
 	var elem = document.getElementById("myBar");
@@ -360,3 +614,7 @@ function barDisplay(){
 		
 	}
 }
+
+
+
+

@@ -186,9 +186,12 @@
 		$("#q4").html(output);
 		$('.qSubmit').text("방역서비스를 신청하세요!");
 		$('.qSubmit').attr("data-toggle", "modal");
-		$('.qSubmit').attr("data-target", "#myModal")
+		$('.qSubmit').attr("data-backdrop", "static");
+		$('.qSubmit').attr("data-keyboard", "false");
+		$('.qSubmit').attr("data-target", "#myModal");
+			
 		
-	}
+	} 
 	
 	function hideElement(){
 		var dummy = document.querySelectorAll(".q");

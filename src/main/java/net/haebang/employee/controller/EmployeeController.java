@@ -1053,104 +1053,101 @@ public class EmployeeController {
 /**********************************FAQ**************************************/
 	
 	
-/**********************************FAQ**************************************/
-	
-	
 	// FAQ 사업자
-	@RequestMapping(value = "/ceo/FE")
-	public ModelAndView selectFE(HttpServletRequest request) {
+		@RequestMapping(value = "/ceo/FE")
+		public ModelAndView selectFE(HttpServletRequest request) {
 
-		// 현재 페이지 번호 저장 변수
-		int pageNo = 0;
-		if (request.getParameter("pageNo") != null) {
-			// 페이지 파라미터가 있는 경우 현재 페이지 번호를 설정
-			pageNo = Integer.parseInt(request.getParameter("pageNo"));
-		}
-		System.out.println(pageNo);
-		// 한페이지에 보여질 목록 수
-		int listSize = 5;
-
-		// 전체 게시글 카운트
-		int totalCount = service.selectAllBoard(pageNo).size();
-		System.out.println(totalCount);
-
-		// 마지막 페이지 구하기
-		int lastPage = (totalCount % listSize == 0) ? totalCount / listSize : totalCount / listSize + 1;
-
-		request.setAttribute("pageNo", pageNo);
-		request.setAttribute("lastPage", lastPage);
-
-		// ======================================================================
-		// 탭 관련 작업 추가 파트
-		// ======================================================================
-		// 목록에 보여질 탭 사이즈
-		int tabSize = 5;
-		// 현재 페이지에 해당하는 탭 위치
-		int currTab = (pageNo - 1) / tabSize + 1;
-		int beginPage = (currTab - 1) * tabSize + 1;
-		int endPage = (currTab * tabSize < lastPage) ? currTab * tabSize : lastPage;
-
-		request.setAttribute("beginPage", beginPage);
-		request.setAttribute("endPage", endPage);
-		// ======================================================================
-
-		// 해당 페이지의 게시글 목록
-		List<Integer> page = new ArrayList<>();
-		page.add((pageNo - 1) * listSize);
-		page.add(listSize);
-		// List<BoardQAVO> BoardList = service.selectPage(page);
-
-		Map<String, Object> boardQAMap = new HashMap<>();
-		boardQAMap.put("startPage", (pageNo - 1) * listSize);
-		boardQAMap.put("count", listSize);
-
-		ModelAndView mav = new ModelAndView();
-		List<QnAVo> list = service.selectAllBoard(pageNo);
-		System.out.println(list);
-		int totalPage = service.getLastPage();
-
-		mav.setViewName("employee/FE");
-		mav.addObject("totalPage", totalPage);
-		mav.addObject("list", list);
-
-		return mav;
-
-	}
-
-	@RequestMapping(value = "/ceo/FE/{q_no}", method = RequestMethod.GET)
-	public String selectFE1(@PathVariable int q_no, Model model) throws IOException{
-		QnAVo QnA = service.selectOneBoard(q_no);
-		System.out.println(QnA.getQ_saveName());
-		
-		if( QnA.getQ_saveName() == null) {
-			model.addAttribute("image");
-		}else {
-			System.out.println(" 1111");
-			File file = new File("C:/dev/HaeBangQnA/" + QnA.getQ_saveName());
-			FileInputStream fis = new FileInputStream(file);
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			int b;
-			byte[] buffer = new byte[1024];
-			while ((b = fis.read(buffer)) != -1) {
-				bos.write(buffer, 0, b);
+			// 현재 페이지 번호 저장 변수
+			int pageNo = 0;
+			if (request.getParameter("pageNo") != null) {
+				// 페이지 파라미터가 있는 경우 현재 페이지 번호를 설정
+				pageNo = Integer.parseInt(request.getParameter("pageNo"));
 			}
-			byte[] fileBytes = bos.toByteArray();
-			fis.close();
-			bos.close();
-			
-			byte[] encoded = Base64.encodeBase64(fileBytes);
-			String encodedString = new String(encoded);
-			
-			model.addAttribute("image", encodedString);
-			
-		}
-		service.updateViewCnt(q_no);
-		/* QnAVo QnA = service.selectOneBoard(q_no); */
+			System.out.println(pageNo);
+			// 한페이지에 보여질 목록 수
+			int listSize = 5;
 
-		model.addAttribute("QnA", QnA);
-		System.out.println("2222");
-		return "employee/FEdetail";
-	}
+			// 전체 게시글 카운트
+			int totalCount = service.selectFE(pageNo).size();
+			System.out.println(totalCount);
+
+			// 마지막 페이지 구하기
+			int lastPage = (totalCount % listSize == 0) ? totalCount / listSize : totalCount / listSize + 1;
+
+			request.setAttribute("pageNo", pageNo);
+			request.setAttribute("lastPage", lastPage);
+
+			// ======================================================================
+			// 탭 관련 작업 추가 파트
+			// ======================================================================
+			// 목록에 보여질 탭 사이즈
+			int tabSize = 5;
+			// 현재 페이지에 해당하는 탭 위치
+			int currTab = (pageNo - 1) / tabSize + 1;
+			int beginPage = (currTab - 1) * tabSize + 1;
+			int endPage = (currTab * tabSize < lastPage) ? currTab * tabSize : lastPage;
+
+			request.setAttribute("beginPage", beginPage);
+			request.setAttribute("endPage", endPage);
+			// ======================================================================
+
+			// 해당 페이지의 게시글 목록
+			List<Integer> page = new ArrayList<>();
+			page.add((pageNo - 1) * listSize);
+			page.add(listSize);
+			// List<BoardQAVO> BoardList = service.selectPage(page);
+
+			Map<String, Object> boardQAMap = new HashMap<>();
+			boardQAMap.put("startPage", (pageNo - 1) * listSize);
+			boardQAMap.put("count", listSize);
+
+			ModelAndView mav = new ModelAndView();
+			List<QnAVo> list = service.selectFE(pageNo);
+			System.out.println(list);
+			int totalPage = service.getLastPage();
+
+			mav.setViewName("employee/FE");
+			mav.addObject("totalPage", totalPage);
+			mav.addObject("list", list);
+
+			return mav;
+
+		}
+
+		@RequestMapping(value = "/ceo/FE/{q_no}", method = RequestMethod.GET)
+		public String selectFE1(@PathVariable int q_no, Model model) throws IOException{
+			QnAVo QnA = service.selectOneBoard(q_no);
+			System.out.println(QnA.getQ_saveName());
+			
+			if( QnA.getQ_saveName() == null) {
+				model.addAttribute("image");
+			}else {
+				System.out.println(" 1111");
+				File file = new File("C:/dev/HaeBangQnA/" + QnA.getQ_saveName());
+				FileInputStream fis = new FileInputStream(file);
+				ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				int b;
+				byte[] buffer = new byte[1024];
+				while ((b = fis.read(buffer)) != -1) {
+					bos.write(buffer, 0, b);
+				}
+				byte[] fileBytes = bos.toByteArray();
+				fis.close();
+				bos.close();
+				
+				byte[] encoded = Base64.encodeBase64(fileBytes);
+				String encodedString = new String(encoded);
+				
+				model.addAttribute("image", encodedString);
+				
+			}
+			service.updateViewCnt(q_no);
+			/* QnAVo QnA = service.selectOneBoard(q_no); */
+
+			model.addAttribute("QnA", QnA);
+			System.out.println("2222");
+			return "employee/FEdetail";
+		}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////// 주호 ///////////////////////////////////////////////
@@ -1226,4 +1223,4 @@ public class EmployeeController {
 	
 	
 
-}	
+}

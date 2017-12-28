@@ -227,8 +227,8 @@ function checkPasswordPattern(str) {
 						<span class="txt_right" style="text-align:right; color:red;"></span>
 					</div>
 					<br />
-					<div style="align:inline;">
-					<select style="width:15%; float:left;" class="form-control" id="phone1" name="phone1">
+					<div style="width:50%; align:center;">
+					<select style="width:30%; float:left;" class="form-control" id="phone1" name="phone1">
 						<option value="">선택</option>
 						<option value="010">010</option>
 						<option value="011">011</option>
@@ -237,16 +237,17 @@ function checkPasswordPattern(str) {
 						<option value="018">018</option>
 						<option value="019">019</option>
 					</select>
-					<input style="width:15%; float:center; display: inline;" path="phone2" id="phone2" name="phone2" class="form-control"
+					<input style="width:33%; display: inline;" path="phone2" id="phone2" name="phone2" class="form-control"
 						placeholder="전화번호를 입력해 주세요." />
-					<input style="width:15%; float:left; display: inline;" path="phone3" id="phone3" name="phone3" class="form-control"
+					<input style="width:33%; display: inline;" path="phone3" id="phone3" name="phone3" class="form-control"
 						placeholder="전화번호를 입력해 주세요." />
 					</div>
 					<br />
 					
 					<!-- <input type="submit" class="btn btn-theme" value="가입 완료"> -->
+					<div style="width:50%;" align="center">
 					<input type="submit" value="가입 완료" class="btn btn-theme" />
-
+					</div>
 					<!-- <a class="btn btn-theme" type="submit" style="width: 100px">가입 완료</a> -->
 					<!-- <input type="submit" class="btn btn-theme" value="가입 완료" /> -->
 				</form:form>
