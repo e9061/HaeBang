@@ -26,4 +26,19 @@ public interface SrvDao {
 
 	ServiceVo getServiceInfo(int s_no);
 	
+	//***************************창대 작성*************************************************
+		int selectNoOneEmployee(Map<String, Object> map);
+
+		int selectPrevMonthOutCome();
+
+		void createEvent(Map<String, Object> map);
+
+		List<Integer> selectMoNoByOrderNo(Map<String, Object> map);
+
+		void updateENoFirstbyMoNo(Map<String, Object> map);
+		
+		//***********************************************************************************
+		
+		
+	
 }

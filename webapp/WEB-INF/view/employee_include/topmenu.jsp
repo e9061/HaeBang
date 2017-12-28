@@ -7,7 +7,7 @@ function openPop(){
     
     var pop_title = "popupOpener" ;
      
-    window.open("", pop_title,"left=900, top=430, width=550, height=300, toolbar=no, scrollbars=no, status=no, resizable=no") ;
+    window.open("", pop_title,"left=650, top=460, width=300, height=300, toolbar=no, scrollbars=no, status=no, resizable=no") ;
      
 	var frmData = document.formData ;
     frmData.target = pop_title ;
@@ -68,10 +68,15 @@ window.onload = function() {
 <link
 	href="${ pageContext.request.contextPath }/resources/skins/default.css"
 	rel="stylesheet" />
+	
+	
 <c:if test="${ not empty userVo }">
 <form name=formData method="post">
 	<input id="userVo" name="e_no" type="hidden" value="${userVo.e_no}" />
 </form></c:if>
+
+
+
 			<div class="navbar navbar-default navbar-static-top">
 				<div class="container">
 					<div class="navbar-header">

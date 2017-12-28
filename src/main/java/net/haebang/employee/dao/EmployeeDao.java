@@ -92,6 +92,8 @@ public interface EmployeeDao {
 
 	List<HashMap<String, Object>> selectAllStartTimes(String mo_orderNo);
 
+	List<HashMap<String, Object>> selectNoOneEmployeeValidation(HashMap<String, Object> map);
+
 
 
 /***************************************스케쥴************************************************/

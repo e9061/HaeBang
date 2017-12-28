@@ -5,19 +5,30 @@
 <!DOCTYPE>
 <html>
 <head>
+<meta charset="utf-8">
+<title>해방</title>
+<!-- css -->
+<link href="${ pageContext.request.contextPath }/resources/css/bootstrap.min.css" rel="stylesheet" />
+<link href="${ pageContext.request.contextPath }/resources/css/fancybox/jquery.fancybox.css" rel="stylesheet">
+<link href="${ pageContext.request.contextPath }/resources/css/jcarousel.css" rel="stylesheet" />
+<link href="${ pageContext.request.contextPath }/resources/css/flexslider.css" rel="stylesheet" />
+<link href="${ pageContext.request.contextPath }/resources/css/style.css" rel="stylesheet" />
+<link href="${ pageContext.request.contextPath }/resources/css/login-modal.css" rel="stylesheet" />
+
+<!-- Theme skin -->
+<link href="${ pageContext.request.contextPath }/resources/skins/default.css" rel="stylesheet" />
+
 <style type="text/css">
 .container1 {
 	padding: 0 30px 0 50px;
 	position: relative;
 }
-
 table.type09 {
 	border-collapse: collapse;
 	line-height: 1.5;
 	margin: 5px;
 	margin-bottom: 20px;
 }
-
 table.type09 thead th {
 	padding: 10px;
 	font-weight: bold;
@@ -26,7 +37,6 @@ table.type09 thead th {
 	border-bottom: 3px solid #036;
 	text-align: center;
 }
-
 table.type09 tbody th {
 	width: 250px;
 	padding: 10px;
@@ -35,28 +45,23 @@ table.type09 tbody th {
 	border-bottom: 1px solid #ccc;
 	background: #f3f6f7;
 }
-
 table.type09 td {
 	width: 350px;
 	padding: 10px;
 	vertical-align: top;
 	border-bottom: 1px solid #ccc;
 }
-
 .center {
 	text-align: center !important;
 	font-weight: bold;
 }
-
 *, *::before, *::after {
 	box-sizing: border-box;
 }
-
 html, body {
 	min-height: 100%;
 	font-family: 'Open sans', sans-serif;
 }
-
 /*--------------------
 Form
 --------------------*/
@@ -67,24 +72,20 @@ Form
 	position: relative;
 	clear: both;
 }
-
 .form fieldset.fieldset-expiration {
 	float: left;
 	width: 60%;
 }
-
 .form fieldset.fieldset-expiration .select {
 	width: 84px;
 	margin-right: 12px;
 	float: left;
 }
-
 .form fieldset.fieldset-ccv {
 	clear: none;
 	float: right;
 	width: 86px;
 }
-
 .form fieldset label {
 	display: block;
 	text-transform: uppercase;
@@ -94,7 +95,6 @@ Form
 	font-weight: bold;
 	font-family: Inconsolata;
 }
-
 .form fieldset input, .form fieldset .select {
 	width: 100%;
 	height: 38px;
@@ -106,14 +106,12 @@ Form
 	border: 1px solid rgba(0, 0, 0, 0.3);
 	box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.2);
 }
-
 .form fieldset input.input-cart-number, .form fieldset .select.input-cart-number
 	{
 	width: 82px;
 	display: inline-block;
 	margin-right: 8px;
 }
-
 .cardinput {
 	display: inline-block;
 	width: 100%;
@@ -132,16 +130,13 @@ Form
 		.15s;
 	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
-
 .cardinput:last-child, .form fieldset input.input-cart-number:last-child,
 	.form fieldset .select.input-cart-number:last-child {
 	margin-right: 0;
 }
-
 .form fieldset .select {
 	position: relative;
 }
-
 .form fieldset .select::after {
 	content: '';
 	border-top: 8px solid #222;
@@ -153,7 +148,6 @@ Form
 	right: 10px;
 	pointer-events: none;
 }
-
 .form fieldset .select select {
 	-webkit-appearance: none;
 	-moz-appearance: none;
@@ -167,12 +161,10 @@ Form
 	left: 6px;
 	background: none;
 }
-
 .form fieldset .select select :-moz-focusring {
 	color: transparent;
 	text-shadow: 0 0 0 #000;
 }
-
 .form button {
 	width: 100%;
 	outline: none !important;
@@ -185,11 +177,9 @@ Form
 	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 	margin-top: 90px;
 }
-
 .form button .fa {
 	margin-right: 6px;
 }
-
 /*--------------------
 Checkout
 --------------------*/
@@ -202,7 +192,6 @@ Checkout
 	padding: 160px 45px 30px;
 	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
 }
-
 /*--------------------
 Credit Card
 --------------------*/
@@ -217,12 +206,10 @@ Credit Card
 	-webkit-transform: translateX(-50%);
 	transform: translateX(-50%);
 }
-
 .credit-card-box:hover .flip, .credit-card-box.hover .flip {
 	-webkit-transform: rotateY(180deg);
 	transform: rotateY(180deg);
 }
-
 .credit-card-box .front, .credit-card-box .back {
 	width: 400px;
 	height: 250px;
@@ -239,7 +226,6 @@ Credit Card
 	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
 	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
 }
-
 .credit-card-box .front::before, .credit-card-box .back::before {
 	content: '';
 	position: absolute;
@@ -252,7 +238,6 @@ Credit Card
 	background-size: cover;
 	opacity: .05;
 }
-
 .credit-card-box .flip {
 	-webkit-transition: 0.6s;
 	transition: 0.6s;
@@ -260,35 +245,29 @@ Credit Card
 	transform-style: preserve-3d;
 	position: relative;
 }
-
 .credit-card-box .logo {
 	position: absolute;
 	top: 9px;
 	right: 20px;
 	width: 60px;
 }
-
 .credit-card-box .logo svg {
 	width: 100%;
 	height: auto;
 	fill: #fff;
 }
-
 .credit-card-box .front {
 	z-index: 2;
 	-webkit-transform: rotateY(0deg);
 	transform: rotateY(0deg);
 }
-
 .credit-card-box .back {
 	-webkit-transform: rotateY(180deg);
 	transform: rotateY(180deg);
 }
-
 .credit-card-box .back .logo {
 	top: 185px;
 }
-
 .credit-card-box .chip {
 	position: absolute;
 	width: 60px;
@@ -299,7 +278,6 @@ Credit Card
 	background: linear-gradient(135deg, #ddccf0 0%, #d1e9f5 44%, #f8ece7 100%);
 	border-radius: 8px;
 }
-
 .credit-card-box .chip::before {
 	content: '';
 	position: absolute;
@@ -313,7 +291,6 @@ Credit Card
 	height: 70%;
 	border-radius: 5px;
 }
-
 .credit-card-box .strip {
 	background: -webkit-linear-gradient(315deg, #404040, #1a1a1a);
 	background: linear-gradient(135deg, #404040, #1a1a1a);
@@ -323,7 +300,6 @@ Credit Card
 	top: 30px;
 	left: 0;
 }
-
 .credit-card-box .number {
 	position: absolute;
 	margin: 0 auto;
@@ -331,7 +307,6 @@ Credit Card
 	left: 19px;
 	font-size: 38px;
 }
-
 .credit-card-box label {
 	font-size: 10px;
 	letter-spacing: 1px;
@@ -342,7 +317,6 @@ Credit Card
 	display: block;
 	margin-bottom: 3px;
 }
-
 .credit-card-box .card-holder, .credit-card-box .card-expiration-date {
 	position: absolute;
 	margin: 0 auto;
@@ -351,13 +325,11 @@ Credit Card
 	font-size: 22px;
 	text-transform: capitalize;
 }
-
 .credit-card-box .card-expiration-date {
 	text-align: right;
 	left: auto;
 	right: 20px;
 }
-
 .credit-card-box .ccv {
 	height: 36px;
 	background: #fff;
@@ -372,12 +344,377 @@ Credit Card
 	text-align: right;
 	padding: 10px;
 }
-
 .credit-card-box .ccv label {
 	margin: -25px 0 14px;
 	color: #fff;
 }
 </style>
+
+
+<style>
+#hi {
+	background-color: skyblue;
+	family-font: bold;
+	width: 500px;
+	height: 50px;
+}
+/* .container {
+	display: inline-block;
+} */
+.hide {
+	visibility: hidden;
+}
+ul, ol {
+	padding: 0;
+	margin: 0 0 0 0;
+	list-style-type: none;
+}
+.modal-80p {
+	width: 80%;
+}
+.ad {
+	position: absolute;
+	bottom: 70px;
+	right: 48px;
+	z-index: 992;
+	background-color: #f3f3f3;
+	position: fixed;
+	width: 155px;
+	padding: 1px;
+}
+.ad-btn-hide {
+	position: absolute;
+	top: -10px;
+	left: -12px;
+	background: #fefefe;
+	background: rgba(240, 240, 240, 0.9);
+	border: 0;
+	border-radius: 26px;
+	cursor: pointer;
+	padding: 2px;
+	height: 25px;
+	width: 25px;
+	font-size: 14px;
+	vertical-align: top;
+	outline: 0;
+}
+.carbon-img {
+	float: left;
+	padding: 10px;
+}
+.carbon-text {
+	color: #888;
+	display: inline-block;
+	font-family: Verdana;
+	font-size: 11px;
+	font-weight: 400;
+	height: 60px;
+	margin-left: 9px;
+	width: 142px;
+	padding-top: 10px;
+}
+.carbon-text:hover {
+	color: #666;
+}
+.carbon-poweredby {
+	color: #6A6A6A;
+	float: left;
+	font-family: Verdana;
+	font-size: 11px;
+	font-weight: 400;
+	margin-left: 10px;
+	margin-top: 13px;
+	text-align: center;
+}
+#type2 {
+	display: none;
+}
+
+
+
+
+/* 모달 */
+
+.form-control1 {
+	display: block;
+	width: 90%;
+	height: 34px;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 1.428571429;
+	color: #555;
+	background-color: #fff;
+	background-image: none;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+	-webkit-transition: border-color ease-in-out .15s, box-shadow
+		ease-in-out .15s;
+	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+#bootstrap-override .jumbotron {
+	background-color: transparent !important;
+	padding: 40px 40px;
+	margin: 30px 10px;
+}
+.centerContent {
+	display: table;
+	margin-left: auto;
+	margin-right: auto;
+}
+label {
+	font-size: 16px !important;
+	margin-bottom: 15px !important;
+}
+#myProgress {
+	width: 100%;
+	background-color: #ddd;
+}
+#myBar {
+	width: 1%;
+	height: 30px;
+	background-color: #4CAF50;
+}
+#bootstrap-override .modal-dialog {
+	width: 50%;
+}
+/* 내정보등록 */
+.header {
+	background: #3f9cb5;
+	padding: 30px 25px;
+	font-size: 30px;
+	color: #fff;
+	text-align: center;
+	text-transform: uppercase;
+	border-radius: 3px 3px 0 0;
+}
+.heading {
+	font-size: 16px;
+	color: #3f9cb5;
+	margin: 10px 0 20px 0;
+	text-transform: capitalize;
+}
+.form-content {
+	padding: 25px;
+	background: #fff;
+}
+.myinfo-form-control {
+	padding: 12px 16px 12px 39px;
+	height: 50px;
+	font-size: 14px;
+	color: #2b2a2a;
+	border: none;
+	border-bottom: 2px solid #ccc;
+	border-radius: 0;
+	box-shadow: none;
+	margin-bottom: 15px;
+}
+.myinfo-form-control:focus {
+	border-color: #3f9cb5;
+	box-shadow: none;
+}
+.control-label {
+	font-size: 17px;
+	color: #ccc;
+	position: absolute;
+	top: 5px;
+	left: 27px;
+	text-align: center;
+}
+textarea.myinfo-form-control {
+	resize: vertical;
+	height: 130px;
+}
+</style>
+
+
+
+
+
+<style type="text/css">
+header .navbar {
+	min-height: 70px;
+}
+
+.box-bottom a {
+	color: #111;
+	font-weight: 700;
+}
+
+.box-bottom {
+	background: #fff;
+	/* color: #00B; */
+}
+
+.box-bottom {
+	padding: 20px 10px;
+	text-align: left;
+}
+
+.box-gray {
+	background: #FFF;
+	padding: 0px 0px 0px;
+}
+
+.btn-xl {
+	color: #fff;
+	background-color: #fff;
+	border-color: #fff;
+	text-transform: uppercase;
+	font-weight: 400;
+	font-size: 16px;
+	padding: 17px 34px;
+	border-radius: 30px;
+}
+
+.btn-xl-default {
+	color: #fff;
+	background-color: #8383FF;
+	border-color: #fff;
+	text-transform: uppercase;
+	font-weight: 400;
+	font-size: 16px;
+	padding: 17px 34px;
+	border-radius: 30px;
+	border: solid;
+}
+
+.slide-outer {
+  display: table;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.slide-mid {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+@media screen and (max-width: 991px) {
+  .slide-mid {
+    display: table-cell;
+    vertical-align: top;
+    padding-top: 35%;
+  }
+}
+
+.slide-inner {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1000px;
+}
+
+.en-slide-details {
+  text-align: center;
+  color: #fff;
+  font-size: 30.006px;
+  font-size: 3rem;
+	line-height: 1.5;
+}
+
+.en-slide-details p {
+  margin-bottom:0px;
+}
+
+.en-slide-details a {
+  color: #fff;
+}
+.en-slide-details span.edit-link a {
+  color: #eee;
+  padding: 2px 5px;
+  border: 2px solid #ddd;
+  font-size: 12px;
+}
+.en-slide-details h1 {
+  font-size: 39.998px;
+  font-size: 2.857rem;
+}
+.en-slide-details h2 {
+  font-size: 35.994px;
+  font-size: 2.571rem;
+}
+.en-slide-details h3 {
+  font-size: 34.006px;
+  font-size: 2.429rem;
+}
+.en-slide-details h4 {
+  font-size: 30.002px;
+  font-size: 2.143rem;
+}
+.en-slide-details h5 {
+  font-size: 18.004px;
+  font-size: 1.286rem;
+}
+.en-slide-details h6 {
+  font-size: 28px;
+  font-size: 2rem;
+}
+
+.enliven-slider-title {
+  font-size: 35.998px;
+  font-size: 2.857rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+@media screen and (max-width: 991px) {
+  h1.enliven-slider-title {
+    font-size: 23.8px;
+    font-size: 1.7rem;
+    padding: 0 60px;
+  }
+
+  .en-slide-details p {
+    font-size: 23.8px;
+    font-size: 2.2rem;
+    padding: 0 20px;
+    letter-spacing: -0.05rem;
+  }
+  .en-slide-details h1 {
+    font-size: 25.998px;
+    font-size: 1.857rem;
+  }
+  .en-slide-details h2 {
+    font-size: 23.996px;
+    font-size: 1.714rem;
+  }
+  .en-slide-details h3 {
+    font-size: 21.994px;
+    font-size: 1.571rem;
+  }
+  .en-slide-details h4 {
+    font-size: 20.006px;
+    font-size: 1.429rem;
+  }
+  .en-slide-details h5 {
+    font-size: 18.004px;
+    font-size: 1.286rem;
+  }
+  .en-slide-details h6 {
+    font-size: 16.002px;
+    font-size: 1.143rem;
+  }
+}
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20);
+  opacity: 1;
+  /* background: #000; */
+}
+
+</style>
+
+
+
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 <link rel='stylesheet prefetch'
@@ -395,12 +732,10 @@ Credit Card
 				{
 					oncomplete : function(data) {
 						// 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
 						// 각 주소의 노출 규칙에 따라 주소를 조합한다.
 						// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
 						var fullAddr = data.address; // 최종 주소 변수
 						var extraAddr = ''; // 조합형 주소 변수
-
 						// 기본 주소가 도로명 타입일때 조합한다.
 						if (data.addressType === 'R') {
 							//법정동명이 있을 경우 추가한다.
@@ -416,17 +751,13 @@ Credit Card
 							fullAddr += (extraAddr !== '' ? ' (' + extraAddr
 									+ ')' : '');
 						}
-
 						// 우편번호와 주소 정보를 해당 필드에 넣는다.
 						document.getElementById('postcode').value = data.zonecode; //5자리 새우편번호 사용
 						document.getElementById('address').value = fullAddr;
 						document.getElementById('address').focus();
-
 					}
 				}).open();
-
 	}
-
 	function inputAddress(address) {
 		$
 				.ajax({
@@ -455,240 +786,154 @@ Credit Card
 							document.getElementById('m_gu').value = result.coordinateInfo.coordinate[0].gu_gun;
 						}
 					},
-
 				});
 	}
 </script>
 
 
+
+
 </head>
-<style>
-#hi {
-	background-color: skyblue;
-	family-font: bold;
-	width: 500px;
-	height: 50px;
-}
-
-.container {
-	display: inline-block;
-}
-
-.hide {
-	visibility: hidden;
-}
-
-ul, ol {
-	padding: 0;
-	margin: 0 0 0 0;
-	list-style-type: none;
-}
-
-.modal-80p {
-	width: 80%;
-}
-
-.ad {
-	position: absolute;
-	bottom: 70px;
-	right: 48px;
-	z-index: 992;
-	background-color: #f3f3f3;
-	position: fixed;
-	width: 155px;
-	padding: 1px;
-}
-
-.ad-btn-hide {
-	position: absolute;
-	top: -10px;
-	left: -12px;
-	background: #fefefe;
-	background: rgba(240, 240, 240, 0.9);
-	border: 0;
-	border-radius: 26px;
-	cursor: pointer;
-	padding: 2px;
-	height: 25px;
-	width: 25px;
-	font-size: 14px;
-	vertical-align: top;
-	outline: 0;
-}
-
-.carbon-img {
-	float: left;
-	padding: 10px;
-}
-
-.carbon-text {
-	color: #888;
-	display: inline-block;
-	font-family: Verdana;
-	font-size: 11px;
-	font-weight: 400;
-	height: 60px;
-	margin-left: 9px;
-	width: 142px;
-	padding-top: 10px;
-}
-
-.carbon-text:hover {
-	color: #666;
-}
-
-.carbon-poweredby {
-	color: #6A6A6A;
-	float: left;
-	font-family: Verdana;
-	font-size: 11px;
-	font-weight: 400;
-	margin-left: 10px;
-	margin-top: 13px;
-	text-align: center;
-}
-
-#type2 {
-	display: none;
-}
-
-.form-control1 {
-	display: block;
-	width: 90%;
-	height: 34px;
-	padding: 6px 12px;
-	font-size: 14px;
-	line-height: 1.428571429;
-	color: #555;
-	background-color: #fff;
-	background-image: none;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-	-webkit-transition: border-color ease-in-out .15s, box-shadow
-		ease-in-out .15s;
-	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-}
-
-#bootstrap-override .jumbotron {
-	background-color: transparent !important;
-	padding: 40px 40px;
-	margin: 30px 10px;
-}
-
-.centerContent {
-	display: table;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-label {
-	font-size: 16px !important;
-	margin-bottom: 15px !important;
-}
-
-#myProgress {
-	width: 100%;
-	background-color: #ddd;
-}
-
-#myBar {
-	width: 1%;
-	height: 30px;
-	background-color: #4CAF50;
-}
-
-#bootstrap-override .modal-dialog {
-	width: 50%;
-}
-
-/* 내정보등록 */
-.header {
-	background: #3f9cb5;
-	padding: 30px 25px;
-	font-size: 30px;
-	color: #fff;
-	text-align: center;
-	text-transform: uppercase;
-	border-radius: 3px 3px 0 0;
-}
-
-.heading {
-	font-size: 16px;
-	color: #3f9cb5;
-	margin: 10px 0 20px 0;
-	text-transform: capitalize;
-}
-
-.form-content {
-	padding: 25px;
-	background: #fff;
-}
-
-.myinfo-form-control {
-	padding: 12px 16px 12px 39px;
-	height: 50px;
-	font-size: 14px;
-	color: #2b2a2a;
-	border: none;
-	border-bottom: 2px solid #ccc;
-	border-radius: 0;
-	box-shadow: none;
-	margin-bottom: 15px;
-}
-
-.myinfo-form-control:focus {
-	border-color: #3f9cb5;
-	box-shadow: none;
-}
-
-.control-label {
-	font-size: 17px;
-	color: #ccc;
-	position: absolute;
-	top: 5px;
-	left: 27px;
-	text-align: center;
-}
-
-textarea.myinfo-form-control {
-	resize: vertical;
-	height: 130px;
-}
-</style>
 
 <body id="bootstrap-override">
 	<div id="wrapper">
 		<!-- start header -->
 		<header>
-			<jsp:include page="member_include/topmenu.jsp" />
-		</header>
+			<div class="navbar navbar-default navbar-static-top"
+				style="height: 70px;">
+				<div class="container">
+					<div class="navbar-header" style="margin-top: -10px;">
+						<button type="button" class="navbar-toggle" data-toggle="collapse"
+							data-target=".navbar-collapse">
+							<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+								class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="">해 방</a>
+					</div>
+					<div class="navbar-collapse collapse ">
+						<ul class="nav navbar-nav">
+							<li style="padding-top: 10px;" class=""><a data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#myModal" href="index.html">서비스 신청</a></li>
+							<li style="padding-top: 10px;" class=""><a href="${ pageContext.request.contextPath }/member/service">서비스 목록</a></li>
 
+							<li style="padding-top: 10px;"><a href="${ pageContext.request.contextPath }/member/memberNotice?n_type=m">공지사항</a></li>
+							
+							<c:choose> 
+                     <c:when test="${ empty userVO }">
+							<li style="padding-top: 10px;"><a href="${ pageContext.request.contextPath }/member/join">회원가입</a></li>
+							<li style="padding-top: 10px;"><a href="${ pageContext.request.contextPath }/member/loginForm">로그인</a></li>
+							</c:when>
+							 <c:otherwise>
+                           <li><a href="${ pageContext.request.contextPath }/qna/list">QnA</a></li>
+                        <li><a href="${ pageContext.request.contextPath }/member/myPage">내정보<b class=" icon-angle-down"></b></a></li>
+                            <li><a href="${ pageContext.request.contextPath }/member/logout">로그아웃</a></li>
+                     </c:otherwise>
+                  </c:choose>
+                  
+						</ul>
+					</div>
+				</div>
+			</div>
+		</header>
 		<!-- end header -->
+		
+		
+		
+		
+		
 		<section id="featured">
 			<!-- start slider -->
-			<div class="container">
-				<!--    <div class="row" style="float: left; width: 100%;"> -->
-				<div class="col-lg-8" style="float: left;">
-					<!-- start Customer-control form -->
-					<div id="question">
+			<!-- Slider -->
+			<div id="main-slider" class="flexslider" style="margin-top: 0;">
+				<ul class="slides">
+					<li style="height: 500px"><img style="height: 550px;"
+						src="${ pageContext.request.contextPath }/resources/img/slides/mainPage1.jpg" alt="" />
 
-						<span id="q1"><h5>${q1.title}</h5></span>
-						<p class="q"
-							style="line-height: 19.5px; font-size: 14px; font-weight: 100;">
-							<c:forEach var="option" items="${q1.options}">
-								<input type="radio" name="response[1]" value="${option}"
-									id="${option}">
-								<label for="${option}">${option}</label>
-								<br />
-							</c:forEach>
-						</p>
+				<div class="overlay">
+						<div class="slide-outer">
+							<div class="slide-mid">
+								<div class="container"
+									style="padding-right: 15px; padding-left: 15px; margin-right: auto; margin-left: auto;">
+									<div class="slide-inner">
+										<div class="en-slide-details">
 
-					</div>
-					<button type="button" class="qSubmit btn" value="Next">Next</button>
+											<p style="color:black;">해충에서 해방</p>
+											<p style="color:black;">새로운 삶의 시작입니다</p>
+											<br/>
+												<a class="page-scroll btn btn-xl m-1rem min-width-10em" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#myModal"
+										href="#" style="padding: 25px 45px; color: #111; font-size: 20px;     border: solid 3px;">해방 예약</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						</div> 
+						
+						
+						
+						</li>
+					<li style="height: 500px"><img style="height: 550px;"
+						src="${ pageContext.request.contextPath }/resources/img/slides/mainPage2.jpg" alt="" />
+						
+						 <div class="overlay">
+						<div class="slide-outer">
+							<div class="slide-mid">
+								<div class="container"
+									style="padding-right: 15px; padding-left: 15px; margin-right: auto; margin-left: auto;">
+									<div class="slide-inner">
+										<div class="en-slide-details">
 
-					<div id="myModal" class="modal fade" role="dialog" tabindex="-1"
+											<p style="color:black;">해충에서 해방</p>
+											<p style="color:black;">새로운 삶의 시작입니다</p>
+											
+
+											<br/>
+												<a class="page-scroll btn btn-xl m-1rem min-width-10em" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#myModal"
+										href="#" style="padding: 25px 45px; color: #111; font-size: 20px;     border: solid 3px;">해방 예약</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						</div>
+						
+						</li>
+					<li style="height: 500px"><img style="height: 550px;"
+						src="${ pageContext.request.contextPath }/resources/img/slides/mainPage3.jpg" alt="" />
+						
+						 <div class="overlay">
+						<div class="slide-outer">
+							<div class="slide-mid">
+								<div class="container"
+									style="padding-right: 15px; padding-left: 15px; margin-right: auto; margin-left: auto;">
+									<div class="slide-inner">
+										<div class="en-slide-details">
+
+											<p style="color:white;">해충에서 해방</p>
+											<p style="color:white;">새로운 삶의 시작입니다</p>
+											
+											<br/>
+												<a class="page-scroll btn btn-xl m-1rem min-width-10em" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#myModal"
+										href="#" style="padding: 25px 45px; color: #111;font-size: 20px;     border: solid 3px;">해방 예약</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						</div> 
+						
+						
+						
+						</li>
+				</ul>
+
+
+			</div>
+			<!-- end slider -->
+
+
+
+
+			<div id="myModal" class="modal fade" role="dialog" tabindex="-1"
 						aria-labelly="myModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
 
@@ -1459,248 +1704,329 @@ textarea.myinfo-form-control {
 					</div>
 					<!-- end Customer-control form -->
 
-					<Br /> <Br /> <Br />
-					<!-- </div> -->
-				</div>
-				<div id=renewLogin
-					style="width: 15%; height: auto; float: left; border: 1px-solid-skyblue; margin-left: 50px; position: relative; left: 141.6px;">
-					<c:choose>
-						<c:when test="${ empty userVO }">
-							<h4 style="width: 180px">Login</h4>
-							<form style="width: 180px"
-								action="${ pageContext.request.contextPath }/member/mainLogin"
-								name="form1" method="post" role="form" onsubmit="return prev()">
-								<div class="form-group">
 
-									<input type="text" name="m_id" class="form-control" id="m_id"
-										placeholder="ID" style="width: 100%;" />
 
-									<div class="validation"></div>
-								</div>
-								<div class="form-group">
-									<input type="password" class="form-control" name="m_password"
-										id="m_password" placeholder="PASSWORD" style="width: 100%;" />
-									<div class="validation"></div>
-								</div>
-								<input type="submit" value="로그인" class="btn btn-theme" /> <br />
-								<span style="color: red;">${ ErrorMessage }</span>
-							</form>
-						</c:when>
-						<c:otherwise>
 
-							<li><Strong>${ userVO.m_name }님 방문을 환영합니다!</Strong></li>
-							<li><a
-								href="${ pageContext.request.contextPath }/member/service">서비스현황</a></li>
 
-						</c:otherwise>
-					</c:choose>
-				</div>
-			</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		</section>
-		<section class="callaction">
+
+
+
+		<section style="background: #fff; padding: 75px 0 0 0;"
+			class="callaction">
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="big-cta">
 							<div class="cta-text">
-								<h2>
-									<span>HaeBang</span> 해충과 피해
-								</h2>
+								<h3>ABOUT HAEBANG</h3>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</section>
-		<section id="content">
+
+
+
+
+		<section id="content" style="padding: 10px 0 40px 0;">
 			<div class="container">
-				<div class="row">
+				<div style="margin-bottom: 0px;" class="row">
 					<div class="col-lg-12">
 						<div class="row">
-							<div class="col-lg-3">
+							<div class="col-lg-4">
 								<div class="box">
 									<div class="box-gray aligncenter">
-										<h4>바퀴벌레</h4>
-										<div class="icon">
-											<i class="fa fa-bug fa-3x"></i>
-										</div>
-										<p>
-											한 마리가 3개월에 800마리 번식<br /> <br /> ▶ 식중독 유발, 콜레라, 세균성 이질,
-											장티푸스 등 100여종의 병원균을 보유<br /> ▶ 아토피, 알레르기성 천식, 비염 유발
-										</p>
+										<img src="${ pageContext.request.contextPath }/resources/image/haeBangIntro.jpg" />
 
 									</div>
 									<div class="box-bottom">
-										<a href="#">더 궁금하면 클릭 !</a>
+										<a href="#">해방 회사소개</a>
 									</div>
 								</div>
 							</div>
-							<div class="col-lg-3">
+							<div class="col-lg-4">
 								<div class="box">
 									<div class="box-gray aligncenter">
-										<h4>개미</h4>
-										<div class="icon">
-											<i class="fa fa-bug fa-3x"></i>
-										</div>
-										<p>
-											한 군집 당 4,000마리 번식<br /> <br /> ▶ 식중독, 알레르기성 천식, 비염 유발<br />
-											<br /> <br /> <br />
-										</p>
+										<img src="${ pageContext.request.contextPath }/resources/image/haeBangAppIntro.jpg" />
 
 									</div>
+
 									<div class="box-bottom">
-										<a href="#">더 궁금하면 클릭 !</a>
+										<a href="#">해방 앱 소개</a>
 									</div>
 								</div>
 							</div>
-							<div class="col-lg-3">
+							<div class="col-lg-4">
 								<div class="box">
 									<div class="box-gray aligncenter">
-										<h4>쥐</h4>
-										<div class="icon">
-											<i class="fa fa-bug fa-3x"></i>
-										</div>
-										<p>
-											두 마리가 1년동안 1,256마리 번식<br /> <br /> ▶ 전선을 갉는 습성으로 화재 유발<br />
-											▶ 식중독, 유행성 출혈열, 랩토스피아, 서교열 등의 질병 유발<br /> <br /> <br />
-										</p>
+										<img src="${ pageContext.request.contextPath }/resources/image/haeBangManAppIntro.jpg" />
 
 									</div>
-									<div class="box-bottom">
-										<a href="#">더 궁금하면 클릭 !</a>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-3">
-								<div class="box">
-									<div class="box-gray aligncenter">
-										<h4>집먼지 진드기</h4>
-										<div class="icon">
-											<i class="fa fa-bug fa-3x"></i>
-										</div>
-										<p>
-											매일 1~3개 알 산란, 1mg에 2만마리 서식<br /> <br /> ▶ 미세하면서 군체량이 많아 발생
-											시 상당한 스트레스 유발<br /> ▶ 천식, 기관지염 등의 호흡계 질환 유발
-										</p>
 
-									</div>
 									<div class="box-bottom">
-										<a href="#">더 궁금하면 클릭 !</a>
+										<a href="#">해방맨 앱 소개</a>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+				<div style="margin-bottom: 0px;" class="row">
+					<div class="col-lg-12">
+						<div class="row">
+							<div class="col-lg-4">
+								<div class="box">
+									<div class="box-gray aligncenter">
+										<img src="${ pageContext.request.contextPath }/resources/image/haeBangServiceIntro.jpg" />
+
+									</div>
+									<div class="box-bottom">
+										<a href="#">해방 서비스 소개</a>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="box">
+									<div class="box-gray aligncenter">
+										<img src="${ pageContext.request.contextPath }/resources/image/haeBangQnAIntro.jpg" />
+
+									</div>
+
+									<div class="box-bottom">
+										<a href="#">QnA</a>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="box">
+									<div class="box-gray aligncenter" style="background: #F8F8EE;">
+										<img src="${ pageContext.request.contextPath }/resources/image/haeBangeNoticeIntro.png" />
+
+									</div>
+
+									<div class="box-bottom">
+										<a href="#">공지사항­</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
 				<!-- divider -->
-				<div class="row">
+				<div class="row" style="margin-bottom: 0px;">
 					<div class="col-lg-12">
 						<div class="solidline"></div>
 					</div>
 				</div>
-				<!-- end divider -->
-				<!-- Portfolio Projects -->
-				<div class="row">
-					<div class="col-lg-12">
-						<h4 class="heading">HaeBang Solution</h4>
+
+				<section style="background: #fff; padding: 0 0 0 0;"
+					class="callaction">
+					<div class="container">
 						<div class="row">
-							<section id="projects">
-								<ul id="thumbs" class="portfolio">
-									<!-- Item Project and Filter Name -->
-									<li class="col-lg-3 design" data-id="id-0" data-type="web">
-										<div class="navbar-collapse collapse ">
-											<ul class="nav navbar-nav">
-												<li class="active" style="float: center"><strong><h4>1단계
-															: 사전조사, 진단</h4></strong></li>
-											</ul>
-										</div>
-										<div class="item-thumbs">
-											<!-- Fancybox - Gallery Enabled - Title - Full Image -->
-											<a class="hover-wrap fancybox" data-fancybox-group="gallery"
-												title="1단계 : 사전조사 및 진단" href="resources/img/works/1.jpg">
-												<span class="overlay-img">1단계 : 사전조사, 진단</span> <span
-												class="overlay-img-thumb font-icon-plus"></span>
-											</a>
-											<!-- Thumb Image and Description -->
-											<img
-												src="${ pageContext.request.contextPath }/resources/img/works/1.jpg"
-												alt="사전 조사를 통해, 대략적인 범위를 조사하여 진단하는 단계입니다.">
-										</div>
-									</li>
-									<!-- End Item Project -->
-									<!-- Item Project and Filter Name -->
-									<li class="item-thumbs col-lg-3 design" data-id="id-1"
-										data-type="icon">
-										<div class="navbar-collapse collapse ">
-											<ul class="nav navbar-nav">
-												<li class="active" style="float: center"><strong><h4>2단계
-															: 서비스 처방</h4></strong></li>
-											</ul>
-										</div> <!-- Fancybox - Gallery Enabled - Title - Full Image --> <a
-										class="hover-wrap fancybox" data-fancybox-group="gallery"
-										title="2단계 : 해방서비스 결정 및 처방" href="resources/image/ready.png">
-											<span class="overlay-img">2단계 : 서비스 처방</span> <span
-											class="overlay-img-thumb font-icon-plus"></span>
-									</a> <!-- Thumb Image and Description --> <img
-										src="${ pageContext.request.contextPath }/resources/image/ready.png"
-										alt="사전에 진단된 판단을 토대로, 어떤 방식을 취할건지 결정하는 단계입니다.">
-									</li>
-									<!-- End Item Project -->
-									<!-- Item Project and Filter Name -->
-									<li class="item-thumbs col-lg-3 photography" data-id="id-2"
-										data-type="illustrator">
-										<div class="navbar-collapse collapse ">
-											<ul class="nav navbar-nav">
-												<li class="active" style="float: center"><strong><h4>3단계
-															: 해방 서비스</h4></strong></li>
-											</ul>
-										</div> <!-- Fancybox - Gallery Enabled - Title - Full Image --> <a
-										class="hover-wrap fancybox" data-fancybox-group="gallery"
-										title="3단계 : 해방 서비스 시행" href="resources/image/go.png"> <span
-											class="overlay-img">3단계 : 해방 서비스 시행</span> <span
-											class="overlay-img-thumb font-icon-plus"></span>
-									</a> <!-- Thumb Image and Description --> <img
-										src="${ pageContext.request.contextPath }/resources/image/go.png"
-										alt="2단계에서 결정한 방식으로 '해방'서비스를 시행하는 단계입니다.">
-									</li>
-									<!-- End Item Project -->
-									<!-- Item Project and Filter Name -->
-									<li class="item-thumbs col-lg-3 photography" data-id="id-2"
-										data-type="illustrator">
-										<div class="navbar-collapse collapse ">
-											<ul class="nav navbar-nav">
-												<li class="active" style="float: center"><strong><h4>4단계
-															: 지속적 모니터링</h4></strong></li>
-											</ul>
-										</div> <!-- Fancybox - Gallery Enabled - Title - Full Image --> <a
-										class="hover-wrap fancybox" data-fancybox-group="gallery"
-										title="4단계 : 서비스 기간동안 확실한 모니터링"
-										href="resources/img/works/4.jpg"> <span
-											class="overlay-img">4단계 : 서비스 기간동안 확실한 모니터링</span> <span
-											class="overlay-img-thumb font-icon-plus"></span>
-									</a> <!-- Thumb Image and Description --> <img
-										src="${ pageContext.request.contextPath }/resources/img/works/4.jpg"
-										alt="서비스 기간동안, 해충이 사라지고 있는지 모니터링을 통해 관리합니다.">
-									</li>
-									<!-- End Item Project -->
-								</ul>
-							</section>
+							<div class="col-lg-12">
+								<div class="big-cta">
+									<div class="cta-text">
+										<h3 style="padding-right: 50px;">WHAT'S NEW</h3>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+
+
+
+				<div style="margin-bottom: 0px;" class="row">
+					<div class="col-lg-12">
+						<div class="box">
+							<div class="box-gray aligncenter" style="background: #FFF;">
+
+								<section id="recent-posts-5"
+									class="enl-pb-widget widget_recent_entries">
+									<ul
+										style="display: block; list-style-type: disc; -webkit-margin-before: 1em; -webkit-margin-after: 1em; -webkit-margin-start: 0px; -webkit-margin-end: 0px; -webkit-padding-start: 40px; list-style: none; padding-left: 0px;">
+										<li
+											style="text-align: left; border-top: 1px solid #eeeeee; height: 53px;">
+											<a href="#"
+											style="padding: 15px 0; display: block; color: #000;">[소비자 이벤트] 첫 가입시 1회 무료쿠폰!</a></li>
+										<li
+											style="text-align: left; border-top: 1px solid #eeeeee; height: 53px;">
+											<a href="#"
+											style="padding: 15px 0; display: block; color: #000;">[해방맨 이벤트] 미리해방마스! 모든해방 100%인센티브+</a></li>
+										<li
+											style="text-align: left; border-top: 1px solid #eeeeee; height: 53px;">
+											<a href="#"
+											style="padding: 15px 0; display: block; color: #000;">[해방맨 이벤트] ★이번 주 혜택(12/18~12/26, 기간 연장)</a></li>
+										<li
+											style="text-align: left; border-top: 1px solid #eeeeee; height: 53px;">
+											<a href="#"
+											style="padding: 15px 0; display: block; color: #000;">[소비자 이벤트] 해방 부르면? 산타&amp;루돌풀러스가 온다!</a></li>
+										<li
+											style="text-align: left; border-top: 1px solid #eeeeee; height: 53px;">
+											<a href="#"
+											style="padding: 15px 0; display: block; color: #000;">[소비자 이벤트] ★이번 주 혜택 (12/12~12/18)</a></li>
+										<li
+											style="text-align: left; border-top: 1px solid #eeeeee; height: 53px;">
+											<a href="#"
+											style="padding: 15px 0; display: block; color: #000;">[해방맨 이벤트] 해방스탬프 시즌3 – 해방 남극탐험!</a></li>
+									</ul>
+								</section>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</section>
+
+
+
+
+
+		<section id="featured">
+			<!-- start slider -->
+
+			<div style="margin-bottom: 0px; height: 300px" class="row">
+				<div class="col-lg-12">
+					<div class="box">
+						<div class="box-gray aligncenter"
+							style="background: #8383FF; height: 330px">
+
+							<div class="container">
+								<div class="row">
+									<br />
+									<br />
+									<h3 style="color: #fff; padding-top: 20px;"
+										class="section-heading">해충 방역은 해방입니다</h3>
+									<h3 style="color: #fff;" class="section-heading">지금 예약해 보세요!</h3>
+									<br /> <a class="page-scroll btn btn-xl m-1rem min-width-10em" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#myModal"
+										href="#" style="color: #8383FF;">해방 예약</a> <a
+										class="page-scroll btn btn-xl-default m-1rem min-width-10em"
+										href="#" style="color: #fff;">견적 문의</a>
+								</div>
+							</div>
+
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</section>
+
+
+
+
+		<footer
+			style="color: #111; background: #FFF; border-top: 1px solid whitesmoke; margin-top: 70px; padding-top: 20px;">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-4">
+						<div class="widget">
+							<h5 style="color: #111; margin-top: 18px;" class="widgetheading">Get
+								in touch with us</h5>
+							<address>
+								<strong>해방 조합</strong><br> 서울특별시 마포구<br> 서교동 메세나폴리스 102동 2층
+							</address>
+							<p>
+
+								<i class="icon-phone"></i> (02) 453-7190 - (010) 2273-9023 <br>
+								<i class="icon-envelope-alt"></i> shook88@haebang.org
+							</p>
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div class="widget">
+							<ul
+								style="display: block; list-style-type: disc; -webkit-margin-before: 1em; -webkit-margin-after: 1em; -webkit-margin-start: 0px; -webkit-margin-end: 0px; -webkit-padding-start: 40px; list-style: none; padding-left: 0px; margin-top: 0px">
+								<li
+									style="text-align: left; border-bottom: 1px solid #eeeeee; height: 53px;">
+									<a href="#"
+									style="padding: 15px 0; display: block; color: #000;">회사 소개</a>
+								</li>
+								<li
+									style="text-align: left; border-bottom: 1px solid #eeeeee; height: 53px;">
+									<a href="#"
+									style="padding: 15px 0; display: block; color: #000;">서비스 소개
+										</a>
+								</li>
+								<li
+									style="text-align: left; border-bottom: 1px solid #eeeeee; height: 53px;">
+									<a href="#"
+									style="padding: 15px 0; display: block; color: #000;">채용 정보</a>
+								</li>
+								<li
+									style="text-align: left; border-bottom: 1px solid #eeeeee; height: 53px;">
+									<a href="#"
+									style="padding: 15px 0; display: block; color: #000;">도움말</a>
+								</li>
+							</ul>
 						</div>
 					</div>
 				</div>
 			</div>
+		</footer>
 	</div>
-	</section>
-	<footer>
-		<jsp:include page="member_include/bottom.jsp" />
-	</footer>
-	</div>
-	<a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
 	<!-- javascript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
-
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.easing.1.3.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/bootstrap.min.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.fancybox.pack.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.fancybox-media.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/google-code-prettify/prettify.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/portfolio/jquery.quicksand.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/portfolio/setting.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.flexslider.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/animate.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/custom.js"></script>
+   <script src="${ pageContext.request.contextPath }/resources/js/jquery-bootstrap-modal-steps.js?v=1"></script>
+   <script src="${ pageContext.request.contextPath }/resources/js/step.service.js?v=5"></script>
+   <script src="${ pageContext.request.contextPath }/resources/js/jquery.form.js"></script>
 </body>
+
+
+
 
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -1711,7 +2037,6 @@ textarea.myinfo-form-control {
 			minDate : 0
 		});
 		$("#date1").datepicker("option", "dateFormat", "yy-mm-dd");
-
 	});
 </script>
 
@@ -1726,23 +2051,18 @@ textarea.myinfo-form-control {
 		}
 		return false;
 	}
-
 	function checkpostcode() {
 		alert("우편번호 찾기 버튼을 이용해주세요");
 	}
-
 	$('#card-company-list').on('keyup change', function() {
 		var m = $("#card-company-list option:selected").text();
 		$('.credit-card-box .logo').html(m);
 	});
-
 	$('.cardinput').on('keyup change', function() {
 		$t = $(this);
-
 		if ($t.val().length > 3) {
 			$t.next().focus();
 		}
-
 		var card_number = '';
 		$('.cardinput').each(function() {
 			card_number += $(this).val() + ' ';
@@ -1750,20 +2070,16 @@ textarea.myinfo-form-control {
 				$(this).next().focus();
 			}
 		})
-
 		$('.credit-card-box .number').html(card_number);
 	});
-
 	$('#card-holder').on('keyup change', function() {
 		$t = $(this);
 		$('.credit-card-box .card-holder div').html($t.val());
 	});
-
 	$('#card-holder').on('keyup change', function() {
 		$t = $(this);
 		$('.credit-card-box .card-holder div').html($t.val());
 	});
-
 	$('#card-expiration-month, #card-expiration-year').change(
 			function() {
 				m = $('#card-expiration-month option').index(
@@ -1772,7 +2088,6 @@ textarea.myinfo-form-control {
 				y = $('#card-expiration-year').val().substr(2, 2);
 				$('.card-expiration-date div').html(m + '/' + y);
 			})
-
 	$('#card-ccv').on('focus', function() {
 		$('.credit-card-box').addClass('hover');
 	}).on('blur', function() {
@@ -1780,13 +2095,19 @@ textarea.myinfo-form-control {
 	}).on('keyup change', function() {
 		$('.ccv div').html($(this).val());
 	});
-
 	setTimeout(function() {
 		$('#card-ccv').focus().delay(1000).queue(function() {
 			$(this).blur().dequeue();
 		});
 	}, 500);
 </script>
+
+
+
+
+
+
+
 
 
 </html>

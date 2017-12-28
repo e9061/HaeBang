@@ -246,6 +246,29 @@ public class QController {
 		int s_no = Integer.parseInt(service);
 		
 		ServiceVo selectedService = srvService.getServiceInfo(s_no);
+		int cycle = selectedService.getS_freqCycle();
+		int totalCnt = selectedService.getS_total();
+		String freqType = selectedService.getS_freqType();
+
+		
+		
+		 ////////////////////////////////창대 수정/////////////////////////////////////////////////
+	      String years = date1.substring(0, 4);
+	      String months = date1.substring(5, 7);
+	      String days = date1.substring(8, 10);
+	      String dateForNoOneEmployee = years+months+days;
+	      String dateHourForNoOneEmployee = dateForNoOneEmployee+startTimeHour1;
+	      String dateHourMinuteForNoOneEmployee = date1 + " " + startTimeHour1 + ":" + startTimeMinute1 + ":00";
+	      System.out.println(dateForNoOneEmployee);
+	      System.out.println(dateHourForNoOneEmployee);
+	      System.out.println(dateHourMinuteForNoOneEmployee);
+	      System.out.println("창대검사중");
+	      /////////////////////////////////////////////////////////////////////////////////
+		
+		
+		
+		
+		
 		
 		if (selectedService.getS_freqType().equals("I") || selectedService.getS_freqType().equals("i")) {
 	
@@ -277,6 +300,13 @@ public class QController {
 			System.out.println(endTime1);
 			
 			Map<String, Object> paramMap = new HashMap<String, Object>();
+			
+			 //////////////////////////////////창대 수정//////////////////////////////////////////
+	         paramMap.put("dateForNoOneEmployee", dateForNoOneEmployee);
+	         paramMap.put("dateHourForNoOneEmployee", dateHourForNoOneEmployee);
+	         paramMap.put("dateHourMinuteForNoOneEmployee", dateHourMinuteForNoOneEmployee);
+	         //////////////////////////////////////////////////////////////////////////////////
+	         
 			paramMap.put("name", name);
 			paramMap.put("address", fullAddress);
 			paramMap.put("phone", phone);
@@ -286,8 +316,10 @@ public class QController {
 			paramMap.put("orderNo_startMinute", startTimeMinute1);
 			paramMap.put("startTime", startTime1);
 			paramMap.put("endTime", endTime1);				
-			paramMap.put("unit", selectedService.getS_freqType());
+			paramMap.put("unit", freqType);
 			paramMap.put("cnt", 1);
+			paramMap.put("cycle", cycle);
+			paramMap.put("total", totalCnt);
 			paramMap.put("comments", comments);
 			paramMap.put("lon", m_lon);
 			paramMap.put("lat", m_lat);
@@ -333,10 +365,15 @@ public class QController {
 			System.out.println(endTime1);
 			
 			
-			int cycle = selectedService.getS_freqCycle();
-			int totalCnt = selectedService.getS_total();
-
+	
 			Map<String, Object> paramMap = new HashMap<String, Object>();
+			
+			 //////////////////////////////////창대 수정//////////////////////////////////////////
+	         paramMap.put("dateForNoOneEmployee", dateForNoOneEmployee);
+	         paramMap.put("dateHourForNoOneEmployee", dateHourForNoOneEmployee);
+	         paramMap.put("dateHourMinuteForNoOneEmployee", dateHourMinuteForNoOneEmployee);
+	         //////////////////////////////////////////////////////////////////////////////////
+	         
 			paramMap.put("name", name);
 			paramMap.put("address", fullAddress);
 			paramMap.put("phone", phone);
@@ -374,7 +411,7 @@ public class QController {
 
 			if (selectedService.getS_freqType().equals("W") || selectedService.getS_freqType().equals("w")) {
 
-				paramMap.put("unit", selectedService.getS_freqType());
+				paramMap.put("unit", freqType);
 
 				for (int i = 0; i < totalCnt; i++) {
 
@@ -425,7 +462,7 @@ public class QController {
 			if (selectedService.getS_freqType().equals("M") || selectedService.getS_freqType().equals("m")) {
 			
 
-				paramMap.put("unit", selectedService.getS_freqType());
+				paramMap.put("unit", freqType);
 
 				for (int i = 0; i < totalCnt; i++) {
 
