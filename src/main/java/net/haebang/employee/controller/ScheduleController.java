@@ -30,6 +30,7 @@ import ch.qos.logback.core.util.SystemInfo;
 import net.haebang.employee.service.EmployeeService;
 import net.haebang.vo.EmployeeVo;
 import net.haebang.vo.MemberVo;
+import net.haebang.vo.NoticeBoardVo;
 import net.haebang.vo.OrderEmployeeVo;
 import net.haebang.vo.OrderMemberVo;
 import net.haebang.vo.ScheduleModifyVo;
@@ -42,6 +43,36 @@ public class ScheduleController {
 	@Autowired
 	@Qualifier("employeeService")
 	private EmployeeService employeeService;
+	
+	
+	@RequestMapping(value="/ceo/schedule", method=RequestMethod.GET)
+	public ModelAndView scheduleMain(HttpSession session, ModelAndView mav) {
+		
+		EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");	
+		
+		if(userVo == null) {			
+			
+			List<NoticeBoardVo> mainNoticelist = employeeService.getMainnoticelist();
+			
+			mav.addObject("mainNoticelist", mainNoticelist);
+			mav.addObject("employeeVo", new EmployeeVo());
+			mav.setViewName("company_main/companymain");
+			
+			return mav;
+			
+			
+		}else {
+			
+			mav.setViewName("company_management/scheduleManagement");
+			
+			return mav;
+			
+			
+		}		
+		
+	}
+	
+	
 
 	@RequestMapping(value="/ceo/scheduleList", method=RequestMethod.POST)
 	public @ResponseBody List<ScheduleVo> calendar(HttpSession session) throws Exception{
