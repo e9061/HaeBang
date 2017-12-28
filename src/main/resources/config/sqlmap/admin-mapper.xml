@@ -215,5 +215,32 @@
  		select m_type from t_member m, t_m_order mo where m.m_no=mo.m_no and mo.mo_no=#{mo_no}
  		</select>
  		
+ 		<!-- 관리자 로그인  -->
+ 		<select id="loginAdmin" parameterType="java.util.HashMap" resultType="memberVo">
+ 		select * from t_member where m_id = #{m_id} and m_password = #{m_password} and m_type='A'
+ 		</select>
+ 		
+ 		
+ 		<!-- 메인 전체정보  -->
+ 		<select id="getMainInfo" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+ 		select eo_status, m_gu
+ 		from ((select * from t_member) as m inner join t_m_order as mo on m.m_no = mo.m_no )inner join t_e_order on mo.mo_no = t_e_order.mo_no 
+			 where DATE(mo.mo_startTime) = CURRENT_DATE(); 
+ 		</select>
+ 		
+ 		
+ 		<!-- 조건검색 - 오늘기준 서비스 진행 될 구별 정보 가져오기 -->
+ 		<select id="searchGuInfo" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+ 		select eo_status, m_gu, mo.mo_no, mo_orderNo
+ 		<if test='m_gu != null'>
+ 		from ((select * from t_member where m_gu = #{m_gu}) as m inner join t_m_order as mo on m.m_no = mo.m_no )inner join t_e_order on mo.mo_no = t_e_order.mo_no 
+		where DATE(mo.mo_startTime) = CURRENT_DATE(); 
+ 		</if>
+ 		<if test='eo_status != null'>
+		from ((select * from t_e_order where eo_status=#{eo_status})as eo inner join t_m_order as mo on eo.mo_no = mo.mo_no ) inner join t_member on t_member.m_no = mo.m_no
+		 where DATE(mo.mo_startTime) = CURRENT_DATE(); 
+ 		</if>
+ 		</select>
+ 		
  	
 </mapper>

@@ -44,6 +44,15 @@ public interface AdminDao {
 	String getMtypebyMONo(int mo_no);
 	HashMap<String, Object> getScheduleByMONoByHB(int mo_no);
 	
+	// 관리자 로그인
+	MemberVo loginAdmin(Map<String, Object> map);
+	
+	// 메인 전체 정보
+	List<Map<String, Object>> getMainInfo();
+	
+	// 조건검색 - 오늘기준 서비스 진행 될 구별 정보 가져오기
+	List<Map<String, Object>> searchGuInfo(Map<String, Object> map);
+	
 		
 }
 

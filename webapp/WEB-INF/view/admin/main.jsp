@@ -16,6 +16,163 @@
 
 <script type="text/javascript">
 
+$(document).ready(function(){
+	
+	$('#each-status').hide();
+	$('#each-guName').hide();
+	
+	$.ajax({
+		url:"${pageContext.request.contextPath}/admin/mainInfo",
+		type: "POST",
+		dataType:"json", 
+		success: function(result){
+			// 뿌리기
+			console.log(result[0].m_gu + "/" + result[0].eo_status);
+			console.log(result.length);
+			$('#searchGuInfo').val(result.length);		// 총 갯수
+			// 대기중 / 출동중 / 해방중 / 해방완료
+			
+			var waiting=0;
+			var going=0;
+			var starting=0;
+			var success=0;
+			
+			for(var i=0; i<result.length; i++){
+				if(result[i].eo_status == "대기중"){
+					waiting++;									// 대기중 갯수
+				}else if(result[i].eo_status == "출동중"){
+					going++;									// 출동중 갯수
+				}else if(result[i].eo_status == "해방중"){
+					starting++;									// 해방중 갯수
+				}else{
+					success++;									// 해방완료 갯수
+				}
+				$('#waiting').val(waiting);
+				$('#going').val(going);
+				$('#starting').val(starting);
+				$('#success').val(success);
+				
+				console.log(waiting+"/"+going+"/"+starting+"/"+success);	
+			}
+			
+			
+		}
+	})
+	
+	$('#searchGu').click(function(){
+		$('#each-status').hide();
+		$('#each-guName').show();
+	});
+	
+	
+	$('.total').click(function(){
+		var eo_status = $(this).prev().val();	
+		$('#each-status').show();
+	//	$('#each-status2').html("<td><input type='text' value='1111'></td><td><input type='text' value='123'><input type='hidden' value='345'></td>");
+		$.ajax({
+			url:"${pageContext.request.contextPath}/admin/searchGuInfo",
+			type: "POST",
+			data: {
+					eo_status : eo_status
+				},
+			dataType:"json", 
+			success: function(result){
+				console.log(result.length);	
+			
+				var output = "";
+				
+				output += "<tr>";
+				output += "		<th>진행상태</th>";
+				output += "		<th>구</th>";
+				output += "		<th style='width:45%'>주문번호</th>";
+				output += "</tr>";
+				
+				
+		//		output += "<td> <input type='text' value='" + result[0].eo_status + "'> </td>"
+		//		output += "		<td>진행상태</td>";
+		//		output += "		<td>구</td>";
+				if(result.length == 0){			// 0또는 null
+					output = "";
+					output += "<tr>";
+					output  +=  "<td style='background-color:white'>";
+					output += "		<input type='text' value='해당하는 정보가 없습니다.' style='color:red; width:100%;'>";
+					output  +=  "</td>";
+					output += "</tr>";
+					
+				}else{
+					for(var i=0; i<result.length; i++){
+						output += "<tr>";
+						output  +=  "<td>";
+						output  += "	<input type='text' value='" + result[i].eo_status + "' readonly=readonly></td><td><input type='text' value='" + result[i].m_gu + "'readonly=readonly><input type='hidden' value='" + result[i].mo_no + "'readonly=readonly></td><td><input class='orderNoBtn' style='width:100%' type='text' value='" + result[i].mo_orderNo + "'readonly=readonly></td>";
+						output  +=  "</td>";
+						output  += "</tr>";
+					}
+				}
+		
+				$('#each-status2').html(output);
+			}
+		})
+		
+		
+
+	
+		
+	});
+	
+	
+});
+
+function searchBtn(){
+	var guName = $('#guName').val();
+	
+	$.ajax({
+		url:"${pageContext.request.contextPath}/admin/searchGuInfo",
+		data:{
+				m_gu:guName
+			},
+		type: "POST",
+		dataType:"json", 
+		success: function(result){
+			// 뿌리기
+			if(result.length == 0){
+				$('#mustHide').show();
+				$('#mustHide').html("<tr><td style='background-color:white'><input type='text' value='서비스 정보가 없습니다.' style='border:none; color:red; width:100%; text-align:center'></td></tr>");
+				$('#guStatusValue').hide();
+			}else{
+				var waiting=0;
+				var going=0;
+				var starting=0;
+				var success=0;
+				$('#guStatusValue').show();
+				$('#mustHide').hide();
+				
+				for(var i=0; i<result.length; i++){
+					if(result[i].eo_status == "대기중"){
+						waiting++;									// 대기중 갯수
+					}else if(result[i].eo_status == "출동중"){
+						going++;									// 출동중 갯수
+					}else if(result[i].eo_status == "해방중"){
+						starting++;									// 해방중 갯수
+					}else{
+						success++;									// 해방완료 갯수
+					}
+					$('#gu_waiting').val(waiting);
+					$('#gu_going').val(going);
+					$('#gu_starting').val(starting);
+					$('#gu_success').val(success);
+					// 대기중 / 출동중 / 해방중 / 해방완료
+					console.log(waiting+"/"+going+"/"+starting+"/"+success);	
+				}
+			
+			}
+			
+		}
+	})
+	
+};
+
+
+
 var guChung = [
 
 	{
@@ -35,7 +192,7 @@ var guChung = [
 
 	}, 
 	{
-	name : "강북구청청", 
+	name : "강북구청", 
 	addr : "서울 강북구 도봉로89길 13 (수유동, 강북구청)",
 	gu : "강북구",
 	lon : "127.025508",
@@ -259,26 +416,26 @@ function forAjax(){
 			/* ajax success function 시작 */
 			// 대기중
 			for(i=0;i<result.length;i++){
-			if(result[i].eo_status =="대기중")
-			{
-			$("#"+result[i].m_gu).children().children().children().first().next().children().first().next().html("<strong>"+result[i].cnt+"</strong>");
-				
-			}else if(result[i].eo_status =="출동중")
-			{
-			$("#"+result[i].m_gu).children().children().children().first().next().next().children().first().next().html("<strong>"+result[i].cnt+"</strong>");
-				
-			}else if(result[i].eo_status =="해방중")
-			{
-			$("#"+result[i].m_gu).children().children().children().first().next().next().next().children().first().next().html("<strong>"+result[i].cnt+"</strong>");
-			}else{
-				
-			$("#"+result[i].m_gu).children().children().children().first().next().next().next().children().first().next().html("<strong>"+result[i].cnt+"</strong>");
-			}
+				if(result[i].eo_status =="대기중")
+				{
+				$("#"+result[i].m_gu).children().children().children().first().next().children().first().next().html("<strong>"+result[i].cnt+"</strong>");
+					
+				}else if(result[i].eo_status =="출동중")
+				{
+				$("#"+result[i].m_gu).children().children().children().first().next().next().children().first().next().html("<strong>"+result[i].cnt+"</strong>");
+					
+				}else if(result[i].eo_status =="해방중")
+				{
+				$("#"+result[i].m_gu).children().children().children().first().next().next().next().children().first().next().html("<strong>"+result[i].cnt+"</strong>");
+				}else{
+					
+				$("#"+result[i].m_gu).children().children().children().first().next().next().next().children().first().next().html("<strong>"+result[i].cnt+"</strong>");
+				}
 			}
 			// 
 			map.setCenter(new Tmap.LonLat(126.990479, 37.532452).transform("EPSG:4326", "EPSG:3857"),11);//map의 중심좌표를 설정합니다.
 	
-}
+		}
 	});
 }
 
@@ -348,7 +505,50 @@ window.onload = function() {
 </script>
 
 
-<style type="text/css">
+<style>
+#each-status2 input {
+	border: none;
+	width: 40%;
+	text-align: center;
+}
+
+#each-status2 th {
+	width: 30%;
+	text-align: center;
+}
+
+.table4_12 table {
+	margin:15px 0;
+	border:0;
+}
+.table4_12 th {
+	background-color:#50C2FF;
+	color:#FFFFFF
+}
+.table4_12,.table4_12 th,.table4_12 td {
+	font-size:0.95em;
+	text-align:center;
+	padding:4px;
+	border-collapse:collapse;
+}
+.table4_12 th,.table4_12 td {
+	border: 1px solid #9bdcfe;
+	border-width:1px 0 1px 0
+}
+.table4_12 tr {
+	border: 1px solid #9bdcfe;
+}
+.table4_12 input {
+	border: none;
+	width: 17%;
+}
+.table4_12 tr:nth-child(odd){
+	background-color:#c4eafe;
+}
+.table4_12 tr:nth-child(even){
+	background-color:#fdfdfd;
+}
+
 #divCon {
 	margin: 5px 0;
 	width: 660px;
@@ -366,15 +566,90 @@ window.onload = function() {
 
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-16">
+			<div class="col-lg-8">
 
 				<article>
-					<%-- <c:if test="${ not empty userVo }"> --%>
-					<h4>Today's Schedule</h4>
+					<h2>Today's Schedule</h2>
 					<div id="map_div"></div>
 
-					<%-- </c:if> --%>
 				</article>
+			</div>
+			<div class="col-lg-4" style="margin-top:5%">
+				<h3>해방 서비스 진행 현황</h3>
+				
+				<div style="margin-top:5%">
+					<h4>전체</h4><h6 style="color:red">확인하고 싶은 정보의 숫자를 클릭해주세요.</h6>
+					<table class=table4_12 style="width:100%; height:7%">
+						<tr>
+							<th>call</th><th>대기중</th><th>출발중</th><th>해방중</th><th>해방완료</th>
+						</tr>
+						<tr>
+							<td><input type="hidden" value="call"><input type="text" id="mo_callFlag" class="total" readonly="readonly"></td>
+							<td><input type="hidden" value="대기중"><input type="text" id="waiting" class="total" readonly="readonly"></td>
+							<td><input type="hidden" value="출발중"><input type="text" id="going" class="total" readonly="readonly"></td>
+							<td><input type="hidden" value="해방중"><input type="text" id="starting" class="total" readonly="readonly"></td>
+							<td><input type="hidden" value="해방완료"><input type="text" id="success" class="total" readonly="readonly"></td>
+						</tr>
+					</table>
+				</div>
+				
+				<!-- 상태 숫자 클릭시 어떤 구들이 해당상태에 있는지  -->
+				<div id="each-status" style="margin-top:5%">		
+					<h4>진행상태 별</h4> 
+					<h6 style="color:red">확인하고 싶은 정보의 주문번호를 클릭해주세요.</h6>
+					<table class=table4_12 style="width:100%; height:7%" id='each-status2'>
+					</table>
+				</div>
+				<br/>
+				<input type="button" value="구별로 조회" id="searchGu">
+				<div id="each-guName" style="margin-top:5%">
+					<select id="guName" style="width:30%">
+						<option value="">구 선택</option>
+						<option value="강남구">강남구</option>
+						<option value="강동구">강동구</option>
+						<option value="강북구">강북구</option>
+						<option value="강서구">강서구</option>
+						<option value="관악구">관악구</option>
+						<option value="광진구">광진구</option>
+						<option value="구로구">구로구</option>
+						<option value="금천구">금천구</option>
+						<option value="노원구">노원구</option>
+						<option value="도봉구">도봉구</option>
+						<option value="노원구">노원구</option>
+						<option value="동대문구">동대문구</option>
+						<option value="동작구">동작구</option>
+						<option value="마포구">마포구</option>
+						<option value="서대문구">서대문구</option>
+						<option value="서초구">서초구</option>
+						<option value="성동구">성동구</option>
+						<option value="성북구">성북구</option>
+						<option value="송파구">송파구</option>
+						<option value="양천구">양천구</option>
+						<option value="영등포구">영등포구</option>
+						<option value="은평구">은평구</option>
+						<option value="종로구">종로구</option>
+						<option value="중구">중구</option>
+						<option value="중랑구">중랑구</option>
+					</select>
+					&nbsp;&nbsp;
+					<input type="button" onclick="searchBtn()" value="검색">
+					<br/>
+					<div id='mustHide'>
+					</div>
+						<table class=table4_12 style="width:100%; height:7%" id="guStatusValue">
+							<tr>
+								<th>call</th><th>대기중</th><th>출발중</th><th>해방중</th><th>해방완료</th>
+							</tr>
+							<tr>
+								<td><input type="hidden" value="call"><input type="text" id="gu_mo_callFlag" readonly="readonly"></td>
+								<td><input type="hidden" value="대기중"><input type="text" id="gu_waiting" readonly="readonly"></td>
+								<td><input type="hidden" value="출발중"><input type="text" id="gu_going" readonly="readonly"></td>
+								<td><input type="hidden" value="해방중"><input type="text" id="gu_starting" readonly="readonly"></td>
+								<td><input type="hidden" value="해방완료"><input type="text" id="gu_success" readonly="readonly"></td>
+							</tr>
+						</table>
+				</div>
+				
 			</div>
 		</div>
 	</div>
@@ -384,4 +659,3 @@ window.onload = function() {
 	</footer>
 </body>
 </html>
-
