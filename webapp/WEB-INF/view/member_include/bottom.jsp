@@ -59,3 +59,15 @@
 				</div>
 			</div>
 
+
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.easing.1.3.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/bootstrap.min.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.fancybox.pack.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.fancybox-media.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/google-code-prettify/prettify.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/portfolio/jquery.quicksand.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/portfolio/setting.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/jquery.flexslider.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/animate.js"></script>
+	<script src="${ pageContext.request.contextPath }/resources/js/custom.js"></script>

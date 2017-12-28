@@ -816,6 +816,8 @@ header .navbar {
 							<li style="padding-top: 10px;" class=""><a href="${ pageContext.request.contextPath }/member/service">서비스 목록</a></li>
 
 							<li style="padding-top: 10px;"><a href="${ pageContext.request.contextPath }/member/memberNotice?n_type=m">공지사항</a></li>
+                           <li style="padding-top: 10px;"><a href="${ pageContext.request.contextPath }/qna/list">QnA</a></li>
+                           <li style="padding-top: 10px;"><a href="${ pageContext.request.contextPath }/qna/FM">FAQ</a></li>
 							
 							<c:choose> 
                      <c:when test="${ empty userVO }">
@@ -823,9 +825,8 @@ header .navbar {
 							<li style="padding-top: 10px;"><a href="${ pageContext.request.contextPath }/member/loginForm">로그인</a></li>
 							</c:when>
 							 <c:otherwise>
-                           <li><a href="${ pageContext.request.contextPath }/qna/list">QnA</a></li>
-                        <li><a href="${ pageContext.request.contextPath }/member/myPage">내정보<b class=" icon-angle-down"></b></a></li>
-                            <li><a href="${ pageContext.request.contextPath }/member/logout">로그아웃</a></li>
+                        <li style="padding-top: 10px;"><a href="${ pageContext.request.contextPath }/member/myPage">내정보<b class=" icon-angle-down"></b></a></li>
+                            <li style="padding-top: 10px;"><a href="${ pageContext.request.contextPath }/member/logout">로그아웃</a></li>
                      </c:otherwise>
                   </c:choose>
                   

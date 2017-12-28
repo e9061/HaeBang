@@ -175,7 +175,7 @@ function init() {
 								}else if(result[i].eo_status=="출동중"){		// 출동중	사장 입장에서는 여러개 (직원수만큼)
 									console.log("출동중 :" + i);
 									var icon = new Tmap.Icon('${pageContext.request.contextPath }/resources/img/map/start/no'+(i+1)+'.png', size, offset); 		// 충동
-									var label = new Tmap.Label("<input type='hidden' name='label' value='" + result[i].mo_no + "'>");  
+									var label = new Tmap.Label("<input type='hidden' name='label' value='" + result[i].mo_no + "'>");
 								}else if(result[i].eo_status=="해방중"){		// 색1가지 	사장 입장에서는 여러개
 									console.log("해방중 :" + i);
 									var icon = new Tmap.Icon('${pageContext.request.contextPath }/resources/img/map/ing/no'+(i+1)+'.png', size, offset); 		// 해방중
@@ -288,6 +288,7 @@ $(document).on("click",".start",function(){				// 출발			-  eo_status
 			dataType:"json", 
 			success: function(result){
 					getRoute(result.m_lon, result.m_lat ,result.m_name ,result.mo_no, result.e_name);		// 루트 그리기
+					
 			}
 			
 			
@@ -493,24 +494,31 @@ function getRoute(endLon, endLat, m_name, mo_no, e_name) {
 			alert("현재위치 부터111 "+m_name+"의 집까지 소요시간 : "+Math.ceil(time/60)+"분");
 			
 			function endLookFor(e){			// 팝업 창으로 보여주자
-				var popup;
-				popup = new Tmap.Popup("p1",
+				console.log('ㅎㅎ');
+				console.log(e);
+				console.log('가잣');
+			/* 	var popup3;
+				popup3 = new Tmap.Popup("p1",
 				                        new Tmap.LonLat(endLon, endLat).transform("EPSG:4326", "EPSG:3857"),
 				                        new Tmap.Size(230, 150),
 				                        "<div><div id='status'><div><center>고객명 : <strong><input style='border:none' type='text' value='"+m_name+"'></strong></center></div><div><input type='hidden' value='"+endLon+"'></div><div><input type='hidden' value='"+endLat+"'></div><div><input type='hidden' value='"+mo_no+"'><srtong><center><font color='red'>이동 중</font></strong>인 스케쥴 입니다.</center><ul style='list-style:none'>담당 해방맨 : <strong><font color='blue'> "+ e_name +" </font></strong></ul></div><div><center><input type='button' class='arrive' value='시작'>&nbsp;&nbsp;&nbsp;<input type='button' class='btn-info2' value='정보보기'></center></div> <div><ul style='list-style:none'><strong><font color='blue'> 서비스 시작시 클릭 </font></strong> 해주세요.</ul></div></div></div>",
 					                     false);
 										// console.log($(this).parents().prev().children().val());
-				popup.autoSize=true;//popup 사이즈 자동 조절		                         
-				map.addPopup(popup);//map에 popup 추가
-				map.addPopup(popup); // 지도에 팝업 추가
-				popup.show(); // 팝업 보이기
+				popup3.autoSize=true;//popup 사이즈 자동 조절		                         
+				map.addPopup(popup3);//map에 popup 추가
+				//map.addPopup(popup3); // 지도에 팝업 추가
+				popup3.show(); // 팝업 보이기
 				
+
+				popup3.events.register("mouseover", popup3, onMouseMarker);	
+				popup3.events.register("mouseout", popup3, onMouseMarker); 
+				 */
 				
-				popup.events.register("mouseover", popup, onMouseMarker);	
-				popup.events.register("mouseout", popup, onMouseMarker);
+				this.destroy();
+				map.destroy();	
+				init();
 				
 			/* 	if(confirm("해방 서비스를 11시작 하십니까?")){
-					this.destroy();
 				} */
 			};
 			
@@ -1134,4 +1142,3 @@ $(document).ready(function(){
     
   </script>
 </html>
->>>>>>> bc0619cb7520044c77b076770972f1de1565ed84

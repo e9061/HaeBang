@@ -19,40 +19,37 @@
    <!-- Theme skin -->
    <link href="${ pageContext.request.contextPath }/resources/skins/default.css" rel="stylesheet" />
 
+<div class="navbar navbar-default navbar-static-top"
+				style="height: 70px;">
+				<div class="container">
+					<div class="navbar-header" style="margin-top: -10px;">
+						<button type="button" class="navbar-toggle" data-toggle="collapse"
+							data-target=".navbar-collapse">
+							<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+								class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="/">해 방</a>
+					</div>
+					<div class="navbar-collapse collapse ">
+						<ul class="nav navbar-nav">
+							<li style="padding-top: 10px;" class=""><a href="${ pageContext.request.contextPath }/member/service">서비스 목록</a></li>
 
-      
-   
-      <div class="navbar navbar-default navbar-static-top">
-            <div class="container">
-               <div class="navbar-header">
-                  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                  <a class="navbar-brand" href="${ pageContext.request.contextPath }/"><span>H</span>aeBang</a>
-               </div>
-               <div class="navbar-collapse collapse ">
-                  <ul class="nav navbar-nav">
-                     <li class="active"><a href="${ pageContext.request.contextPath }/">Home</a></li>
-                     <li><a href="#">신청</a></li>
-                     <li><a href="${ pageContext.request.contextPath }/member/service">서비스목록</a></li>
-                     <li><a href="${ pageContext.request.contextPath }/qna/FM">FAQ</a></li>
-
-                  <c:choose> 
+							<li style="padding-top: 10px;"><a href="${ pageContext.request.contextPath }/member/memberNotice?n_type=m">공지사항</a></li>
+                           <li style="padding-top: 10px;"><a href="${ pageContext.request.contextPath }/qna/list">QnA</a></li>
+                           <li style="padding-top: 10px;"><a href="${ pageContext.request.contextPath }/qna/FM">FAQ</a></li>
+							
+							<c:choose> 
                      <c:when test="${ empty userVO }">
-                        <li><a href="${ pageContext.request.contextPath }/member/join">회원가입</a></li> 
-                          <li><a href="${ pageContext.request.contextPath }/member/prevLoginForm">로그인</a></li>
-                        <li><a href="${ pageContext.request.contextPath }/member/memberNotice?n_type=m">공지사항</a></li>
-                           </c:when>   
-                     <c:otherwise>
-                        <li><a href="${ pageContext.request.contextPath }/member/memberNotice?n_type=m">공지사항</a></li>
-                        <li><a href="${ pageContext.request.contextPath }/member/myPage">myPage<b class=" icon-angle-down"></b></a></li>
-                           <li><a href="${ pageContext.request.contextPath }/qna/list">QnA</a></li>
-                            <li><a href="${ pageContext.request.contextPath }/member/logout">로그아웃</a></li>
+							<li style="padding-top: 10px;"><a href="${ pageContext.request.contextPath }/member/join">회원가입</a></li>
+							<li style="padding-top: 10px;"><a href="${ pageContext.request.contextPath }/member/loginForm">로그인</a></li>
+							</c:when>
+							 <c:otherwise>
+                        <li style="padding-top: 10px;"><a href="${ pageContext.request.contextPath }/member/myPage">내정보<b class=" icon-angle-down"></b></a></li>
+                            <li style="padding-top: 10px;"><a href="${ pageContext.request.contextPath }/member/logout">로그아웃</a></li>
                      </c:otherwise>
                   </c:choose>
-                  </ul>
-               </div>
-            </div>
-         </div>
+                  
+						</ul>
+					</div>
+				</div>
+			</div>
