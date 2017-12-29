@@ -302,7 +302,7 @@ $(document).on("click",".start",function(){				// 출발			-  eo_status
 
 //eo_status update 해주는 곳  -  출동중 -> 해방중
 $(document).on("click",".arrive",function(){				// 서비스 시작		- eo_startTime. eo_status 
-	if(confirm('서비스를 진행 하시겠습니까?44')){
+	if(confirm('서비스를 진행 하시겠습니까?')){
 		var mo_no = $(this).parents().prev().children().val();
 		
 		$.ajax({
@@ -490,7 +490,7 @@ function getRoute(endLon, endLat, m_name, mo_no, e_name) {
 				map.zoomToExtent(this.getDataExtent());//지정된 영역으로 줌(Zoom)
 			};
 			
-			alert("현재위치 부터111 "+m_name+"의 집까지 소요시간 : "+Math.ceil(time/60)+"분");
+			alert("현재위치 부터 "+m_name+"의 집까지 소요시간 : "+Math.ceil(time/60)+"분");
 			
 			function endLookFor(e){			// 팝업 창으로 보여주자
 				var popup;
@@ -1047,23 +1047,24 @@ $(document).ready(function(){
 				        	   if(event.color == 'rgb(68,193,195)'){
 				        		   if(confirm("해당 스케쥴로 이동 하시겠습니까 ?")){
 					        		   console.log('대기중 클릭됨!');
-					        		   alert('대기중 클릭됨 -> 출동으로 변환!');
+					        		   alert('상태가 출동중으로 변환되었습니다');
 						        	   getRoute(event.m_lon, event.m_lat, event.m_name, event.mo_no, event.e_name);				// 클릭 된 고객의 m_lon,m_lat,m_name 
 				        		   }
 				        	   }else if(event.color == "rgb(255,153,153)"){
-				        		   if(confirm("해방 진행 하시겠습니까?")){
+				        		   if(confirm("해당 스케쥴로 출동 하시겠습니까?")){
 				        			   
 				        			   var mo_no = event.mo_no;
 					        		   console.log('출동중 클릭됨!');
 					        		   
 					        		   $('#'+mo_no).click();
-					        		   alert('출동중 클릭됨 -> 해방중으로 변환!');
+					        		   alert('상태가 해방중으로 변환되었습니다');
 				        		   }
 				        	   }else if(event.color == "rgb(178,255,102)"){
-				        		   if(confirm("해방 진행 하시겠습니까?")){
+				        		   if(confirm("해방을 완료하셨습니까?")){
 				        			   var mo_no = event.mo_no;
 				        			   $('#'+mo_no).click();
 					        		   console.log('해방중 클릭됨!');
+					        		   alert('상태가 해방완료로 변환되었습니다');
 				        		   }
 				        	   }else{
 				        		   var mo_no = event.mo_no;
@@ -1134,4 +1135,4 @@ $(document).ready(function(){
     
   </script>
 </html>
->>>>>>> bc0619cb7520044c77b076770972f1de1565ed84
+

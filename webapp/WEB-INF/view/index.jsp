@@ -1024,15 +1024,15 @@ header .navbar {
 															<span class="checkbox-body"><label
 																for="checkbox-4">비래해충(파리, 나방, 모기 등)</label></span></li>
 														<li class="item-list"><input type="checkbox"
-															name="selectinsect" id="checkbox-4" value="micro">
+															name="selectinsect" id="checkbox-5" value="micro">
 															<span class="checkbox-body"><label
 																for="checkbox-5">미세해충(좀벌레, 빈대, 옴 등)</label></span></li>
 														<li class="item-list"><input type="checkbox"
-															name="selectinsect" id="checkbox-4" value="rice">
+															name="selectinsect" id="checkbox-6" value="rice">
 															<span class="checkbox-body"><label
 																for="checkbox-6">저곡해충(쌀바구미 등)</label></span></li>
 														<li class="item-list"><input type="checkbox"
-															name="selectinsect" id="checkbox-4" value="walk">
+															name="selectinsect" id="checkbox-7" value="walk">
 															<span class="checkbox-body"><label
 																for="checkbox-7">기타 보행해충(지네, 그리마, 곱등이 등)</label></span></li>
 													</ul>
@@ -1818,7 +1818,7 @@ header .navbar {
 
 									</div>
 									<div class="box-bottom">
-										<a href="#">해방 소비스 소개</a>
+										<a href="#">해방 서비스 소개</a>
 									</div>
 								</div>
 							</div>

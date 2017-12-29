@@ -81,16 +81,22 @@
    
       </table>
       
-<<<<<<< HEAD
+	
+	<div align="center">
+
       <c:if test="${ userVo.e_type eq 'A' }  ">
 	      <button class="btn btn-theme" id="retouch">수정</button>
 	      <button class="btn btn-theme" id="delete">삭제</button>
       </c:if>
-=======
+
       <button class="btn btn-theme" id="retouch">수정</button>
       <button class="btn btn-theme" id="delete">삭제</button>
->>>>>>> 1d88a3ad07ffec70d99c6655d309dc177f9242b2
+
       <button class="btn btn-theme" id="goBack">뒤로가기</button>
+      
+     </div>
+      
+      
       <br/>
       <br/>
   </div>

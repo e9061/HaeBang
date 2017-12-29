@@ -81,6 +81,7 @@ date_input1.datepicker({
 
 
 
+
 var date_input2=$('input[name="date2"]'); 
 var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
 date_input2.datepicker({
