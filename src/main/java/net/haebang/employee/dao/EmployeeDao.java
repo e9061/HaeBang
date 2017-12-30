@@ -65,7 +65,9 @@ public interface EmployeeDao {
 
 //	------------------------------------ 창대 12/15,16,17일 작업(콜 관련 정보)  ----------------------------------------------
 	List<HashMap<String, Object>> selectMyCall(EmployeeVo userVo);
-
+	
+	List<HashMap<String, Object>> selectMyCompanyCall(EmployeeVo userVo);
+	
 
 	void dropEvent(HashMap<String, Object> map);
 

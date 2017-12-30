@@ -337,9 +337,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 			//6단계 남아있는 콜 보여주기
 			EmployeeVo userVo = (EmployeeVo) map.get("userVo");
 			System.out.println(userVo);
+			List<HashMap<String,Object>> myCall = null;
 			
-			List<HashMap<String,Object>> myCall = employeeDao.selectMyCall(userVo);
+			if(userVo.getE_type() =="O" || userVo.getE_type() =="사장") {
+				myCall = employeeDao.selectMyCompanyCall(userVo);
+				
+				return myCall;
+				
+			}
 			
+			myCall = employeeDao.selectMyCall(userVo);
 			
 			return myCall;
 		}
@@ -351,10 +358,20 @@ public class EmployeeServiceImpl implements EmployeeService {
 			
 			
 			//0. lon,lat, datefornoOneEmployee
+			
+			
 			EmployeeVo userVo = (EmployeeVo) map.get("userVo");
 			System.out.println(userVo);
+			List<HashMap<String,Object>> myCall = null;
 			
-			List<HashMap<String,Object>> myCall = employeeDao.selectMyCall(userVo);
+			if(userVo.getE_type() =="O" || userVo.getE_type() =="사장") {
+				myCall = employeeDao.selectMyCompanyCall(userVo);
+			}
+			else {
+				
+				myCall = employeeDao.selectMyCall(userVo);
+			}
+			
 			System.out.println(myCall.size());
 			
 			for(int i=0;i<myCall.size();i++) {
@@ -392,6 +409,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			System.out.println("순위표 확인할거에요");
 			System.out.println(validation);
 			
+			//4. 구할 순위 데이터 null일 경우 cancelCall 삭제
 			if(validation.size() ==0 || validation == null)
 			{
 				employeeDao.deleteCancelCallByMoNo(map);
@@ -413,11 +431,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 			
 			//5단계 남아있는 콜 다시 돌려줘서 보여주기
 			
+			
+			
+			if(userVo.getE_type() =="O" || userVo.getE_type() =="사장") {
+				myCall = employeeDao.selectMyCompanyCall(userVo);
+				
+				return myCall;
+				
+			}
+			
 			List<HashMap<String,Object>> leftMyCall = employeeDao.selectMyCall(userVo);
 			
-			System.out.println("굿  5단계");
+			System.out.println("굿 5단계");
 			
 			return leftMyCall;
+			
 
 		}
 		

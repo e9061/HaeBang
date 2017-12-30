@@ -195,12 +195,38 @@
 		t_service.s_name, if(substring(s_name,1,1)='소',substring(s_name,1,9),substring(s_name,1,8)) s_longName,
 		t_service.s_no, cast(t_service.s_price as unsigned) as s_price, t_m_order.mo_total,
 		format(cast(t_m_order.mo_total as unsigned)*cast(t_service.s_price as unsigned),0) as mo_totalPrice, t_m_order.mo_freqType, 
-		t_m_order.mo_freqCycle, t_m_order.mo_orderNo 
+		t_m_order.mo_freqCycle, t_m_order.mo_orderNo, t_employee.e_name 
 		from (select * from t_m_order where e_no_first=#{e_no} and mo_callFlag='ing') 
 		as t_m_order inner join t_member
-		on t_m_order.m_no = t_member.m_no inner join t_service on t_m_order.s_no=t_service.s_no;
+		on t_m_order.m_no = t_member.m_no inner join t_service on t_m_order.s_no=t_service.s_no
+		inner join t_employee on t_employee.e_no = t_m_order.e_no_first;
 		
 		</select>
+
+
+		<select id="selectMyCompanyCall" parameterType="employeeVo" resultType="hashMap">
+		<!-- 무엇이 필요하냐. t_m_order, t_member, t_service, #{e_no} -->
+		
+		select t_m_order.mo_no, t_m_order.e_no_first, date_format(t_m_order.mo_startTime,"%Y-%m-%d") as mo_startTime,
+		date_format(t_m_order.mo_startTime,"%Y%m%d%H") as dateHourForNoOneEmployee,
+		date_format(t_m_order.mo_startTime,"%Y%m%d") as dateForNoOneEmployee,
+		date_format(t_m_order.mo_startTime,"%Y-%m-%d %H:%i:%S") as dateHourMinuteForNoOneEmployee, 
+		t_member.m_address, t_member.m_lon, 
+		t_member.m_lat, t_member.m_gu, t_member.m_no, t_member.m_name, SUBSTRING(t_service.s_name,1,2) as s_shortName,
+		t_service.s_name, if(substring(s_name,1,1)='소',substring(s_name,1,9),substring(s_name,1,8)) s_longName,
+		t_service.s_no, cast(t_service.s_price as unsigned) as s_price, t_m_order.mo_total,
+		format(cast(t_m_order.mo_total as unsigned)*cast(t_service.s_price as unsigned),0) as mo_totalPrice, t_m_order.mo_freqType, 
+		t_m_order.mo_freqCycle, t_m_order.mo_orderNo, t_employee.e_name
+		from (select * from t_m_order where 
+		mo_callFlag ='ing' and e_no_first 
+		in (select e_no from t_employee where c_no=(select c_no from t_employee where e_no=#{e_no})))
+		as t_m_order inner join t_member
+		on t_m_order.m_no = t_member.m_no inner join t_service on t_m_order.s_no=t_service.s_no
+		inner join t_employee on t_employee.e_no = t_m_order.e_no_first;
+		
+		</select>
+		
+		
 
 	
 	<update id="dropEvent" parameterType="String">
@@ -216,7 +242,7 @@
 	<insert id="insertEOrder" parameterType="hashMap">
 	insert into t_e_order(mo_no, e_no) values
 		<foreach collection="mo_noList" item="item" separator=",">
-		( #{item.mo_no}, #{userVo.e_no})
+		( #{item.mo_no}, (select e_no_first from t_m_order where mo_no=#{mo_no}))
 		</foreach>
 	</insert>
 	

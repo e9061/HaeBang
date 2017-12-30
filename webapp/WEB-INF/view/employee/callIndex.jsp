@@ -135,7 +135,7 @@ ul li {
 								<ul class="recent" style="margin: 0; padding: 10px 10px 10px;">
 								<c:forEach items="${myCall}" var="myCall" varStatus="status" >
 									<div class="callList" style="padding: 10px; background-color: #4fbfa8; margin-bottom:5px; border-radius: 5px;">
-									<li id="${myCall.mo_no }" class="${myCall.mo_orderNo }" style="margin-bottom: 0px;" >
+									<li data-toggle="${myCall.mo_no}a" title="aaaaaa"  id="${myCall.mo_no }" class="${myCall.mo_orderNo }" style="margin-bottom: 0px;" >
 										<div>
 										<c:if test="${myCall.mo_total eq 1}">
 										<h6 style="color:white"class="pull-right">보장형</h6>
@@ -146,7 +146,7 @@ ul li {
 										<h6 style="color:white" data-toggle="${myCall.mo_no}" title="aaaaaa" >${myCall.s_longName }</h6>
 										</div>
 										<div>
-										<h6 style= "color:white; margin-bottom: 5px;" class="pull-right">${myCall.mo_totalPrice}</h6>
+										<h6 style= "color:white; margin-bottom: 5px;" class="pull-right"  >${myCall.mo_totalPrice}</h6>
 										<h6 style= "color:white; margin-bottom: 5px;" data-toggle="${status.count}" title="aaaaaa">${myCall.m_gu}</h6>
 										</div>
 										<div>
@@ -155,7 +155,7 @@ ul li {
 										<a class="pull-right btn btn-info1 accept" style="color:white; border-radius: 4px; padding: 0 10px;">수락</a>
 										<a data-toggle="${myCall.mo_orderNo}" title="aaaaaa" 
 										class="btn btn-info1 " 
-										style="padding: 0; color:white;" href="javascript:moveParentWindow();">${myCall.mo_startTime}</a>
+										style="padding: 0; color:white;" href='javascript:moveParentWindow("${userVo.e_type }");'>${myCall.mo_startTime}</a>
 										
 										<%-- <h6 data-toggle="${myCall.mo_orderNo}" title="aaaaaa" onclick="btnClick()">${myCall.mo_startTime}</h6> --%>
 										</div>
@@ -204,6 +204,12 @@ $(document).ready(function(){
         				content : resultJSON[i].s_name
 
         				});
+    				$('[data-toggle="'+resultJSON[i].mo_no+'a"]').tooltip({
+        				content : "콜 해방맨 : "+resultJSON[i].e_name
+
+        				});
+    				
+    				
     				
     				$.ajax({
     					url : "${pageContext.request.contextPath}/ceo/selectAllStartTimes",
@@ -257,10 +263,21 @@ $(document).on("click",".accept", function(){
 
 			if(resultJSON.length ==0){
 				//창 닫기
-				window.opener.location.href="${pageContext.request.contextPath}/ceo/schedule";
+				if("${userVo.e_type}"=="사장"|| "${userVo.e_type}"=="O"){
+					window.opener.location.href="${pageContext.request.contextPath}/ceo/allSchedule";
+				}
+				else{
+					window.opener.location.href="${pageContext.request.contextPath}/ceo/schedule";
+				}
+				
 				window.close();
 			}else{
-				window.opener.location.href="${pageContext.request.contextPath}/ceo/schedule";
+				if("${userVo.e_type}"=="사장"|| "${userVo.e_type}"=="O"){
+					window.opener.location.href="${pageContext.request.contextPath}/ceo/allSchedule";
+				}
+				else{
+					window.opener.location.href="${pageContext.request.contextPath}/ceo/schedule";
+				}
 			window.location.reload();
 			}
 			
@@ -346,8 +363,14 @@ $(document).on("click", ".refuse", function(){
 	/* window.setTimeout("window.location.reload()",10000); */
 
 
-	function moveParentWindow(){
-		window.opener.location.href="${pageContext.request.contextPath}/ceo/schedule";
+	function moveParentWindow(e_type){
+		if(e_type =="O" || e_type == "사장"){
+			
+			window.opener.location.href="${pageContext.request.contextPath}/ceo/allSchedule";
+			
+		}else{
+			window.opener.location.href="${pageContext.request.contextPath}/ceo/schedule";
+		}
 	}
 
 </script>
