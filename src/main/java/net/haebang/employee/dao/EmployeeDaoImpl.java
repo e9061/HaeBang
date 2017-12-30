@@ -164,6 +164,15 @@ public class EmployeeDaoImpl implements EmployeeDao{
 			
 			return myCall;
 		}
+
+		@Override
+		public List<HashMap<String, Object>> selectMyCompanyCall(EmployeeVo userVo) {
+			List<HashMap<String, Object>> myCall = sqlSession.selectList("net.haebang.employee.dao.EmployeeDao.selectMyCompanyCall", userVo);
+			
+			return myCall;
+		}
+		
+		
 		
 		@Override
 		public void dropEvent(HashMap<String, Object> map) {

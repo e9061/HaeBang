@@ -599,6 +599,21 @@ public class EmployeeController {
 		@RequestMapping(value= "/ceo/selectAllCall", method=RequestMethod.POST)
 		public String selectAllCall(HttpServletRequest request, HttpSession session, Model model) {
 			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+			session.setAttribute("userVo", userVo);
+			
+			if(userVo.getE_type() =="O" || userVo.getE_type() =="사장") {
+			
+				List<HashMap<String,Object>> myCall = employeeDao.selectMyCompanyCall(userVo);
+				
+				System.out.println(myCall);
+				
+				int count = myCall.size();
+				model.addAttribute("count", count);
+				model.addAttribute("employeeVo", userVo);
+				model.addAttribute("myCall", myCall);
+				
+				return "employee/callIndex";
+			}
 			
 			List<HashMap<String,Object>> myCall = employeeDao.selectMyCall(userVo);
 			
@@ -617,6 +632,14 @@ public class EmployeeController {
 		@RequestMapping(value= "/ceo/selectAllCallAjax", method=RequestMethod.POST)
 		public @ResponseBody List<HashMap<String, Object>> selectAllCallAjax(HttpSession session){
 			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
+			
+			if(userVo.getE_type() =="O" || userVo.getE_type() =="사장") {
+				
+				List<HashMap<String,Object>> myCall = employeeDao.selectMyCompanyCall(userVo);
+				
+				return myCall;
+			}
+			
 			
 			List<HashMap<String,Object>> myCall = employeeDao.selectMyCall(userVo);
 		
