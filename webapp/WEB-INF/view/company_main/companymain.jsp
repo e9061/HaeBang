@@ -76,8 +76,6 @@ table.noticetable a:hover {
 
 
 <script
-	src="${ pageContext.request.contextPath }/resources/js/jquery.js"></script>
-<script
 	src="${ pageContext.request.contextPath }/resources/js/jquery.easing.1.3.js"></script>
 
 <script
@@ -368,10 +366,11 @@ $(document).on("click",".conduct",function(){				// 서비스 완료		- eo_endTi
 	}
 });	
 
+/*
 $(document).on("click",".btn-info2",function(){			// 해당 서비스 정보보기 - mo_no 로 정보 찾아서 팝업 띄우기
 	if(confirm('스케쥴 정보를 확인 하시겠습니까?')){
-		
 		var mo_no = $(this).parents().prev().children().val();
+		console.log(mo_no);
 		$.ajax({
 			type : "GET",
 			url: "${pageContext.request.contextPath}/ceo/getMemberInfoByMono",
@@ -395,6 +394,7 @@ $(document).on("click",".btn-info2",function(){			// 해당 서비스 정보보�
 				}else{
 					$('#det_s_type').val("소독");
 				}
+				
 				console.log("정기/보장 : " + data.s_style);
 				
 				if(data.s_style == 'J' || data.s_style == 'j'){				// 정기형
@@ -437,8 +437,8 @@ $(document).on("click",".btn-info2",function(){			// 해당 서비스 정보보�
 					$('#det_e_name').val("해방맨 매칭 중입니다.");
 					$('#phone').hide();
 				}
-				
-//				$('#myReservDetailModal').modal('show');		모달.. 왜안뜨는지 모르겟음...
+				popupInfo();
+			//	$('#myReservDetailModal').modal('show');	
 			}
 			
 		});
@@ -448,6 +448,17 @@ $(document).on("click",".btn-info2",function(){			// 해당 서비스 정보보�
 	}
 	
 });
+*/ 
+ 
+$(document).on("click",".btn-info2",function(){	
+	var mo_no = $(this).parents().prev().children().val();
+	var popUrl = "${pageContext.request.contextPath}/ceo/main/popUpSchedule?mo_no="+mo_no;
+	var popOption = "width=780, height=480, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
+	window.open(popUrl,"addrPopUp",popOption);
+
+	
+}); 
+ 
  
 function getRoute(endLon, endLat, m_name, mo_no, e_name) {
 		console.log("getRoute");
@@ -498,32 +509,13 @@ function getRoute(endLon, endLat, m_name, mo_no, e_name) {
 			alert("현재위치 부터 "+m_name+"의 집까지 소요시간 : "+Math.ceil(time/60)+"분");
 			
 			function endLookFor(e){			// 팝업 창으로 보여주자
-				console.log('ㅎㅎ');
-				console.log(e);
-				console.log('가잣');
-			/* 	var popup3;
-				popup3 = new Tmap.Popup("p1",
-				                        new Tmap.LonLat(endLon, endLat).transform("EPSG:4326", "EPSG:3857"),
-				                        new Tmap.Size(230, 150),
-				                        "<div><div id='status'><div><center>고객명 : <strong><input style='border:none' type='text' value='"+m_name+"'></strong></center></div><div><input type='hidden' value='"+endLon+"'></div><div><input type='hidden' value='"+endLat+"'></div><div><input type='hidden' value='"+mo_no+"'><srtong><center><font color='red'>이동 중</font></strong>인 스케쥴 입니다.</center><ul style='list-style:none'>담당 해방맨 : <strong><font color='blue'> "+ e_name +" </font></strong></ul></div><div><center><input type='button' class='arrive' value='시작'>&nbsp;&nbsp;&nbsp;<input type='button' class='btn-info2' value='정보보기'></center></div> <div><ul style='list-style:none'><strong><font color='blue'> 서비스 시작시 클릭 </font></strong> 해주세요.</ul></div></div></div>",
-					                     false);
-										// console.log($(this).parents().prev().children().val());
-				popup3.autoSize=true;//popup 사이즈 자동 조절		                         
-				map.addPopup(popup3);//map에 popup 추가
-				//map.addPopup(popup3); // 지도에 팝업 추가
-				popup3.show(); // 팝업 보이기
+				if(confirm("서비스 장소에 도착하셨습니까?")){
+					this.destroy();
+					map.destroy();	
+					init();
+				}
+					
 				
-
-				popup3.events.register("mouseover", popup3, onMouseMarker);	
-				popup3.events.register("mouseout", popup3, onMouseMarker); 
-				 */
-				
-				this.destroy();
-				map.destroy();	
-				init();
-				
-			/* 	if(confirm("해방 서비스를 11시작 하십니까?")){
-				} */
 			};
 			
 			
@@ -531,15 +523,8 @@ function getRoute(endLon, endLat, m_name, mo_no, e_name) {
 			 if(evt.type == "mouseover"){
 		        this.show();
 			 }
-		//	 	else if(evt.type == "mouseout"){		// 숨겼다가 다시 팝업이 생길경우 html() 이 안먹음.. 이전 popup이 다시 뜸
-		//       	this.hide();
-		 //   }
 		    
 		};
-			
-			
-			
-		//	endLookFor();
 			
 		});
 
@@ -609,7 +594,6 @@ s0.parentNode.insertBefore(s1,s0);
 		<header>
 			<jsp:include page="../employee_include/topmenu.jsp" />
 		</header>
-		<jsp:include page="../company_main/scheduleInfoDetail.jsp"></jsp:include>
 		<!--  모달 -->
 		<jsp:include page="../employee_include/loginModal.jsp" />
 
@@ -721,6 +705,7 @@ s0.parentNode.insertBefore(s1,s0);
 
 					<article>
 						<c:if test="${ not empty userVo }">
+						<jsp:include page="../company_main/scheduleInfoDetail.jsp" />
 							<h4>Today's Schedule</h4>
 							<div id="map_div"></div>
 							<ul style="margin-top: 2%">

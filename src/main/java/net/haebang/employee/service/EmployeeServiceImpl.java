@@ -711,8 +711,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 		// 주호 mono 로 회원정보 가져오기(t_member, t_m_order, t_e_order, t_employee, t_service)
 		@Override
 		public Map<String, Object> getMemberInfoByMono(int mo_no) {
-			Map<String, Object> getMemberInfoByMono = employeeDao.getMemberInfoByMono(mo_no);
-			return getMemberInfoByMono;
+			String m_type = employeeDao.checkTheMTypeByMono(mo_no);
+			System.out.println("m_type : "+ m_type);
+			if(m_type.equals("N")|| m_type.equals("n")) {
+				System.out.println("n타입 탐!!");
+				Map<String, Object> getMemberInfoByMono = employeeDao.getMemberInfoByMonoNtype(mo_no);
+				return getMemberInfoByMono;
+			}else {
+				System.out.println("!! 낫 n타입 탐!!");
+				Map<String, Object> getMemberInfoByMono = employeeDao.getMemberInfoByMono(mo_no);
+				return getMemberInfoByMono;
+			}
 		}
 
 		@Override

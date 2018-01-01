@@ -1100,10 +1100,27 @@ END
  	<!-- 주호 mono 로 회원정보 가져오기(t_member, t_m_order, t_e_order, t_employee, t_service) -->
  	
  	
+	<select id="checkTheMTypeByMono" parameterType="integer" resultType="String">
+ 		 select m.m_type 
+ 		from ( select * from t_m_order  where mo_no = #{mo_no} )as mo inner join t_member as m on mo.m_no = m.m_no
+ 	</select>
+ 	
  	<select id="getMemberInfoByMono" parameterType="integer" resultType="java.util.HashMap">
- 		select m_type, t_member.m_no, m_lon, m_lat, m_gu, m_name, m_address, m_phone, date_format(mo_startTime, '%Y-%m-%d %H:%i') as mo_startTime, date_format(mo_endTime, '%Y-%m-%d %H:%i') as mo_endTime, mo_orderNo, t_m_order.mo_no, mo_freqType, mo_freqCycle, mo_cnt, mo_total, e_name, e_phone, t_employee.e_no, t_service.s_no, t_service.s_name, t_service.s_style
+ 	 	select m_type, t_member.m_no, m_lon, m_lat, m_gu, m_name, m_address, m_phone, 
+ 				date_format(mo_regDate, '%Y-%m-%d %H:%i') as mo_regDate, date_format(mo_startTime, '%Y-%m-%d %H:%i') as mo_startTime, date_format(mo_endTime, '%Y-%m-%d %H:%i') as mo_endTime, mo_orderNo, t_m_order.mo_no, 
+ 				mo_freqType, mo_freqCycle, mo_cnt, mo_total, mo_memo,
+ 				e_name, e_phone, t_employee.e_no,
+ 				s_name,s_type,s_size
 		from ((((select * from t_m_order where mo_no = #{mo_no} ) as t_m_order inner join t_member on t_m_order.m_no = t_member.m_no) inner join t_e_order on t_m_order.mo_no = t_e_order.mo_no) inner join t_employee on t_e_order.e_no = t_employee.e_no) inner join t_service on t_m_order.s_no = t_service.s_no;
  	</select>
+ 	<select id="getMemberInfoByMonoNtype" parameterType="integer" resultType="java.util.HashMap">
+ 	 	select m_type, t_member.m_no, m_lon, m_lat, m_gu, m_name, m_address, m_phone, 
+ 				date_format(mo_regDate, '%Y-%m-%d %H:%i') as mo_regDate, date_format(mo_startTime, '%Y-%m-%d %H:%i') as mo_startTime, date_format(mo_endTime, '%Y-%m-%d %H:%i') as mo_endTime, mo_orderNo, t_m_order.mo_no, 
+ 				mo_freqType, mo_freqCycle, mo_cnt, mo_total, mo_memo,
+ 				e_name, e_phone, t_employee.e_no
+		from (((select * from t_m_order where mo_no = #{mo_no} ) as t_m_order inner join t_member on t_m_order.m_no = t_member.m_no) inner join t_e_order on t_m_order.mo_no = t_e_order.mo_no) inner join t_employee on t_e_order.e_no = t_employee.e_no
+ 	</select>
+ 	
  	
  	
  	<update id="statusUpdate" parameterType="java.util.HashMap">

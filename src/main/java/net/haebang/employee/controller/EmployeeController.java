@@ -1241,6 +1241,25 @@ public class EmployeeController {
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	@RequestMapping(value="/ceo/main/popUpSchedule" , method=RequestMethod.GET)
+	public ModelAndView popUpSchedule (HttpServletRequest request) {
+		
+		int mo_no = Integer.parseInt(request.getParameter("mo_no"));
+		System.out.println(mo_no);
+		
+		Map<String,Object> map = new HashMap<>();
+		map = employeeService.getMemberInfoByMono(mo_no);
+		System.out.println(map);
+		
+		
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("company_main/popUpSchedule");
+		mav.addObject("mav", map);
+		
+		return mav;
+		
+	}
 	
 	
 	

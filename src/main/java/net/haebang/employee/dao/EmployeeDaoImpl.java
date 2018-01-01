@@ -495,10 +495,23 @@ public class EmployeeDaoImpl implements EmployeeDao{
 	
 		// 주호 mono 로 회원정보 가져오기(t_member, t_m_order, t_e_order, t_employee, t_service)
 		@Override
+		public String checkTheMTypeByMono(int mo_no) {
+			String m_type = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.checkTheMTypeByMono",mo_no);
+			return m_type;
+		}
+		
+		@Override
 		public Map<String, Object> getMemberInfoByMono(int mo_no) {
 			Map<String, Object> getMemberInfoByMono = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.getMemberInfoByMono", mo_no);
 			return getMemberInfoByMono;
 		}
+
+		@Override
+		public Map<String, Object> getMemberInfoByMonoNtype(int mo_no) {
+			Map<String, Object> getMemberInfoByMono = sqlSession.selectOne("net.haebang.employee.dao.EmployeeDao.getMemberInfoByMonoNtype", mo_no);
+			return getMemberInfoByMono;
+		}
+		
 
 		// update eo_status		
 		@Override
