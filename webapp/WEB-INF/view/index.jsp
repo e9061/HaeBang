@@ -1779,7 +1779,7 @@ header .navbar {
 
 									</div>
 									<div class="box-bottom">
-										<a href="#">해방 회사소개</a>
+										<a href="#">해방 회사소개</a>
 									</div>
 								</div>
 							</div>
@@ -1791,7 +1791,7 @@ header .navbar {
 									</div>
 
 									<div class="box-bottom">
-										<a href="#">해방 앱 소개</a>
+										<a href="#">해방 앱 소개</a>
 									</div>
 								</div>
 							</div>
@@ -1803,7 +1803,7 @@ header .navbar {
 									</div>
 
 									<div class="box-bottom">
-										<a href="#">해방맨 앱 소개</a>
+										<a href="#">해방맨 앱 소개</a>
 									</div>
 								</div>
 							</div>
@@ -1820,7 +1820,7 @@ header .navbar {
 
 									</div>
 									<div class="box-bottom">
-										<a href="#">해방 서비스 소개</a>
+										<a href="#">해방 서비스 소개</a>
 									</div>
 								</div>
 							</div>
@@ -1844,7 +1844,7 @@ header .navbar {
 									</div>
 
 									<div class="box-bottom">
-										<a href="#">공지사항­</a>
+										<a href="#">공지사항</a>
 									</div>
 								</div>
 							</div>
@@ -1945,7 +1945,7 @@ header .navbar {
 									<br /> <a class="page-scroll btn btn-xl m-1rem min-width-10em" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#myModal"
 										href="#" style="color: #8383FF;">해방 예약</a> <a
 										class="page-scroll btn btn-xl-default m-1rem min-width-10em"
-										href="#" style="color: #fff;">견적 문의</a>
+										href="#" style="color: #fff;">견적 문의</a>
 								</div>
 							</div>
 
