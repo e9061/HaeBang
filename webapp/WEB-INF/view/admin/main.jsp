@@ -581,12 +581,12 @@ window.onload = function() {
 					<h4>전체</h4><h6 style="color:red">확인하고 싶은 정보의 숫자를 클릭해주세요.</h6>
 					<table class=table4_12 style="width:100%; height:7%">
 						<tr>
-							<th>call</th><th>대기중</th><th>출발중</th><th>해방중</th><th>해방완료</th>
+							<th>call</th><th>대기중</th><th>출동중</th><th>해방중</th><th>해방완료</th>
 						</tr>
 						<tr>
 							<td><input type="hidden" value="call"><input type="text" id="mo_callFlag" class="total" readonly="readonly"></td>
 							<td><input type="hidden" value="대기중"><input type="text" id="waiting" class="total" readonly="readonly"></td>
-							<td><input type="hidden" value="출발중"><input type="text" id="going" class="total" readonly="readonly"></td>
+							<td><input type="hidden" value="출동중"><input type="text" id="going" class="total" readonly="readonly"></td>
 							<td><input type="hidden" value="해방중"><input type="text" id="starting" class="total" readonly="readonly"></td>
 							<td><input type="hidden" value="해방완료"><input type="text" id="success" class="total" readonly="readonly"></td>
 						</tr>
@@ -638,12 +638,12 @@ window.onload = function() {
 					</div>
 						<table class=table4_12 style="width:100%; height:7%" id="guStatusValue">
 							<tr>
-								<th>call</th><th>대기중</th><th>출발중</th><th>해방중</th><th>해방완료</th>
+								<th>call</th><th>대기중</th><th>출동중</th><th>해방중</th><th>해방완료</th>
 							</tr>
 							<tr>
 								<td><input type="hidden" value="call"><input type="text" id="gu_mo_callFlag" readonly="readonly"></td>
 								<td><input type="hidden" value="대기중"><input type="text" id="gu_waiting" readonly="readonly"></td>
-								<td><input type="hidden" value="출발중"><input type="text" id="gu_going" readonly="readonly"></td>
+								<td><input type="hidden" value="출동중"><input type="text" id="gu_going" readonly="readonly"></td>
 								<td><input type="hidden" value="해방중"><input type="text" id="gu_starting" readonly="readonly"></td>
 								<td><input type="hidden" value="해방완료"><input type="text" id="gu_success" readonly="readonly"></td>
 							</tr>
