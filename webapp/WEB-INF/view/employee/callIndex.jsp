@@ -134,7 +134,7 @@ ul li {
 								<h5 style="margin: 0; padding: 10px 20px 0px;" class="widgetheading">배정 콜 현황</h5>
 								<ul class="recent" style="margin: 0; padding: 10px 10px 10px;">
 								<c:forEach items="${myCall}" var="myCall" varStatus="status" >
-									<div class="callList" style="padding: 10px; background-color: #4fbfa8; margin-bottom:5px; border-radius: 5px;">
+									<div class="callList" style="padding: 10px; background-color: ${myCall.color}; margin-bottom:5px; border-radius: 5px;">
 									<li data-toggle="${myCall.mo_no}a" title="aaaaaa"  id="${myCall.mo_no }" class="${myCall.mo_orderNo }" style="margin-bottom: 0px;" >
 										<div>
 										<c:if test="${myCall.mo_total eq 1}">

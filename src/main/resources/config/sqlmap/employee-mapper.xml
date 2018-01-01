@@ -187,6 +187,7 @@
 		<!-- 무엇이 필요하냐. t_m_order, t_member, t_service, #{e_no} -->
 		
 		select t_m_order.mo_no, t_m_order.e_no_first, date_format(t_m_order.mo_startTime,"%Y-%m-%d") as mo_startTime,
+		t_m_order.mo_regDate,
 		date_format(t_m_order.mo_startTime,"%Y%m%d%H") as dateHourForNoOneEmployee,
 		date_format(t_m_order.mo_startTime,"%Y%m%d") as dateForNoOneEmployee,
 		date_format(t_m_order.mo_startTime,"%Y-%m-%d %H:%i:%S") as dateHourMinuteForNoOneEmployee, 
@@ -199,7 +200,7 @@
 		from (select * from t_m_order where e_no_first=#{e_no} and mo_callFlag='ing') 
 		as t_m_order inner join t_member
 		on t_m_order.m_no = t_member.m_no inner join t_service on t_m_order.s_no=t_service.s_no
-		inner join t_employee on t_employee.e_no = t_m_order.e_no_first;
+		inner join t_employee on t_employee.e_no = t_m_order.e_no_first order by t_m_order.mo_regDate;
 		
 		</select>
 
@@ -207,7 +208,8 @@
 		<select id="selectMyCompanyCall" parameterType="employeeVo" resultType="hashMap">
 		<!-- 무엇이 필요하냐. t_m_order, t_member, t_service, #{e_no} -->
 		
-		select t_m_order.mo_no, t_m_order.e_no_first, date_format(t_m_order.mo_startTime,"%Y-%m-%d") as mo_startTime,
+		select t_m_order.mo_no, t_m_order.e_no_first, t_m_order.mo_regDate,
+		date_format(t_m_order.mo_startTime,"%Y-%m-%d") as mo_startTime,
 		date_format(t_m_order.mo_startTime,"%Y%m%d%H") as dateHourForNoOneEmployee,
 		date_format(t_m_order.mo_startTime,"%Y%m%d") as dateForNoOneEmployee,
 		date_format(t_m_order.mo_startTime,"%Y-%m-%d %H:%i:%S") as dateHourMinuteForNoOneEmployee, 
@@ -222,7 +224,7 @@
 		in (select e_no from t_employee where c_no=(select c_no from t_employee where e_no=#{e_no})))
 		as t_m_order inner join t_member
 		on t_m_order.m_no = t_member.m_no inner join t_service on t_m_order.s_no=t_service.s_no
-		inner join t_employee on t_employee.e_no = t_m_order.e_no_first;
+		inner join t_employee on t_employee.e_no = t_m_order.e_no_first order by t_m_order.mo_regDate;
 		
 		</select>
 		

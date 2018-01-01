@@ -1,5 +1,8 @@
 package net.haebang.employee.controller;
 
+import java.awt.Color;
+import java.util.Random;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -596,26 +599,56 @@ public class EmployeeController {
 	
 	// ******************************** 창대 12/14(콜 팝업창) ********************************
 	
+	// 색만드는 메서드
+		private String rgb(int red, int green, int blue) {
+			System.out.println(red + "/" + green +"/" + blue);
+			String a = "rgb("+red+","+green+","+blue+")";
+			return a;
+		}
+	
 		@RequestMapping(value= "/ceo/selectAllCall", method=RequestMethod.POST)
 		public String selectAllCall(HttpServletRequest request, HttpSession session, Model model) {
 			EmployeeVo userVo = (EmployeeVo)session.getAttribute("userVo");
 			session.setAttribute("userVo", userVo);
+			List<HashMap<String,Object>> myCall= null;
+			
+			// 로그인 상태의 직원또는 사장의 e_no로 해당 업체의 직원 수 알아내기
+			List<HashMap<String, Object>> getEmployeeList = employeeService.getEmployeeList(userVo.getE_no());
+			int empCnt = getEmployeeList.size();
+			
+			// 직원수 구하기 직원 별 색 부여
+			Random r = new Random();
+			HashMap<Integer, String> cMap = new HashMap<Integer, String>();
+			for(int i=0; i<empCnt; i++) {
+				int empNo = (int) getEmployeeList.get(i).get("e_no");
+				System.out.println(empNo);
+				Color c = new Color(r.nextInt(256),r.nextInt(256),r.nextInt(256));
+				String colorToString = rgb(c.getRed(),c.getGreen(),c.getBlue());
+				cMap.put(empNo, colorToString);
+			}
+			
+			
 			
 			if(userVo.getE_type() =="O" || userVo.getE_type() =="사장") {
 			
-				List<HashMap<String,Object>> myCall = employeeDao.selectMyCompanyCall(userVo);
+				myCall = employeeDao.selectMyCompanyCall(userVo);
 				
 				System.out.println(myCall);
 				
 				int count = myCall.size();
 				model.addAttribute("count", count);
 				model.addAttribute("employeeVo", userVo);
-				model.addAttribute("myCall", myCall);
 				
+				for(int j=0;j<myCall.size();j++) {
+					
+					myCall.get(j).put("color", cMap.get(myCall.get(j).get("e_no_first")));
+				}
+				
+				model.addAttribute("myCall", myCall);
 				return "employee/callIndex";
 			}
 			
-			List<HashMap<String,Object>> myCall = employeeDao.selectMyCall(userVo);
+			myCall = employeeDao.selectMyCall(userVo);
 			
 			System.out.println(myCall);
 			
@@ -623,6 +656,11 @@ public class EmployeeController {
 			int count = myCall.size();
 			model.addAttribute("count", count);
 			model.addAttribute("employeeVo", userVo);
+			
+			for(int j=0;j<myCall.size();j++) {
+				
+				myCall.get(j).put("color", cMap.get(myCall.get(j).get("e_no_first")));
+			}
 			model.addAttribute("myCall", myCall);
 			
 			return "employee/callIndex";
