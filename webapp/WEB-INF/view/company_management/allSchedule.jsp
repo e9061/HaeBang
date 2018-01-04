@@ -227,7 +227,7 @@ $(document).ready(function() {
 		
 		<div class="container">
 		<div align="right" style="margin-top:15px; margin-bottom:20px;">
-		<input type="button" class="btn btn-theme" id="mySchedules" value="전체일정보기" >
+		<input type="button" class="btn btn-theme" id="mySchedules" value="나의일정보기" >
 		</div>
 		<div align="center">
 			<a href="#addScheduleModal1" class="trigger-btn" data-toggle="modal">
